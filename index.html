@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v7 · Topic 30-34</title>
+<title>單字大挑戰 v8 · Topic 30-34</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -105,6 +105,62 @@
   .storage-note{
     margin-top: 14px; font-size: 11px; color: var(--ink-soft); line-height:1.6;
     background:#F1EADA; border-radius:8px; padding:9px 11px;
+  }
+
+  /* ---- Who's using the page ---- */
+  .role-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  @media (max-width: 520px){ .role-grid{ grid-template-columns: 1fr; } }
+  .mode-card.student{ background: #E7F3EC; }
+  .mode-card.teacher{ background: #EFEAF6; }
+  .role-intro{ font-size:12px; color:var(--ink-soft); line-height:1.7; margin: 2px 0 16px; }
+  .whoami{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:#F1EADA; border-radius:10px; padding:8px 12px; margin-bottom:14px;
+    font-size:12px; font-weight:700;
+  }
+  .whoami .tag{
+    font-family:'Baloo 2',sans-serif; color:#fff; padding:2px 10px; border-radius:14px;
+    font-size:11px; letter-spacing:0.3px;
+  }
+  .whoami .tag.student{ background: var(--good); }
+  .whoami .tag.teacher{ background: var(--address); }
+
+  /* ---- Teacher report ---- */
+  .report-block{ margin-top:18px; padding-top:16px; border-top:2px dashed var(--paper-line); }
+  .report-block:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
+  .stat-row{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:4px; }
+  .stat{
+    border:2px solid var(--ink); border-radius:10px; padding:10px 6px; text-align:center;
+    background:#fff;
+  }
+  .stat .n{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:20px; line-height:1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .l{ font-size:11px; color:var(--ink-soft); margin-top:2px; }
+  .bar-item{ margin: 9px 0; font-size:12px; }
+  .bar-item .bar-top{ display:flex; justify-content:space-between; margin-bottom:3px; }
+  .bar-item .bar-top .v{ font-variant-numeric: tabular-nums; color:var(--ink-soft); }
+  .bar-track{ background:#EFE7D6; border-radius:20px; height:9px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:20px; }
+  .hist-item .meta{ display:block; color:var(--ink-soft); font-size:11px; margin-top:2px; }
+  .unit-chip{
+    display:inline-block; color:#fff; font-size:10px; font-weight:700;
+    padding:1px 7px; border-radius:12px; margin-right:5px; vertical-align:1px;
+  }
+  .sess-item{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:8px 4px; border-bottom:1.5px dashed var(--paper-line); font-size:12px;
+  }
+  .sess-item .when{ color:var(--ink-soft); font-size:11px; }
+  .sess-item .sc{ font-family:'Baloo 2',sans-serif; font-weight:800; font-variant-numeric: tabular-nums; }
+  .grade-pill{
+    display:inline-block; color:#fff; font-family:'Baloo 2',sans-serif; font-weight:800;
+    font-size:11px; padding:1px 9px; border-radius:14px; margin-left:6px;
+  }
+  .empty-note{
+    font-size:12px; color:var(--ink-soft); text-align:center; padding:18px 8px;
+    background:#F7F2E6; border-radius:10px; line-height:1.7;
   }
 
   /* ---- Setup (practice only) ---- */
@@ -232,16 +288,41 @@
   <div style="background:#C1272D;color:#fff;text-align:center;padding:8px 12px;
   font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:13px;border-radius:10px;
   margin-bottom:14px;">
-  ✅ 這是最新版 v7 ｜ Topic 30–34（Be動詞&助動詞・介系詞・連接詞・感歎詞・其他名詞）｜ 140 字
+  ✅ 這是最新版 v8 ｜ Topic 30–34（Be動詞&助動詞・介系詞・連接詞・感歎詞・其他名詞）｜ 140 字　·　新增：身分區分＋學習紀錄
 </div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">基礎 1200 單字 · Ch.1 Topic 30–34 <span class="ver-badge">v7</span></div>
+    <div class="sub">基礎 1200 單字 · Ch.1 Topic 30–34 <span class="ver-badge">v8</span></div>
+  </div>
+
+  <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
+  <div class="card" id="roleScreen">
+    <div class="row-label" style="margin-top:0;">請問你是誰？</div>
+    <div class="role-intro">
+      選好身分後，這台裝置會記住，下次打開就直接進入。<b>學生的作答紀錄和老師的是分開存的</b>，
+      老師自己試做題目不會影響學生的錯題統計。
+    </div>
+    <div class="role-grid">
+      <div class="mode-card student" id="roleStudent">
+        <div class="icon">🎒</div>
+        <h3>我是學生</h3>
+        <p>開始測驗，答錯的單字會自動記下來，之後可以用「錯題重練」把它們消化掉。</p>
+      </div>
+      <div class="mode-card teacher" id="roleTeacher">
+        <div class="icon">🍎</div>
+        <h3>我是老師</h3>
+        <p>查看學生的學習報告：常錯單字、各單元弱點、各題型正確率與歷次成績。</p>
+      </div>
+    </div>
   </div>
 
   <!-- MODE SELECT SCREEN -->
-  <div class="card" id="modeScreen">
-    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v7 · Topic 30–34 · 140字</span></div>
+  <div class="card hidden" id="modeScreen">
+    <div class="whoami">
+      <span>目前身分：<span class="tag student" id="whoamiTag">學生</span></span>
+      <button class="mini-btn" id="switchRoleBtn">切換身分</button>
+    </div>
+    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v8 · Topic 30–34 · 140字</span></div>
     <div class="mode-grid mode-grid-3">
       <div class="mode-card practice" id="modePractice">
         <div class="icon">🪢</div>
@@ -271,7 +352,31 @@
       <div class="history-sub" id="historySub"></div>
       <div id="historyList"></div>
     </div>
+
+    <!-- Teacher-only entry point into the student's report -->
+    <div id="teacherEntry" class="history-panel hidden">
+      <div class="history-head">
+        <div class="row-label" style="margin:0;">📊 學生學習報告</div>
+        <button class="mini-btn" id="openReportBtn" style="background:var(--address); color:#fff; border-color:var(--address);">查看報告</button>
+      </div>
+      <div class="history-sub" id="teacherEntrySub"></div>
+    </div>
+
     <div id="storageNote" class="storage-note hidden"></div>
+  </div>
+
+  <!-- TEACHER REPORT SCREEN -->
+  <div class="card hidden" id="reportScreen">
+    <div class="whoami">
+      <span>學生學習報告</span>
+      <button class="mini-btn" id="reportBackBtn">← 返回主頁</button>
+    </div>
+    <div id="reportBody"></div>
+    <div class="history-head" style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--paper-line);">
+      <div class="row-label" style="margin:0;">管理紀錄</div>
+      <button class="mini-btn" id="clearStudentBtn">清除學生紀錄</button>
+    </div>
+    <div class="history-sub" id="clearStudentHint">清除後無法復原，錯題與歷次成績都會刪除。</div>
   </div>
 
   <!-- SETUP SCREEN (practice mode only) -->
@@ -1402,7 +1507,9 @@ const selectedTypes = new Set(ALL_TYPES);
 let questionCount = 20;
 
 // ---------------- Screen refs ----------------
+const roleScreen = document.getElementById('roleScreen');
 const modeScreen = document.getElementById('modeScreen');
+const reportScreen = document.getElementById('reportScreen');
 const setupScreen = document.getElementById('setupScreen');
 const examConfirmScreen = document.getElementById('examConfirmScreen');
 const reviewSetupScreen = document.getElementById('reviewSetupScreen');
@@ -1410,57 +1517,195 @@ const quizScreen = document.getElementById('quizScreen');
 const resultScreen = document.getElementById('resultScreen');
 
 function showScreen(el){
-  [modeScreen, setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen].forEach(s=>s.classList.add('hidden'));
+  [roleScreen, modeScreen, reportScreen, setupScreen, examConfirmScreen,
+   reviewSetupScreen, quizScreen, resultScreen].forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
 }
 
-// ---------------- Persistent wrong-answer history ----------------
-// Uses the artifact persistent-storage API (personal scope): each viewer keeps
-// their own record, which survives closing and reopening the page — but ONLY
-// after the artifact is published and on a paid plan. If storage is unavailable
-// (e.g. free plan, or still in preview), we degrade gracefully to in-memory only.
-const HISTORY_KEY = 'wrongHistory:v1';
-let historyData = {};      // { en: {en, zh, count} }
-let storageOK = false;     // whether window.storage actually works here
+// ---------------- Role selection ----------------
+function setRole(r){
+  role = r;
+  syncHistoryView();
+  saveHistory();
+  renderHistory();
+  showScreen(modeScreen);
+}
 
-function hasStorage(){
-  return (typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function');
+document.getElementById('roleStudent').addEventListener('click', ()=> setRole('student'));
+document.getElementById('roleTeacher').addEventListener('click', ()=> setRole('teacher'));
+document.getElementById('switchRoleBtn').addEventListener('click', ()=> showScreen(roleScreen));
+
+document.getElementById('openReportBtn').addEventListener('click', ()=>{
+  renderReport();
+  showScreen(reportScreen);
+});
+document.getElementById('reportBackBtn').addEventListener('click', ()=>{
+  renderHistory();
+  showScreen(modeScreen);
+});
+
+// ---------------- Who is using the page ----------------
+// Two separate record books: the student's and the teacher's. The teacher can
+// try the quiz without it landing in the student's mistake statistics.
+const ROLES = { student: '學生', teacher: '老師' };
+let role = null;   // 'student' | 'teacher'
+
+function roleLabel(r){ return ROLES[r] || ''; }
+
+// ---------------- Persistent records ----------------
+// localStorage is the one mechanism that works everywhere this page gets
+// published — GitHub Pages and the Claude artifact alike. (The old build used
+// window.storage, which only exists inside a published artifact, so on GitHub
+// Pages nothing was ever actually saved.) Records live in the student's own
+// browser; clearing site data clears them.
+const STORE_KEY = 'vocabQuiz:v2';
+const LEGACY_KEY = 'wrongHistory:v1';
+
+// { role, profiles: { student: {words, sessions}, teacher: {...} } }
+let store = null;
+let historyData = {};      // live view of the current role's words: { en: {...} }
+let storageOK = false;     // whether localStorage actually works here
+
+function blankProfile(){ return { words: {}, sessions: [] }; }
+
+function blankStore(){
+  return { version: 2, role: null, profiles: { student: blankProfile(), teacher: blankProfile() } };
+}
+
+function canUseLocalStorage(){
+  // Private windows and blocked-site-data settings throw on access, not just on write.
+  try{
+    const probe = '__vq_probe__';
+    window.localStorage.setItem(probe, '1');
+    window.localStorage.removeItem(probe);
+    return true;
+  }catch(e){ return false; }
+}
+
+function normalizeProfile(p){
+  const out = blankProfile();
+  if(!p || typeof p !== 'object') return out;
+  if(p.words && typeof p.words === 'object'){
+    for(const [en, w] of Object.entries(p.words)){
+      if(!w || typeof w !== 'object') continue;
+      out.words[en] = {
+        en: w.en || en,
+        zh: w.zh || '',
+        cat: w.cat || '',
+        count: Number(w.count) || 0,
+        types: (w.types && typeof w.types === 'object') ? w.types : {},
+        lastWrong: w.lastWrong || null
+      };
+    }
+  }
+  if(Array.isArray(p.sessions)) out.sessions = p.sessions.slice(-60);
+  return out;
 }
 
 async function loadHistory(){
-  historyData = {};
-  storageOK = false;
-  if(!hasStorage()) return;
-  try{
-    const res = await window.storage.get(HISTORY_KEY, false);
-    storageOK = true;
-    if(res && res.value){
-      try{ historyData = JSON.parse(res.value) || {}; }catch(e){ historyData = {}; }
-    }
-  }catch(err){
-    // key not found is normal on first visit — storage still works
-    if(hasStorage()){ storageOK = true; }
+  store = blankStore();
+  storageOK = canUseLocalStorage();
+
+  if(storageOK){
+    try{
+      const raw = window.localStorage.getItem(STORE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === 'object'){
+          store.role = (parsed.role === 'student' || parsed.role === 'teacher') ? parsed.role : null;
+          store.profiles.student = normalizeProfile(parsed.profiles && parsed.profiles.student);
+          store.profiles.teacher = normalizeProfile(parsed.profiles && parsed.profiles.teacher);
+        }
+      } else {
+        // First run on this build: carry over any old { en: {en,zh,count} } record.
+        const legacy = window.localStorage.getItem(LEGACY_KEY);
+        if(legacy) importLegacy(JSON.parse(legacy));
+      }
+    }catch(e){ /* corrupt or unreadable — start clean rather than break the page */ }
+  }
+
+  // Also rescue a record left behind by the artifact-only storage API.
+  if(window.storage && typeof window.storage.get === 'function'
+     && Object.keys(store.profiles.student.words).length === 0){
+    try{
+      const res = await window.storage.get(LEGACY_KEY, false);
+      if(res && res.value) importLegacy(JSON.parse(res.value));
+    }catch(e){ /* no old record to rescue */ }
+  }
+
+  role = store.role;
+  syncHistoryView();
+}
+
+function importLegacy(old){
+  if(!old || typeof old !== 'object') return;
+  const words = store.profiles.student.words;
+  for(const [en, w] of Object.entries(old)){
+    if(!w || typeof w !== 'object') continue;
+    words[en] = {
+      en: w.en || en, zh: w.zh || '', cat: catOf(en),
+      count: Number(w.count) || 0, types: {}, lastWrong: null
+    };
   }
 }
 
-async function saveHistory(){
-  if(!hasStorage()) return;
+// Point historyData at the active role's word list, so every existing caller
+// (weighting, 錯題重練, the count-down on a correct review answer) keeps working.
+function syncHistoryView(){
+  const key = (role === 'teacher') ? 'teacher' : 'student';
+  historyData = store.profiles[key].words;
+}
+
+function currentProfile(){
+  return store.profiles[(role === 'teacher') ? 'teacher' : 'student'];
+}
+
+function saveHistory(){
+  if(!storageOK || !store) return;
   try{
-    await window.storage.set(HISTORY_KEY, JSON.stringify(historyData), false);
-    storageOK = true;
-  }catch(err){ /* silently ignore write failures */ }
+    store.role = role;
+    window.localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  }catch(err){ /* quota or blocked — the session still works, just not saved */ }
 }
 
-function recordWrong(en, zh){
-  if(!historyData[en]) historyData[en] = { en, zh, count: 0 };
-  historyData[en].count += 1;
-}
-
-async function clearHistory(){
-  historyData = {};
-  if(hasStorage()){
-    try{ await window.storage.delete(HISTORY_KEY, false); }catch(e){}
+// Which unit a word belongs to, for the teacher's per-unit breakdown.
+function catOf(en){
+  for(const [cat, arr] of Object.entries(WORDS)){
+    if(arr.some(w => w[0] === en)) return cat;
   }
+  const r = REVIEW_WORDS.find(w => w.en === en);
+  return r ? r.cat : '';
+}
+
+function recordWrong(en, zh, type, cat){
+  if(!historyData[en]) historyData[en] = { en, zh, cat: cat || catOf(en), count: 0, types: {}, lastWrong: null };
+  const w = historyData[en];
+  w.count += 1;
+  w.lastWrong = Date.now();
+  if(!w.cat) w.cat = cat || catOf(en);
+  if(type) w.types[type] = (w.types[type] || 0) + 1;
+}
+
+function recordSession(entry){
+  const p = currentProfile();
+  p.sessions.push(entry);
+  if(p.sessions.length > 60) p.sessions = p.sessions.slice(-60);
+}
+
+function clearHistory(){
+  const p = currentProfile();
+  p.words = {};
+  syncHistoryView();
+  saveHistory();
+  renderHistory();
+}
+
+// Teacher wiping the student's record — separate from the teacher's own.
+function clearStudentRecord(){
+  store.profiles.student = blankProfile();
+  if(role === 'student') syncHistoryView();
+  saveHistory();
+  renderReport();
   renderHistory();
 }
 
@@ -1471,13 +1716,35 @@ function renderHistory(){
   const note = document.getElementById('storageNote');
   const entries = Object.values(historyData).sort((a,b)=> b.count - a.count);
 
+  // Identity bar + teacher's way into the student's report
+  const tag = document.getElementById('whoamiTag');
+  tag.textContent = roleLabel(role);
+  tag.className = 'tag ' + (role === 'teacher' ? 'teacher' : 'student');
+
+  const teacherEntry = document.getElementById('teacherEntry');
+  if(role === 'teacher'){
+    teacherEntry.classList.remove('hidden');
+    const sw = Object.values(store.profiles.student.words);
+    const ss = store.profiles.student.sessions;
+    document.getElementById('teacherEntrySub').textContent = (sw.length || ss.length)
+      ? `學生目前有 ${sw.length} 個常錯單字、${ss.length} 筆作答紀錄。`
+      : '學生還沒有任何紀錄。等他做過一次測驗後再回來看。';
+  } else {
+    teacherEntry.classList.add('hidden');
+  }
+
   // Storage-availability note
   note.classList.remove('hidden');
   if(storageOK){
-    note.textContent = '✅ 你的錯題紀錄已儲存，下次打開這個頁面仍會看到（紀錄只有你自己看得到）。';
+    note.textContent = role === 'teacher'
+      ? '✅ 紀錄存在這台裝置的瀏覽器裡。你自己試做題目會記在「老師」名下，不會影響學生的統計。'
+      : '✅ 你的錯題紀錄已儲存在這台裝置，下次打開這個頁面仍會看到。';
   } else {
-    note.textContent = 'ℹ️ 目前無法儲存長期紀錄（可能是免費方案，或尚未發布頁面）。這次的錯題仍會累計，但關閉頁面後可能不會保留。';
+    note.textContent = 'ℹ️ 這個瀏覽器不允許儲存資料（可能是無痕視窗，或關閉了網站資料）。這次的錯題仍會累計，但關閉頁面後不會保留。';
   }
+
+  const heading = panel.querySelector('.row-label');
+  if(heading) heading.textContent = role === 'teacher' ? '📌 我（老師）的錯題紀錄' : '📌 我的錯題紀錄';
 
   if(entries.length === 0){
     panel.classList.add('hidden');
@@ -1490,13 +1757,211 @@ function renderHistory(){
   entries.forEach(e=>{
     const row = document.createElement('div');
     row.className = 'hist-item';
-    row.innerHTML = `<div class="left"><b>${e.en}</b><span class="zh">${e.zh}</span></div>
+    row.innerHTML = `<div class="left"><b>${esc(e.en)}</b><span class="zh">${esc(e.zh)}</span></div>
       <div class="cnt">錯 ${e.count} 次</div>`;
     list.appendChild(row);
   });
 }
 
+// ---------------- Teacher's report on the student ----------------
+// Unit names for the cumulative review bank (Topic 04–34). CAT_LABEL only
+// covers the current exam scope, so past units need their own labels here.
+const REVIEW_CAT_LABEL = {
+  health:'健康身體', address:'稱謂稱呼', family:'家庭成員', numbers:'數字',
+  time:'時間', money:'貨幣', food:'食物飲品', tableware:'餐具',
+  clothing:'服裝飾品', colors:'顏色', sports:'運動嗜好', house3:'住宅',
+  house4:'居家空間', furniture:'家具', appliance:'電器', school:'校園',
+  stationery:'文具', subject:'學科', places:'地點', buildings:'場所建築',
+  transport:'大眾運輸', sizes:'尺寸測量', countries:'國家語言', holidays:'假日節慶',
+  occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
+  auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
+  interjections:'感歎詞', nouns:'其他名詞'
+};
+// TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
+const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練' };
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+function fmtDate(ts){
+  if(!ts) return '';
+  const d = new Date(ts);
+  if(isNaN(d)) return '';
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function gradeOf(pct){
+  if(pct >= 90) return 'A';
+  if(pct >= 80) return 'B';
+  if(pct >= 70) return 'C';
+  if(pct >= 60) return 'D';
+  return 'F';
+}
+
+// CAT_COLOR only covers the current exam scope; give past review units a stable
+// colour too so the teacher's bars stay distinguishable.
+const FALLBACK_COLORS = ['var(--health)','var(--address)','var(--family)','var(--numbers)',
+  'var(--time)','var(--money)','var(--places)','var(--review)'];
+// Short Chinese unit name. REVIEW_CAT_LABEL covers every unit including the
+// current scope, so prefer it — CAT_LABEL's "BE & AUX Be動詞&助動詞" style is
+// too long for a chip and truncates badly.
+function catLabel(cat){
+  return REVIEW_CAT_LABEL[cat] || CAT_LABEL[cat] || cat || '其他';
+}
+
+function catColor(cat){
+  if(CAT_COLOR[cat]) return CAT_COLOR[cat];
+  if(!cat) return 'var(--ink-soft)';
+  let h = 0;
+  for(let i = 0; i < cat.length; i++) h = (h * 31 + cat.charCodeAt(i)) >>> 0;
+  return FALLBACK_COLORS[h % FALLBACK_COLORS.length];
+}
+
+function gradeColor(g){
+  if(g === 'A' || g === 'B') return 'var(--good)';
+  if(g === 'C' || g === 'D') return 'var(--money)';
+  return 'var(--bad)';
+}
+
+function renderReport(){
+  const body = document.getElementById('reportBody');
+  const p = store.profiles.student;
+  const words = Object.values(p.words).sort((a,b)=> b.count - a.count || a.en.localeCompare(b.en));
+  const sessions = p.sessions.slice().reverse();
+
+  if(words.length === 0 && sessions.length === 0){
+    body.innerHTML = `<div class="empty-note">學生還沒有留下任何紀錄。<br>
+      請他用「我是學生」進入，做完一次測驗後，這裡就會出現常錯單字與成績分析。</div>`;
+    return;
+  }
+
+  const totalWrong = words.reduce((s,w)=> s + w.count, 0);
+  const graded = sessions.filter(s => s.total > 0);
+  const avgPct = graded.length
+    ? Math.round(graded.reduce((s,x)=> s + (x.correct / x.total * 100), 0) / graded.length)
+    : null;
+
+  let html = '';
+
+  // ---- Summary ----
+  html += `<div class="report-block">
+    <div class="stat-row">
+      <div class="stat"><div class="n">${words.length}</div><div class="l">常錯單字</div></div>
+      <div class="stat"><div class="n">${totalWrong}</div><div class="l">累計答錯次數</div></div>
+      <div class="stat"><div class="n">${avgPct === null ? '—' : avgPct + '%'}</div><div class="l">平均正確率</div></div>
+    </div>
+  </div>`;
+
+  // ---- Which units are weak ----
+  const byCat = {};
+  words.forEach(w=>{
+    const c = w.cat || 'other';
+    byCat[c] = (byCat[c] || 0) + w.count;
+  });
+  const catRows = Object.entries(byCat).sort((a,b)=> b[1] - a[1]);
+  if(catRows.length){
+    const max = catRows[0][1];
+    html += `<div class="report-block"><div class="row-label" style="margin-top:0;">各單元弱點（依答錯次數）</div>`;
+    catRows.forEach(([cat, n])=>{
+      const color = catColor(cat);
+      html += `<div class="bar-item">
+        <div class="bar-top"><span>${esc(catLabel(cat))}</span><span class="v">錯 ${n} 次</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%; background:${color};"></div></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ---- Which question type trips them up ----
+  const byType = {};
+  words.forEach(w=>{
+    for(const [t, n] of Object.entries(w.types || {})) byType[t] = (byType[t] || 0) + n;
+  });
+  const typeRows = Object.entries(byType).sort((a,b)=> b[1] - a[1]);
+  if(typeRows.length){
+    const max = typeRows[0][1];
+    html += `<div class="report-block"><div class="row-label" style="margin-top:0;">哪種題型最容易錯</div>`;
+    typeRows.forEach(([t, n])=>{
+      html += `<div class="bar-item">
+        <div class="bar-top"><span>${esc(TYPE_LABEL[t] || t)}</span><span class="v">錯 ${n} 次</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%; background:var(--exam);"></div></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ---- The actual words ----
+  if(words.length){
+    html += `<div class="report-block"><div class="row-label" style="margin-top:0;">常錯單字（錯最多次的排前面）</div>`;
+    words.forEach(w=>{
+      const chip = w.cat
+        ? `<span class="unit-chip" style="background:${catColor(w.cat)};">${esc(catLabel(w.cat))}</span>`
+        : '';
+      const types = Object.entries(w.types || {}).map(([t,n])=> `${TYPE_LABEL[t] || t} ${n}`).join('、');
+      const when = w.lastWrong ? `最近答錯 ${fmtDate(w.lastWrong)}` : '';
+      const meta = [types, when].filter(Boolean).join('　·　');
+      html += `<div class="hist-item">
+        <div class="left">${chip}<b>${esc(w.en)}</b><span class="zh">${esc(w.zh)}</span>
+          ${meta ? `<span class="meta">${esc(meta)}</span>` : ''}</div>
+        <div class="cnt">錯 ${w.count} 次</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ---- Score history ----
+  if(sessions.length){
+    html += `<div class="report-block"><div class="row-label" style="margin-top:0;">歷次作答紀錄（最新在上）</div>`;
+    sessions.forEach(s=>{
+      const pct = s.total ? Math.round(s.correct / s.total * 100) : 0;
+      const g = gradeOf(pct);
+      html += `<div class="sess-item">
+        <div><b>${esc(MODE_LABEL[s.mode] || s.mode)}</b><div class="when">${esc(fmtDate(s.date))}</div></div>
+        <div><span class="sc">${s.correct}/${s.total}</span>
+          <span class="grade-pill" style="background:${gradeColor(g)};">${pct}% ${g}</span></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  body.innerHTML = html;
+}
+
 // Tap-twice confirmation (window.confirm is blocked in the artifact sandbox).
+// Teacher wiping the student's record — same tap-twice guard, higher stakes.
+let clearStuArmed = false;
+let clearStuTimer = null;
+const clearStuBtn = document.getElementById('clearStudentBtn');
+const clearStuHint = document.getElementById('clearStudentHint');
+function resetClearStuBtn(){
+  clearStuArmed = false;
+  clearStuBtn.textContent = '清除學生紀錄';
+  clearStuBtn.style.background = '';
+  clearStuBtn.style.color = '';
+  clearStuBtn.style.borderColor = '';
+  clearStuHint.textContent = '清除後無法復原，錯題與歷次成績都會刪除。';
+  clearStuHint.style.color = '';
+}
+clearStuBtn.addEventListener('click', ()=>{
+  if(!clearStuArmed){
+    clearStuArmed = true;
+    clearStuBtn.textContent = '⚠️ 再按一次確認';
+    clearStuBtn.style.background = 'var(--bad)';
+    clearStuBtn.style.color = '#fff';
+    clearStuBtn.style.borderColor = 'var(--bad)';
+    clearStuHint.textContent = '⚠️ 這會刪掉學生所有的錯題與成績紀錄，無法復原。確定的話再按一次。';
+    clearStuHint.style.color = 'var(--bad)';
+    clearTimeout(clearStuTimer);
+    clearStuTimer = setTimeout(resetClearStuBtn, 4000);
+    return;
+  }
+  clearTimeout(clearStuTimer);
+  resetClearStuBtn();
+  clearStudentRecord();
+});
+
 let clearArmed = false;
 let clearTimer = null;
 const clearBtnEl = document.getElementById('clearHistBtn');
@@ -1890,7 +2355,7 @@ function handleAnswer(chosen, correctText, btnEl){
     wrongCount++;
     fb.textContent = `答錯了，正確答案是「${q.correctText}」`;
     fb.className = 'feedback bad';
-    recordWrong(q.en, q.zh);
+    recordWrong(q.en, q.zh, q.type, q.cat);
   }
   document.getElementById('scoreChip').textContent = `✓ ${score}`;
   results.push({ type:q.type, en:q.en, zh:q.zh, correctText:q.correctText, isCorrect });
@@ -1915,8 +2380,22 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
 function showResult(){
   document.getElementById('progressFill').style.width = '100%';
   showScreen(resultScreen);
-  saveHistory(); // persist this session's wrong answers for next time
   const total = results.length;
+
+  // Log the session against whoever is using the page, then persist both the
+  // session and this round's wrong answers.
+  if(total > 0){
+    recordSession({
+      date: Date.now(),
+      mode: quizIsReview ? 'retry' : mode,
+      total: total,
+      correct: score,
+      endedEarly: !!sessionEndedEarly,
+      wrong: results.filter(r=>!r.isCorrect).map(r=>r.en)
+    });
+  }
+  saveHistory();
+
   document.getElementById('finalScore').textContent = `${score}/${total}`;
 
   // Score reporting to the teacher (currently OFF — see REPORT_CONFIG above).
@@ -2039,10 +2518,12 @@ quitHintEl.addEventListener('click', ()=>{
   showScreen(modeScreen);
 });
 
-// ---------------- Startup: load saved history ----------------
+// ---------------- Startup: load records, then ask who's using the page ----------------
 (async function init(){
   await loadHistory();
   renderHistory();
+  // A remembered role skips straight to the modes; otherwise ask first.
+  showScreen(role ? modeScreen : roleScreen);
 })();
 </script>
 </body>
