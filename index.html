@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單字大挑戰 v7 · Topic 30-34</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FAF6EC;
+    --paper-line: #E4DCC8;
+    --ink: #2B2620;
+    --ink-soft: #6b6255;
+    --health: #E4572E;
+    --address: #7B4B94;
+    --family: #3A6EA5;
+    --numbers: #C1272D;
+    --time: #2E8B57;
+    --money: #C98A00;
+    --places: #0F8B8D;
+    --review: #B8860B;
+    --good: #2E8B57;
+    --bad: #C1272D;
+    --practice: #C1272D;
+    --exam: #3A6EA5;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--ink);
+    background:
+      repeating-linear-gradient(to bottom, transparent, transparent 35px, var(--paper-line) 36px),
+      var(--paper);
+    min-height: 100vh;
+    display:flex;
+    justify-content:center;
+    padding: 28px 14px 60px;
+  }
+  .binder{ width:100%; max-width: 640px; }
+  .masthead{
+    display:flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 18px; padding-bottom: 12px; border-bottom: 3px solid var(--ink);
+  }
+  .masthead h1{ font-family:'Baloo 2', sans-serif; font-weight:800; font-size: 25px; margin:0; }
+  .masthead .sub{ font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .card{
+    background: #fff; border: 2px solid var(--ink); border-radius: 14px;
+    box-shadow: 6px 6px 0 rgba(43,38,32,0.14); padding: 22px; margin-bottom: 20px;
+  }
+  .hidden{ display:none !important; }
+
+  /* ---- Mode select ---- */
+  .ver-badge{
+    display:inline-block; background: var(--bad); color:#fff; font-family:'Baloo 2',sans-serif;
+    font-weight:800; font-size:11px; padding:1px 8px; border-radius:20px; margin-left:4px;
+    letter-spacing:0.5px;
+  }
+  .mode-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .mode-grid-3{ grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 520px){ .mode-grid-3{ grid-template-columns: 1fr; } }
+  .mode-card{
+    border: 2px solid var(--ink); border-radius: 12px; padding: 18px 14px;
+    cursor:pointer; text-align:center; transition: transform .12s ease;
+  }
+  .mode-card:active{ transform: scale(0.97); }
+  .mode-card .icon{ font-size: 32px; margin-bottom:6px; }
+  .mode-card h3{ font-family:'Baloo 2',sans-serif; margin: 4px 0; font-size:17px; }
+  .mode-card p{ font-size: 12px; color: var(--ink-soft); margin:0; line-height:1.5; }
+  .name-input{
+    width:100%; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 10px;
+    font-size: 15px; font-family: 'Noto Sans TC', sans-serif; margin-bottom: 4px;
+  }
+  .report-status{ font-size:12px; text-align:center; margin-top:12px; font-weight:700; }
+  .report-status.ok{ color: var(--good); }
+  .report-status.pending{ color: var(--ink-soft); }
+  .report-status.fail{ color: var(--bad); }
+  .mode-card.practice{ background: #FDEDEA; }
+  .mode-card.exam{ background: #EAF1FB; }
+  .mode-card.review{ background: #FFF3D6; }
+
+  /* ---- History panel ---- */
+  .history-panel{
+    margin-top: 18px; padding-top: 16px; border-top: 2px dashed var(--paper-line);
+  }
+  .history-head{ display:flex; align-items:center; justify-content:space-between; }
+  .mini-btn{
+    border: 1.5px solid var(--ink); background:#fff; color:var(--ink);
+    font-size: 12px; font-weight:700; padding: 5px 12px; border-radius: 16px; cursor:pointer;
+    font-family:'Noto Sans TC',sans-serif;
+  }
+  .mini-btn:active{ transform: translateY(1px); }
+  .history-sub{ font-size:12px; color:var(--ink-soft); margin: 6px 0 10px; }
+  .hist-item{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding: 8px 4px; border-bottom: 1.5px dashed var(--paper-line); font-size: 13px;
+  }
+  .hist-item .left b{ font-weight:700; }
+  .hist-item .left .zh{ color: var(--ink-soft); margin-left:4px; }
+  .hist-item .cnt{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:12px; color:#fff;
+    background: var(--bad); padding: 2px 9px; border-radius: 14px; white-space:nowrap;
+  }
+  .storage-note{
+    margin-top: 14px; font-size: 11px; color: var(--ink-soft); line-height:1.6;
+    background:#F1EADA; border-radius:8px; padding:9px 11px;
+  }
+
+  /* ---- Setup (practice only) ---- */
+  .row-label{ font-size: 13px; font-weight: 700; color: var(--ink-soft); margin: 16px 0 8px; }
+  .cat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cat-tab{
+    position: relative; display:flex; align-items:center; gap:8px;
+    padding: 11px 12px 11px 14px; border-radius: 10px; border: 2px solid var(--ink);
+    cursor:pointer; font-weight: 700; font-size: 13px; color: #fff; user-select:none;
+  }
+  .cat-tab input{ position:absolute; opacity:0; }
+  .cat-tab .count{
+    margin-left:auto; font-family: 'Baloo 2', sans-serif; background: rgba(255,255,255,0.25);
+    padding: 1px 8px; border-radius: 20px; font-size: 11px;
+  }
+  .cat-tab.off{ filter: grayscale(0.75) brightness(0.85) saturate(0.4); opacity: 0.5; }
+  .cat-tab[data-cat="auxiliaries"]{ background: var(--address); }
+  .cat-tab[data-cat="prepositions"]{ background: var(--family); }
+  .cat-tab[data-cat="conjunctions"]{ background: var(--numbers); }
+  .cat-tab[data-cat="interjections"]{ background: var(--time); }
+  .cat-tab[data-cat="nouns"]{ background: var(--money); }
+
+  .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pill{
+    border: 2px solid var(--ink); background: var(--paper); padding: 7px 14px;
+    border-radius: 20px; font-weight: 700; font-size: 13px; cursor:pointer;
+  }
+  .pill.active{ background: var(--ink); color:#fff; }
+
+  .big-btn{
+    width:100%; padding: 15px; font-family:'Baloo 2', sans-serif; font-size: 18px;
+    font-weight: 700; color:#fff; background: var(--ink); border: none; border-radius: 10px;
+    cursor:pointer; box-shadow: 4px 4px 0 rgba(43,38,32,0.25); margin-top:18px;
+  }
+  .big-btn:disabled{ background:#b9b2a1; cursor:not-allowed; box-shadow:none; }
+  .big-btn:active:not(:disabled){ transform: translate(2px,2px); box-shadow:none; }
+  .hint{ font-size: 12px; color: var(--ink-soft); margin-top: 10px; text-align:center; }
+  .type-desc{ font-size:12px; color:var(--ink-soft); margin-top:4px; line-height:1.6; }
+  .notice-box{
+    background:#FDEDEA; border:1.5px solid var(--practice); border-radius:10px;
+    padding:10px 12px; font-size:13px; font-weight:700; color:var(--practice); margin-top:4px;
+  }
+  .notice-box.exam{ background:#EAF1FB; border-color: var(--exam); color: var(--exam); }
+  .notice-box.review{ background:#FFF3D6; border-color: var(--review); color: var(--review); }
+
+  /* ---- Quiz shared ---- */
+  .progress-row{ display:flex; align-items:center; gap:10px; margin-bottom: 14px; }
+  .progress-bar{
+    flex:1; height: 10px; background: var(--paper-line); border-radius: 6px; overflow:hidden;
+    border: 1.5px solid var(--ink);
+  }
+  .progress-fill{ height:100%; background: var(--ink); width:0%; transition: width .25s ease; }
+  .progress-num{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:13px; white-space:nowrap; }
+  .score-chip{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size: 13px;
+    background: var(--ink); color:#fff; padding: 3px 10px; border-radius: 20px; white-space:nowrap;
+  }
+  .topic-tag{
+    display:inline-block; font-size: 11px; font-weight: 700; color:#fff;
+    padding: 3px 10px; border-radius: 6px; margin-right:6px;
+  }
+  .type-tag{
+    display:inline-block; font-size: 11px; font-weight: 700; color: var(--ink);
+    background: #F1EADA; padding: 3px 10px; border-radius: 6px; border:1.5px solid var(--ink);
+  }
+  .tags-row{ margin-bottom: 12px; }
+  .qword{
+    font-family:'Baloo 2', sans-serif; font-size: 32px; font-weight: 700; margin: 8px 0 2px;
+    word-break: break-word;
+  }
+  .qsentence{
+    font-size: 19px; font-weight: 600; margin: 10px 0 4px; line-height:1.6;
+  }
+  .qsentence .blank{
+    display:inline-block; border-bottom: 3px solid var(--ink); min-width: 70px; text-align:center;
+    color: transparent;
+  }
+  .qprompt{ font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+
+  .opt{
+    display:block; width:100%; text-align:left; padding: 13px 16px; margin-bottom: 10px;
+    border: 2px solid var(--ink); border-radius: 10px; background: #fff; font-size: 15px;
+    font-weight: 500; cursor:pointer; font-family: 'Noto Sans TC', sans-serif;
+  }
+  .opt:hover:not(:disabled){ background: #FFF4E4; }
+  .opt.correct{ background: var(--good); color:#fff; border-color: var(--good); }
+  .opt.wrong{ background: var(--bad); color:#fff; border-color: var(--bad); }
+  .opt:disabled{ cursor:default; }
+
+  .feedback{ margin: 4px 0 16px; font-weight: 700; font-size: 14px; min-height: 20px; }
+  .feedback.good{ color: var(--good); }
+  .feedback.bad{ color: var(--bad); }
+
+  /* ---- Hangman ---- */
+  .hangman-wrap{ display:flex; align-items:center; gap:16px; margin-bottom:10px; }
+  .hangman-wrap svg{ flex-shrink:0; }
+  .lives-text{ font-size:13px; font-weight:700; color: var(--bad); }
+
+  /* ---- Result ---- */
+  .score-circle{
+    width: 130px; height:130px; border-radius:50%; border: 4px solid var(--ink);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    margin: 6px auto 18px; background: #FFF4E4;
+  }
+  .score-circle .num{ font-family:'Baloo 2',sans-serif; font-size:30px; font-weight:800; line-height:1;}
+  .score-circle .lbl{ font-size:11px; color:var(--ink-soft); font-weight:700; }
+  .result-title{ text-align:center; font-family:'Baloo 2',sans-serif; font-size:20px; font-weight:700; }
+  .grade-row{ display:flex; justify-content:center; gap: 22px; margin: 14px 0 6px; flex-wrap:wrap; }
+  .grade-item{ text-align:center; }
+  .grade-item .n{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:18px; }
+  .grade-item .l{ font-size:11px; color:var(--ink-soft); }
+  .review-item{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding: 9px 4px; border-bottom: 1.5px dashed var(--paper-line); font-size: 13px;
+  }
+  .review-item .left b{ font-weight:700; }
+  .review-item .left .zh{ color: var(--ink-soft); margin-left:4px; }
+  .review-item .mark{ font-weight:700; font-size:12px; white-space:nowrap; }
+  .review-item .mark.ok{ color: var(--good); }
+  .review-item .mark.no{ color: var(--bad); }
+</style>
+</head>
+<body>
+<div class="binder">
+  <div style="background:#C1272D;color:#fff;text-align:center;padding:8px 12px;
+  font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:13px;border-radius:10px;
+  margin-bottom:14px;">
+  ✅ 這是最新版 v7 ｜ Topic 30–34（Be動詞&助動詞・介系詞・連接詞・感歎詞・其他名詞）｜ 140 字
+</div>
+  <div class="masthead">
+    <h1>單字大挑戰</h1>
+    <div class="sub">基礎 1200 單字 · Ch.1 Topic 30–34 <span class="ver-badge">v7</span></div>
+  </div>
+
+  <!-- MODE SELECT SCREEN -->
+  <div class="card" id="modeScreen">
+    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v7 · Topic 30–34 · 140字</span></div>
+    <div class="mode-grid mode-grid-3">
+      <div class="mode-card practice" id="modePractice">
+        <div class="icon">🪢</div>
+        <h3>平常測驗練習</h3>
+        <p>吊人遊戲模式：可自選單元、題型與題數。答錯滿 5 題就立刻結束！</p>
+      </div>
+      <div class="mode-card exam" id="modeExam">
+        <div class="icon">📝</div>
+        <h3>正式考試</h3>
+        <p>固定題目：全部單元、全部題型、共 30 題，作答完畢直接產生成績單。</p>
+      </div>
+      <div class="mode-card review" id="modeReview">
+        <div class="icon">📚</div>
+        <h3>總複習</h3>
+        <p>從<b>學過的所有單元</b>（目前累積 775 個單字）出題，複習之前教過的內容。</p>
+      </div>
+    </div>
+
+    <div id="historyPanel" class="history-panel hidden">
+      <div class="history-head">
+        <div class="row-label" style="margin:0;">📌 我的錯題紀錄</div>
+        <div style="display:flex; gap:8px;">
+          <button class="mini-btn" id="reviewBtn" style="background:var(--bad); color:#fff; border-color:var(--bad);">🔁 錯題重練</button>
+          <button class="mini-btn" id="clearHistBtn">清除紀錄</button>
+        </div>
+      </div>
+      <div class="history-sub" id="historySub"></div>
+      <div id="historyList"></div>
+    </div>
+    <div id="storageNote" class="storage-note hidden"></div>
+  </div>
+
+  <!-- SETUP SCREEN (practice mode only) -->
+  <div class="card hidden" id="setupScreen">
+    <div class="row-label" style="margin-top:0;">選擇要考的單元（可複選）</div>
+    <div class="cat-grid" id="catGrid"></div>
+
+    <div class="row-label">題型（可複選，全部都是選擇題）</div>
+    <div class="pill-row" id="typeRow">
+      <div class="pill active" data-type="en2zh">英翻中</div>
+      <div class="pill active" data-type="zh2en">中翻英</div>
+      <div class="pill active" data-type="cloze">克漏字</div>
+    </div>
+    <div class="type-desc" id="typeDesc"></div>
+
+    <div class="row-label">題目數量</div>
+    <div class="pill-row" id="countRow">
+      <div class="pill" data-count="10">10 題</div>
+      <div class="pill" data-count="20">20 題</div>
+      <div class="pill" data-count="30">30 題</div>
+      <div class="pill" data-count="9999">全部作答</div>
+    </div>
+
+    <div class="row-label">遊戲規則</div>
+    <div class="notice-box">🪢 這是平常測驗練習，答錯滿 5 題就會立刻結束遊戲！</div>
+
+    <button class="big-btn" id="startBtn">開始</button>
+    <div class="hint" id="poolHint"></div>
+    <div class="hint" id="backHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
+  </div>
+
+  <!-- EXAM CONFIRM SCREEN (fixed settings, no choices) -->
+  <div class="card hidden" id="examConfirmScreen">
+    <div class="row-label" style="margin-top:0;">正式考試規則</div>
+    <div class="notice-box exam">📝 全部單元、全部題型、共 30 題，全部都是選擇題，不可調整設定。</div>
+    <button class="big-btn" id="examStartBtn">開始考試</button>
+    <div class="hint" id="backHint2" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
+  </div>
+
+  <!-- REVIEW SETUP SCREEN (cumulative review across every past unit) -->
+  <div class="card hidden" id="reviewSetupScreen">
+    <div class="row-label" style="margin-top:0;">題型（可複選，全部都是選擇題）</div>
+    <div class="pill-row" id="reviewTypeRow">
+      <div class="pill active" data-type="en2zh">英翻中</div>
+      <div class="pill active" data-type="zh2en">中翻英</div>
+      <div class="pill active" data-type="cloze">克漏字</div>
+    </div>
+
+    <div class="row-label">題目數量</div>
+    <div class="pill-row" id="reviewCountRow">
+      <div class="pill" data-count="10">10 題</div>
+      <div class="pill" data-count="20">20 題</div>
+      <div class="pill" data-count="30">30 題</div>
+      <div class="pill" data-count="50">50 題</div>
+      <div class="pill" data-count="9999">全部作答</div>
+    </div>
+
+    <div class="row-label">題目範圍</div>
+    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">775</b> 個單字）中隨機出題，不限單一單元。</div>
+
+    <button class="big-btn" id="reviewStartBtn">開始總複習</button>
+    <div class="hint" id="backHint3" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="card hidden" id="quizScreen">
+    <div id="hangmanBox" class="hangman-wrap hidden">
+      <svg id="hangmanSvg" width="90" height="100" viewBox="0 0 90 100">
+        <line x1="5" y1="95" x2="60" y2="95" stroke="#2B2620" stroke-width="4"/>
+        <line x1="20" y1="95" x2="20" y2="8" stroke="#2B2620" stroke-width="4"/>
+        <line x1="20" y1="8" x2="60" y2="8" stroke="#2B2620" stroke-width="4"/>
+        <line id="hp1" x1="60" y1="8" x2="60" y2="20" stroke="#2B2620" stroke-width="3" class="hp"/>
+        <circle id="hp2" cx="60" cy="30" r="10" stroke="#2B2620" stroke-width="3" fill="none" class="hp"/>
+        <line id="hp3" x1="60" y1="40" x2="60" y2="68" stroke="#2B2620" stroke-width="3" class="hp"/>
+        <line id="hp4" x1="60" y1="46" x2="46" y2="60" stroke="#2B2620" stroke-width="3" class="hp"/>
+        <line id="hp5" x1="60" y1="46" x2="74" y2="60" stroke="#2B2620" stroke-width="3" class="hp"/>
+        <line id="hp6" x1="60" y1="68" x2="48" y2="88" stroke="#2B2620" stroke-width="3" class="hp"/>
+        <line id="hp7" x1="60" y1="68" x2="72" y2="88" stroke="#2B2620" stroke-width="3" class="hp"/>
+      </svg>
+      <div>
+        <div class="lives-text" id="livesText">答錯 0 / 5</div>
+      </div>
+    </div>
+
+    <div class="progress-row">
+      <div class="progress-num" id="progressNum">1 / 10</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="score-chip" id="scoreChip">✓ 0</div>
+    </div>
+    <div class="tags-row">
+      <span class="topic-tag" id="topicTag"></span>
+      <span class="type-tag" id="typeTag">英翻中</span>
+    </div>
+    <div class="qprompt" id="qPrompt">這個英文單字的中文意思是？</div>
+    <div class="qword hidden" id="qWord"></div>
+    <div class="qsentence hidden" id="qSentence"></div>
+
+    <div id="mcBox"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <button class="big-btn hidden" id="nextBtn">下一題 →</button>
+    <div class="hint" id="quitHint" style="cursor:pointer;text-decoration:underline;">← 返回主頁（結束本次作答）</div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="card hidden" id="resultScreen">
+    <div class="score-circle">
+      <div class="num" id="finalScore">0/0</div>
+      <div class="lbl">答對題數</div>
+    </div>
+    <div class="result-title" id="resultTitle">做得好！</div>
+    <div class="grade-row" id="gradeRow"></div>
+    <div id="reviewList" style="margin-top:16px;"></div>
+    <div class="report-status" id="reportStatus"></div>
+    <button class="big-btn" id="restartBtn">回到模式選擇</button>
+  </div>
+</div>
+
+<script>
+// ---------------- Word bank: [english, chinese meaning, example sentence with ___ for blank] ----------------
+// Note: every Chinese meaning below is a unique string within the whole bank, and every
+// English word appears only once overall, so no question can ever have two options
+// that are both correct.
+const WORDS = {
+  auxiliaries: [
+    ["why","為什麼","___ are you crying? Tell me the reason."],
+    ["be","成為","She wants to ___ a doctor when she grows up."],
+    ["do","做","What did you ___ during the summer vacation?"],
+    ["have","有","I ___ two brothers and one sister."],
+    ["can","能","Birds ___ fly, but pigs cannot."],
+    ["will","將；會","I ___ visit my grandma next Sunday."],
+    ["may","可能","It ___ rain later, so take an umbrella."],
+    ["must","必須","You ___ finish your homework before dinner."],
+    ["shall","將（提議）","___ we go to the movies together tonight?"],
+    ["should","應該","You ___ brush your teeth twice a day."],
+  ],
+  prepositions: [
+    ["about","大約","He went out ___ noon, around twelve o'clock."],
+    ["above","在……上面","A dove is flying ___ his head."],
+    ["across","橫越","They walked ___ the street to the other side."],
+    ["along","沿著","He walks ___ a long country road."],
+    ["below","在……下方","He found a bear ___ him, down the hill."],
+    ["behind","在……的後面","He is hiding ___ the big bear."],
+    ["before","在……之前","He runs ___ the bear, ahead of it."],
+    ["after","在……之後","The bear runs ___ him, chasing from the back."],
+    ["between","在……之間","He is sitting ___ two bears, one on each side."],
+    ["near","靠近","No one can get ___ that pear on the table."],
+    ["beside","在……旁","He decided to sit ___ her on the bench."],
+    ["around","圍繞","He runs ___ the round building in circles."],
+    ["at","在","The cat is doing nothing ___ all."],
+    ["by","被，由","He made the circles ___ bicycle."],
+    ["down","向下","They rain ___ brown chocolate from the sky."],
+    ["during","在……（的整個）期間","He found a ring ___ his vacation."],
+    ["except","除……之外","He accepts everything ___ one thing."],
+    ["for","為了","It needs a fork ___ the meal."],
+    ["from","從","A frog is flying ___ her hand to the wall."],
+    ["in","在……裡","They sing ___ a room."],
+    ["inside","裡面","Shall he stay ___ the house or outside?"],
+    ["into","到……裡","It jumped ___ the ink bottle."],
+    ["like","像","My wife is ___ the light of my life."],
+    ["of","……的","The leader ___ the band jumped off the stage."],
+    ["off","從……掉落","The leader of the band jumped ___ the stage."],
+    ["on","在……上","A lion is lying ___ a bed."],
+    ["out","外出","She went ___ to walk our dog."],
+    ["outside","外面","Shall he stay inside or ___ the house?"],
+    ["over","在……之上","A dove flies ___ his head."],
+    ["since","自……以來","They started singing ___ yesterday."],
+    ["than","比","That crab is wider ___ the spider."],
+    ["to","向，到","We went ___ the zoo, too."],
+    ["under","在……下面","He stood ___ the tree until he was hit."],
+    ["until","直到（……時）","He stood under the tree ___ he was hit."],
+    ["up","向上","He jumped ___ from his seat."],
+    ["with","與","They like to play ___ each other."],
+    ["without","沒有","He watches the moon ___ a friend."],
+  ],
+  conjunctions: [
+    ["and","和","An elephant ___ an ant are good friends."],
+    ["as","當……時","You can find an eraser ___ you open it."],
+    ["because","因為","He is running ___ he can't be late."],
+    ["but","但是","He ran fast, ___ he missed the bus."],
+    ["though","雖然","___ he missed the bus, he had no thought of being late."],
+    ["however","然而","He is tired. ___ , he will never give up."],
+    ["if","即使","I'll go even ___ it rains."],
+    ["or","或者","The train will come in two days ___ so."],
+  ],
+  interjections: [
+    ["hello","你好","\"___ !\" he said to the stranger from space."],
+    ["hey","嘿","\"___ ! Over here!\" he shouted loudly."],
+    ["hi","嗨","\"___ ,\" he said from a high building."],
+    ["good-bye","再見","___ and take care! See you next time."],
+    ["welcome","歡迎","___ ! Come in, please."],
+  ],
+  nouns: [
+    ["action","行動","This actor is always in ___ , never resting."],
+    ["age","年齡","She wrote her ___ on this page: eighteen."],
+    ["American","美國人","Eric comes from the USA; he is an ___ ."],
+    ["base","基地","This baseball team has a ___ of its own."],
+    ["bell","鐘","A ___ fell into the sea with a loud ring."],
+    ["birthday","生日","Did you get a ___ gift yesterday?"],
+    ["bottom","臀部","The button and the cotton are under its ___ ."],
+    ["cage","籠子","There are some pages flying in the tiger's ___ ."],
+    ["case","箱，盒","What causes the noise in this ___ ?"],
+    ["castle","城堡","He cast the case from the tall ___ ."],
+    ["cell phone","手機","I have some excellent ___ s to sell."],
+    ["center","中心","They want to enter the shopping ___ ."],
+    ["chance","機會","You have a ___ to find some change there."],
+    ["club","俱樂部","He is a member of the bulb ___ ."],
+    ["corner","街角","There is corn at the ___ of the street."],
+    ["date","日期","What's the ___ today?"],
+    ["deal","交易","It is a real good ___ , very cheap."],
+    ["dream","夢","There is an ice cream in its ___ ."],
+    ["e-mail","電子郵件","This mailman doesn't like ___ ."],
+    ["excuse","藉口","He used his dog as an ___ for being absent."],
+    ["experience","經驗","His ___ makes him an expert."],
+    ["fact","事實","No one knows the ___ of this factory."],
+    ["fire","火","There is ___ on the wire circle."],
+    ["foreigner","外國人","This ___ speaks a foreign language."],
+    ["flower","花","Please lower your ___ s so I can see."],
+    ["fun","樂趣","It is ___ to run under the sun."],
+    ["garbage","垃圾","There is a lot of ___ in his garage."],
+    ["gas","汽油","I guess we need some ___ for the car."],
+    ["ghost","鬼","The host dresses like a ___ ."],
+    ["gift","禮品","Her ___ was too big to lift."],
+    ["grass","草","She puts the ___ in a glass."],
+    ["ground","地面","He found some money on the ___ ."],
+    ["group","群，組","This ___ made a big bowl of soup."],
+    ["habit","習慣","She has a ___ of eating with her rabbit."],
+    ["heat","高溫","You can feel the ___ below the seat."],
+    ["honey","蜂蜜","No money! No ___ !"],
+    ["idea","主意","It was her ___ to put the deer on the wall."],
+    ["interest","興趣","He has an ___ in resting and watching TV."],
+    ["Internet","網際網路","Someone interviewed the mailman on the ___ ."],
+    ["interview","訪問","Someone did an ___ with the mailman online."],
+    ["joy","歡樂","This toy brings ___ to this boy."],
+    ["leader","領袖","She is a cheerleader and the class ___ ."],
+    ["lid","蓋子","The kid opens the ___ with his teeth."],
+    ["party","派對","There is a ___ at the park tonight."],
+    ["photo","照片","This man in the ___ looks hot."],
+    ["pin","胸針","He wants to win this ___ ."],
+    ["pipe","管子","He types with a ___ instead of a keyboard."],
+    ["planet","行星","Janet plans to find a new ___ in space."],
+    ["player","選手","This mayor is a golf ___ ."],
+    ["pleasure","愉快","\"Sure! It is my ___ ,\" he said politely."],
+    ["power","力量","This powder gives him a lot of ___ ."],
+    ["prize","獎品","The price for this ___ is high."],
+    ["program","訓練課程","He lost five grams in this ___ ."],
+    ["public","民眾","This pub is open to the ___ ."],
+    ["robot","機器人","Someone robbed Bob's ___ ."],
+    ["rock","岩石，搖滾樂","These ___ singers are from ROC."],
+    ["rope","繩子","He hopes he has a ___ to climb down."],
+    ["rose","玫瑰花","She put the ___ s close to her nose."],
+    ["rule","規則","It is a ___ that a mule can't enter."],
+    ["sale","賣","This whale is on ___ at a low price."],
+    ["screen","螢幕","She screams at the ___ every day."],
+    ["seat","座位","You can feel the heat below the ___ ."],
+    ["seed","種子","Come and see my magic ___ grow."],
+    ["sentence","句子","He wrote a ___ on her fence."],
+    ["set","一套","We need to get one TV ___ ."],
+    ["side","邊，面","Please ride on the other ___ ."],
+    ["sight","景色","The ___ on the right is good."],
+    ["space","太空","She saw a face in the ___ ."],
+    ["subject","科目","He rejects learning any ___ at school."],
+    ["thing","東西","I think I have found a special ___ ."],
+    ["ticket","票","He uses his jacket to buy a ___ ."],
+    ["tool","工具","These two ___ s are fools."],
+    ["trash","廢棄物","Can you wash the ___ can?"],
+    ["tree","樹","These Christmas ___ s are free."],
+    ["trick","詭計","The brick is a ___ ."],
+    ["trouble","麻煩","You are in double ___ s now."],
+    ["memory","記憶","He has good ___ of history."],
+    ["voice","聲音","Her ___ is as cold as ice."],
+    ["way","方法；路","Mark always says, \"No ___ !\""],
+    ["word","文字","___ s travel around the world."],
+  ],
+};
+
+const CAT_LABEL = { auxiliaries:"BE & AUX Be動詞&助動詞", prepositions:"PREPOSITIONS 介系詞", conjunctions:"CONJUNCTIONS 連接詞", interjections:"INTERJECTIONS 感歎詞", nouns:"NOUNS 其他名詞" };
+const CAT_COLOR = { auxiliaries:"var(--address)", prepositions:"var(--family)", conjunctions:"var(--numbers)", interjections:"var(--time)", nouns:"var(--money)" };
+const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字" };
+const TYPE_DESC = {
+  en2zh: "英翻中：看英文單字，選出正確的中文意思。",
+  zh2en: "中翻英：看中文意思，選出正確的英文單字。",
+  cloze: "克漏字：看一個例句，句子裡的單字被挖空，選出正確的單字填入空格。"
+};
+const FORCED_MAX_WRONG = 5;
+const EXAM_QUESTION_COUNT = 30;
+const ALL_CATS = Object.keys(WORDS);
+const ALL_TYPES = ['en2zh','zh2en','cloze'];
+
+// ---------------- Cumulative review pool: every word taught across all past topic ranges ----------------
+const REVIEW_WORDS = [
+  {en:"heart",zh:"心臟",sentence:"The doctor listened to his ___ beat.",cat:"health"},
+  {en:"stomach",zh:"胃",sentence:"I ate too much pizza, so now my ___ feels full and hurts.",cat:"health"},
+  {en:"health",zh:"健康",sentence:"The nurse checked his blood pressure to see how his ___ was.",cat:"health"},
+  {en:"sick",zh:"生病的",sentence:"She had a fever and a stomachache, so she felt very ___ and stayed home.",cat:"health"},
+  {en:"tired",zh:"疲倦的",sentence:"After playing basketball for three hours, he felt so ___ that he fell asleep on the sofa.",cat:"health"},
+  {en:"comfortable",zh:"舒服的",sentence:"This chair is very ___ to sit in.",cat:"health"},
+  {en:"weak",zh:"虛弱的",sentence:"Even two weeks after the flu, his legs still felt too ___ to climb the stairs.",cat:"health"},
+  {en:"healthy",zh:"健康的",sentence:"The doctor said his heart and lungs were both ___ this year.",cat:"health"},
+  {en:"well",zh:"很好的",sentence:"I hope you get ___ soon after your surgery.",cat:"health"},
+  {en:"strong",zh:"強壯的",sentence:"The ___ man carried the heavy box alone without any help.",cat:"health"},
+  {en:"medicine",zh:"藥",sentence:"Please take this ___ after dinner, twice a day.",cat:"health"},
+  {en:"headache",zh:"頭痛",sentence:"The loud music gave me a bad ___ .",cat:"health"},
+  {en:"fever",zh:"發燒",sentence:"The baby's temperature is very high; she has a ___ tonight.",cat:"health"},
+  {en:"sore",zh:"痛的",sentence:"My legs are ___ from running a long race yesterday.",cat:"health"},
+  {en:"life",zh:"生命",sentence:"She talks about how much she loves her ___ in the big city.",cat:"health"},
+  {en:"sir",zh:"先生",sentence:"Excuse me, ___ , may I ask you a question?",cat:"address"},
+  {en:"doctor",zh:"醫生／博士",sentence:"The ___ checked my throat carefully.",cat:"address"},
+  {en:"mister",zh:"某先生（用於姓氏前）",sentence:"Good morning, ___ Smith, how are you today?",cat:"address"},
+  {en:"missus",zh:"太太",sentence:"___ Wang teaches our English class.",cat:"address"},
+  {en:"miss",zh:"小姐",sentence:"___ Chen is our new music teacher.",cat:"address"},
+  {en:"madam",zh:"女士",sentence:"Thank you very much for your help, ___ .",cat:"address"},
+  {en:"name",zh:"名字",sentence:"What is your full ___ ?",cat:"address"},
+  {en:"family",zh:"家庭",sentence:"We had a big ___ dinner last night.",cat:"family"},
+  {en:"mother",zh:"母親",sentence:"My ___ cooks breakfast every morning.",cat:"family"},
+  {en:"father",zh:"父親",sentence:"My ___ drives me to school every day.",cat:"family"},
+  {en:"grandfather",zh:"祖父",sentence:"My ___ always tells great stories about the war.",cat:"family"},
+  {en:"grandmother",zh:"祖母",sentence:"My ___ bakes cookies for us every weekend.",cat:"family"},
+  {en:"husband",zh:"丈夫",sentence:"Her ___ works at a bank downtown.",cat:"family"},
+  {en:"wife",zh:"妻子",sentence:"His ___ is a kind and gentle doctor.",cat:"family"},
+  {en:"parent",zh:"雙親",sentence:"Each ___ signed the school permission form.",cat:"family"},
+  {en:"sister",zh:"姐妹",sentence:"My ___ is three years younger than me.",cat:"family"},
+  {en:"brother",zh:"兄弟",sentence:"My ___ plays basketball very well.",cat:"family"},
+  {en:"son",zh:"兒子",sentence:"Their ___ just turned ten years old.",cat:"family"},
+  {en:"daughter",zh:"女兒",sentence:"Their ___ likes to draw pictures of animals.",cat:"family"},
+  {en:"uncle",zh:"伯父",sentence:"My ___ lives in Taipei with his family.",cat:"family"},
+  {en:"aunt",zh:"姑姑",sentence:"My ___ visits us every summer vacation.",cat:"family"},
+  {en:"cousin",zh:"堂（表）兄弟姐妹",sentence:"My ___ and I have been best friends since childhood.",cat:"family"},
+  {en:"born",zh:"出生的",sentence:"She was ___ in Taichung eleven years ago.",cat:"family"},
+  {en:"grow",zh:"種植；生長",sentence:"Farmers ___ rice in the fields near the river.",cat:"family"},
+  {en:"live",zh:"住",sentence:"They ___ in a small house near the park.",cat:"family"},
+  {en:"married",zh:"已婚的",sentence:"They got ___ in a small church last spring.",cat:"family"},
+  {en:"number",zh:"數字",sentence:"Please write your phone ___ on this form.",cat:"numbers"},
+  {en:"zero",zh:"零",sentence:"There are ___ cookies left in the jar; we ate them all.",cat:"numbers"},
+  {en:"one",zh:"一",sentence:"I have ___ dog at home, and his name is Max.",cat:"numbers"},
+  {en:"two",zh:"二",sentence:"She bought ___ tickets so her friend could come too.",cat:"numbers"},
+  {en:"three",zh:"三",sentence:"There are ___ chairs in this small room.",cat:"numbers"},
+  {en:"four",zh:"四",sentence:"He ate ___ slices of pizza at the party.",cat:"numbers"},
+  {en:"five",zh:"五",sentence:"We waited for ___ minutes at the bus stop this morning.",cat:"numbers"},
+  {en:"six",zh:"六",sentence:"The box has ___ eggs inside it.",cat:"numbers"},
+  {en:"seven",zh:"七",sentence:"There are ___ days in one week.",cat:"numbers"},
+  {en:"eight",zh:"八",sentence:"A spider has ___ legs, unlike an insect.",cat:"numbers"},
+  {en:"nine",zh:"九",sentence:"The store on our street closes at ___ o'clock every night.",cat:"numbers"},
+  {en:"ten",zh:"十",sentence:"I counted ___ birds sitting in that tree.",cat:"numbers"},
+  {en:"eleven",zh:"十一",sentence:"There are ___ players on a soccer team on the field.",cat:"numbers"},
+  {en:"twelve",zh:"十二",sentence:"A full year has ___ months in it.",cat:"numbers"},
+  {en:"thirteen",zh:"十三",sentence:"She just turned ___ years old last week.",cat:"numbers"},
+  {en:"fourteen",zh:"十四",sentence:"He gave her ___ red roses for her birthday.",cat:"numbers"},
+  {en:"fifteen",zh:"十五",sentence:"There are ___ students working together in this project group.",cat:"numbers"},
+  {en:"sixteen",zh:"十六",sentence:"The school choir has ___ singers performing tonight.",cat:"numbers"},
+  {en:"seventeen",zh:"十七",sentence:"The old hotel has ___ rooms on this floor.",cat:"numbers"},
+  {en:"eighteen",zh:"十八",sentence:"We baked ___ egg rolls for the class party.",cat:"numbers"},
+  {en:"nineteen",zh:"十九",sentence:"There are ___ small boats floating on the river.",cat:"numbers"},
+  {en:"twenty",zh:"二十",sentence:"Our class has ___ students this year.",cat:"numbers"},
+  {en:"thirty",zh:"三十",sentence:"He washed ___ dirty socks after the camping trip.",cat:"numbers"},
+  {en:"forty",zh:"四十",sentence:"There are said to be ___ foxes living in that forest.",cat:"numbers"},
+  {en:"fifty",zh:"五十",sentence:"She caught ___ fish during this morning's fishing trip.",cat:"numbers"},
+  {en:"sixty",zh:"六十",sentence:"He collected ___ sticks to start the campfire.",cat:"numbers"},
+  {en:"seventy",zh:"七十",sentence:"There are ___ delivery vans parked in that lot.",cat:"numbers"},
+  {en:"eighty",zh:"八十",sentence:"The truck carried ___ boxes of apples to the market.",cat:"numbers"},
+  {en:"ninety",zh:"九十",sentence:"There are said to be ___ rats hiding in that old barn.",cat:"numbers"},
+  {en:"hundred",zh:"一百",sentence:"This small bag holds exactly one ___ marbles.",cat:"numbers"},
+  {en:"thousand",zh:"一千",sentence:"The stadium can seat ten ___ people at once.",cat:"numbers"},
+  {en:"million",zh:"百萬",sentence:"This rare painting is said to be worth one ___ dollars.",cat:"numbers"},
+  {en:"first",zh:"第一的",sentence:"This is my ___ time ever visiting Japan.",cat:"numbers"},
+  {en:"third",zh:"第三的",sentence:"This is the ___ chapter of the storybook.",cat:"numbers"},
+  {en:"more",zh:"更多的",sentence:"I would like ___ tea in my cup, please.",cat:"numbers"},
+  {en:"some",zh:"某些",sentence:"There is still ___ juice left in the fridge.",cat:"numbers"},
+  {en:"much",zh:"許多",sentence:"How ___ money do you have with you right now?",cat:"numbers"},
+  {en:"several",zh:"數次",sentence:"I have visited Japan ___ times over the years.",cat:"numbers"},
+  {en:"total",zh:"總計的",sentence:"The ___ cost of the trip was five hundred dollars.",cat:"numbers"},
+  {en:"any",zh:"任一",sentence:"I don't have ___ cash with me today, only a card.",cat:"numbers"},
+  {en:"both",zh:"兩者（都）",sentence:"___ of the twins enjoy playing soccer after school.",cat:"numbers"},
+  {en:"less",zh:"較少的",sentence:"This small box weighs ___ than that big one.",cat:"numbers"},
+  {en:"many",zh:"許多的",sentence:"___ people came to watch the free concert.",cat:"numbers"},
+  {en:"all",zh:"所有的",sentence:"___ of the students in our class passed the test.",cat:"numbers"},
+  {en:"morning",zh:"早晨",sentence:"I always drink a glass of milk every ___ .",cat:"time"},
+  {en:"noon",zh:"中午",sentence:"We usually eat lunch together at ___ .",cat:"time"},
+  {en:"afternoon",zh:"下午",sentence:"She always takes a short nap in the ___ .",cat:"time"},
+  {en:"evening",zh:"傍晚",sentence:"We watch the sunset together in the ___ before dinner.",cat:"time"},
+  {en:"night",zh:"晚上",sentence:"The stars only come out after ___ falls.",cat:"time"},
+  {en:"monday",zh:"星期一",sentence:"School starts again on ___ after the weekend.",cat:"time"},
+  {en:"tuesday",zh:"星期二",sentence:"We have art class every ___ afternoon.",cat:"time"},
+  {en:"wednesday",zh:"星期三",sentence:"They got married in a small church on a ___ .",cat:"time"},
+  {en:"thursday",zh:"星期四",sentence:"The school library is always closed on ___ .",cat:"time"},
+  {en:"friday",zh:"星期五",sentence:"Our family orders pizza every ___ night.",cat:"time"},
+  {en:"saturday",zh:"星期六",sentence:"He plays basketball with friends on ___ mornings.",cat:"time"},
+  {en:"sunday",zh:"星期日",sentence:"We visit grandma's house every ___ .",cat:"time"},
+  {en:"week",zh:"一星期",sentence:"I go swimming once a ___ , usually on Saturday.",cat:"time"},
+  {en:"weekend",zh:"週末",sentence:"We are going camping in the mountains this ___ .",cat:"time"},
+  {en:"month",zh:"月",sentence:"She was born just last ___ , so she is very young.",cat:"time"},
+  {en:"january",zh:"一月",sentence:"New Year's Day is celebrated on the first day of ___ .",cat:"time"},
+  {en:"february",zh:"二月",sentence:"Valentine's Day falls in the middle of ___ .",cat:"time"},
+  {en:"march",zh:"三月",sentence:"Spring flowers usually begin to bloom in ___ .",cat:"time"},
+  {en:"april",zh:"四月",sentence:"It often rains heavily in the city during ___ .",cat:"time"},
+  {en:"may",zh:"五月",sentence:"Summer vacation usually starts right after ___ .",cat:"time"},
+  {en:"june",zh:"六月",sentence:"Most schools in Taiwan finish their term in ___ .",cat:"time"},
+  {en:"july",zh:"七月",sentence:"It is extremely hot outside during ___ .",cat:"time"},
+  {en:"august",zh:"八月",sentence:"Our family often goes to the beach in ___ .",cat:"time"},
+  {en:"september",zh:"九月",sentence:"The new school term always starts in ___ .",cat:"time"},
+  {en:"october",zh:"十月",sentence:"Halloween parties are celebrated in ___ every year.",cat:"time"},
+  {en:"november",zh:"十一月",sentence:"Thanksgiving dinner happens in ___ in the United States.",cat:"time"},
+  {en:"december",zh:"十二月",sentence:"Christmas lights appear on every street in ___ .",cat:"time"},
+  {en:"season",zh:"季節",sentence:"Autumn has always been my favorite ___ of the whole year.",cat:"time"},
+  {en:"spring",zh:"春天",sentence:"Colorful flowers bloom everywhere in ___ .",cat:"time"},
+  {en:"summer",zh:"夏天",sentence:"The weather becomes extremely hot in ___ .",cat:"time"},
+  {en:"autumn",zh:"秋天",sentence:"The leaves on the trees turn yellow and fall in ___ .",cat:"time"},
+  {en:"winter",zh:"冬天",sentence:"It often snows heavily on the mountains in ___ .",cat:"time"},
+  {en:"clock",zh:"時鐘",sentence:"Look at the big ___ hanging on the classroom wall.",cat:"time"},
+  {en:"watch",zh:"手錶",sentence:"He quickly checked his ___ to see the exact time.",cat:"time"},
+  {en:"half",zh:"一半",sentence:"I only managed to eat ___ of the huge birthday cake.",cat:"time"},
+  {en:"hour",zh:"小時",sentence:"This action movie is almost two ___ s long.",cat:"time"},
+  {en:"minute",zh:"分（鐘）",sentence:"Could you please wait just one ___ while I get ready?",cat:"time"},
+  {en:"moment",zh:"時刻",sentence:"Please wait here for a ___ ; I will be right back.",cat:"time"},
+  {en:"quarter",zh:"一刻鐘",sentence:"It is currently a ___ past three in the afternoon.",cat:"time"},
+  {en:"time",zh:"時間",sentence:"Excuse me, could you tell me what ___ it is right now?",cat:"time"},
+  {en:"already",zh:"已經",sentence:"I have ___ finished all of my homework for tonight.",cat:"time"},
+  {en:"early",zh:"早的",sentence:"She always wakes up very ___ , even on weekends.",cat:"time"},
+  {en:"late",zh:"遲到（的）",sentence:"He was ___ for school again this morning.",cat:"time"},
+  {en:"later",zh:"以後",sentence:"I have to leave now, so I will see you ___ .",cat:"time"},
+  {en:"now",zh:"現在",sentence:"I am busy with schoolwork right ___ .",cat:"time"},
+  {en:"once",zh:"曾經",sentence:"I have visited Japan only ___ , many years ago.",cat:"time"},
+  {en:"future",zh:"未來",sentence:"She often daydreams about what her ___ will look like.",cat:"time"},
+  {en:"soon",zh:"很快地",sentence:"The next bus to downtown should arrive ___ .",cat:"time"},
+  {en:"today",zh:"今天",sentence:"Do you happen to know what the date is ___ ?",cat:"time"},
+  {en:"tonight",zh:"今晚",sentence:"Our whole family is having a small party ___ .",cat:"time"},
+  {en:"tomorrow",zh:"明天",sentence:"Since the English test is ___ , I really need to study hard.",cat:"time"},
+  {en:"year",zh:"年",sentence:"I am turning thirteen years old later this ___ .",cat:"time"},
+  {en:"yesterday",zh:"昨天",sentence:"It rained extremely hard all day ___ .",cat:"time"},
+  {en:"day",zh:"一天",sentence:"I hope you have a truly wonderful ___ !",cat:"time"},
+  {en:"cent",zh:"分（錢幣）",sentence:"This small piece of candy costs only one ___ .",cat:"money"},
+  {en:"change",zh:"零錢",sentence:"Here is your ___ , sir; thank you for shopping with us.",cat:"money"},
+  {en:"fruit",zh:"水果",sentence:"An apple is a kind of ___ that grows on trees.",cat:"food"},
+  {en:"apple",zh:"蘋果",sentence:"She picked a red ___ from the tree in April.",cat:"food"},
+  {en:"banana",zh:"香蕉",sentence:"The monkey is happily eating a yellow ___ .",cat:"food"},
+  {en:"grape",zh:"葡萄",sentence:"The big ape ate a purple ___ from the vine.",cat:"food"},
+  {en:"guava",zh:"番石榴",sentence:"___ is a popular green fruit in Taiwan.",cat:"food"},
+  {en:"lemon",zh:"檸檬",sentence:"This yellow ___ tastes very sour.",cat:"food"},
+  {en:"orange",zh:"柳橙",sentence:"He squeezed a sweet ___ to make juice.",cat:"food"},
+  {en:"papaya",zh:"木瓜",sentence:"She made a glass of ___ milk for dessert.",cat:"food"},
+  {en:"peach",zh:"桃子",sentence:"Each kid got a pink ___ from the kind farmer.",cat:"food"},
+  {en:"pear",zh:"洋梨",sentence:"No one can reach that big green ___ on the desk.",cat:"food"},
+  {en:"strawberry",zh:"草莓",sentence:"She put a red ___ on top of the cream cake.",cat:"food"},
+  {en:"tomato",zh:"番茄",sentence:"Mom used a red ___ to make the pasta sauce.",cat:"food"},
+  {en:"watermelon",zh:"西瓜",sentence:"We ate cold ___ at the beach in the hot summer.",cat:"food"},
+  {en:"vegetable",zh:"蔬菜",sentence:"Spinach is a healthy green ___ .",cat:"food"},
+  {en:"bean",zh:"豆",sentence:"Jack planted a magic ___ in the garden.",cat:"food"},
+  {en:"lettuce",zh:"萵苣",sentence:"She put fresh green ___ leaves in the salad.",cat:"food"},
+  {en:"pumpkin",zh:"南瓜",sentence:"They carved a big orange ___ for Halloween.",cat:"food"},
+  {en:"meat",zh:"（食用的）肉",sentence:"Tigers only eat ___ , never vegetables.",cat:"food"},
+  {en:"beef",zh:"牛肉",sentence:"The ___ in this burger comes from a cow.",cat:"food"},
+  {en:"pork",zh:"豬肉",sentence:"___ is the meat that comes from pigs.",cat:"food"},
+  {en:"ham",zh:"火腿",sentence:"He put a thin slice of ___ in his sandwich.",cat:"food"},
+  {en:"bread",zh:"麵包",sentence:"She spread butter on a warm slice of ___ .",cat:"food"},
+  {en:"bun",zh:"小圓麵包",sentence:"He bought a small round ___ from the bakery.",cat:"food"},
+  {en:"dumpling",zh:"餃子",sentence:"Grandma wrapped a pork ___ for dinner tonight.",cat:"food"},
+  {en:"egg",zh:"雞蛋",sentence:"The hen laid a white ___ this morning.",cat:"food"},
+  {en:"fish",zh:"魚",sentence:"The hungry cat caught a ___ from the pond.",cat:"food"},
+  {en:"food",zh:"食物",sentence:"We bought a lot of ___ for the birthday party.",cat:"food"},
+  {en:"French fries",zh:"炸薯條",sentence:"He ordered a burger with ___ on the side.",cat:"food"},
+  {en:"fast-food",zh:"速食",sentence:"Hamburgers and fried chicken are common kinds of ___ .",cat:"food"},
+  {en:"hamburger",zh:"漢堡",sentence:"He put cheese and beef inside his ___ .",cat:"food"},
+  {en:"hot dog",zh:"熱狗",sentence:"He put a sausage in the long bun to make a ___ .",cat:"food"},
+  {en:"noodle",zh:"麵條",sentence:"He used chopsticks to pick up the long ___ s.",cat:"food"},
+  {en:"pizza",zh:"披薩",sentence:"There is extra cheese on this round Italian ___ .",cat:"food"},
+  {en:"rice",zh:"米",sentence:"Taiwanese people eat a bowl of ___ with almost every meal.",cat:"food"},
+  {en:"salad",zh:"沙拉",sentence:"She mixed fresh vegetables together to make a ___ .",cat:"food"},
+  {en:"sandwich",zh:"三明治",sentence:"He put ham between two slices of bread to make a ___ .",cat:"food"},
+  {en:"soup",zh:"湯",sentence:"She slowly drank the hot ___ with a spoon.",cat:"food"},
+  {en:"spaghetti",zh:"義大利麵",sentence:"This plate of ___ is served with meat sauce.",cat:"food"},
+  {en:"steak",zh:"牛排",sentence:"The chef grilled a big juicy ___ for the guest.",cat:"food"},
+  {en:"breakfast",zh:"早餐",sentence:"I eat eggs and toast for ___ every morning.",cat:"food"},
+  {en:"lunch",zh:"午餐",sentence:"We eat ___ at noon in the school cafeteria.",cat:"food"},
+  {en:"dinner",zh:"晚餐",sentence:"Our family eats ___ together at seven in the evening.",cat:"food"},
+  {en:"meal",zh:"一餐",sentence:"Breakfast is the most important ___ of the day.",cat:"food"},
+  {en:"snack",zh:"點心",sentence:"She ate a small ___ between lunch and dinner.",cat:"food"},
+  {en:"coffee",zh:"咖啡",sentence:"Dad drinks a cup of hot ___ to wake up in the morning.",cat:"food"},
+  {en:"cola",zh:"可樂",sentence:"He opened a can of ice-cold ___ with a pop.",cat:"food"},
+  {en:"drink",zh:"喝",sentence:"Please ___ more water when the weather is hot.",cat:"food"},
+  {en:"ice",zh:"冰",sentence:"She put some ___ cubes into her warm juice.",cat:"food"},
+  {en:"juice",zh:"（水果等的）汁",sentence:"She squeezed three oranges to make fresh ___ .",cat:"food"},
+  {en:"milk",zh:"牛奶",sentence:"The cow on the farm gives us fresh ___ every day.",cat:"food"},
+  {en:"milkshake",zh:"奶昔",sentence:"He blended ice cream and milk into a sweet ___ .",cat:"food"},
+  {en:"tea",zh:"茶",sentence:"British people love drinking afternoon ___ .",cat:"food"},
+  {en:"water",zh:"水",sentence:"Fish cannot live without ___ .",cat:"food"},
+  {en:"cake",zh:"蛋糕",sentence:"She blew out the candles on her birthday ___ .",cat:"food"},
+  {en:"candy",zh:"糖果",sentence:"The kids got lots of sweet ___ on Halloween night.",cat:"food"},
+  {en:"cheese",zh:"起司",sentence:"The little mouse loves this piece of yellow ___ .",cat:"food"},
+  {en:"chocolate",zh:"巧克力",sentence:"He gave her a box of ___ on Valentine's Day.",cat:"food"},
+  {en:"cookie",zh:"餅乾",sentence:"She dipped the round ___ in milk before eating it.",cat:"food"},
+  {en:"ice cream",zh:"冰淇淋",sentence:"The ___ melted quickly under the hot sun.",cat:"food"},
+  {en:"moon cake",zh:"月餅",sentence:"He ate a ___ while watching the full moon at the festival.",cat:"food"},
+  {en:"pie",zh:"派",sentence:"Mom baked a sweet apple ___ in the oven.",cat:"food"},
+  {en:"popcorn",zh:"爆米花",sentence:"We shared a big bucket of ___ at the movie theater.",cat:"food"},
+  {en:"toast",zh:"土司",sentence:"She put strawberry jam on a piece of ___ for breakfast.",cat:"food"},
+  {en:"butter",zh:"奶油",sentence:"He spread soft ___ on the warm bread.",cat:"food"},
+  {en:"oil",zh:"油",sentence:"Pour some cooking ___ into the pan before frying.",cat:"food"},
+  {en:"salt",zh:"鹽",sentence:"Sea water tastes of ___ .",cat:"food"},
+  {en:"sugar",zh:"糖",sentence:"He added two spoons of ___ to make the tea sweet.",cat:"food"},
+  {en:"hungry",zh:"飢餓的",sentence:"He skipped lunch, so now he is very ___ .",cat:"food"},
+  {en:"full",zh:"飽的；充滿的",sentence:"I ate three bowls of rice and now I am totally ___ .",cat:"food"},
+  {en:"thirsty",zh:"口渴的",sentence:"After running, he was so ___ that he drank two bottles of water.",cat:"food"},
+  {en:"delicious",zh:"美味的",sentence:"Everyone says the food at this restaurant is really ___ .",cat:"food"},
+  {en:"yummy",zh:"好吃的",sentence:"The kids shouted that the pudding was so ___ !",cat:"food"},
+  {en:"sweet",zh:"甜的",sentence:"This candy is too ___ for grandpa's teeth.",cat:"food"},
+  {en:"bake",zh:"烤",sentence:"She will ___ a chocolate cake in the oven this afternoon.",cat:"food"},
+  {en:"boil",zh:"煮沸",sentence:"Please ___ the water first before making tea.",cat:"food"},
+  {en:"burn",zh:"燙傷",sentence:"Be careful not to ___ your hand on the hot pan.",cat:"food"},
+  {en:"eat",zh:"吃",sentence:"Rabbits love to ___ fresh carrots.",cat:"food"},
+  {en:"order",zh:"點餐",sentence:"May I ___ a pizza and a cola, please?",cat:"food"},
+  {en:"menu",zh:"菜單",sentence:"The waiter handed us the ___ so we could choose our food.",cat:"food"},
+  {en:"bowl",zh:"碗",sentence:"He filled the ___ with hot rice.",cat:"food"},
+  {en:"chopsticks",zh:"筷子",sentence:"Many Asian people use ___ to pick up noodles.",cat:"food"},
+  {en:"cup",zh:"杯子",sentence:"She poured hot tea into a small ___ .",cat:"food"},
+  {en:"dish",zh:"菜餚",sentence:"Fried fish is his favorite ___ at this restaurant.",cat:"food"},
+  {en:"fork",zh:"叉子",sentence:"Western people use a knife and ___ to eat steak.",cat:"food"},
+  {en:"glass",zh:"玻璃杯",sentence:"He drank a ___ of cold milk before bed.",cat:"food"},
+  {en:"knife",zh:"刀",sentence:"The chef used a sharp ___ to cut the meat.",cat:"food"},
+  {en:"plate",zh:"盤子",sentence:"She put all the cookies on a big round ___ .",cat:"food"},
+  {en:"spoon",zh:"湯匙",sentence:"He stirred the hot soup with a silver ___ .",cat:"tableware"},
+  {en:"straw",zh:"吸管；稻草",sentence:"She drank the cold juice through a plastic ___ .",cat:"tableware"},
+  {en:"coat",zh:"外套",sentence:"Put on a warm ___ before you go out in the winter.",cat:"clothing"},
+  {en:"dress",zh:"洋裝",sentence:"She wore a beautiful pink ___ to the party.",cat:"clothing"},
+  {en:"jacket",zh:"夾克",sentence:"He zipped up his ___ because of the cold wind.",cat:"clothing"},
+  {en:"jeans",zh:"牛仔褲",sentence:"He wore a T-shirt and blue ___ on the weekend.",cat:"clothing"},
+  {en:"pants",zh:"褲子",sentence:"The little boy doesn't want to wear his ___ .",cat:"clothing"},
+  {en:"shirt",zh:"襯衫",sentence:"Dad irons his white ___ before going to work.",cat:"clothing"},
+  {en:"T-shirt",zh:"T恤",sentence:"She wore a simple cotton ___ to play basketball.",cat:"clothing"},
+  {en:"shorts",zh:"（寬鬆運動）短褲",sentence:"He wears ___ instead of long pants in the hot summer.",cat:"clothing"},
+  {en:"skirt",zh:"裙子",sentence:"The girl's pink ___ spins around when she dances.",cat:"clothing"},
+  {en:"sweater",zh:"毛線衣",sentence:"Grandma knitted a warm wool ___ for me.",cat:"clothing"},
+  {en:"uniform",zh:"制服",sentence:"Students must wear the school ___ every day.",cat:"clothing"},
+  {en:"vest",zh:"背心",sentence:"He wore a ___ without sleeves over his shirt.",cat:"clothing"},
+  {en:"bag",zh:"袋",sentence:"She put all her books into her school ___ .",cat:"clothing"},
+  {en:"belt",zh:"腰帶",sentence:"He tightened his ___ so his pants would not fall down.",cat:"clothing"},
+  {en:"cap",zh:"無邊便帽",sentence:"The baseball player wore a ___ on his head.",cat:"clothing"},
+  {en:"comb",zh:"梳子",sentence:"She fixed her messy hair with a ___ .",cat:"clothing"},
+  {en:"glove",zh:"手套",sentence:"He wore a thick ___ on each hand in the snow.",cat:"clothing"},
+  {en:"hat",zh:"帽子",sentence:"The magician pulled a rabbit out of his ___ .",cat:"clothing"},
+  {en:"mask",zh:"面具",sentence:"He wore a scary ___ to the Halloween party.",cat:"clothing"},
+  {en:"pocket",zh:"口袋",sentence:"He keeps his keys in his pants ___ .",cat:"clothing"},
+  {en:"ring",zh:"戒指",sentence:"He put a shiny diamond ___ on her finger.",cat:"clothing"},
+  {en:"shoe",zh:"鞋子",sentence:"She tied the laces of her left ___ .",cat:"clothing"},
+  {en:"sock",zh:"短襪",sentence:"He lost one ___ , so his two feet don't match.",cat:"clothing"},
+  {en:"tie",zh:"領帶",sentence:"Dad wears a suit and a ___ to important meetings.",cat:"clothing"},
+  {en:"umbrella",zh:"雨傘",sentence:"Take an ___ with you; it may rain this afternoon.",cat:"clothing"},
+  {en:"wallet",zh:"錢包",sentence:"He keeps his cash and cards in his ___ .",cat:"clothing"},
+  {en:"clothes",zh:"衣服",sentence:"She washed all the dirty ___ on Sunday morning.",cat:"clothing"},
+  {en:"wear",zh:"穿",sentence:"It is too hot to ___ a heavy coat today.",cat:"clothing"},
+  {en:"color",zh:"顏色",sentence:"Red is my favorite ___ of all.",cat:"colors"},
+  {en:"black",zh:"黑色的",sentence:"A panda's body is ___ and white.",cat:"colors"},
+  {en:"blue",zh:"藍色的",sentence:"The sky is clear and ___ today.",cat:"colors"},
+  {en:"brown",zh:"棕色的",sentence:"The chocolate cake is dark ___ .",cat:"colors"},
+  {en:"gray",zh:"灰色的",sentence:"The sky turns ___ right before it rains.",cat:"colors"},
+  {en:"green",zh:"綠色的",sentence:"The leaves in spring are fresh and ___ .",cat:"colors"},
+  {en:"pink",zh:"粉紅色的",sentence:"Cherry blossoms are light ___ in spring.",cat:"colors"},
+  {en:"purple",zh:"紫色的",sentence:"These sweet grapes are deep ___ .",cat:"colors"},
+  {en:"red",zh:"紅色的",sentence:"The ripe apple is bright ___ and sweet.",cat:"colors"},
+  {en:"white",zh:"白色的",sentence:"Fresh snow on the mountain is pure ___ .",cat:"colors"},
+  {en:"yellow",zh:"黃色的",sentence:"Bananas turn ___ when they are ripe.",cat:"colors"},
+  {en:"sport",zh:"（體育）運動",sentence:"Basketball is his favorite ___ of all.",cat:"sports"},
+  {en:"badminton",zh:"羽毛球",sentence:"They hit the shuttlecock back and forth in a game of ___ .",cat:"sports"},
+  {en:"baseball",zh:"棒球",sentence:"He hit the ball with a bat in the ___ game.",cat:"sports"},
+  {en:"basketball",zh:"籃球",sentence:"He shot the ball into the hoop during the ___ game.",cat:"sports"},
+  {en:"dodge ball",zh:"躲避球",sentence:"In ___ , you must jump away so the ball won't hit you.",cat:"sports"},
+  {en:"Frisbee",zh:"飛盤",sentence:"The dog jumped up to catch the flying ___ .",cat:"sports"},
+  {en:"race",zh:"比賽",sentence:"He ran the fastest and won the ___ .",cat:"sports"},
+  {en:"soccer",zh:"足球",sentence:"Players can only kick the ball in a ___ game.",cat:"sports"},
+  {en:"tennis",zh:"網球",sentence:"She hit the ball over the net with her ___ racket.",cat:"sports"},
+  {en:"barbecue",zh:"烤肉",sentence:"We had a ___ by the river on Moon Festival night.",cat:"sports"},
+  {en:"camp",zh:"野營",sentence:"They set up their tents at the summer ___ .",cat:"sports"},
+  {en:"climb",zh:"爬",sentence:"Monkeys can ___ trees very quickly.",cat:"sports"},
+  {en:"dance",zh:"跳舞",sentence:"She loves to ___ to pop music with her friends.",cat:"sports"},
+  {en:"draw",zh:"畫；素描",sentence:"He used a pencil to ___ a cute cat.",cat:"sports"},
+  {en:"exercise",zh:"運動；鍛鍊",sentence:"The doctor told him to do more ___ to stay healthy.",cat:"sports"},
+  {en:"hike",zh:"徒步旅行",sentence:"We will ___ up the mountain this weekend.",cat:"sports"},
+  {en:"jog",zh:"慢跑",sentence:"Grandpa goes out to ___ slowly every morning.",cat:"sports"},
+  {en:"picnic",zh:"野餐",sentence:"We ate sandwiches on the grass at the ___ .",cat:"sports"},
+  {en:"roller skate",zh:"輪式溜冰",sentence:"___ is like ice skating, but on wheels.",cat:"sports"},
+  {en:"run",zh:"跑",sentence:"Cheetahs can ___ faster than any other animal.",cat:"sports"},
+  {en:"sail",zh:"航行",sentence:"The big boat will ___ across the sea tomorrow.",cat:"sports"},
+  {en:"sing",zh:"唱歌",sentence:"She loves to ___ her favorite songs in the shower.",cat:"sports"},
+  {en:"skate",zh:"溜冰",sentence:"In winter, people ___ on the frozen lake.",cat:"sports"},
+  {en:"stamp",zh:"郵票",sentence:"He stuck a ___ on the envelope before mailing it.",cat:"sports"},
+  {en:"surf",zh:"衝浪",sentence:"You need big waves to ___ at the beach.",cat:"sports"},
+  {en:"swim",zh:"游泳",sentence:"Fish can ___ , but chickens cannot.",cat:"sports"},
+  {en:"trip",zh:"旅行",sentence:"We took a five-day ___ to Japan last summer.",cat:"sports"},
+  {en:"hobby",zh:"業餘愛好",sentence:"Collecting stamps is his favorite ___ .",cat:"sports"},
+  {en:"band",zh:"（一）群；樂團",sentence:"Her husband plays the guitar in a rock ___ .",cat:"sports"},
+  {en:"cards",zh:"（遊戲）紙牌",sentence:"They played ___ around the table after dinner.",cat:"sports"},
+  {en:"chess",zh:"西洋棋",sentence:"He moved the queen in the game of ___ .",cat:"sports"},
+  {en:"comic",zh:"（連環）漫畫",sentence:"He reads a funny ___ book before bed every night.",cat:"sports"},
+  {en:"computer game",zh:"電腦遊戲",sentence:"He plays a ___ on his PC after finishing homework.",cat:"sports"},
+  {en:"doll",zh:"洋娃娃",sentence:"The little girl dresses her ___ in tiny clothes.",cat:"sports"},
+  {en:"drum",zh:"鼓",sentence:"He hits the ___ loudly with two wooden sticks.",cat:"sports"},
+  {en:"flute",zh:"長笛",sentence:"She blew into the ___ to play a soft song.",cat:"sports"},
+  {en:"game",zh:"遊戲",sentence:"Hide-and-seek is a fun ___ for little kids.",cat:"sports"},
+  {en:"guitar",zh:"吉他",sentence:"He plays the ___ , an instrument with six strings.",cat:"sports"},
+  {en:"kite",zh:"風箏",sentence:"The strong wind lifted the ___ high into the sky.",cat:"sports"},
+  {en:"movie",zh:"電影",sentence:"We watched a funny ___ at the theater last night.",cat:"sports"},
+  {en:"music",zh:"音樂",sentence:"She listens to soft ___ before going to sleep.",cat:"sports"},
+  {en:"paint",zh:"油漆；繪畫",sentence:"He used a big brush to ___ the wall blue.",cat:"sports"},
+  {en:"piano",zh:"鋼琴",sentence:"She practices the ___ with black and white keys.",cat:"sports"},
+  {en:"song",zh:"歌曲",sentence:"The singer's new ___ is very popular this year.",cat:"sports"},
+  {en:"team",zh:"團隊",sentence:"There are eleven players on a soccer ___ .",cat:"sports"},
+  {en:"toy",zh:"玩具",sentence:"The baby is playing with a small ___ car.",cat:"sports"},
+  {en:"violin",zh:"小提琴",sentence:"He plays the ___ beautifully with a bow.",cat:"sports"},
+  {en:"lose",zh:"弄丟",sentence:"Be careful not to ___ your wallet on the trip.",cat:"sports"},
+  {en:"play",zh:"與……比賽",sentence:"Our school team will ___ against theirs tomorrow.",cat:"sports"},
+  {en:"win",zh:"獲勝",sentence:"Practice hard, and you may ___ the game.",cat:"sports"},
+  {en:"fan",zh:"粉絲",sentence:"He is a big ___ of that famous singer.",cat:"sports"},
+  {en:"apartment",zh:"公寓",sentence:"His ___ is on the tenth floor of that tall building.",cat:"house3"},
+  {en:"house",zh:"房子",sentence:"They built a new ___ with a red roof.",cat:"house3"},
+  {en:"home",zh:"家",sentence:"Billy, come ___ right now for dinner!",cat:"house3"},
+  {en:"bathroom",zh:"浴室",sentence:"He takes a hot shower in the ___ every night.",cat:"house3"},
+  {en:"room",zh:"房間",sentence:"My ___ has a bed, a desk and a big window.",cat:"house4"},
+  {en:"bedroom",zh:"臥室",sentence:"I sleep in my ___ every night.",cat:"house4"},
+  {en:"dining room",zh:"飯廳",sentence:"We eat dinner together at the big table in the ___ .",cat:"house4"},
+  {en:"living room",zh:"客廳",sentence:"The family watches TV on the sofa in the ___ .",cat:"house4"},
+  {en:"kitchen",zh:"廚房",sentence:"Mom is cooking hot soup in the ___ .",cat:"house4"},
+  {en:"garden",zh:"花園",sentence:"Beautiful roses grow in the ___ behind the house.",cat:"house4"},
+  {en:"yard",zh:"院子",sentence:"The dog runs around the grassy ___ outside the house.",cat:"house4"},
+  {en:"balcony",zh:"陽台",sentence:"She hangs the wet clothes on the ___ upstairs.",cat:"house4"},
+  {en:"door",zh:"門",sentence:"Please knock on the ___ before you come in.",cat:"house4"},
+  {en:"gate",zh:"大門；登機門",sentence:"Passengers wait at the boarding ___ before the plane leaves.",cat:"house4"},
+  {en:"floor",zh:"地板",sentence:"The kids sat on the wooden ___ to play cards.",cat:"house4"},
+  {en:"stairs",zh:"樓梯",sentence:"He walked up the ___ to the second level.",cat:"house4"},
+  {en:"wall",zh:"牆",sentence:"There is a clock hanging on the ___ .",cat:"house4"},
+  {en:"window",zh:"窗戶",sentence:"Please open the ___ to let fresh air in.",cat:"house4"},
+  {en:"bath",zh:"洗澡",sentence:"The baby takes a warm ___ before going to bed.",cat:"house4"},
+  {en:"road",zh:"路",sentence:"Cars drive fast along this long country ___ .",cat:"house4"},
+  {en:"street",zh:"街道",sentence:"There are many shops on this busy ___ .",cat:"house4"},
+  {en:"build",zh:"建造",sentence:"They will ___ a new house here next year.",cat:"house4"},
+  {en:"fix",zh:"修理",sentence:"Dad can ___ the broken chair with his tools.",cat:"house4"},
+  {en:"wash",zh:"洗",sentence:"Please ___ your hands before you eat.",cat:"house4"},
+  {en:"bed",zh:"床",sentence:"He was so tired that he fell asleep on his ___ .",cat:"furniture"},
+  {en:"bench",zh:"長凳",sentence:"Two old men sat on the wooden ___ in the park.",cat:"furniture"},
+  {en:"chair",zh:"椅子",sentence:"Pull up a ___ and sit down at the table.",cat:"furniture"},
+  {en:"couch",zh:"長沙發",sentence:"Three people can lie down on this long ___ .",cat:"furniture"},
+  {en:"desk",zh:"書桌",sentence:"She does her homework at the ___ in her room.",cat:"furniture"},
+  {en:"table",zh:"桌子",sentence:"We put the birthday cake in the middle of the ___ .",cat:"furniture"},
+  {en:"drawer",zh:"抽屜",sentence:"He pulled open the ___ to look for a pen.",cat:"furniture"},
+  {en:"sofa",zh:"沙發",sentence:"This soft ___ is very comfortable to sit on.",cat:"furniture"},
+  {en:"lamp",zh:"檯燈",sentence:"She turned on the ___ on her desk to read.",cat:"furniture"},
+  {en:"light",zh:"光",sentence:"The ___ from the moon shines through the window.",cat:"furniture"},
+  {en:"tub",zh:"浴缸",sentence:"He filled the ___ with warm water for a bath.",cat:"furniture"},
+  {en:"blanket",zh:"毛毯",sentence:"She covered herself with a warm ___ in winter.",cat:"furniture"},
+  {en:"towel",zh:"毛巾",sentence:"He dried his wet hair with a clean ___ .",cat:"furniture"},
+  {en:"mat",zh:"墊子",sentence:"Wipe your shoes on the ___ before coming inside.",cat:"furniture"},
+  {en:"candle",zh:"蠟燭",sentence:"She lit a ___ when the power went out.",cat:"furniture"},
+  {en:"key",zh:"鑰匙",sentence:"He used his ___ to open the front door.",cat:"furniture"},
+  {en:"pot",zh:"罐；鍋",sentence:"She boiled the chicken soup in a big ___ .",cat:"furniture"},
+  {en:"basket",zh:"籃子",sentence:"She carried the fresh apples in a woven ___ .",cat:"furniture"},
+  {en:"computer",zh:"電腦",sentence:"He types his report on the ___ every day.",cat:"appliance"},
+  {en:"camera",zh:"照相機",sentence:"She took a photo of the sunset with her ___ .",cat:"appliance"},
+  {en:"machine",zh:"機器",sentence:"This ___ can make a hundred bottles in one hour.",cat:"appliance"},
+  {en:"radio",zh:"收音機",sentence:"Grandpa listens to the news on the ___ every morning.",cat:"appliance"},
+  {en:"refrigerator",zh:"冰箱",sentence:"Put the milk in the ___ so it stays cold.",cat:"appliance"},
+  {en:"telephone",zh:"電話",sentence:"She picked up the ___ to call her mother.",cat:"appliance"},
+  {en:"television",zh:"電視",sentence:"The family watches the news on ___ after dinner.",cat:"appliance"},
+  {en:"video",zh:"錄影機",sentence:"This store sells radios and ___ players.",cat:"appliance"},
+  {en:"tape",zh:"錄音帶",sentence:"He recorded the song onto a blank ___ .",cat:"appliance"},
+  {en:"tape recorder",zh:"錄音機",sentence:"He used a ___ to record the whole interview.",cat:"appliance"},
+  {en:"school",zh:"學校",sentence:"Students go to ___ from Monday to Friday.",cat:"school"},
+  {en:"elementary school",zh:"小學",sentence:"Children aged six to twelve study at an ___ .",cat:"school"},
+  {en:"junior high school",zh:"（初級）中學",sentence:"After elementary school, students go to a ___ .",cat:"school"},
+  {en:"senior high school",zh:"高中",sentence:"In America, a ___ covers grades nine to twelve.",cat:"school"},
+  {en:"classroom",zh:"教室",sentence:"The teacher writes on the board in front of the ___ .",cat:"school"},
+  {en:"gym",zh:"體育館",sentence:"They play basketball indoors at the ___ .",cat:"school"},
+  {en:"playground",zh:"操場",sentence:"The kids run and play on the ___ after class.",cat:"school"},
+  {en:"library",zh:"圖書館",sentence:"You must keep quiet and read in the ___ .",cat:"school"},
+  {en:"class",zh:"班級，課",sentence:"There are thirty students in our ___ .",cat:"school"},
+  {en:"seesaw",zh:"蹺蹺板",sentence:"Two kids go up and down on the ___ .",cat:"school"},
+  {en:"slide",zh:"溜滑梯",sentence:"The little boy slid down the ___ at the park.",cat:"school"},
+  {en:"classmate",zh:"同班同學",sentence:"He sits next to his ___ in the same class.",cat:"school"},
+  {en:"friend",zh:"朋友",sentence:"She plays with her best ___ every weekend.",cat:"school"},
+  {en:"student",zh:"學生",sentence:"Every ___ must finish the homework tonight.",cat:"school"},
+  {en:"teacher",zh:"老師",sentence:"Our English ___ explains the grammar very clearly.",cat:"school"},
+  {en:"cheerleader",zh:"啦啦隊隊員",sentence:"She waves pom-poms as a ___ at the ball game.",cat:"school"},
+  {en:"class leader",zh:"班級領導人",sentence:"The ___ helps the teacher manage the whole class.",cat:"school"},
+  {en:"blackboard",zh:"黑板",sentence:"The teacher wrote the answer on the ___ with chalk.",cat:"stationery"},
+  {en:"book",zh:"書",sentence:"He borrowed a thick ___ from the library.",cat:"stationery"},
+  {en:"chalk",zh:"粉筆",sentence:"She wrote on the blackboard with a piece of white ___ .",cat:"stationery"},
+  {en:"dictionary",zh:"字典",sentence:"Look up the new word in your ___ .",cat:"stationery"},
+  {en:"envelope",zh:"信封",sentence:"He put the letter inside an ___ and sealed it.",cat:"stationery"},
+  {en:"file",zh:"文件夾",sentence:"She keeps all her documents in one ___ .",cat:"stationery"},
+  {en:"eraser",zh:"橡皮擦",sentence:"Use an ___ to rub out your pencil mistakes.",cat:"stationery"},
+  {en:"glue",zh:"膠水",sentence:"He used ___ to stick the paper onto the board.",cat:"stationery"},
+  {en:"letter",zh:"信",sentence:"She wrote a long ___ to her grandmother.",cat:"stationery"},
+  {en:"map",zh:"地圖",sentence:"They looked at the ___ to find the right way.",cat:"stationery"},
+  {en:"marker",zh:"麥克筆",sentence:"He wrote on the whiteboard with a thick ___ .",cat:"stationery"},
+  {en:"notebook",zh:"筆記本",sentence:"He writes all his notes in a small ___ .",cat:"stationery"},
+  {en:"page",zh:"（書等的）頁",sentence:"Please turn to ___ twenty in your textbook.",cat:"stationery"},
+  {en:"paper",zh:"紙",sentence:"She drew a picture on a blank sheet of ___ .",cat:"stationery"},
+  {en:"pen",zh:"筆",sentence:"He signed his name with a black ___ .",cat:"stationery"},
+  {en:"pencil",zh:"鉛筆",sentence:"You can erase what you write with a ___ .",cat:"stationery"},
+  {en:"pencil box",zh:"鉛筆盒",sentence:"She keeps her pens and erasers in a ___ .",cat:"stationery"},
+  {en:"picture",zh:"圖片",sentence:"He hung a beautiful ___ on the living room wall.",cat:"stationery"},
+  {en:"postcard",zh:"明信片",sentence:"He mailed a ___ from Japan to his best friend.",cat:"stationery"},
+  {en:"present",zh:"禮物",sentence:"She wrapped the birthday ___ in colorful paper.",cat:"stationery"},
+  {en:"ruler",zh:"尺",sentence:"Use a ___ to draw a perfectly straight line.",cat:"stationery"},
+  {en:"workbook",zh:"工作手冊",sentence:"Finish the exercises in your English ___ .",cat:"stationery"},
+  {en:"art",zh:"藝術",sentence:"He loves drawing, so ___ is his favorite class.",cat:"subject"},
+  {en:"history",zh:"歷史",sentence:"In ___ class we learn about ancient Rome.",cat:"subject"},
+  {en:"language",zh:"語言",sentence:"English is a ___ spoken all over the world.",cat:"subject"},
+  {en:"math",zh:"數學",sentence:"We learn to add and subtract in ___ class.",cat:"subject"},
+  {en:"PE",zh:"體育（課）",sentence:"We run and play ball games in ___ class.",cat:"subject"},
+  {en:"science",zh:"科學",sentence:"We do experiments with test tubes in ___ class.",cat:"subject"},
+  {en:"course",zh:"課程",sentence:"He signed up for a two-hour cooking ___ .",cat:"subject"},
+  {en:"lesson",zh:"一堂課；課文",sentence:"The teacher taught us a new ___ from the textbook today.",cat:"subject"},
+  {en:"item",zh:"項目",sentence:"He wrote down every ___ on the shopping list.",cat:"subject"},
+  {en:"answer",zh:"答案",sentence:"The correct ___ to this question is twenty.",cat:"subject"},
+  {en:"example",zh:"例子",sentence:"The teacher gave a simple ___ to explain the rule.",cat:"subject"},
+  {en:"grade",zh:"年級",sentence:"My little brother is only in the third ___ .",cat:"subject"},
+  {en:"homework",zh:"作業",sentence:"He stayed at home doing his math ___ .",cat:"subject"},
+  {en:"knowledge",zh:"學問",sentence:"Reading many books gives you a lot of ___ .",cat:"subject"},
+  {en:"problem",zh:"難題",sentence:"He could not solve this difficult math ___ .",cat:"subject"},
+  {en:"question",zh:"問題（提問）",sentence:"She raised her hand to ask the teacher a ___ .",cat:"subject"},
+  {en:"quiz",zh:"小考",sentence:"We have a short ___ at the start of every class.",cat:"subject"},
+  {en:"test",zh:"測驗",sentence:"He got the best score on the English ___ .",cat:"subject"},
+  {en:"story",zh:"故事",sentence:"Grandma told us a bedtime ___ before we slept.",cat:"subject"},
+  {en:"ask",zh:"詢問",sentence:"May I ___ you a question about the homework?",cat:"subject"},
+  {en:"learn",zh:"學會",sentence:"Children ___ many new words every day at school.",cat:"subject"},
+  {en:"listen",zh:"聽",sentence:"Please ___ carefully to the teacher's instructions.",cat:"subject"},
+  {en:"mark",zh:"做記號於",sentence:"The teacher will ___ the wrong answers with a red pen.",cat:"subject"},
+  {en:"pass",zh:"通過",sentence:"If you study hard, you will ___ the exam easily.",cat:"subject"},
+  {en:"practice",zh:"練習",sentence:"You must ___ the piano every day to improve.",cat:"subject"},
+  {en:"read",zh:"讀",sentence:"He likes to ___ storybooks before going to bed.",cat:"subject"},
+  {en:"repeat",zh:"重複",sentence:"Listen to me and ___ these words after me.",cat:"subject"},
+  {en:"speak",zh:"說話",sentence:"She can ___ three languages fluently.",cat:"subject"},
+  {en:"spell",zh:"拼寫",sentence:"Do you know how to ___ the word 'sell'?",cat:"subject"},
+  {en:"study",zh:"讀書；用功",sentence:"He must ___ hard for tomorrow's important exam.",cat:"subject"},
+  {en:"talk",zh:"談話；聊天",sentence:"They sat down to ___ about the problem together.",cat:"subject"},
+  {en:"say",zh:"說（說出）",sentence:"What did the teacher ___ about the test?",cat:"subject"},
+  {en:"teach",zh:"教",sentence:"Mr. Wang will ___ us history this year.",cat:"subject"},
+  {en:"understand",zh:"理解",sentence:"I don't ___ this math problem at all.",cat:"subject"},
+  {en:"write",zh:"寫",sentence:"Please ___ your name at the top of the paper.",cat:"subject"},
+  {en:"here",zh:"這裡",sentence:"Come ___ ; I want to show you something.",cat:"places"},
+  {en:"there",zh:"那裡",sentence:"His car is parked over ___ across the street.",cat:"places"},
+  {en:"middle",zh:"中間的",sentence:"He stands in the ___ , between his two friends.",cat:"places"},
+  {en:"left",zh:"左邊",sentence:"His son stands on his ___ , not on his right.",cat:"places"},
+  {en:"right",zh:"右邊",sentence:"In many countries, cars drive on the ___ side of the road.",cat:"places"},
+  {en:"back",zh:"後面",sentence:"His daughter is hiding in the ___ , behind him.",cat:"places"},
+  {en:"front",zh:"前面",sentence:"The teacher stands in ___ of the whole class.",cat:"places"},
+  {en:"east",zh:"東方",sentence:"The sun rises in the ___ every morning.",cat:"places"},
+  {en:"west",zh:"西方",sentence:"The sun sets in the ___ in the evening.",cat:"places"},
+  {en:"south",zh:"南方",sentence:"In winter, some birds fly ___ to warmer places.",cat:"places"},
+  {en:"north",zh:"北方",sentence:"A compass needle always points to the ___ .",cat:"places"},
+  {en:"top",zh:"頂部",sentence:"A dark cloud floated on the ___ of the mountain.",cat:"places"},
+  {en:"bank",zh:"銀行",sentence:"He saves all his money in the ___ .",cat:"buildings"},
+  {en:"bakery",zh:"麵包店",sentence:"She buys fresh bread every morning at the ___ .",cat:"buildings"},
+  {en:"bookstore",zh:"書店",sentence:"He bought a new novel at the ___ .",cat:"buildings"},
+  {en:"church",zh:"教堂",sentence:"People pray at the ___ every Sunday.",cat:"buildings"},
+  {en:"department store",zh:"百貨公司",sentence:"We bought clothes and shoes at the ___ .",cat:"buildings"},
+  {en:"factory",zh:"工廠",sentence:"The workers make cars in this big ___ .",cat:"buildings"},
+  {en:"fast-food restaurant",zh:"速食餐廳",sentence:"He ordered a burger at the ___ .",cat:"buildings"},
+  {en:"fire station",zh:"消防局",sentence:"The fire trucks rushed out of the ___ .",cat:"buildings"},
+  {en:"flower shop",zh:"花店",sentence:"She bought a bunch of roses at the ___ .",cat:"buildings"},
+  {en:"hospital",zh:"醫院",sentence:"The sick man was taken to the ___ .",cat:"buildings"},
+  {en:"hotel",zh:"飯店",sentence:"The tourists stayed at a ___ near the beach.",cat:"buildings"},
+  {en:"market",zh:"市場",sentence:"Mom buys fresh fish and vegetables at the ___ .",cat:"buildings"},
+  {en:"movie theater",zh:"電影院",sentence:"We watched a new film at the ___ .",cat:"buildings"},
+  {en:"museum",zh:"博物館",sentence:"You can see old paintings at the ___ .",cat:"buildings"},
+  {en:"office",zh:"辦公室",sentence:"Dad works in an ___ on the tenth floor.",cat:"buildings"},
+  {en:"park",zh:"公園",sentence:"The children play on the swings at the ___ .",cat:"buildings"},
+  {en:"post office",zh:"郵局",sentence:"She mailed the letter at the ___ .",cat:"buildings"},
+  {en:"police station",zh:"警察局",sentence:"Please take me to the ___ to report it.",cat:"buildings"},
+  {en:"rest room",zh:"廁所",sentence:"He went to the ___ to wash his hands.",cat:"buildings"},
+  {en:"restaurant",zh:"餐廳",sentence:"We ate dinner at a nice Italian ___ .",cat:"buildings"},
+  {en:"shop",zh:"商店",sentence:"She bought a gift at a small ___ .",cat:"buildings"},
+  {en:"store",zh:"店鋪",sentence:"This ___ sells toys and candy.",cat:"buildings"},
+  {en:"supermarket",zh:"超級市場",sentence:"We buy milk and eggs at the ___ .",cat:"buildings"},
+  {en:"temple",zh:"寺廟",sentence:"Many people pray at the ___ during the festival.",cat:"buildings"},
+  {en:"theater",zh:"戲院",sentence:"The play is on at the ___ tonight.",cat:"buildings"},
+  {en:"zoo",zh:"動物園",sentence:"We saw lions and monkeys at the ___ .",cat:"buildings"},
+  {en:"city",zh:"城市",sentence:"Taipei is a big ___ in Taiwan.",cat:"buildings"},
+  {en:"farm",zh:"農場",sentence:"Cows and pigs live on the ___ .",cat:"buildings"},
+  {en:"place",zh:"地方",sentence:"This quiet ___ is perfect for reading.",cat:"buildings"},
+  {en:"town",zh:"鎮",sentence:"He owns a small shop in this ___ .",cat:"buildings"},
+  {en:"transportation",zh:"大眾運輸",sentence:"Buses and trains are types of public ___ .",cat:"transport"},
+  {en:"airplane",zh:"飛機",sentence:"The ___ is already flying high in the air.",cat:"transport"},
+  {en:"bicycle",zh:"腳踏車",sentence:"He rides his ___ to school every day.",cat:"transport"},
+  {en:"boat",zh:"小船",sentence:"They rowed the small ___ across the lake.",cat:"transport"},
+  {en:"bus",zh:"公車",sentence:"She takes the ___ to work every morning.",cat:"transport"},
+  {en:"car",zh:"汽車",sentence:"Dad drives his ___ to the office.",cat:"transport"},
+  {en:"motorcycle",zh:"機車",sentence:"He wears a helmet when he rides his ___ .",cat:"transport"},
+  {en:"scooter",zh:"踏板車",sentence:"She rides a ___ through the busy streets.",cat:"transport"},
+  {en:"ship",zh:"船",sentence:"The huge ___ sailed across the ocean.",cat:"transport"},
+  {en:"taxi",zh:"計程車",sentence:"We took a ___ because we were late.",cat:"transport"},
+  {en:"train",zh:"火車",sentence:"The ___ arrives at the station at nine.",cat:"transport"},
+  {en:"truck",zh:"卡車",sentence:"The ___ carried boxes of apples to the market.",cat:"transport"},
+  {en:"airport",zh:"機場",sentence:"The plane took off from the ___ .",cat:"transport"},
+  {en:"bus stop",zh:"公車站",sentence:"She waited for the bus at the ___ .",cat:"transport"},
+  {en:"station",zh:"車站",sentence:"He waited at the ___ for two hours.",cat:"transport"},
+  {en:"train station",zh:"火車站",sentence:"He waits for the train at the ___ .",cat:"transport"},
+  {en:"block",zh:"街區",sentence:"The store is just one ___ away from here.",cat:"transport"},
+  {en:"bridge",zh:"橋",sentence:"They walked across the ___ over the river.",cat:"transport"},
+  {en:"metro",zh:"捷運；地鐵",sentence:"She takes the ___ to the city center.",cat:"transport"},
+  {en:"MRT",zh:"大眾捷運系統",sentence:"We met at the ___ station in Taipei.",cat:"transport"},
+  {en:"railway",zh:"鐵軌",sentence:"The train runs along the ___ .",cat:"transport"},
+  {en:"sidewalk",zh:"人行道",sentence:"People walk on the ___ , not on the road.",cat:"transport"},
+  {en:"traffic",zh:"交通",sentence:"The ___ is very heavy during rush hour.",cat:"transport"},
+  {en:"arrive",zh:"到達",sentence:"He drives fast, so he will ___ soon.",cat:"transport"},
+  {en:"cross",zh:"越過",sentence:"Look both ways before you ___ the street.",cat:"transport"},
+  {en:"drive",zh:"開車",sentence:"Dad will ___ us to the airport tomorrow.",cat:"transport"},
+  {en:"fly",zh:"飛",sentence:"Birds can ___ high in the sky.",cat:"transport"},
+  {en:"ride",zh:"騎；乘車",sentence:"She likes to ___ a horse on the farm.",cat:"transport"},
+  {en:"turn",zh:"轉身",sentence:"___ left at the next corner to find the shop.",cat:"transport"},
+  {en:"centimeter",zh:"公分",sentence:"A ruler is about thirty ___ s long.",cat:"sizes"},
+  {en:"gram",zh:"公克",sentence:"This small feather weighs only one ___ .",cat:"sizes"},
+  {en:"kilogram",zh:"公斤",sentence:"A big watermelon can weigh five ___ s.",cat:"sizes"},
+  {en:"inch",zh:"英吋",sentence:"There are about two and a half centimeters in one ___ .",cat:"sizes"},
+  {en:"mile",zh:"英哩",sentence:"The next town is ten ___ s away.",cat:"sizes"},
+  {en:"pound",zh:"磅",sentence:"He bought one ___ of fresh beef.",cat:"sizes"},
+  {en:"circle",zh:"圓圈",sentence:"She drew a round ___ on the paper.",cat:"sizes"},
+  {en:"dot",zh:"小圓點",sentence:"There is a tiny black ___ on the wall.",cat:"sizes"},
+  {en:"line",zh:"線",sentence:"Please draw a straight ___ with your ruler.",cat:"sizes"},
+  {en:"point",zh:"（空間的）一點",sentence:"He painted a small ___ in the middle of the picture.",cat:"sizes"},
+  {en:"row",zh:"（一）排",sentence:"The students sat in a straight ___ .",cat:"sizes"},
+  {en:"shape",zh:"形狀；身材",sentence:"A ball has a round ___ .",cat:"sizes"},
+  {en:"square",zh:"正方形；廣場",sentence:"A box has a ___ shape on each side.",cat:"sizes"},
+  {en:"big",zh:"大",sentence:"An elephant is a very ___ animal.",cat:"sizes"},
+  {en:"far",zh:"遠的",sentence:"The school is quite ___ from my house.",cat:"sizes"},
+  {en:"high",zh:"高的",sentence:"Taipei 101 is a very ___ building.",cat:"sizes"},
+  {en:"large",zh:"大的",sentence:"This garage is ___ enough for two cars.",cat:"sizes"},
+  {en:"little",zh:"一點；小的",sentence:"There is only a ___ bit of juice left.",cat:"sizes"},
+  {en:"long",zh:"長的",sentence:"A giraffe has a very ___ neck.",cat:"sizes"},
+  {en:"low",zh:"低的",sentence:"The wall is too ___ to stop the cows.",cat:"sizes"},
+  {en:"medium",zh:"中等的",sentence:"He wears a ___ size shirt, not small or large.",cat:"sizes"},
+  {en:"small",zh:"小的",sentence:"An ant is a very ___ insect.",cat:"sizes"},
+  {en:"straight",zh:"筆直地",sentence:"He drew a ___ line with a ruler.",cat:"sizes"},
+  {en:"round",zh:"圓的",sentence:"The moon looks ___ tonight.",cat:"sizes"},
+  {en:"bottle",zh:"瓶",sentence:"He drank a whole ___ of water after the run.",cat:"sizes"},
+  {en:"dozen",zh:"一打",sentence:"A ___ eggs means twelve eggs.",cat:"sizes"},
+  {en:"package",zh:"包裹",sentence:"The mailman delivered a heavy ___ today.",cat:"sizes"},
+  {en:"pair",zh:"一雙",sentence:"She bought a new ___ of shoes.",cat:"sizes"},
+  {en:"size",zh:"尺寸",sentence:"What ___ of shoes do you wear?",cat:"sizes"},
+  {en:"country",zh:"國家",sentence:"Japan is a ___ in Asia.",cat:"countries"},
+  {en:"world",zh:"世界",sentence:"There are many countries in the ___ .",cat:"countries"},
+  {en:"America",zh:"美國；美洲",sentence:"The Statue of Liberty is in ___ .",cat:"countries"},
+  {en:"China",zh:"中國",sentence:"The Great Wall is in ___ .",cat:"countries"},
+  {en:"Taiwan",zh:"臺灣",sentence:"Taipei is the capital of ___ .",cat:"countries"},
+  {en:"USA",zh:"美國",sentence:"New York is a famous city in the ___ .",cat:"countries"},
+  {en:"Chinese",zh:"中文",sentence:"He can read and write ___ characters.",cat:"countries"},
+  {en:"English",zh:"英文",sentence:"She studies ___ so she can travel abroad.",cat:"holidays"},
+  {en:"Chinese New Year",zh:"農曆新年",sentence:"Families give red envelopes during ___ .",cat:"holidays"},
+  {en:"lantern",zh:"燈籠",sentence:"Kids carry a bright ___ during the festival.",cat:"holidays"},
+  {en:"Moon Festival",zh:"中秋節",sentence:"We eat mooncakes and look at the moon on ___ .",cat:"holidays"},
+  {en:"Teacher's Day",zh:"教師節",sentence:"Students give flowers to teachers on ___ .",cat:"holidays"},
+  {en:"Christmas",zh:"聖誕節",sentence:"Santa Claus brings gifts on ___ .",cat:"holidays"},
+  {en:"Easter",zh:"復活節",sentence:"Children hunt for colorful eggs on ___ .",cat:"holidays"},
+  {en:"Halloween",zh:"萬聖節",sentence:"Kids wear scary costumes on ___ .",cat:"holidays"},
+  {en:"New Year's Eve",zh:"新年除夕",sentence:"We watch fireworks at midnight on ___ .",cat:"holidays"},
+  {en:"New Year's Day",zh:"元旦",sentence:"January first is ___ .",cat:"holidays"},
+  {en:"Mother's Day",zh:"母親節",sentence:"We give carnations to mom on ___ .",cat:"holidays"},
+  {en:"Father's Day",zh:"父親節",sentence:"We thank our dad on ___ .",cat:"holidays"},
+  {en:"festival",zh:"節慶日",sentence:"The whole town celebrates during the ___ .",cat:"holidays"},
+  {en:"holiday",zh:"節日",sentence:"No one goes to school on a ___ .",cat:"holidays"},
+  {en:"vacation",zh:"度假",sentence:"We are going to Hawaii for our summer ___ .",cat:"holidays"},
+  {en:"celebrate",zh:"慶祝",sentence:"They ___ his birthday with a big cake.",cat:"holidays"},
+  {en:"actor",zh:"男演員",sentence:"The ___ played the hero in the movie.",cat:"occupations"},
+  {en:"actress",zh:"女演員",sentence:"The ___ wore a beautiful red dress on stage.",cat:"occupations"},
+  {en:"boss",zh:"老板",sentence:"The ___ leads the whole company.",cat:"occupations"},
+  {en:"businessman",zh:"商人",sentence:"The ___ makes deals to earn money.",cat:"occupations"},
+  {en:"clerk",zh:"職員",sentence:"The ___ helps customers at the counter.",cat:"occupations"},
+  {en:"cook",zh:"廚師",sentence:"The ___ makes delicious food in the kitchen.",cat:"occupations"},
+  {en:"dentist",zh:"牙科醫生",sentence:"The ___ checks and cleans your teeth.",cat:"occupations"},
+  {en:"driver",zh:"司機",sentence:"The bus ___ takes us to school.",cat:"occupations"},
+  {en:"engineer",zh:"工程師",sentence:"The ___ is checking the car's engine.",cat:"occupations"},
+  {en:"farmer",zh:"農夫",sentence:"The ___ grows rice and vegetables on his farm.",cat:"occupations"},
+  {en:"fisherman",zh:"漁夫",sentence:"The ___ catches fish out on the sea.",cat:"occupations"},
+  {en:"housewife",zh:"家庭主婦",sentence:"The ___ does a lot of housework every day.",cat:"occupations"},
+  {en:"lawyer",zh:"律師",sentence:"The ___ knows a lot about the law.",cat:"occupations"},
+  {en:"mailman",zh:"郵差",sentence:"The ___ delivers letters to every house.",cat:"occupations"},
+  {en:"nurse",zh:"護理師",sentence:"The ___ helps the doctor take care of patients.",cat:"occupations"},
+  {en:"police officer",zh:"警察",sentence:"The ___ keeps the streets safe.",cat:"occupations"},
+  {en:"reporter",zh:"記者",sentence:"The ___ writes news stories for the newspaper.",cat:"occupations"},
+  {en:"salesman",zh:"（男）推銷員",sentence:"The ___ has very good selling skills.",cat:"occupations"},
+  {en:"secretary",zh:"祕書",sentence:"The ___ helps the boss with letters and meetings.",cat:"occupations"},
+  {en:"shopkeeper",zh:"店主",sentence:"The ___ sells things in his small shop.",cat:"occupations"},
+  {en:"singer",zh:"歌手",sentence:"The ___ has a beautiful voice.",cat:"occupations"},
+  {en:"soldier",zh:"軍人",sentence:"The ___ protects the country in the army.",cat:"occupations"},
+  {en:"waiter",zh:"（男）服務生",sentence:"The ___ brings food to our table.",cat:"occupations"},
+  {en:"waitress",zh:"女服務生",sentence:"The ___ took our order at the restaurant.",cat:"occupations"},
+  {en:"worker",zh:"工人",sentence:"The ___ builds houses at the construction site.",cat:"occupations"},
+  {en:"writer",zh:"作家",sentence:"The ___ is writing a new novel.",cat:"occupations"},
+  {en:"business",zh:"生意",sentence:"His shop's ___ is very good this year.",cat:"occupations"},
+  {en:"job",zh:"工作（職位）",sentence:"She got a new ___ at the bank.",cat:"occupations"},
+  {en:"work",zh:"工作（做事）",sentence:"He goes to ___ at eight every morning.",cat:"occupations"},
+  {en:"weather",zh:"天氣",sentence:"The ___ is sunny and warm today.",cat:"weather"},
+  {en:"clear",zh:"明亮的；晴朗的",sentence:"The sky is bright and ___ after the rain.",cat:"weather"},
+  {en:"cloudy",zh:"多雲的",sentence:"It is ___ , so we can't see the sun.",cat:"weather"},
+  {en:"cold",zh:"冷的",sentence:"It is very ___ in winter, so wear a coat.",cat:"weather"},
+  {en:"cool",zh:"涼快的；很棒",sentence:"The autumn breeze feels nice and ___ .",cat:"weather"},
+  {en:"dry",zh:"把……弄乾",sentence:"He used a towel to ___ his wet hair.",cat:"weather"},
+  {en:"hot",zh:"熱的",sentence:"It is so ___ in summer that I want ice cream.",cat:"weather"},
+  {en:"rainy",zh:"下雨的",sentence:"Take an umbrella on a ___ day.",cat:"weather"},
+  {en:"snowy",zh:"下雪的",sentence:"Children build snowmen on a ___ day.",cat:"weather"},
+  {en:"sunny",zh:"陽光充足的",sentence:"We go to the beach on a ___ day.",cat:"weather"},
+  {en:"warm",zh:"溫暖的",sentence:"Spring is ___ and comfortable.",cat:"weather"},
+  {en:"windy",zh:"多風的",sentence:"It is ___ , so hold onto your hat.",cat:"weather"},
+  {en:"rainbow",zh:"彩虹",sentence:"A colorful ___ appears after the rain.",cat:"weather"},
+  {en:"snow",zh:"雪",sentence:"White ___ covers the mountains in winter.",cat:"weather"},
+  {en:"snowman",zh:"雪人",sentence:"The kids built a ___ with a carrot nose.",cat:"weather"},
+  {en:"typhoon",zh:"颱風",sentence:"The ___ brought strong wind and heavy rain.",cat:"weather"},
+  {en:"wind",zh:"風",sentence:"The ___ blew the leaves off the trees.",cat:"weather"},
+  {en:"rain",zh:"雨",sentence:"The ___ made the streets wet.",cat:"weather"},
+  {en:"shine",zh:"發光",sentence:"The stars ___ brightly in the night sky.",cat:"weather"},
+  {en:"wet",zh:"濕的",sentence:"Don't get ___ in the rain without an umbrella.",cat:"weather"},
+  {en:"nature",zh:"自然",sentence:"We should protect ___ and keep it clean.",cat:"weather"},
+  {en:"air",zh:"空氣",sentence:"We breathe fresh ___ in the mountains.",cat:"geography"},
+  {en:"earth",zh:"地球",sentence:"We all live together on planet ___ .",cat:"geography"},
+  {en:"earthquake",zh:"地震",sentence:"The ___ made the whole building shake.",cat:"geography"},
+  {en:"moon",zh:"月亮",sentence:"The ___ shines brightly in the night sky.",cat:"geography"},
+  {en:"sky",zh:"天空",sentence:"Birds fly high in the blue ___ .",cat:"geography"},
+  {en:"sun",zh:"太陽",sentence:"The ___ rises in the east every morning.",cat:"geography"},
+  {en:"star",zh:"星",sentence:"We can see many a ___ in the night sky.",cat:"geography"},
+  {en:"land",zh:"地",sentence:"The farmer grows crops on his ___ .",cat:"geography"},
+  {en:"beach",zh:"海灘",sentence:"We build sandcastles on the ___ .",cat:"geography"},
+  {en:"hill",zh:"小山",sentence:"We walked up the small ___ to see the view.",cat:"geography"},
+  {en:"island",zh:"島",sentence:"The small ___ is surrounded by the sea.",cat:"geography"},
+  {en:"lake",zh:"湖",sentence:"They went fishing at the quiet ___ .",cat:"geography"},
+  {en:"mountain",zh:"山",sentence:"It takes hours to climb this tall ___ .",cat:"geography"},
+  {en:"pond",zh:"池塘",sentence:"Frogs and fish live in the small ___ .",cat:"geography"},
+  {en:"pool",zh:"水池",sentence:"We swim in the ___ on hot days.",cat:"geography"},
+  {en:"river",zh:"河",sentence:"The long ___ flows into the sea.",cat:"geography"},
+  {en:"sea",zh:"海洋",sentence:"Many kinds of fish live in the ___ .",cat:"geography"},
+  {en:"why",zh:"為什麼",sentence:"___ are you crying? Tell me the reason.",cat:"auxiliaries"},
+  {en:"be",zh:"成為",sentence:"She wants to ___ a doctor when she grows up.",cat:"auxiliaries"},
+  {en:"do",zh:"做",sentence:"What did you ___ during the summer vacation?",cat:"auxiliaries"},
+  {en:"have",zh:"有",sentence:"I ___ two brothers and one sister.",cat:"auxiliaries"},
+  {en:"can",zh:"能",sentence:"Birds ___ fly, but pigs cannot.",cat:"auxiliaries"},
+  {en:"will",zh:"將；會",sentence:"I ___ visit my grandma next Sunday.",cat:"auxiliaries"},
+  {en:"must",zh:"必須",sentence:"You ___ finish your homework before dinner.",cat:"auxiliaries"},
+  {en:"shall",zh:"將（提議）",sentence:"___ we go to the movies together tonight?",cat:"auxiliaries"},
+  {en:"should",zh:"應該",sentence:"You ___ brush your teeth twice a day.",cat:"auxiliaries"},
+  {en:"about",zh:"大約",sentence:"He went out ___ noon, around twelve o'clock.",cat:"prepositions"},
+  {en:"above",zh:"在……上面",sentence:"A dove is flying ___ his head.",cat:"prepositions"},
+  {en:"across",zh:"橫越",sentence:"They walked ___ the street to the other side.",cat:"prepositions"},
+  {en:"along",zh:"沿著",sentence:"He walks ___ a long country road.",cat:"prepositions"},
+  {en:"below",zh:"在……下方",sentence:"He found a bear ___ him, down the hill.",cat:"prepositions"},
+  {en:"behind",zh:"在……的後面",sentence:"He is hiding ___ the big bear.",cat:"prepositions"},
+  {en:"before",zh:"在……之前",sentence:"He runs ___ the bear, ahead of it.",cat:"prepositions"},
+  {en:"after",zh:"在……之後",sentence:"The bear runs ___ him, chasing from the back.",cat:"prepositions"},
+  {en:"between",zh:"在……之間",sentence:"He is sitting ___ two bears, one on each side.",cat:"prepositions"},
+  {en:"near",zh:"靠近",sentence:"No one can get ___ that pear on the table.",cat:"prepositions"},
+  {en:"beside",zh:"在……旁",sentence:"He decided to sit ___ her on the bench.",cat:"prepositions"},
+  {en:"around",zh:"圍繞",sentence:"He runs ___ the round building in circles.",cat:"prepositions"},
+  {en:"at",zh:"在",sentence:"The cat is doing nothing ___ all.",cat:"prepositions"},
+  {en:"by",zh:"被，由",sentence:"He made the circles ___ bicycle.",cat:"prepositions"},
+  {en:"down",zh:"向下",sentence:"They rain ___ brown chocolate from the sky.",cat:"prepositions"},
+  {en:"during",zh:"在……（的整個）期間",sentence:"He found a ring ___ his vacation.",cat:"prepositions"},
+  {en:"except",zh:"除……之外",sentence:"He accepts everything ___ one thing.",cat:"prepositions"},
+  {en:"for",zh:"為了",sentence:"It needs a fork ___ the meal.",cat:"prepositions"},
+  {en:"from",zh:"從",sentence:"A frog is flying ___ her hand to the wall.",cat:"prepositions"},
+  {en:"in",zh:"在……裡",sentence:"They sing ___ a room.",cat:"prepositions"},
+  {en:"inside",zh:"裡面",sentence:"Shall he stay ___ the house or outside?",cat:"prepositions"},
+  {en:"into",zh:"到……裡",sentence:"It jumped ___ the ink bottle.",cat:"prepositions"},
+  {en:"like",zh:"像",sentence:"My wife is ___ the light of my life.",cat:"prepositions"},
+  {en:"of",zh:"……的",sentence:"The leader ___ the band jumped off the stage.",cat:"prepositions"},
+  {en:"off",zh:"從……掉落",sentence:"The leader of the band jumped ___ the stage.",cat:"prepositions"},
+  {en:"on",zh:"在……上",sentence:"A lion is lying ___ a bed.",cat:"prepositions"},
+  {en:"out",zh:"外出",sentence:"She went ___ to walk our dog.",cat:"prepositions"},
+  {en:"outside",zh:"外面",sentence:"Shall he stay inside or ___ the house?",cat:"prepositions"},
+  {en:"over",zh:"在……之上",sentence:"A dove flies ___ his head.",cat:"prepositions"},
+  {en:"since",zh:"自……以來",sentence:"They started singing ___ yesterday.",cat:"prepositions"},
+  {en:"than",zh:"比",sentence:"That crab is wider ___ the spider.",cat:"prepositions"},
+  {en:"to",zh:"向，到",sentence:"We went ___ the zoo, too.",cat:"prepositions"},
+  {en:"under",zh:"在……下面",sentence:"He stood ___ the tree until he was hit.",cat:"prepositions"},
+  {en:"until",zh:"直到（……時）",sentence:"He stood under the tree ___ he was hit.",cat:"prepositions"},
+  {en:"up",zh:"向上",sentence:"He jumped ___ from his seat.",cat:"prepositions"},
+  {en:"with",zh:"與",sentence:"They like to play ___ each other.",cat:"prepositions"},
+  {en:"without",zh:"沒有",sentence:"He watches the moon ___ a friend.",cat:"prepositions"},
+  {en:"and",zh:"和",sentence:"An elephant ___ an ant are good friends.",cat:"conjunctions"},
+  {en:"as",zh:"當……時",sentence:"You can find an eraser ___ you open it.",cat:"conjunctions"},
+  {en:"because",zh:"因為",sentence:"He is running ___ he can't be late.",cat:"conjunctions"},
+  {en:"but",zh:"但是",sentence:"He ran fast, ___ he missed the bus.",cat:"conjunctions"},
+  {en:"though",zh:"雖然",sentence:"___ he missed the bus, he had no thought of being late.",cat:"conjunctions"},
+  {en:"however",zh:"然而",sentence:"He is tired. ___ , he will never give up.",cat:"conjunctions"},
+  {en:"if",zh:"即使",sentence:"I'll go even ___ it rains.",cat:"conjunctions"},
+  {en:"or",zh:"或者",sentence:"The train will come in two days ___ so.",cat:"conjunctions"},
+  {en:"hello",zh:"你好",sentence:"\"___ !\" he said to the stranger from space.",cat:"interjections"},
+  {en:"hey",zh:"嘿",sentence:"\"___ ! Over here!\" he shouted loudly.",cat:"interjections"},
+  {en:"hi",zh:"嗨",sentence:"\"___ ,\" he said from a high building.",cat:"interjections"},
+  {en:"good-bye",zh:"再見",sentence:"___ and take care! See you next time.",cat:"interjections"},
+  {en:"welcome",zh:"歡迎",sentence:"___ ! Come in, please.",cat:"interjections"},
+  {en:"action",zh:"行動",sentence:"This actor is always in ___ , never resting.",cat:"nouns"},
+  {en:"age",zh:"年齡",sentence:"She wrote her ___ on this page: eighteen.",cat:"nouns"},
+  {en:"American",zh:"美國人",sentence:"Eric comes from the USA; he is an ___ .",cat:"nouns"},
+  {en:"base",zh:"基地",sentence:"This baseball team has a ___ of its own.",cat:"nouns"},
+  {en:"bell",zh:"鐘",sentence:"A ___ fell into the sea with a loud ring.",cat:"nouns"},
+  {en:"birthday",zh:"生日",sentence:"Did you get a ___ gift yesterday?",cat:"nouns"},
+  {en:"bottom",zh:"臀部",sentence:"The button and the cotton are under its ___ .",cat:"nouns"},
+  {en:"cage",zh:"籠子",sentence:"There are some pages flying in the tiger's ___ .",cat:"nouns"},
+  {en:"case",zh:"箱，盒",sentence:"What causes the noise in this ___ ?",cat:"nouns"},
+  {en:"castle",zh:"城堡",sentence:"He cast the case from the tall ___ .",cat:"nouns"},
+  {en:"cell phone",zh:"手機",sentence:"I have some excellent ___ s to sell.",cat:"nouns"},
+  {en:"center",zh:"中心",sentence:"They want to enter the shopping ___ .",cat:"nouns"},
+  {en:"chance",zh:"機會",sentence:"You have a ___ to find some change there.",cat:"nouns"},
+  {en:"club",zh:"俱樂部",sentence:"He is a member of the bulb ___ .",cat:"nouns"},
+  {en:"corner",zh:"街角",sentence:"There is corn at the ___ of the street.",cat:"nouns"},
+  {en:"date",zh:"日期",sentence:"What's the ___ today?",cat:"nouns"},
+  {en:"deal",zh:"交易",sentence:"It is a real good ___ , very cheap.",cat:"nouns"},
+  {en:"dream",zh:"夢",sentence:"There is an ice cream in its ___ .",cat:"nouns"},
+  {en:"e-mail",zh:"電子郵件",sentence:"This mailman doesn't like ___ .",cat:"nouns"},
+  {en:"excuse",zh:"藉口",sentence:"He used his dog as an ___ for being absent.",cat:"nouns"},
+  {en:"experience",zh:"經驗",sentence:"His ___ makes him an expert.",cat:"nouns"},
+  {en:"fact",zh:"事實",sentence:"No one knows the ___ of this factory.",cat:"nouns"},
+  {en:"fire",zh:"火",sentence:"There is ___ on the wire circle.",cat:"nouns"},
+  {en:"foreigner",zh:"外國人",sentence:"This ___ speaks a foreign language.",cat:"nouns"},
+  {en:"flower",zh:"花",sentence:"Please lower your ___ s so I can see.",cat:"nouns"},
+  {en:"fun",zh:"樂趣",sentence:"It is ___ to run under the sun.",cat:"nouns"},
+  {en:"garbage",zh:"垃圾",sentence:"There is a lot of ___ in his garage.",cat:"nouns"},
+  {en:"gas",zh:"汽油",sentence:"I guess we need some ___ for the car.",cat:"nouns"},
+  {en:"ghost",zh:"鬼",sentence:"The host dresses like a ___ .",cat:"nouns"},
+  {en:"gift",zh:"禮品",sentence:"Her ___ was too big to lift.",cat:"nouns"},
+  {en:"grass",zh:"草",sentence:"She puts the ___ in a glass.",cat:"nouns"},
+  {en:"ground",zh:"地面",sentence:"He found some money on the ___ .",cat:"nouns"},
+  {en:"group",zh:"群，組",sentence:"This ___ made a big bowl of soup.",cat:"nouns"},
+  {en:"habit",zh:"習慣",sentence:"She has a ___ of eating with her rabbit.",cat:"nouns"},
+  {en:"heat",zh:"高溫",sentence:"You can feel the ___ below the seat.",cat:"nouns"},
+  {en:"honey",zh:"蜂蜜",sentence:"No money! No ___ !",cat:"nouns"},
+  {en:"idea",zh:"主意",sentence:"It was her ___ to put the deer on the wall.",cat:"nouns"},
+  {en:"interest",zh:"興趣",sentence:"He has an ___ in resting and watching TV.",cat:"nouns"},
+  {en:"Internet",zh:"網際網路",sentence:"Someone interviewed the mailman on the ___ .",cat:"nouns"},
+  {en:"interview",zh:"訪問",sentence:"Someone did an ___ with the mailman online.",cat:"nouns"},
+  {en:"joy",zh:"歡樂",sentence:"This toy brings ___ to this boy.",cat:"nouns"},
+  {en:"leader",zh:"領袖",sentence:"She is a cheerleader and the class ___ .",cat:"nouns"},
+  {en:"lid",zh:"蓋子",sentence:"The kid opens the ___ with his teeth.",cat:"nouns"},
+  {en:"party",zh:"派對",sentence:"There is a ___ at the park tonight.",cat:"nouns"},
+  {en:"photo",zh:"照片",sentence:"This man in the ___ looks hot.",cat:"nouns"},
+  {en:"pin",zh:"胸針",sentence:"He wants to win this ___ .",cat:"nouns"},
+  {en:"pipe",zh:"管子",sentence:"He types with a ___ instead of a keyboard.",cat:"nouns"},
+  {en:"planet",zh:"行星",sentence:"Janet plans to find a new ___ in space.",cat:"nouns"},
+  {en:"player",zh:"選手",sentence:"This mayor is a golf ___ .",cat:"nouns"},
+  {en:"pleasure",zh:"愉快",sentence:"\"Sure! It is my ___ ,\" he said politely.",cat:"nouns"},
+  {en:"power",zh:"力量",sentence:"This powder gives him a lot of ___ .",cat:"nouns"},
+  {en:"prize",zh:"獎品",sentence:"The price for this ___ is high.",cat:"nouns"},
+  {en:"program",zh:"訓練課程",sentence:"He lost five grams in this ___ .",cat:"nouns"},
+  {en:"public",zh:"民眾",sentence:"This pub is open to the ___ .",cat:"nouns"},
+  {en:"robot",zh:"機器人",sentence:"Someone robbed Bob's ___ .",cat:"nouns"},
+  {en:"rock",zh:"岩石，搖滾樂",sentence:"These ___ singers are from ROC.",cat:"nouns"},
+  {en:"rope",zh:"繩子",sentence:"He hopes he has a ___ to climb down.",cat:"nouns"},
+  {en:"rose",zh:"玫瑰花",sentence:"She put the ___ s close to her nose.",cat:"nouns"},
+  {en:"rule",zh:"規則",sentence:"It is a ___ that a mule can't enter.",cat:"nouns"},
+  {en:"sale",zh:"賣",sentence:"This whale is on ___ at a low price.",cat:"nouns"},
+  {en:"screen",zh:"螢幕",sentence:"She screams at the ___ every day.",cat:"nouns"},
+  {en:"seat",zh:"座位",sentence:"You can feel the heat below the ___ .",cat:"nouns"},
+  {en:"seed",zh:"種子",sentence:"Come and see my magic ___ grow.",cat:"nouns"},
+  {en:"sentence",zh:"句子",sentence:"He wrote a ___ on her fence.",cat:"nouns"},
+  {en:"set",zh:"一套",sentence:"We need to get one TV ___ .",cat:"nouns"},
+  {en:"side",zh:"邊，面",sentence:"Please ride on the other ___ .",cat:"nouns"},
+  {en:"sight",zh:"景色",sentence:"The ___ on the right is good.",cat:"nouns"},
+  {en:"space",zh:"太空",sentence:"She saw a face in the ___ .",cat:"nouns"},
+  {en:"subject",zh:"科目",sentence:"He rejects learning any ___ at school.",cat:"nouns"},
+  {en:"thing",zh:"東西",sentence:"I think I have found a special ___ .",cat:"nouns"},
+  {en:"ticket",zh:"票",sentence:"He uses his jacket to buy a ___ .",cat:"nouns"},
+  {en:"tool",zh:"工具",sentence:"These two ___ s are fools.",cat:"nouns"},
+  {en:"trash",zh:"廢棄物",sentence:"Can you wash the ___ can?",cat:"nouns"},
+  {en:"tree",zh:"樹",sentence:"These Christmas ___ s are free.",cat:"nouns"},
+  {en:"trick",zh:"詭計",sentence:"The brick is a ___ .",cat:"nouns"},
+  {en:"trouble",zh:"麻煩",sentence:"You are in double ___ s now.",cat:"nouns"},
+  {en:"memory",zh:"記憶",sentence:"He has good ___ of history.",cat:"nouns"},
+  {en:"voice",zh:"聲音",sentence:"Her ___ is as cold as ice.",cat:"nouns"},
+  {en:"way",zh:"方法；路",sentence:"Mark always says, \"No ___ !\"",cat:"nouns"},
+  {en:"word",zh:"文字",sentence:"___ s travel around the world.",cat:"nouns"},
+];
+
+// ---------------- Teacher score reporting ----------------
+// Two supported endpoints:
+//   type:'script' -> Google Apps Script Web App that writes straight into the
+//                    teacher's Google Sheet (paste the /exec URL below).
+//   type:'form'   -> Google Form formResponse URL + entry.* field IDs.
+// Only formal-exam results are reported. Set enabled:true once url is filled in.
+// To re-enable: set enabled:true, fill in url, and add a name input with
+// id="studentName" back onto the mode-select screen.
+const REPORT_CONFIG = {
+  enabled: false,
+  type: 'script',
+  url: 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE',
+  // only used when type === 'form'
+  fields: {
+    name:  'entry.REPLACE_NAME',
+    mode:  'entry.REPLACE_MODE',
+    score: 'entry.REPLACE_SCORE',
+    date:  'entry.REPLACE_DATE'
+  }
+};
+
+function reportScore(name, modeLabel, scoreText, extra){
+  if(!REPORT_CONFIG.enabled) return false;
+  try{
+    const when = new Date().toLocaleString('zh-TW');
+    if(REPORT_CONFIG.type === 'script'){
+      const payload = {
+        name: name || '(未填名字)',
+        mode: modeLabel,
+        score: scoreText,
+        correct: (extra && extra.correct) || 0,
+        total: (extra && extra.total) || 0,
+        percent: (extra && extra.percent) || 0,
+        grade: (extra && extra.grade) || '',
+        wrongWords: (extra && extra.wrongWords) || '',
+        date: when
+      };
+      // text/plain avoids a CORS preflight; no-cors = fire and forget
+      fetch(REPORT_CONFIG.url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+    } else {
+      const fd = new FormData();
+      fd.append(REPORT_CONFIG.fields.name, name || '(未填名字)');
+      fd.append(REPORT_CONFIG.fields.mode, modeLabel);
+      fd.append(REPORT_CONFIG.fields.score, scoreText);
+      fd.append(REPORT_CONFIG.fields.date, when);
+      fetch(REPORT_CONFIG.url, { method:'POST', mode:'no-cors', body: fd });
+    }
+    return true;
+  }catch(err){ return false; }
+}
+
+let mode = null; // 'practice' | 'exam'
+const selectedCats = new Set(ALL_CATS);
+const selectedTypes = new Set(ALL_TYPES);
+let questionCount = 20;
+
+// ---------------- Screen refs ----------------
+const modeScreen = document.getElementById('modeScreen');
+const setupScreen = document.getElementById('setupScreen');
+const examConfirmScreen = document.getElementById('examConfirmScreen');
+const reviewSetupScreen = document.getElementById('reviewSetupScreen');
+const quizScreen = document.getElementById('quizScreen');
+const resultScreen = document.getElementById('resultScreen');
+
+function showScreen(el){
+  [modeScreen, setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen].forEach(s=>s.classList.add('hidden'));
+  el.classList.remove('hidden');
+}
+
+// ---------------- Persistent wrong-answer history ----------------
+// Uses the artifact persistent-storage API (personal scope): each viewer keeps
+// their own record, which survives closing and reopening the page — but ONLY
+// after the artifact is published and on a paid plan. If storage is unavailable
+// (e.g. free plan, or still in preview), we degrade gracefully to in-memory only.
+const HISTORY_KEY = 'wrongHistory:v1';
+let historyData = {};      // { en: {en, zh, count} }
+let storageOK = false;     // whether window.storage actually works here
+
+function hasStorage(){
+  return (typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function');
+}
+
+async function loadHistory(){
+  historyData = {};
+  storageOK = false;
+  if(!hasStorage()) return;
+  try{
+    const res = await window.storage.get(HISTORY_KEY, false);
+    storageOK = true;
+    if(res && res.value){
+      try{ historyData = JSON.parse(res.value) || {}; }catch(e){ historyData = {}; }
+    }
+  }catch(err){
+    // key not found is normal on first visit — storage still works
+    if(hasStorage()){ storageOK = true; }
+  }
+}
+
+async function saveHistory(){
+  if(!hasStorage()) return;
+  try{
+    await window.storage.set(HISTORY_KEY, JSON.stringify(historyData), false);
+    storageOK = true;
+  }catch(err){ /* silently ignore write failures */ }
+}
+
+function recordWrong(en, zh){
+  if(!historyData[en]) historyData[en] = { en, zh, count: 0 };
+  historyData[en].count += 1;
+}
+
+async function clearHistory(){
+  historyData = {};
+  if(hasStorage()){
+    try{ await window.storage.delete(HISTORY_KEY, false); }catch(e){}
+  }
+  renderHistory();
+}
+
+function renderHistory(){
+  const panel = document.getElementById('historyPanel');
+  const list = document.getElementById('historyList');
+  const sub = document.getElementById('historySub');
+  const note = document.getElementById('storageNote');
+  const entries = Object.values(historyData).sort((a,b)=> b.count - a.count);
+
+  // Storage-availability note
+  note.classList.remove('hidden');
+  if(storageOK){
+    note.textContent = '✅ 你的錯題紀錄已儲存，下次打開這個頁面仍會看到（紀錄只有你自己看得到）。';
+  } else {
+    note.textContent = 'ℹ️ 目前無法儲存長期紀錄（可能是免費方案，或尚未發布頁面）。這次的錯題仍會累計，但關閉頁面後可能不會保留。';
+  }
+
+  if(entries.length === 0){
+    panel.classList.add('hidden');
+    return;
+  }
+  panel.classList.remove('hidden');
+  const totalWrong = entries.reduce((s,e)=> s + e.count, 0);
+  sub.textContent = `目前累積 ${entries.length} 個常錯單字，共答錯 ${totalWrong} 次。在「錯題重練」中答對一次，該單字就會扣 1 次紀錄。`;
+  list.innerHTML = '';
+  entries.forEach(e=>{
+    const row = document.createElement('div');
+    row.className = 'hist-item';
+    row.innerHTML = `<div class="left"><b>${e.en}</b><span class="zh">${e.zh}</span></div>
+      <div class="cnt">錯 ${e.count} 次</div>`;
+    list.appendChild(row);
+  });
+}
+
+// Tap-twice confirmation (window.confirm is blocked in the artifact sandbox).
+let clearArmed = false;
+let clearTimer = null;
+const clearBtnEl = document.getElementById('clearHistBtn');
+clearBtnEl.addEventListener('click', ()=>{
+  if(!clearArmed){
+    clearArmed = true;
+    clearBtnEl.textContent = '⚠️ 再按一次確認清除';
+    clearBtnEl.style.background = 'var(--bad)';
+    clearBtnEl.style.color = '#fff';
+    clearBtnEl.style.borderColor = 'var(--bad)';
+    clearTimeout(clearTimer);
+    clearTimer = setTimeout(()=>{
+      clearArmed = false;
+      clearBtnEl.textContent = '清除紀錄';
+      clearBtnEl.style.background = '';
+      clearBtnEl.style.color = '';
+      clearBtnEl.style.borderColor = '';
+    }, 3000);
+    return;
+  }
+  clearTimeout(clearTimer);
+  clearArmed = false;
+  clearBtnEl.textContent = '清除紀錄';
+  clearBtnEl.style.background = '';
+  clearBtnEl.style.color = '';
+  clearBtnEl.style.borderColor = '';
+  clearHistory();
+});
+
+// ---------------- Mode select ----------------
+document.getElementById('modePractice').addEventListener('click', ()=>{
+  mode = 'practice';
+  showScreen(setupScreen);
+  updatePoolHint();
+});
+document.getElementById('modeExam').addEventListener('click', ()=>{
+  mode = 'exam';
+  showScreen(examConfirmScreen);
+});
+document.getElementById('modeReview').addEventListener('click', ()=>{
+  mode = 'review';
+  showScreen(reviewSetupScreen);
+});
+document.getElementById('backHint').addEventListener('click', ()=> showScreen(modeScreen));
+document.getElementById('backHint2').addEventListener('click', ()=> showScreen(modeScreen));
+document.getElementById('backHint3').addEventListener('click', ()=> showScreen(modeScreen));
+
+// ---------------- Setup: categories (practice only) ----------------
+const catGrid = document.getElementById('catGrid');
+ALL_CATS.forEach(cat=>{
+  const div = document.createElement('label');
+  div.className = 'cat-tab';
+  div.dataset.cat = cat;
+  div.innerHTML = `<input type="checkbox" checked> ${CAT_LABEL[cat]} <span class="count">${WORDS[cat].length}</span>`;
+  div.addEventListener('click', (e)=>{
+    e.preventDefault();
+    if(selectedCats.has(cat)){ selectedCats.delete(cat); div.classList.add('off'); }
+    else{ selectedCats.add(cat); div.classList.remove('off'); }
+    updatePoolHint();
+  });
+  catGrid.appendChild(div);
+});
+
+// ---------------- Setup: types (practice only) ----------------
+document.querySelectorAll('#typeRow .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const t = p.dataset.type;
+    if(selectedTypes.has(t)){
+      if(selectedTypes.size>1){ selectedTypes.delete(t); p.classList.remove('active'); }
+    } else { selectedTypes.add(t); p.classList.add('active'); }
+    updateTypeDesc();
+    updatePoolHint();
+  });
+});
+function updateTypeDesc(){
+  document.getElementById('typeDesc').innerHTML = [...selectedTypes].map(t=>TYPE_DESC[t]).join('<br>');
+}
+updateTypeDesc();
+
+// ---------------- Setup: count (practice only) ----------------
+document.querySelectorAll('#countRow .pill').forEach(p=>{
+  if(parseInt(p.dataset.count)===20) p.classList.add('active');
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#countRow .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    questionCount = parseInt(p.dataset.count);
+    updatePoolHint();
+  });
+});
+
+// ---------------- Setup: review mode (type + count, independent of practice) ----------------
+const selectedReviewTypes = new Set(ALL_TYPES);
+let reviewCount = 20;
+document.getElementById('reviewPoolCount').textContent = REVIEW_WORDS.length;
+document.querySelectorAll('#reviewTypeRow .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const t = p.dataset.type;
+    if(selectedReviewTypes.has(t)){
+      if(selectedReviewTypes.size>1){ selectedReviewTypes.delete(t); p.classList.remove('active'); }
+    } else { selectedReviewTypes.add(t); p.classList.add('active'); }
+  });
+});
+document.querySelectorAll('#reviewCountRow .pill').forEach(p=>{
+  if(parseInt(p.dataset.count)===20) p.classList.add('active');
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#reviewCountRow .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    reviewCount = parseInt(p.dataset.count);
+  });
+});
+
+function poolWords(cats){
+  let pool = [];
+  cats.forEach(cat=> pool = pool.concat(WORDS[cat].map(w=>({en:w[0], zh:w[1], sentence:w[2], cat}))) );
+  return pool;
+}
+function fullPool(){
+  return poolWords(ALL_CATS);
+}
+function updatePoolHint(){
+  const n = poolWords(selectedCats).length;
+  const willAsk = Math.min(questionCount, n);
+  const hint = document.getElementById('poolHint');
+  if(n===0 || selectedTypes.size===0){
+    hint.textContent = "請至少選擇一個單元與一種題型";
+  } else {
+    hint.textContent = `目前單元共有 ${n} 個單字，將出 ${willAsk} 題`;
+  }
+  document.getElementById('startBtn').disabled = (n===0 || selectedTypes.size===0);
+}
+updatePoolHint();
+
+// ---------------- Helpers ----------------
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// Pick 3 distractors whose display text (field) is guaranteed different from the
+// correct answer's text and from each other, so a question can never end up with
+// two options that are effectively "both correct".
+function pickDistractors(candidatePool, correctW, field, preferSameCat){
+  let primary = preferSameCat
+    ? candidatePool.filter(p => p.cat === correctW.cat && p !== correctW)
+    : candidatePool.filter(p => p.cat !== correctW.cat);
+  let fallback = candidatePool.filter(p => p !== correctW);
+
+  const usedText = new Set([correctW[field]]);
+  const chosen = [];
+
+  function tryPool(list){
+    for(const cand of shuffle(list)){
+      if(chosen.length >= 3) break;
+      if(!usedText.has(cand[field])){
+        chosen.push(cand);
+        usedText.add(cand[field]);
+      }
+    }
+  }
+  tryPool(primary);
+  if(chosen.length < 3) tryPool(fallback);
+  return chosen;
+}
+
+// Shared question builder: attaches type/options/answer to a list of words.
+function attachQuestions(list, types, distractorPool){
+  const globalPool = fullPool();
+  const typesArr = [...types];
+  return list.map(w=>{
+    const type = typesArr[Math.floor(Math.random()*typesArr.length)];
+    let q = { ...w, type };
+    if(type==='en2zh'){
+      const distractors = pickDistractors(distractorPool, w, 'zh', true);
+      q.options = shuffle([w.zh, ...distractors.map(d=>d.zh)]);
+      q.correctText = w.zh;
+    } else if(type==='zh2en'){
+      const distractors = pickDistractors(distractorPool, w, 'en', true);
+      q.options = shuffle([w.en, ...distractors.map(d=>d.en)]);
+      q.correctText = w.en;
+    } else {
+      // Cloze distractors deliberately come from OTHER topics so they clearly
+      // don't fit the sentence, keeping exactly one option that makes sense.
+      const distractors = pickDistractors(globalPool, w, 'en', false);
+      q.options = shuffle([w.en, ...distractors.map(d=>d.en)]);
+      q.correctText = w.en;
+    }
+    return q;
+  });
+}
+
+// Weighted sampling: words the user answered wrong before are more likely to
+// appear again in practice (weight grows with mistake count, capped at 4x).
+function weightedSample(pool, n){
+  const keyed = pool.map(w=>{
+    const wrongTimes = (historyData[w.en] && historyData[w.en].count) || 0;
+    const weight = 1 + Math.min(wrongTimes, 3);
+    return { w, key: Math.random() / weight };
+  });
+  keyed.sort((a,b)=> a.key - b.key);
+  return keyed.slice(0, n).map(x=>x.w);
+}
+
+function buildQuiz(cats, types, count){
+  const pool = poolWords(cats);
+  const n = Math.min(count, pool.length);
+  const list = weightedSample(pool, n);
+  return attachQuestions(shuffle(list), types, pool);
+}
+
+// Exam: balanced across all categories (minimum 4 each, remainder allocated
+// proportionally to category size) so the biggest topic can't dominate.
+function buildExamQuiz(){
+  const alloc = {};
+  let remaining = EXAM_QUESTION_COUNT;
+  const perCatMin = Math.max(1, Math.min(4, Math.floor(EXAM_QUESTION_COUNT / ALL_CATS.length)));
+  ALL_CATS.forEach(c=>{ alloc[c] = Math.min(perCatMin, WORDS[c].length); remaining -= alloc[c]; });
+  while(remaining > 0){
+    let best = null, bestRatio = -1;
+    ALL_CATS.forEach(c=>{
+      if(alloc[c] < WORDS[c].length){
+        const ratio = WORDS[c].length / alloc[c];
+        if(ratio > bestRatio){ bestRatio = ratio; best = c; }
+      }
+    });
+    if(!best) break;
+    alloc[best]++; remaining--;
+  }
+  let picked = [];
+  ALL_CATS.forEach(c=>{
+    const catWords = shuffle(WORDS[c].map(w=>({en:w[0], zh:w[1], sentence:w[2], cat:c}))).slice(0, alloc[c]);
+    picked = picked.concat(catWords);
+  });
+  return attachQuestions(shuffle(picked), new Set(ALL_TYPES), fullPool());
+}
+
+// Total review quiz: draws from every word taught across all past topic
+// ranges (REVIEW_WORDS), independent of the current topic's WORDS object.
+function buildReviewQuiz(types, count){
+  const pool = REVIEW_WORDS;
+  const n = Math.min(count, pool.length);
+  const list = weightedSample(pool, n); // still favors past mistakes if any overlap
+  return attachQuestions(shuffle(list), types, pool);
+}
+
+// Review quiz: only words from the wrong-answer history.
+function startReviewQuiz(){
+  const entries = Object.values(historyData);
+  if(entries.length === 0) return;
+  const lookup = {};
+  fullPool().forEach(w=>{ lookup[w.en] = w; });
+  const list = shuffle(entries.map(e=>lookup[e.en]).filter(Boolean)).slice(0, 20);
+  if(list.length === 0) return;
+  mode = 'practice';
+  quizIsReview = true;
+  quiz = attachQuestions(list, new Set(ALL_TYPES), fullPool());
+  beginQuiz();
+}
+
+// ---------------- Quiz state ----------------
+let quiz = [];
+let qIndex = 0;
+let score = 0;
+let wrongCount = 0;
+let results = [];
+let sessionEndedEarly = false;
+let quizIsReview = false;
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  quizIsReview = false;
+  quiz = buildQuiz(selectedCats, selectedTypes, questionCount);
+  beginQuiz();
+});
+document.getElementById('examStartBtn').addEventListener('click', ()=>{
+  quizIsReview = false;
+  quiz = buildExamQuiz();
+  beginQuiz();
+});
+document.getElementById('reviewBtn').addEventListener('click', startReviewQuiz);
+document.getElementById('reviewStartBtn').addEventListener('click', ()=>{
+  quizIsReview = false;
+  quiz = buildReviewQuiz(selectedReviewTypes, reviewCount);
+  beginQuiz();
+});
+
+function beginQuiz(){
+  qIndex = 0; score = 0; wrongCount = 0; results = []; sessionEndedEarly = false;
+  showScreen(quizScreen);
+  document.getElementById('hangmanBox').classList.toggle('hidden', mode!=='practice');
+  if(mode==='practice') resetHangman();
+  renderQuestion();
+}
+
+function resetHangman(){
+  document.querySelectorAll('.hp').forEach(p=>p.style.opacity = 0);
+  document.getElementById('livesText').textContent = `答錯 0 / ${FORCED_MAX_WRONG}`;
+}
+function updateHangman(){
+  const parts = document.querySelectorAll('.hp');
+  const reveal = Math.ceil((wrongCount/FORCED_MAX_WRONG) * parts.length);
+  parts.forEach((p,i)=> p.style.opacity = i < reveal ? 1 : 0);
+  document.getElementById('livesText').textContent = `答錯 ${wrongCount} / ${FORCED_MAX_WRONG}`;
+}
+
+function renderQuestion(){
+  const q = quiz[qIndex];
+  document.getElementById('progressNum').textContent = `${qIndex+1} / ${quiz.length}`;
+  document.getElementById('progressFill').style.width = `${(qIndex/quiz.length)*100}%`;
+  document.getElementById('scoreChip').textContent = `✓ ${score}`;
+
+  const tag = document.getElementById('topicTag');
+  if(mode === 'review'){
+    tag.textContent = '📚 總複習';
+    tag.style.background = 'var(--review)';
+  } else {
+    tag.textContent = CAT_LABEL[q.cat];
+    tag.style.background = CAT_COLOR[q.cat];
+  }
+  document.getElementById('typeTag').textContent = TYPE_LABEL[q.type];
+
+  const mcBox = document.getElementById('mcBox');
+  const qWord = document.getElementById('qWord');
+  const qSentence = document.getElementById('qSentence');
+  mcBox.innerHTML = '';
+  qWord.classList.add('hidden');
+  qSentence.classList.add('hidden');
+
+  if(q.type==='en2zh'){
+    document.getElementById('qPrompt').textContent = '這個英文單字的中文意思是？';
+    qWord.textContent = q.en;
+    qWord.classList.remove('hidden');
+  } else if(q.type==='zh2en'){
+    document.getElementById('qPrompt').textContent = '哪一個英文單字是這個意思？';
+    qWord.textContent = q.zh;
+    qWord.classList.remove('hidden');
+  } else if(q.type==='cloze'){
+    document.getElementById('qPrompt').textContent = '克漏字：讀例句，選出正確的單字填入空格';
+    qSentence.innerHTML = q.sentence.replace('___', '<span class="blank">______</span>');
+    qSentence.classList.remove('hidden');
+  }
+  renderOptions(q.options, q.correctText);
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').classList.add('hidden');
+}
+
+function renderOptions(options, correctText){
+  const mcBox = document.getElementById('mcBox');
+  options.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', ()=> handleAnswer(opt, correctText, btn));
+    mcBox.appendChild(btn);
+  });
+}
+
+function handleAnswer(chosen, correctText, btnEl){
+  const q = quiz[qIndex];
+  const isCorrect = (chosen === correctText);
+
+  document.querySelectorAll('#mcBox .opt').forEach(b=>{
+    b.disabled = true;
+    if(b.textContent === correctText) b.classList.add('correct');
+  });
+  if(!isCorrect && btnEl) btnEl.classList.add('wrong');
+
+  // For cloze: reveal the answer inside the sentence blank so the student
+  // sees the complete correct sentence.
+  if(q.type==='cloze'){
+    const blank = document.querySelector('#qSentence .blank');
+    if(blank){
+      blank.textContent = q.correctText;
+      blank.style.color = isCorrect ? 'var(--good)' : 'var(--bad)';
+      blank.style.fontWeight = '700';
+    }
+  }
+
+  const fb = document.getElementById('feedback');
+  if(isCorrect){
+    score++;
+    fb.textContent = '答對了！🎉';
+    fb.className = 'feedback good';
+    // In review mode, a correct answer reduces the word's mistake count by 1.
+    if(quizIsReview && historyData[q.en]){
+      historyData[q.en].count -= 1;
+      if(historyData[q.en].count <= 0) delete historyData[q.en];
+    }
+  } else {
+    wrongCount++;
+    fb.textContent = `答錯了，正確答案是「${q.correctText}」`;
+    fb.className = 'feedback bad';
+    recordWrong(q.en, q.zh);
+  }
+  document.getElementById('scoreChip').textContent = `✓ ${score}`;
+  results.push({ type:q.type, en:q.en, zh:q.zh, correctText:q.correctText, isCorrect });
+
+  if(mode==='practice'){
+    updateHangman();
+    if(wrongCount >= FORCED_MAX_WRONG){
+      sessionEndedEarly = true;
+      setTimeout(showResult, 900);
+      return;
+    }
+  }
+  document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  qIndex++;
+  if(qIndex >= quiz.length){ showResult(); }
+  else{ renderQuestion(); }
+});
+
+function showResult(){
+  document.getElementById('progressFill').style.width = '100%';
+  showScreen(resultScreen);
+  saveHistory(); // persist this session's wrong answers for next time
+  const total = results.length;
+  document.getElementById('finalScore').textContent = `${score}/${total}`;
+
+  // Score reporting to the teacher (currently OFF — see REPORT_CONFIG above).
+  // When re-enabled, this sends formal-exam results to the teacher's endpoint.
+  const reportEl = document.getElementById('reportStatus');
+  if(reportEl){
+    reportEl.textContent = '';
+    reportEl.className = 'report-status';
+    if(REPORT_CONFIG.enabled && mode === 'exam' && !quizIsReview){
+      const nameEl = document.getElementById('studentName');
+      const nm = nameEl ? (nameEl.value || '').trim() : '';
+      const pctNum = total ? Math.round(score/total*100) : 0;
+      let gradeLetter = 'F';
+      if(pctNum>=90) gradeLetter='A'; else if(pctNum>=80) gradeLetter='B';
+      else if(pctNum>=70) gradeLetter='C'; else if(pctNum>=60) gradeLetter='D';
+      const wrongWordList = results.filter(r=>!r.isCorrect)
+        .map(r=>`${r.en}(${r.zh})`).join('、');
+      reportScore(nm, '正式考試', `${score}/${total}`, {
+        correct: score, total: total, percent: pctNum,
+        grade: gradeLetter, wrongWords: wrongWordList
+      });
+      reportEl.textContent = nm
+        ? `✅ ${nm} 的成績（${score}/${total}）已回報給老師`
+        : `✅ 成績（${score}/${total}）已回報，但未填名字`;
+      reportEl.classList.add('ok');
+    }
+  }
+
+  const title = document.getElementById('resultTitle');
+  if(mode==='practice' && sessionEndedEarly){
+    title.textContent = '💀 答錯滿 5 題，遊戲結束！';
+  } else {
+    const pct = total? score/total : 0;
+    if(pct === 1) title.textContent = '全對！太厲害了 🏆';
+    else if(pct >= 0.8) title.textContent = '表現很棒！繼續保持 👏';
+    else if(pct >= 0.6) title.textContent = '不錯喔，再加把勁 💪';
+    else if(mode==='exam') title.textContent = '成績單出爐，一起檢討一下吧 📋';
+    else if(mode==='review') title.textContent = '總複習結束，看看還要加強哪些單字 📚';
+    else title.textContent = '再複習一下這幾個單字吧 📖';
+  }
+
+  const gradeRow = document.getElementById('gradeRow');
+  gradeRow.innerHTML = '';
+  if(mode==='exam' || mode==='review'){
+    const pct = total? Math.round(score/total*100) : 0;
+    let grade = 'F';
+    if(pct>=90) grade='A'; else if(pct>=80) grade='B'; else if(pct>=70) grade='C'; else if(pct>=60) grade='D';
+    const items = [
+      {n: pct+'%', l:'正確率'},
+      {n: grade, l:'等第'},
+      {n: (total-score), l:'錯誤題數'}
+    ];
+    items.forEach(it=>{
+      const d = document.createElement('div');
+      d.className='grade-item';
+      d.innerHTML = `<div class="n">${it.n}</div><div class="l">${it.l}</div>`;
+      gradeRow.appendChild(d);
+    });
+  }
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  const wrongOnes = results.filter(r=>!r.isCorrect);
+  const heading = document.createElement('div');
+  heading.className = 'row-label';
+  heading.style.marginTop = '0';
+  heading.textContent = (mode==='exam' || mode==='review') ? '詳細檢討（全部作答紀錄）' : '需要再複習的單字';
+  list.appendChild(heading);
+
+  const toShow = (mode==='exam' || mode==='review')
+    ? results.slice().sort((a,b)=> (a.isCorrect?1:0) - (b.isCorrect?1:0))
+    : wrongOnes;
+  if(toShow.length===0){
+    const empty = document.createElement('div');
+    empty.className='review-item';
+    empty.style.justifyContent='center';
+    empty.style.color='var(--ink-soft)';
+    empty.textContent = '沒有答錯的單字 👍';
+    list.appendChild(empty);
+  } else {
+    toShow.forEach(r=>{
+      const row = document.createElement('div');
+      row.className = 'review-item';
+      row.innerHTML = `<div class="left"><b>${r.en}</b><span class="zh">${r.zh}</span></div>
+        <div class="mark ${r.isCorrect?'ok':'no'}">${r.isCorrect? '✓ 正確' : '✕ 錯誤'}</div>`;
+      list.appendChild(row);
+    });
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  renderHistory();
+  showScreen(modeScreen);
+});
+
+// Note: window.confirm() is blocked in the sandboxed artifact environment,
+// so we use a tap-twice pattern instead.
+let quitArmed = false;
+let quitTimer = null;
+const quitHintEl = document.getElementById('quitHint');
+quitHintEl.addEventListener('click', ()=>{
+  if(!quitArmed){
+    quitArmed = true;
+    quitHintEl.textContent = '⚠️ 確定返回？本次作答將結束（再按一次確認）';
+    quitHintEl.style.color = 'var(--bad)';
+    clearTimeout(quitTimer);
+    quitTimer = setTimeout(()=>{
+      quitArmed = false;
+      quitHintEl.textContent = '← 返回主頁（結束本次作答）';
+      quitHintEl.style.color = '';
+    }, 3000);
+    return;
+  }
+  clearTimeout(quitTimer);
+  quitArmed = false;
+  quitHintEl.textContent = '← 返回主頁（結束本次作答）';
+  quitHintEl.style.color = '';
+  saveHistory();
+  renderHistory();
+  showScreen(modeScreen);
+});
+
+// ---------------- Startup: load saved history ----------------
+(async function init(){
+  await loadHistory();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
