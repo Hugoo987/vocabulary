@@ -38,3 +38,12 @@
 ```bash
 node tools/validate.js
 ```
+
+## 發布
+
+推到 `claude/build-webpage-odf4v9` 就會自動部署到 GitHub Pages：
+
+**https://hugoo987.github.io/vocabulary/**
+
+`.github/workflows/pages.yml` 會先跑 `tools/validate.js`，驗證沒過就不部署 ——
+避免把「兩個選項都對」的題庫推給學生。
