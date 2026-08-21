@@ -15,20 +15,20 @@
 | 項目 | 內容 |
 |---|---|
 | 最新檔案 | `index.html`（單一真實來源） |
-| 版本標記 | v8（頁面最上方有紅色橫幅） |
+| 版本標記 | v9（頁面最上方有紅色橫幅） |
 | 發布方式 | GitHub Pages：https://hugoo987.github.io/vocabulary/ |
-| 目前考試範圍 | Topic 30–34，共 **140 字** |
-| 總複習題庫 | 累積 **775 字**（Topic 04–34 教過的全部） |
+| 目前考試範圍 | Topic 34–36，共 **286 字** |
+| 總複習題庫 | 累積 **980 字**（Topic 04–36 教過的全部） |
 | 身分區分 | 學生／老師，各有獨立紀錄（v8 新增） |
 | 紀錄儲存 | `localStorage`，key `vocabQuiz:v2` |
 | 成績回報 | 程式碼已寫好但**關閉中**（老師說「先不回報」） |
 
 目前範圍的五個單元：
-- `auxiliaries` BE & AUX Be動詞&助動詞（10 字）
-- `prepositions` PREPOSITIONS 介系詞（37 字）
-- `conjunctions` CONJUNCTIONS 連接詞（8 字）
-- `interjections` INTERJECTIONS 感歎詞（5 字）
-- `nouns` NOUNS 其他名詞（80 字）
+- `nouns` NOUNS 其他名詞（80 字）← 從上一批留下來的
+- `verbs1` VERBS 動詞① 感官・情感・思考（32 字）
+- `verbs2` VERBS 動詞② 動作 A–W（65 字）
+- `verbs3` VERBS 動詞③ 其他 A–W（52 字）
+- `adjectives` ADJECTIVES 其他形容詞（57 字）
 
 ---
 
@@ -113,6 +113,7 @@
 | 4 | Topic 15–17 | 住宅、家具、電器、校園、文具、科目 |
 | 5 | Topic 17–21 | 地點、場所建築、大眾運輸、尺寸測量、國家語言 |
 | 6 | Topic 22–25 | 假日節慶、職業、天氣大自然、地理詞彙 |
-| 7 | Topic 30–34 | Be動詞&助動詞、介系詞、連接詞、感歎詞、其他名詞 ← **目前** |
+| 7 | Topic 30–34 | Be動詞&助動詞、介系詞、連接詞、感歎詞、其他名詞 |
+| 8 | Topic 34–36 | 其他名詞（留用）、動詞①②③、其他形容詞 ← **目前** |
 
 以上每批的單字都已經合併進 `REVIEW_WORDS`（總複習題庫），完整內容就在 HTML 檔案裡，不需要重新輸入。
