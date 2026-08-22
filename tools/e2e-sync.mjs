@@ -95,7 +95,10 @@ console.log('\n【未設定同步時（預設狀態）】');
 const off = await (await br.newContext()).newPage();
 const e3=[]; off.on('pageerror',e=>e3.push(String(e)));
 await off.goto(URL); await off.waitForTimeout(300);
+// 明確關閉，不依賴預設值（正式環境的預設值已經是開啟）
+await off.evaluate(()=>{ SYNC_CONFIG.enabled=false; });
 await off.click('#roleTeacher'); await off.waitForTimeout(200);
+await off.evaluate(()=>{ SYNC_CONFIG.enabled=false; });
 await off.click('#openReportBtn'); await off.waitForTimeout(500);
 check(await off.locator('#syncStatus').isHidden(), '未設定時不顯示同步狀態列');
 check(await off.locator('#importBody').count()===1, '回報碼匯入功能仍在（備援路徑）');

@@ -2313,9 +2313,9 @@ function parseTransferCode(text){
 // there is no SDK to load. Note this cannot work inside the Claude artifact,
 // whose CSP blocks every external host — it is for the GitHub Pages site.
 const SYNC_CONFIG = {
-  enabled: false,
-  dbUrl: '',      // e.g. https://your-project-default-rtdb.firebaseio.com
-  classKey: ''    // long random string; also the path the record lives at
+  enabled: true,
+  dbUrl: 'https://vocab-fb8ae-default-rtdb.asia-southeast1.firebasedatabase.app',
+  classKey: 'lee-p9f4yyn51s'   // also the path the record lives at
 };
 
 function syncReady(){

@@ -43,28 +43,21 @@
 }
 ```
 
-## 第四步：把兩個值告訴我
+## ✅ 已完成設定
 
-1. 在 Realtime Database 頁面最上方，會看到一串網址，長得像：
-   `https://vocab-quiz-default-rtdb.asia-southeast1.firebasedatabase.app/`
-   **把這串複製起來**
-2. 想一組**長一點、別人猜不到的英數字串**當作你的專屬路徑，例如
-   `wang-2026-x7k9p2m4`（不要用 `test`、`abc` 這種好猜的）
+本站已填入以下設定（`index.html` 的 `SYNC_CONFIG`）：
 
-把這兩個值貼給我，我幫你填進程式碼並部署。
+| 項目 | 值 |
+|---|---|
+| 資料庫網址 | `https://vocab-fb8ae-default-rtdb.asia-southeast1.firebasedatabase.app` |
+| classKey | `lee-p9f4yyn51s` |
 
-或者你想自己改也可以 —— 打開 `index.html`，找到 `const SYNC_CONFIG`，改成：
+資料會存在資料庫的 `/vocab/lee-p9f4yyn51s` 路徑下。
 
-```js
-const SYNC_CONFIG = {
-  enabled: true,
-  dbUrl: '你的資料庫網址',
-  classKey: '你想的那組字串'
-};
-```
+要換路徑的話，改 `index.html` 裡的 `classKey` 即可（換了之後舊資料就讀不到了，
+要請學生重新做一次測驗上傳）。
 
 ---
-
 ## 設定完成後會怎麼運作
 
 | 誰 | 做什麼 | 結果 |
