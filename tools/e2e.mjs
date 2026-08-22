@@ -173,7 +173,7 @@ const cleared = await page.evaluate(() => {
 check(cleared.stu === 0, '按第二次才真的清除學生紀錄');
 check(cleared.tea > 0, '老師自己的紀錄沒被一起清掉');
 
-console.log('\n10. 正式考試會記成 exam');
+console.log('\n10. 正式考試會記成 exam（40 題）');
 await page.evaluate(() => localStorage.clear());
 await page.reload();
 await page.waitForTimeout(300);
@@ -184,7 +184,7 @@ await page.waitForTimeout(150);
 await page.click('#examStartBtn');
 await page.waitForTimeout(250);
 // answer every question correctly so the exam runs to its full 30 questions
-for (let i = 0; i < 35; i++) {
+for (let i = 0; i < 45; i++) {
   if (await page.locator('#resultScreen').isVisible()) break;
   try {
     await page.waitForFunction(() => {
@@ -207,8 +207,8 @@ const ex = await page.evaluate(() => {
   return s.profiles.student.sessions.slice(-1)[0];
 });
 check(ex && ex.mode === 'exam', `正式考試記成 mode=exam（實際 ${ex && ex.mode}）`);
-check(ex && ex.total === 30, `正式考試記錄 30 題（實際 ${ex && ex.total}）`);
-check(ex && ex.correct === 30, `全對記成 30 分（實際 ${ex && ex.correct}）`);
+check(ex && ex.total === 40, `正式考試記錄 40 題（實際 ${ex && ex.total}）`);
+check(ex && ex.correct === 40, `全對記成 40 分（實際 ${ex && ex.correct}）`);
 
 console.log('\n11. 瀏覽器禁止儲存時不能整頁壞掉');
 const ctx2 = await browser.newContext();

@@ -107,6 +107,20 @@
     background:#F1EADA; border-radius:8px; padding:9px 11px;
   }
 
+  /* ---- Transfer code ---- */
+  .xfer{ margin-top: 14px; }
+  .xfer-body{ margin-top: 10px; display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
+  .xfer-hint{ font-size:11px; color:var(--ink-soft); line-height:1.7; }
+  .xfer-box{
+    width:100%; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; line-height:1.5; padding: 9px 10px; border:2px solid var(--ink);
+    border-radius: 8px; background:#fff; color:var(--ink); resize: vertical;
+    word-break: break-all;
+  }
+  .xfer-note{ font-size:11px; font-weight:700; }
+  .xfer-note.ok{ color: var(--good); }
+  .xfer-note.bad{ color: var(--bad); }
+
   .retry-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin: 2px 0 12px; }
   .retry-label{ font-size:12px; font-weight:700; color:var(--ink-soft); }
   .retry-row .pill{ padding: 5px 12px; font-size: 12px; }
@@ -336,7 +350,7 @@
       <div class="mode-card exam" id="modeExam">
         <div class="icon">📝</div>
         <h3>正式考試</h3>
-        <p>固定題目：全部單元、全部題型、共 30 題，作答完畢直接產生成績單。</p>
+        <p>固定題目：全部單元、全部題型、共 40 題，作答完畢直接產生成績單。</p>
       </div>
       <div class="mode-card review" id="modeReview">
         <div class="icon">📚</div>
@@ -364,6 +378,17 @@
         </div>
       </div>
       <div id="historyList"></div>
+
+      <!-- Student sends this to the teacher so they can see the record on their own device -->
+      <div class="xfer">
+        <button class="mini-btn" id="makeCodeBtn">📤 產生回報碼給老師</button>
+        <div class="xfer-body hidden" id="makeCodeBody">
+          <div class="xfer-hint">把下面整段複製起來傳給老師（用 LINE 或任何能傳文字的方式）。</div>
+          <textarea class="xfer-box" id="codeOut" readonly rows="3"></textarea>
+          <button class="mini-btn" id="copyCodeBtn">複製</button>
+          <span class="xfer-note" id="copyNote"></span>
+        </div>
+      </div>
     </div>
 
     <!-- Teacher-only entry point into the student's report -->
@@ -385,6 +410,19 @@
       <button class="mini-btn" id="reportBackBtn">← 返回主頁</button>
     </div>
     <div id="reportBody"></div>
+
+    <!-- Teacher pastes the student's code to read the record on this device -->
+    <div class="history-head" style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--paper-line);">
+      <div class="row-label" style="margin:0;">📥 匯入學生回報碼</div>
+      <button class="mini-btn" id="importToggleBtn">貼上回報碼</button>
+    </div>
+    <div class="xfer-body hidden" id="importBody">
+      <div class="xfer-hint">請學生在他的裝置上按「產生回報碼給老師」，把整段貼到這裡。匯入會取代這台裝置上現有的學生紀錄。</div>
+      <textarea class="xfer-box" id="codeIn" rows="3" placeholder="VQ1...."></textarea>
+      <button class="mini-btn" id="doImportBtn" style="background:var(--address); color:#fff; border-color:var(--address);">匯入</button>
+      <span class="xfer-note" id="importNote"></span>
+    </div>
+
     <div class="history-head" style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--paper-line);">
       <div class="row-label" style="margin:0;">管理紀錄</div>
       <button class="mini-btn" id="clearStudentBtn">清除學生紀錄</button>
@@ -424,7 +462,7 @@
   <!-- EXAM CONFIRM SCREEN (fixed settings, no choices) -->
   <div class="card hidden" id="examConfirmScreen">
     <div class="row-label" style="margin-top:0;">正式考試規則</div>
-    <div class="notice-box exam">📝 全部單元、全部題型、共 30 題，全部都是選擇題，不可調整設定。</div>
+    <div class="notice-box exam">📝 全部單元、全部題型、共 40 題，每個單元各 8 題，全部都是選擇題，不可調整設定。</div>
     <button class="big-btn" id="examStartBtn">開始考試</button>
     <div class="hint" id="backHint2" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
@@ -668,7 +706,7 @@ const WORDS = {
     ["knock","敲","Please ___ before you come in."],
     ["kill","殺死","The cold weather may ___ these plants."],
     ["kiss","吻","The mother gave her son a ___."],
-    ["miss","錯過","Hurry, or you will ___ the last bus."],
+    ["miss","錯過；小姐","Hurry, or you will ___ the last bus."],
     ["laugh","笑","His funny story made us all ___."],
     ["make","製作","She will ___ a cake for the party."],
     ["meet","遇見","I will ___ my friend at the station."],
@@ -821,7 +859,7 @@ const TYPE_DESC = {
   cloze: "克漏字：看一個例句，句子裡的單字被挖空，選出正確的單字填入空格。"
 };
 const FORCED_MAX_WRONG = 5;
-const EXAM_QUESTION_COUNT = 30;
+const EXAM_QUESTION_COUNT = 40;
 const ALL_CATS = Object.keys(WORDS);
 const ALL_TYPES = ['en2zh','zh2en','cloze'];
 
@@ -846,7 +884,7 @@ const REVIEW_WORDS = [
   {en:"doctor",zh:"醫生／博士",sentence:"The ___ checked my throat carefully.",cat:"address"},
   {en:"mister",zh:"某先生（用於姓氏前）",sentence:"Good morning, ___ Smith, how are you today?",cat:"address"},
   {en:"missus",zh:"太太",sentence:"___ Wang teaches our English class.",cat:"address"},
-  {en:"miss",zh:"小姐",sentence:"___ Chen is our new music teacher.",cat:"address"},
+  {en:"miss",zh:"錯過；小姐",sentence:"___ Chen is our new music teacher.",cat:"address"},
   {en:"madam",zh:"女士",sentence:"Thank you very much for your help, ___ .",cat:"address"},
   {en:"name",zh:"名字",sentence:"What is your full ___ ?",cat:"address"},
   {en:"family",zh:"家庭",sentence:"We had a big ___ dinner last night.",cat:"family"},
@@ -1899,6 +1937,59 @@ document.getElementById('roleStudent').addEventListener('click', ()=> setRole('s
 document.getElementById('roleTeacher').addEventListener('click', ()=> setRole('teacher'));
 document.getElementById('switchRoleBtn').addEventListener('click', ()=> showScreen(roleScreen));
 
+// ---------------- Transfer code wiring ----------------
+const makeCodeBody = document.getElementById('makeCodeBody');
+const codeOut = document.getElementById('codeOut');
+const copyNote = document.getElementById('copyNote');
+
+document.getElementById('makeCodeBtn').addEventListener('click', ()=>{
+  codeOut.value = buildTransferCode();
+  makeCodeBody.classList.remove('hidden');
+  copyNote.textContent = '';
+  copyNote.className = 'xfer-note';
+  codeOut.select();
+});
+
+document.getElementById('copyCodeBtn').addEventListener('click', async ()=>{
+  codeOut.select();
+  let done = false;
+  // The clipboard API needs permission and a secure context; selecting the text
+  // is the fallback that always works, so say which one happened.
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(codeOut.value);
+      done = true;
+    }
+  }catch(e){ /* fall through to the manual path */ }
+  copyNote.textContent = done ? '✅ 已複製，貼給老師即可' : 'ℹ️ 已選取整段，請按住並選「複製」';
+  copyNote.className = 'xfer-note ' + (done ? 'ok' : '');
+});
+
+const importBody = document.getElementById('importBody');
+const importNote = document.getElementById('importNote');
+document.getElementById('importToggleBtn').addEventListener('click', ()=>{
+  importBody.classList.toggle('hidden');
+  importNote.textContent = '';
+});
+
+document.getElementById('doImportBtn').addEventListener('click', ()=>{
+  try{
+    const profile = parseTransferCode(document.getElementById('codeIn').value);
+    const words = Object.keys(profile.words).length;
+    store.profiles.student = profile;
+    if(role === 'student') syncHistoryView();
+    saveHistory();
+    renderReport();
+    renderHistory();
+    importNote.textContent = `✅ 已匯入 ${words} 個錯字、${profile.sessions.length} 筆作答紀錄`;
+    importNote.className = 'xfer-note ok';
+    document.getElementById('codeIn').value = '';
+  }catch(err){
+    importNote.textContent = '✕ ' + err.message;
+    importNote.className = 'xfer-note bad';
+  }
+});
+
 document.getElementById('openReportBtn').addEventListener('click', ()=>{
   renderReport();
   showScreen(reportScreen);
@@ -2062,6 +2153,100 @@ function clearHistory(){
   syncHistoryView();
   saveHistory();
   renderHistory();
+}
+
+// ---------------- Transfer code ----------------
+// Records live in one browser on one device, so a teacher on their own phone
+// cannot see them. A static page has no server to sync through, so instead the
+// student produces a short code and sends it over (LINE, e-mail, anything that
+// carries text) and the teacher pastes it in.
+//
+// The code carries only what cannot be recomputed: the English word, how many
+// times it was missed, which question types, and when. Chinese and unit are
+// looked up from the word banks on the teacher's side, which keeps the code
+// several times shorter.
+const CODE_PREFIX = 'VQ1.';
+
+function b64encode(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+function b64decode(b64){
+  const bin = atob(b64);
+  const bytes = Uint8Array.from(bin, ch => ch.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+const DAY = 86400000;
+const TYPE_CODE = { en2zh:'e', zh2en:'z', cloze:'c' };
+const CODE_TYPE = { e:'en2zh', z:'zh2en', c:'cloze' };
+const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t' };
+const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry' };
+
+function buildTransferCode(){
+  const p = store.profiles.student;
+  const payload = {
+    v: 1,
+    w: Object.values(p.words).map(w => [
+      w.en,
+      w.count,
+      Object.entries(w.types || {}).map(([t,n]) => (TYPE_CODE[t] || t) + n).join(''),
+      w.lastWrong ? Math.round(w.lastWrong / DAY) : 0
+    ]),
+    s: p.sessions.map(s => [
+      Math.round(s.date / DAY), MODE_CODE[s.mode] || 'p', s.total, s.correct
+    ])
+  };
+  return CODE_PREFIX + b64encode(JSON.stringify(payload));
+}
+
+// Returns a profile, or throws with a message the teacher can act on.
+function parseTransferCode(text){
+  const raw = String(text || '').trim().replace(/\s+/g, '');
+  if(!raw) throw new Error('請先貼上回報碼。');
+  if(!raw.startsWith(CODE_PREFIX)) throw new Error('這不像是回報碼（開頭應該是 VQ1.）。請確認整段都複製到了。');
+  let data;
+  try{
+    data = JSON.parse(b64decode(raw.slice(CODE_PREFIX.length)));
+  }catch(e){
+    throw new Error('回報碼看起來不完整或已損毀。請學生重新產生一次，並確認整段都複製到了。');
+  }
+  if(!data || data.v !== 1 || !Array.isArray(data.w)) throw new Error('回報碼的格式不符。');
+
+  // Chinese and unit come from this page's own word banks, not the code.
+  const lookup = {};
+  retrainPool().forEach(w => { lookup[w.en] = w; });
+
+  const profile = blankProfile();
+  data.w.forEach(row => {
+    if(!Array.isArray(row) || !row[0]) return;
+    const [en, count, typeStr, lastDay] = row;
+    const ref = lookup[en] || {};
+    const types = {};
+    String(typeStr || '').replace(/([ezc])(\d+)/g, (_, t, n) => { types[CODE_TYPE[t]] = Number(n); return ''; });
+    profile.words[en] = {
+      en,
+      zh: ref.zh || '(已不在目前題庫)',
+      cat: ref.cat || '',
+      count: Number(count) || 0,
+      types,
+      lastWrong: lastDay ? lastDay * DAY : null
+    };
+  });
+  (Array.isArray(data.s) ? data.s : []).forEach(row => {
+    if(!Array.isArray(row)) return;
+    const [day, m, total, correct] = row;
+    profile.sessions.push({
+      date: (Number(day) || 0) * DAY,
+      mode: CODE_MODE[m] || 'practice',
+      total: Number(total) || 0,
+      correct: Number(correct) || 0,
+      wrong: []
+    });
+  });
+  return profile;
 }
 
 // Teacher wiping the student's record — separate from the teacher's own.
@@ -2594,7 +2779,10 @@ function buildQuiz(cats, types, count){
 function buildExamQuiz(){
   const alloc = {};
   let remaining = EXAM_QUESTION_COUNT;
-  const perCatMin = Math.max(1, Math.min(4, Math.floor(EXAM_QUESTION_COUNT / ALL_CATS.length)));
+  // 先讓每個單元拿到均等的題數（規格要求「平均分配到各單元」），
+  // 但不能超過最小單元實際擁有的字數。剩下的再依單元大小分配。
+  const smallestCat = Math.min(...ALL_CATS.map(c => WORDS[c].length));
+  const perCatMin = Math.max(1, Math.min(smallestCat, Math.floor(EXAM_QUESTION_COUNT / ALL_CATS.length)));
   ALL_CATS.forEach(c=>{ alloc[c] = Math.min(perCatMin, WORDS[c].length); remaining -= alloc[c]; });
   while(remaining > 0){
     let best = null, bestRatio = -1;
