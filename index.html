@@ -107,6 +107,13 @@
     background:#F1EADA; border-radius:8px; padding:9px 11px;
   }
 
+  .sync-status{
+    font-size:11px; line-height:1.7; color:var(--ink-soft); background:#F1EADA;
+    border-radius:8px; padding:8px 11px; margin-bottom:14px; font-weight:700;
+  }
+  .sync-status.ok{ color: var(--good); }
+  .sync-status.bad{ color: var(--bad); }
+
   /* ---- Transfer code ---- */
   .xfer{ margin-top: 14px; }
   .xfer-body{ margin-top: 10px; display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
@@ -407,8 +414,12 @@
   <div class="card hidden" id="reportScreen">
     <div class="whoami">
       <span>學生學習報告</span>
-      <button class="mini-btn" id="reportBackBtn">← 返回主頁</button>
+      <span style="display:flex; gap:8px;">
+        <button class="mini-btn" id="syncRefreshBtn">🔄 重新整理</button>
+        <button class="mini-btn" id="reportBackBtn">← 返回主頁</button>
+      </span>
     </div>
+    <div id="syncStatus" class="sync-status hidden"></div>
     <div id="reportBody"></div>
 
     <!-- Teacher pastes the student's code to read the record on this device -->
@@ -1990,10 +2001,38 @@ document.getElementById('doImportBtn').addEventListener('click', ()=>{
   }
 });
 
-document.getElementById('openReportBtn').addEventListener('click', ()=>{
+// Pull the latest before showing the report, so opening it is enough to see
+// what the student has done since last time.
+async function refreshReport(){
+  const status = document.getElementById('syncStatus');
+  if(!syncReady()){
+    status.classList.add('hidden');
+    renderReport();
+    return;
+  }
+  status.classList.remove('hidden');
+  status.textContent = '☁️ 正在取得學生最新紀錄…';
+  status.className = 'sync-status';
+  const r = await syncPull();
+  if(r.ok && r.empty){
+    status.textContent = 'ℹ️ 雲端目前沒有紀錄。等學生做完一次測驗就會自動上傳。';
+  } else if(r.ok){
+    status.textContent = `☁️ 已更新：${r.words} 個錯字、${r.sessions} 筆成績`
+      + (r.at ? `（學生最後作答 ${fmtDate(r.at)}）` : '');
+    status.className = 'sync-status ok';
+  } else {
+    status.textContent = '☁️ 取不到雲端紀錄（' + (r.error || '未知原因')
+      + '）。以下是這台裝置上的資料；也可以改用回報碼匯入。';
+    status.className = 'sync-status bad';
+  }
   renderReport();
+}
+
+document.getElementById('openReportBtn').addEventListener('click', ()=>{
   showScreen(reportScreen);
+  refreshReport();
 });
+document.getElementById('syncRefreshBtn').addEventListener('click', refreshReport);
 document.getElementById('reportBackBtn').addEventListener('click', ()=>{
   renderHistory();
   showScreen(modeScreen);
@@ -2152,6 +2191,9 @@ function clearHistory(){
   p.words = {};
   syncHistoryView();
   saveHistory();
+  // Push the cleared state too, or the teacher's next pull would restore what
+  // the student just deleted.
+  if(role === 'student' && syncReady()) syncPush();
   renderHistory();
 }
 
@@ -2185,10 +2227,13 @@ const CODE_TYPE = { e:'en2zh', z:'zh2en', c:'cloze' };
 const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t' };
 const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry' };
 
-function buildTransferCode(){
+// The compact record shared by both transfer routes: the pasted code and the
+// cloud sync below send exactly this.
+function buildPayload(){
   const p = store.profiles.student;
-  const payload = {
+  return {
     v: 1,
+    t: Date.now(),
     w: Object.values(p.words).map(w => [
       w.en,
       w.count,
@@ -2199,23 +2244,12 @@ function buildTransferCode(){
       Math.round(s.date / DAY), MODE_CODE[s.mode] || 'p', s.total, s.correct
     ])
   };
-  return CODE_PREFIX + b64encode(JSON.stringify(payload));
 }
 
-// Returns a profile, or throws with a message the teacher can act on.
-function parseTransferCode(text){
-  const raw = String(text || '').trim().replace(/\s+/g, '');
-  if(!raw) throw new Error('請先貼上回報碼。');
-  if(!raw.startsWith(CODE_PREFIX)) throw new Error('這不像是回報碼（開頭應該是 VQ1.）。請確認整段都複製到了。');
-  let data;
-  try{
-    data = JSON.parse(b64decode(raw.slice(CODE_PREFIX.length)));
-  }catch(e){
-    throw new Error('回報碼看起來不完整或已損毀。請學生重新產生一次，並確認整段都複製到了。');
-  }
-  if(!data || data.v !== 1 || !Array.isArray(data.w)) throw new Error('回報碼的格式不符。');
-
-  // Chinese and unit come from this page's own word banks, not the code.
+// Rebuild a profile from a payload. Chinese and unit are looked up from this
+// page's own word banks rather than carried in the payload, which keeps it small.
+function payloadToProfile(data){
+  if(!data || data.v !== 1 || !Array.isArray(data.w)) throw new Error('資料格式不符。');
   const lookup = {};
   retrainPool().forEach(w => { lookup[w.en] = w; });
 
@@ -2248,6 +2282,87 @@ function parseTransferCode(text){
   });
   return profile;
 }
+
+function buildTransferCode(){
+  return CODE_PREFIX + b64encode(JSON.stringify(buildPayload()));
+}
+
+// Returns a profile, or throws with a message the teacher can act on.
+function parseTransferCode(text){
+  const raw = String(text || '').trim().replace(/\s+/g, '');
+  if(!raw) throw new Error('請先貼上回報碼。');
+  if(!raw.startsWith(CODE_PREFIX)) throw new Error('這不像是回報碼（開頭應該是 VQ1.）。請確認整段都複製到了。');
+  let data;
+  try{
+    data = JSON.parse(b64decode(raw.slice(CODE_PREFIX.length)));
+  }catch(e){
+    throw new Error('回報碼看起來不完整或已損毀。請學生重新產生一次，並確認整段都複製到了。');
+  }
+  try{
+    return payloadToProfile(data);
+  }catch(e){
+    throw new Error('回報碼的格式不符。');
+  }
+}
+
+// ---------------- Cloud sync (Firebase Realtime Database) ----------------
+// Filled in by the teacher — see SETUP-FIREBASE.md. Left off, everything still
+// works and the pasted transfer code above stays the way records move.
+//
+// Uses the database's plain REST interface (a GET and a PUT on one URL), so
+// there is no SDK to load. Note this cannot work inside the Claude artifact,
+// whose CSP blocks every external host — it is for the GitHub Pages site.
+const SYNC_CONFIG = {
+  enabled: false,
+  dbUrl: '',      // e.g. https://your-project-default-rtdb.firebaseio.com
+  classKey: ''    // long random string; also the path the record lives at
+};
+
+function syncReady(){
+  return !!(SYNC_CONFIG.enabled && SYNC_CONFIG.dbUrl && SYNC_CONFIG.classKey);
+}
+function syncUrl(){
+  return SYNC_CONFIG.dbUrl.replace(/\/+$/, '') + '/vocab/' + encodeURIComponent(SYNC_CONFIG.classKey) + '.json';
+}
+
+// Student -> cloud. Fire and forget: a failed upload must never block the quiz,
+// and the record is already safe in localStorage.
+async function syncPush(){
+  if(!syncReady() || role !== 'student') return { ok:false, skipped:true };
+  try{
+    const res = await fetch(syncUrl(), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildPayload())
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    lastSyncAt = Date.now();
+    return { ok:true };
+  }catch(err){
+    return { ok:false, error: String(err.message || err) };
+  }
+}
+
+// Cloud -> teacher.
+async function syncPull(){
+  if(!syncReady()) return { ok:false, skipped:true };
+  try{
+    const res = await fetch(syncUrl(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(data === null) return { ok:true, empty:true };
+    const profile = payloadToProfile(data);
+    store.profiles.student = profile;
+    if(role === 'student') syncHistoryView();
+    saveHistory();
+    return { ok:true, words: Object.keys(profile.words).length,
+             sessions: profile.sessions.length, at: data.t || null };
+  }catch(err){
+    return { ok:false, error: String(err.message || err) };
+  }
+}
+
+let lastSyncAt = null;
 
 // Teacher wiping the student's record — separate from the teacher's own.
 function clearStudentRecord(){
@@ -3012,6 +3127,16 @@ function showResult(){
     });
   }
   saveHistory();
+  // Upload in the background so the teacher sees this round without the student
+  // doing anything. Never awaited: the result screen must not wait on network.
+  if(role === 'student' && syncReady()){
+    syncPush().then(r => {
+      const el = document.getElementById('reportStatus');
+      if(!el) return;
+      el.textContent = r.ok ? '☁️ 已同步給老師' : '☁️ 尚未同步（等下次連上網路會再試）';
+      el.className = 'report-status ' + (r.ok ? 'ok' : 'pending');
+    });
+  }
 
   document.getElementById('finalScore').textContent = `${score}/${total}`;
 

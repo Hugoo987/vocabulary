@@ -13,6 +13,9 @@
 | `tools/validate.js` | 題庫驗證（查重、例句空格、語法） |
 | `tools/e2e.mjs` | 身分與紀錄系統的端對端測試 |
 | `tools/e2e-transfer.mjs` | 回報碼跨裝置傳遞的端對端測試 |
+| `tools/e2e-sync.mjs` | 自動同步的端對端測試 |
+| `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
+| `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
 
 ## 目前版本
 
@@ -43,7 +46,12 @@
 
 ### 老師想在自己的裝置上看報告
 
-紀錄存在學生的瀏覽器裡，沒有後端可以同步，所以改用回報碼傳遞：
+**方式一：自動同步（需先設定，見 `SETUP-FIREBASE.md`）**
+
+設定完成後，學生做完測驗自動上傳，老師打開報告頁自動抓最新，雙方都不用動手。
+預設是關閉的（`SYNC_CONFIG.enabled = false`），關閉時完全不影響其他功能。
+
+**方式二：回報碼（不需要任何設定，也是同步失敗時的備援）**
 
 1. 學生在錯題紀錄面板按「📤 產生回報碼給老師」，把整段代碼傳給老師（LINE 或任何能傳文字的方式）
 2. 老師在學生學習報告頁按「貼上回報碼」，貼上後按「匯入」
@@ -89,6 +97,9 @@ node tools/validate.js          # 題庫查重、語意重疊警告與例句檢�
 npx http-server -p 8099 -s .    # 另開一個終端機
 node tools/e2e.mjs              # 身分、紀錄、老師報告（需要 playwright）
 node tools/e2e-transfer.mjs     # 回報碼跨裝置傳遞
+
+node tools/mock-firebase.mjs    # 再開一個終端機
+node tools/e2e-sync.mjs         # 自動同步
 ```
 
 ## 發布
