@@ -107,6 +107,10 @@
     background:#F1EADA; border-radius:8px; padding:9px 11px;
   }
 
+  .retry-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin: 2px 0 12px; }
+  .retry-label{ font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .retry-row .pill{ padding: 5px 12px; font-size: 12px; }
+
   /* ---- Who's using the page ---- */
   .role-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width: 520px){ .role-grid{ grid-template-columns: 1fr; } }
@@ -350,6 +354,15 @@
         </div>
       </div>
       <div class="history-sub" id="historySub"></div>
+      <div class="retry-row">
+        <span class="retry-label">重練題數</span>
+        <div class="pill-row" id="retryCountRow">
+          <div class="pill" data-count="10">10 題</div>
+          <div class="pill active" data-count="20">20 題</div>
+          <div class="pill" data-count="30">30 題</div>
+          <div class="pill" data-count="9999">全部</div>
+        </div>
+      </div>
       <div id="historyList"></div>
     </div>
 
@@ -2103,7 +2116,15 @@ function renderHistory(){
   }
   panel.classList.remove('hidden');
   const totalWrong = entries.reduce((s,e)=> s + e.count, 0);
-  sub.textContent = `目前累積 ${entries.length} 個常錯單字，共答錯 ${totalWrong} 次。在「錯題重練」中答對一次，該單字就會扣 1 次紀錄。`;
+  const canRetry = retrainable().length;
+  const willAsk = Math.min(retryCount, canRetry);
+  let msg = `目前累積 ${entries.length} 個常錯單字，共答錯 ${totalWrong} 次。`
+          + `按「錯題重練」會抽 ${willAsk} 題，答對一次該單字就扣 1 次紀錄。`;
+  // Only possible if a word left both the exam scope and the review bank.
+  if(canRetry < entries.length){
+    msg += `（其中 ${entries.length - canRetry} 個字已不在目前題庫中，無法重練。）`;
+  }
+  sub.textContent = msg;
   list.innerHTML = '';
   entries.forEach(e=>{
     const row = document.createElement('div');
@@ -2424,6 +2445,14 @@ document.querySelectorAll('#reviewCountRow .pill').forEach(p=>{
     reviewCount = parseInt(p.dataset.count);
   });
 });
+document.querySelectorAll('#retryCountRow .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#retryCountRow .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    retryCount = parseInt(p.dataset.count);
+    renderHistory();
+  });
+});
 
 function poolWords(cats){
   let pool = [];
@@ -2432,6 +2461,20 @@ function poolWords(cats){
 }
 function fullPool(){
   return poolWords(ALL_CATS);
+}
+
+// Every word the student could possibly have met — the current exam scope plus
+// the whole review bank. 錯題重練 has to search this, not just fullPool():
+// most of the review bank sits outside the current scope, and a word wrong in
+// 總複習 but missing from this lookup could never be practised away, so it
+// stayed in the record forever with no way to clear it.
+function retrainPool(){
+  const byEn = new Map();
+  REVIEW_WORDS.forEach(w => byEn.set(w.en, w));
+  // The current scope wins where a word appears in both: that gloss is the one
+  // being taught right now (e.g. miss 錯過 rather than miss 小姐).
+  fullPool().forEach(w => byEn.set(w.en, w));
+  return [...byEn.values()];
 }
 function updatePoolHint(){
   const n = poolWords(selectedCats).length;
@@ -2456,6 +2499,23 @@ function shuffle(arr){
 // Pick 3 distractors whose display text (field) is guaranteed different from the
 // correct answer's text and from each other, so a question can never end up with
 // two options that are effectively "both correct".
+// Split a gloss into its separate senses, ignoring the trailing 的/地/得 so
+// that 大 and 大的 count as the same meaning.
+function sensesOf(zh){
+  return String(zh || '').split(/[；;、]/)
+    .map(s => s.replace(/[的地得]$/, '').trim())
+    .filter(Boolean);
+}
+
+// Two words clash when they share any sense. Matching on the displayed text
+// alone is not enough: asking 中翻英 for 「美國」 with USA as the answer and
+// America among the options gives two right answers, and 死 next to 死的 reads
+// as two right answers even when only one is.
+function meaningClash(a, b){
+  const sa = sensesOf(a.zh), sb = sensesOf(b.zh);
+  return sa.some(s => sb.includes(s));
+}
+
 function pickDistractors(candidatePool, correctW, field, preferSameCat){
   let primary = preferSameCat
     ? candidatePool.filter(p => p.cat === correctW.cat && p !== correctW)
@@ -2465,17 +2525,22 @@ function pickDistractors(candidatePool, correctW, field, preferSameCat){
   const usedText = new Set([correctW[field]]);
   const chosen = [];
 
-  function tryPool(list){
+  function tryPool(list, allowClash){
     for(const cand of shuffle(list)){
       if(chosen.length >= 3) break;
-      if(!usedText.has(cand[field])){
-        chosen.push(cand);
-        usedText.add(cand[field]);
-      }
+      if(usedText.has(cand[field])) continue;
+      if(!allowClash && meaningClash(correctW, cand)) continue;
+      if(!allowClash && chosen.some(c => meaningClash(c, cand))) continue;
+      chosen.push(cand);
+      usedText.add(cand[field]);
     }
   }
-  tryPool(primary);
-  if(chosen.length < 3) tryPool(fallback);
+  tryPool(primary, false);
+  if(chosen.length < 3) tryPool(fallback, false);
+  // Last resort: never render a question with fewer than four options. With
+  // pools this size it should not be reachable, but a tiny custom selection
+  // (one small unit) must still produce a usable question.
+  if(chosen.length < 3) tryPool(fallback, true);
   return chosen;
 }
 
@@ -2560,16 +2625,28 @@ function buildReviewQuiz(types, count){
 }
 
 // Review quiz: only words from the wrong-answer history.
-function startReviewQuiz(){
-  const entries = Object.values(historyData);
-  if(entries.length === 0) return;
+// How many wrong words 錯題重練 asks about; 9999 = every one on record.
+let retryCount = 20;
+
+// Wrong words that can actually be re-asked, most-missed first.
+function retrainable(){
+  const pool = retrainPool();
   const lookup = {};
-  fullPool().forEach(w=>{ lookup[w.en] = w; });
-  const list = shuffle(entries.map(e=>lookup[e.en]).filter(Boolean)).slice(0, 20);
+  pool.forEach(w=>{ lookup[w.en] = w; });
+  return Object.values(historyData)
+    .sort((a,b)=> b.count - a.count)
+    .map(e => lookup[e.en])
+    .filter(Boolean);
+}
+
+function startReviewQuiz(){
+  const available = retrainable();
+  if(available.length === 0) return;
+  const list = shuffle(available).slice(0, Math.min(retryCount, available.length));
   if(list.length === 0) return;
   mode = 'practice';
   quizIsReview = true;
-  quiz = attachQuestions(list, new Set(ALL_TYPES), fullPool());
+  quiz = attachQuestions(list, new Set(ALL_TYPES), retrainPool());
   beginQuiz();
 }
 

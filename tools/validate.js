@@ -40,6 +40,38 @@ if (!WORDS || !REVIEW_WORDS) process.exit(1);
 const flatWords = Object.entries(WORDS).flatMap(([cat, arr]) =>
   arr.map(([en, zh, sentence]) => ({ en, zh, sentence, cat })));
 
+// 拆出各個義項，並忽略語尾的「的／地／得」——「大」和「大的」算同一個意思。
+// 完全相同的中文由 checkSet 抓；這裡抓的是「語意重疊」，例如
+// America 美國；美洲 vs USA 美國，中翻英時兩個選項都對。
+function sensesOf(zh) {
+  return String(zh || '').split(/[；;、]/)
+    .map(s => s.replace(/[的地得]$/, '').trim())
+    .filter(Boolean);
+}
+
+function checkOverlap(label, list) {
+  const hits = [];
+  const seen = new Set();
+  for (const a of list) {
+    for (const b of list) {
+      if (a.en === b.en || a.zh === b.zh) continue;   // 完全相同的另外抓
+      if (!sensesOf(a.zh).some(s => sensesOf(b.zh).includes(s))) continue;
+      const key = [a.en, b.en].sort().join('|');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      hits.push(`${a.en}「${a.zh}」↔ ${b.en}「${b.zh}」`);
+    }
+  }
+  if (hits.length) {
+    // 警告而非錯誤：出題時 pickDistractors 會避開語意重疊的選項，
+    // 所以不會真的出現兩個都對。但新增單字時看到這裡，代表值得把中文分清楚。
+    console.log(`  ⚠ ${label} 有 ${hits.length} 組語意重疊（出題已自動避開，但建議區分清楚）：`);
+    hits.forEach(h => console.log('      ' + h));
+  } else {
+    ok(`${label} 沒有語意重疊的中文`);
+  }
+}
+
 function checkSet(label, list) {
   console.log('\n' + label + '（' + list.length + ' 字）');
   const seen = { en: new Map(), zh: new Map() };
@@ -56,6 +88,7 @@ function checkSet(label, list) {
   // 中文意思重複最致命：會出現「兩個選項都對」
   dupZh.length ? fail('重複的中文意思：' + dupZh.join('、')) : ok('沒有重複的中文意思');
   noBlank.length ? fail('例句缺少 ___ 空格：' + noBlank.join('、')) : ok('每個例句都含有 ___ 空格');
+  checkOverlap(label, list);
 }
 
 checkSet('本次考試範圍 WORDS', flatWords);
