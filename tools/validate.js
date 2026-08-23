@@ -26,10 +26,11 @@ try {
 }
 
 // 2. 取出題庫
-const grab = (name, open, close) => {
-  const re = new RegExp('const ' + name + ' = \\' + open + '[\\s\\S]*?\\n\\' + close + ';');
-  const m = js.match(re);
-  if (!m) { fail('找不到 ' + name); return null; }
+const grab = (name, open, close, optional) => {
+  // 先試多行版本，再試單行版本（空物件 {} 會寫在同一行）
+  const m = js.match(new RegExp('const ' + name + ' = \\' + open + '[\\s\\S]*?\\n\\' + close + ';'))
+         || js.match(new RegExp('const ' + name + ' = \\' + open + '[^\\n]*?\\' + close + ';'));
+  if (!m) { if (!optional) fail('找不到 ' + name); return null; }
   return vm.runInNewContext('(' + m[0].replace('const ' + name + ' = ', '').replace(/;$/, '') + ')');
 };
 const WORDS = grab('WORDS', '{', '}');
@@ -91,9 +92,61 @@ function checkSet(label, list) {
   checkOverlap(label, list);
 }
 
+// 額外例句（ALT_SENTENCES）的品質檢查
+const ALT = grab('ALT_SENTENCES', '{', '}', true) || {};
+
+function checkAltSentences() {
+  const all = new Map();                       // en -> 第一句
+  flatWords.forEach(w => all.set(w.en, w.sentence));
+  REVIEW_WORDS.forEach(w => { if (!all.has(w.en)) all.set(w.en, w.sentence); });
+
+  console.log('\n額外例句 ALT_SENTENCES');
+  const totalAlt = Object.values(ALT).reduce((n, a) => n + (Array.isArray(a) ? a.length : 0), 0);
+  const covered = Object.keys(ALT).filter(en => Array.isArray(ALT[en]) && ALT[en].length).length;
+  console.log(`  共 ${totalAlt} 句，涵蓋 ${covered} / ${all.size} 個單字`);
+
+  const noBlank = [], giveaway = [], sameAsFirst = [], unknown = [], tooShort = [], dupWithin = [];
+  for (const [en, arr] of Object.entries(ALT)) {
+    if (!all.has(en)) { unknown.push(en); continue; }
+    if (!Array.isArray(arr)) { unknown.push(en); continue; }
+    const first = all.get(en);
+    const seen = new Set([first]);
+    arr.forEach(s => {
+      if (!s.includes('___')) noBlank.push(`${en}: ${s}`);
+      // 句子裡若已出現答案本身就是送分題
+      const bare = s.replace('___', ' ');
+      if (new RegExp('\\b' + en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(bare))
+        giveaway.push(`${en}: ${s}`);
+      if (s === first) sameAsFirst.push(en);
+      if (seen.has(s)) dupWithin.push(`${en}: ${s}`);
+      seen.add(s);
+      if (s.split(/\s+/).length < 5) tooShort.push(`${en}: ${s}`);
+    });
+  }
+  const show = (list, label) => list.length
+    ? fail(`${label}（${list.length}）：` + list.slice(0, 8).join(' ｜ ') + (list.length > 8 ? ' …' : ''))
+    : ok(label.replace(/^有/, '沒有'));
+
+  show(unknown,     '有不存在於題庫的單字');
+  show(noBlank,     '有例句缺少 ___ 空格');
+  show(giveaway,    '有例句直接出現答案（送分題）');
+  show(sameAsFirst, '有例句與第一句重複');
+  show(dupWithin,   '有同一個字的例句互相重複');
+  show(tooShort,    '有例句過短（少於 5 個字，線索不足）');
+
+  const missing = [...all.keys()].filter(en => !ALT[en] || !ALT[en].length);
+  if (missing.length) {
+    console.log(`  ⏳ 還有 ${missing.length} 個字只有 1 句：` + missing.slice(0, 10).join('、')
+      + (missing.length > 10 ? ' …' : ''));
+  } else {
+    ok('每個單字都至少有 2 句例句');
+  }
+}
+
 checkSet('本次考試範圍 WORDS', flatWords);
 console.log('  單元組成：' + Object.entries(WORDS).map(([c, a]) => c + ' ' + a.length).join('、'));
 checkSet('總複習題庫 REVIEW_WORDS', REVIEW_WORDS);
+checkAltSentences();
 
 // 3. 本次範圍必須已併入總複習題庫
 const reviewEn = new Set(REVIEW_WORDS.map(w => w.en.toLowerCase()));
