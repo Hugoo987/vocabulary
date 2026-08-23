@@ -14,6 +14,8 @@
 | `tools/e2e.mjs` | 身分與紀錄系統的端對端測試 |
 | `tools/e2e-transfer.mjs` | 回報碼跨裝置傳遞的端對端測試 |
 | `tools/e2e-sync.mjs` | 自動同步的端對端測試 |
+| `data/alt-sentences.json` | 每個單字的第二句例句（來源檔） |
+| `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
 
@@ -43,6 +45,19 @@
 - 歷次作答紀錄：日期、模式、分數、等第
 - 清除學生紀錄（需按兩次確認）
 - 匯入學生回報碼（見下）
+
+### 例句
+
+每個單字都有**至少 2 句例句**，出克漏字時隨機挑一句，避免學生背句子而不是背單字。
+
+改例句請改 `data/alt-sentences.json`，然後跑：
+
+```bash
+node tools/apply-alt-sentences.js && node tools/validate.js
+```
+
+驗證會擋掉：沒有 `___`、句子裡出現答案（送分題）、與第一句重複、過短、
+以及**與同字的另一句太相似**（詞彙重疊率 ≥0.35 就不算另一種句型）。
 
 ### 老師想在自己的裝置上看報告
 

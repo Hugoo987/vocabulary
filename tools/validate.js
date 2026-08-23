@@ -134,6 +134,32 @@ function checkAltSentences() {
   show(dupWithin,   '有同一個字的例句互相重複');
   show(tooShort,    '有例句過短（少於 5 個字，線索不足）');
 
+  // 「兩種句型」的實質檢查：只換幾個字不算另一種句型。
+  // 用詞彙重疊率（Jaccard）當代理指標，重疊太高代表句子幾乎一樣。
+  const tokens = s => s.toLowerCase().replace(/___/g, ' ').replace(/[^a-z ]/g, ' ')
+    .split(/\s+/).filter(w => w.length > 2);
+  const overlap = (a, b) => {
+    const A = new Set(tokens(a)), B = new Set(tokens(b));
+    if (!A.size || !B.size) return 0;
+    const shared = [...A].filter(w => B.has(w)).length;
+    return shared / new Set([...A, ...B]).size;
+  };
+  const tooSimilar = [];
+  for (const [en, arr] of Object.entries(ALT)) {
+    if (!all.has(en) || !Array.isArray(arr)) continue;
+    const pool = [all.get(en), ...arr];
+    for (let i = 0; i < pool.length; i++) {
+      for (let j = i + 1; j < pool.length; j++) {
+        const r = overlap(pool[i], pool[j]);
+        if (r >= 0.35) tooSimilar.push(`${en}(${r.toFixed(2)})`);
+      }
+    }
+  }
+  tooSimilar.length
+    ? fail(`有例句與同字的另一句太相似，算不上第二種句型（${tooSimilar.length}）：`
+        + tooSimilar.slice(0, 10).join('、') + (tooSimilar.length > 10 ? ' …' : ''))
+    : ok('每個字的兩句例句結構夠不同');
+
   const missing = [...all.keys()].filter(en => !ALT[en] || !ALT[en].length);
   if (missing.length) {
     console.log(`  ⏳ 還有 ${missing.length} 個字只有 1 句：` + missing.slice(0, 10).join('、')

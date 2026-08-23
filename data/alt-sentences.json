@@ -297,7 +297,7 @@
     "Children usually ___ animals and cartoons."
   ],
   "mind": [
-    "Would you ___ closing the window?"
+    "Would you ___ holding this for me?"
   ],
   "need": [
     "You do not ___ to bring anything to the picnic."
@@ -1401,7 +1401,7 @@
     "We usually have ___ at half past twelve."
   ],
   "dinner": [
-    "The whole family eats ___ together on Sundays."
+    "We invited the neighbors over for ___ ."
   ],
   "meal": [
     "That was the best ___ I have had all year."
@@ -1416,7 +1416,7 @@
     "A cold ___ goes well with pizza."
   ],
   "drink": [
-    "Remember to ___ more water in hot weather."
+    "What would you like to ___ with your meal?"
   ],
   "ice": [
     "Put some ___ in the glass to cool it down."
@@ -1437,7 +1437,7 @@
     "Plants will die without enough ___ ."
   ],
   "cake": [
-    "He blew out the candles on the ___ ."
+    "This ___ is made with three kinds of chocolate."
   ],
   "candy": [
     "Too much ___ is bad for your teeth."
@@ -1461,7 +1461,7 @@
     "Grandma baked an apple ___ for dessert."
   ],
   "popcorn": [
-    "We bought a big bucket of ___ at the cinema."
+    "The smell of fresh ___ filled the room."
   ],
   "toast": [
     "He spread jam on his ___ this morning."
@@ -1491,10 +1491,10 @@
     "Everything on the table smelled ___ ."
   ],
   "yummy": [
-    "The children shouted that the cake was ___ ."
+    "Grandma's dumplings are always ___ ."
   ],
   "sweet": [
-    "This mango is much too ___ for me."
+    "Her singing voice was soft and ___ ."
   ],
   "bake": [
     "She will ___ a loaf of bread tonight."
@@ -1503,7 +1503,7 @@
     "___ the water before you drink it."
   ],
   "burn": [
-    "Be careful not to ___ your hand on the pot."
+    "Dry wood will ___ much faster than wet wood."
   ],
   "eat": [
     "What time do you usually ___ dinner?"
@@ -1521,7 +1521,7 @@
     "It takes practice to use ___ well."
   ],
   "cup": [
-    "Pour the tea into a small ___ ."
+    "He broke his favorite ___ this morning."
   ],
   "dish": [
     "This ___ is the restaurant's specialty."
@@ -1533,15 +1533,1410 @@
     "She filled a tall ___ with cold water."
   ],
   "knife": [
-    "Cut the bread with a sharp ___ ."
+    "Never point a ___ at anyone."
   ],
   "plate": [
     "He put the grilled fish on a white ___ ."
   ],
   "spoon": [
-    "Stir the soup with a large ___ ."
+    "The baby learned to hold a ___ by herself."
   ],
   "straw": [
-    "She drank the juice through a ___ ."
+    "Please do not use a plastic ___ ; it harms the ocean."
+  ],
+  "coat": [
+    "She hung her ___ on the hook by the door."
+  ],
+  "dress": [
+    "This ___ is too tight around the waist."
+  ],
+  "jacket": [
+    "His leather ___ hangs behind the door."
+  ],
+  "jeans": [
+    "These blue ___ are torn at the knee."
+  ],
+  "pants": [
+    "These ___ are much too long for me."
+  ],
+  "shirt": [
+    "He ironed his white ___ for the interview."
+  ],
+  "T-shirt": [
+    "She sleeps in an old cotton ___ ."
+  ],
+  "shorts": [
+    "Wear ___ if you are playing basketball."
+  ],
+  "skirt": [
+    "The wind blew her long ___ around."
+  ],
+  "sweater": [
+    "Grandma knitted this ___ by hand."
+  ],
+  "uniform": [
+    "His ___ was neatly ironed for inspection."
+  ],
+  "vest": [
+    "He put a warm ___ under his coat."
+  ],
+  "bag": [
+    "Carry your heavy books in this ___ ."
+  ],
+  "belt": [
+    "His trousers need a ___ to stay up."
+  ],
+  "cap": [
+    "He turned his ___ backwards."
+  ],
+  "comb": [
+    "Use a ___ to fix your messy hair."
+  ],
+  "glove": [
+    "She lost one ___ on the bus."
+  ],
+  "hat": [
+    "Wear a ___ to keep the sun off your face."
+  ],
+  "mask": [
+    "Doctors put on a ___ before surgery."
+  ],
+  "pocket": [
+    "The keys are in my coat ___ ."
+  ],
+  "ring": [
+    "She wears a silver ___ on her finger."
+  ],
+  "shoe": [
+    "There is a small stone in my left ___ ."
+  ],
+  "sock": [
+    "One ___ always disappears in the wash."
+  ],
+  "tie": [
+    "Father wears a dark ___ to work."
+  ],
+  "umbrella": [
+    "Take an ___ ; it looks like rain."
+  ],
+  "wallet": [
+    "He left his ___ on the counter."
+  ],
+  "clothes": [
+    "Fold your ___ and put them away."
+  ],
+  "wear": [
+    "What will you ___ to the party?"
+  ],
+  "color": [
+    "What ___ is your new bicycle?"
+  ],
+  "black": [
+    "The night sky was completely ___ ."
+  ],
+  "blue": [
+    "The ocean looks deep ___ today."
+  ],
+  "brown": [
+    "The bear has thick ___ fur."
+  ],
+  "gray": [
+    "His hair has turned ___ over the years."
+  ],
+  "green": [
+    "The traffic light turned ___ at last."
+  ],
+  "pink": [
+    "She painted her bedroom walls ___ ."
+  ],
+  "purple": [
+    "Grapes are usually ___ or green."
+  ],
+  "red": [
+    "Stop when the light is ___ ."
+  ],
+  "white": [
+    "The bride wore a long ___ gown."
+  ],
+  "yellow": [
+    "Sunflowers are bright ___ ."
+  ],
+  "sport": [
+    "Swimming is my favorite ___ ."
+  ],
+  "badminton": [
+    "We play ___ in the gym on Fridays."
+  ],
+  "baseball": [
+    "He caught the ___ with one hand."
+  ],
+  "basketball": [
+    "She practices ___ after school every day."
+  ],
+  "dodge ball": [
+    "Our class played ___ in the yard."
+  ],
+  "Frisbee": [
+    "We threw a ___ back and forth on the sand."
+  ],
+  "race": [
+    "He came in second in the ___ ."
+  ],
+  "soccer": [
+    "___ is the most popular game in the world."
+  ],
+  "tennis": [
+    "They booked a ___ court for Sunday."
+  ],
+  "barbecue": [
+    "We had a ___ in the backyard."
+  ],
+  "camp": [
+    "We will ___ near the lake this weekend."
+  ],
+  "climb": [
+    "It takes two hours to ___ this hill."
+  ],
+  "dance": [
+    "Shall we ___ to this song?"
+  ],
+  "draw": [
+    "Can you ___ a map for me?"
+  ],
+  "exercise": [
+    "Doctors say we should ___ every day."
+  ],
+  "hike": [
+    "They plan to ___ through the forest."
+  ],
+  "jog": [
+    "I ___ around the park each morning."
+  ],
+  "picnic": [
+    "We had a ___ under the big tree."
+  ],
+  "roller skate": [
+    "The children learned to ___ in the park."
+  ],
+  "run": [
+    "How fast can you ___ ?"
+  ],
+  "sail": [
+    "Learning to ___ takes many months."
+  ],
+  "sing": [
+    "Birds begin to ___ at sunrise."
+  ],
+  "skate": [
+    "You can ___ on the frozen pond."
+  ],
+  "stamp": [
+    "Stick a ___ on the envelope."
+  ],
+  "surf": [
+    "He learned to ___ on his summer trip."
+  ],
+  "swim": [
+    "Fish ___ upstream to lay their eggs."
+  ],
+  "trip": [
+    "Our school ___ was cancelled by the storm."
+  ],
+  "hobby": [
+    "Do you have any ___ besides reading?"
+  ],
+  "band": [
+    "Their rock ___ plays every Friday night."
+  ],
+  "cards": [
+    "They played ___ all evening."
+  ],
+  "chess": [
+    "A game of ___ can last for hours."
+  ],
+  "comic": [
+    "That ___ was first drawn in the 1960s."
+  ],
+  "computer game": [
+    "He spends far too long on that ___ ."
+  ],
+  "doll": [
+    "This antique ___ is over a hundred years old."
+  ],
+  "drum": [
+    "He beats the ___ loudly in the parade."
+  ],
+  "flute": [
+    "She plays the ___ in the orchestra."
+  ],
+  "game": [
+    "Let us play a quiet ___ indoors."
+  ],
+  "guitar": [
+    "He learned three chords on the ___ ."
+  ],
+  "kite": [
+    "The ___ flew high above the beach."
+  ],
+  "movie": [
+    "That ___ made everyone in the room cry."
+  ],
+  "music": [
+    "Turn the ___ down; I am studying."
+  ],
+  "paint": [
+    "They will ___ the fence white."
+  ],
+  "piano": [
+    "She practices the ___ for an hour daily."
+  ],
+  "song": [
+    "This ___ always cheers me up."
+  ],
+  "team": [
+    "Our ___ won every match this season."
+  ],
+  "toy": [
+    "The baby dropped his ___ on the floor."
+  ],
+  "violin": [
+    "The ___ has four strings."
+  ],
+  "lose": [
+    "Try not to ___ your ticket."
+  ],
+  "play": [
+    "Who will you ___ in the final round?"
+  ],
+  "win": [
+    "Whoever scores first will probably ___ ."
+  ],
+  "fan": [
+    "Every ___ stood up and cheered."
+  ],
+  "apartment": [
+    "They rent a small ___ near the station."
+  ],
+  "house": [
+    "Their ___ has a bright red roof."
+  ],
+  "home": [
+    "There is no place like ___ ."
+  ],
+  "bathroom": [
+    "The ___ is at the end of the hall."
+  ],
+  "room": [
+    "This ___ gets plenty of sunlight."
+  ],
+  "bedroom": [
+    "Her ___ is painted light blue."
+  ],
+  "dining room": [
+    "The family gathers in the ___ at six."
+  ],
+  "living room": [
+    "We watch television in the ___ ."
+  ],
+  "kitchen": [
+    "Something is burning in the ___ ."
+  ],
+  "garden": [
+    "Roses bloom in her back ___ ."
+  ],
+  "yard": [
+    "The children play in the front ___ ."
+  ],
+  "balcony": [
+    "From the ___ we could see the whole city."
+  ],
+  "door": [
+    "Someone is knocking at the ___ ."
+  ],
+  "gate": [
+    "Our flight leaves from ___ twelve."
+  ],
+  "floor": [
+    "Do not walk on the wet ___ ."
+  ],
+  "stairs": [
+    "He ran up the ___ two at a time."
+  ],
+  "wall": [
+    "Hang the painting on that ___ ."
+  ],
+  "window": [
+    "Please shut the ___ ; it is cold."
+  ],
+  "bath": [
+    "She takes a hot ___ every night."
+  ],
+  "road": [
+    "This ___ leads all the way to the airport."
+  ],
+  "street": [
+    "Look both ways before crossing the ___ ."
+  ],
+  "build": [
+    "They plan to ___ a bridge here."
+  ],
+  "fix": [
+    "Can you ___ my broken bicycle?"
+  ],
+  "wash": [
+    "I need to ___ these muddy clothes."
+  ],
+  "bed": [
+    "Make your ___ before you leave."
+  ],
+  "bench": [
+    "The ___ was still wet from the morning rain."
+  ],
+  "chair": [
+    "Pull up a ___ and join us."
+  ],
+  "couch": [
+    "The cat sleeps on the ___ all day."
+  ],
+  "desk": [
+    "Her books are stacked on the ___ ."
+  ],
+  "table": [
+    "Set the ___ for four people."
+  ],
+  "drawer": [
+    "The scissors are in the top ___ ."
+  ],
+  "sofa": [
+    "He fell asleep on the ___ watching TV."
+  ],
+  "lamp": [
+    "Turn on the ___ ; it is too dark to read."
+  ],
+  "light": [
+    "The ___ from the window fell across the floor."
+  ],
+  "tub": [
+    "The baby splashed happily in the ___ ."
+  ],
+  "blanket": [
+    "Pull the ___ up if you feel cold."
+  ],
+  "towel": [
+    "Dry your hands with this ___ ."
+  ],
+  "mat": [
+    "She rolled out a yoga ___ on the floor."
+  ],
+  "candle": [
+    "The ___ flickered in the cold draft."
+  ],
+  "key": [
+    "I cannot find the ___ to the back door."
+  ],
+  "pot": [
+    "Boil the water in a large ___ ."
+  ],
+  "basket": [
+    "Put the dirty laundry in that ___ ."
+  ],
+  "computer": [
+    "My ___ crashed while I was writing."
+  ],
+  "camera": [
+    "He brought his ___ to the concert."
+  ],
+  "machine": [
+    "This washing ___ is very quiet."
+  ],
+  "radio": [
+    "She listens to the ___ while cooking."
+  ],
+  "refrigerator": [
+    "The ___ hums quietly all through the night."
+  ],
+  "telephone": [
+    "The ___ rang three times and stopped."
+  ],
+  "television": [
+    "Do not sit so close to the ___ ."
+  ],
+  "video": [
+    "They watched an old ___ from the nineties."
+  ],
+  "tape": [
+    "He still keeps a box of old ___ s."
+  ],
+  "tape recorder": [
+    "An old ___ sat on the shelf collecting dust."
+  ],
+  "school": [
+    "Our ___ has about six hundred students."
+  ],
+  "elementary school": [
+    "My cousin just started ___ this year."
+  ],
+  "junior high school": [
+    "He will enter ___ next September."
+  ],
+  "senior high school": [
+    "She studies science at a ___ downtown."
+  ],
+  "classroom": [
+    "Our ___ is on the third floor."
+  ],
+  "gym": [
+    "The basketball match is held in the ___ ."
+  ],
+  "playground": [
+    "Children run around the ___ at recess."
+  ],
+  "library": [
+    "I borrowed three novels from the ___ ."
+  ],
+  "class": [
+    "Our English ___ starts at nine."
+  ],
+  "seesaw": [
+    "Two children balanced on the ___ ."
+  ],
+  "slide": [
+    "The ___ in the playground is made of metal."
+  ],
+  "classmate": [
+    "My ___ lent me her notes."
+  ],
+  "friend": [
+    "A true ___ helps you when you are down."
+  ],
+  "student": [
+    "Every ___ must bring a dictionary."
+  ],
+  "teacher": [
+    "Our new ___ comes from Canada."
+  ],
+  "cheerleader": [
+    "She became a ___ for the school team."
+  ],
+  "class leader": [
+    "The ___ collects everyone's homework."
+  ],
+  "blackboard": [
+    "Someone erased everything from the ___ ."
+  ],
+  "book": [
+    "This ___ has over four hundred pages."
+  ],
+  "chalk": [
+    "He drew a circle with white ___ ."
+  ],
+  "dictionary": [
+    "A good ___ shows how each word is pronounced."
+  ],
+  "envelope": [
+    "Write the address clearly on the ___ ."
+  ],
+  "file": [
+    "Keep all these papers in one ___ ."
+  ],
+  "eraser": [
+    "May I borrow your ___ ?"
+  ],
+  "glue": [
+    "Use a little ___ to stick the corners."
+  ],
+  "letter": [
+    "Each ___ of the alphabet has its own sound."
+  ],
+  "map": [
+    "Spread the ___ out on the table."
+  ],
+  "marker": [
+    "The ___ has dried out and will not write."
+  ],
+  "notebook": [
+    "He fills a whole ___ every term."
+  ],
+  "page": [
+    "Turn to the next ___ , please."
+  ],
+  "paper": [
+    "Write your answers on a clean sheet of ___ ."
+  ],
+  "pen": [
+    "This ___ has run out of ink."
+  ],
+  "pencil": [
+    "Sharpen your ___ before the test."
+  ],
+  "pencil box": [
+    "All her pens fit in one ___ ."
+  ],
+  "picture": [
+    "There is a ___ of a whale on the cover."
+  ],
+  "postcard": [
+    "He sent a ___ from Paris."
+  ],
+  "present": [
+    "She unwrapped her birthday ___ slowly."
+  ],
+  "ruler": [
+    "My ___ snapped into two pieces."
+  ],
+  "workbook": [
+    "Finish page ten of your ___ tonight."
+  ],
+  "art": [
+    "Modern ___ can be hard to understand."
+  ],
+  "history": [
+    "We study Chinese ___ this term."
+  ],
+  "language": [
+    "English is a useful ___ to learn."
+  ],
+  "math": [
+    "He solved the ___ problem in one minute."
+  ],
+  "PE": [
+    "We have ___ twice a week."
+  ],
+  "science": [
+    "___ explains how the world works."
+  ],
+  "course": [
+    "This ___ lasts eight weeks in total."
+  ],
+  "lesson": [
+    "Today's ___ is about the water cycle."
+  ],
+  "item": [
+    "Only one ___ was missing from the box."
+  ],
+  "answer": [
+    "Nobody knew the ___ to that question."
+  ],
+  "example": [
+    "Give me one ___ of a mammal."
+  ],
+  "grade": [
+    "He is in the sixth ___ this year."
+  ],
+  "homework": [
+    "Finish your ___ before you play."
+  ],
+  "knowledge": [
+    "Her ___ of plants is impressive."
+  ],
+  "problem": [
+    "This math ___ is really hard."
+  ],
+  "question": [
+    "Does anyone have a ___ ?"
+  ],
+  "quiz": [
+    "He failed the ___ but passed the final exam."
+  ],
+  "test": [
+    "He studied all night for the ___ ."
+  ],
+  "story": [
+    "Grandpa told us a ___ about his childhood."
+  ],
+  "ask": [
+    "May I ___ you something?"
+  ],
+  "learn": [
+    "It is never too late to ___ ."
+  ],
+  "listen": [
+    "He likes to ___ to jazz while cooking."
+  ],
+  "mark": [
+    "___ the correct answers with a check."
+  ],
+  "pass": [
+    "You need sixty points to ___ ."
+  ],
+  "practice": [
+    "Coaches make the team ___ before every match."
+  ],
+  "read": [
+    "How many books do you ___ a month?"
+  ],
+  "repeat": [
+    "Could you ___ the question, please?"
+  ],
+  "speak": [
+    "Does anyone here ___ Japanese?"
+  ],
+  "spell": [
+    "How do you ___ your last name?"
+  ],
+  "study": [
+    "She stayed up late to ___ for the exam."
+  ],
+  "talk": [
+    "Let us ___ about this over lunch."
+  ],
+  "say": [
+    "I could not hear what she tried to ___ ."
+  ],
+  "teach": [
+    "He will ___ us how to swim."
+  ],
+  "understand": [
+    "I do not ___ this sentence at all."
+  ],
+  "write": [
+    "She hopes to ___ a novel one day."
+  ],
+  "here": [
+    "Please wait ___ until I come back."
+  ],
+  "there": [
+    "Put the box over ___ by the wall."
+  ],
+  "middle": [
+    "He sat in the ___ seat of the row."
+  ],
+  "left": [
+    "Turn ___ at the traffic lights."
+  ],
+  "right": [
+    "The post office is on your ___ ."
+  ],
+  "back": [
+    "The garden is at the ___ of the house."
+  ],
+  "front": [
+    "A tall man sat in ___ of me."
+  ],
+  "east": [
+    "Japan lies to the ___ of Taiwan."
+  ],
+  "west": [
+    "They drove ___ toward the mountains."
+  ],
+  "south": [
+    "Kaohsiung lies in the ___ of Taiwan."
+  ],
+  "north": [
+    "The wind blows from the ___ in January."
+  ],
+  "top": [
+    "Write the date at the ___ of the page."
+  ],
+  "bank": [
+    "I need to go to the ___ to withdraw money."
+  ],
+  "bakery": [
+    "The ___ opens at six every morning."
+  ],
+  "bookstore": [
+    "She spent a whole hour in the ___ ."
+  ],
+  "church": [
+    "The old ___ has beautiful stained windows."
+  ],
+  "department store": [
+    "The ___ has a big sale this weekend."
+  ],
+  "factory": [
+    "His father works at a shoe ___ ."
+  ],
+  "fast-food restaurant": [
+    "Children love eating at a ___ ."
+  ],
+  "fire station": [
+    "The ___ is only two blocks away."
+  ],
+  "flower shop": [
+    "The ___ on the corner closes at seven."
+  ],
+  "hospital": [
+    "She works night shifts at the city ___ ."
+  ],
+  "hotel": [
+    "Check out of the ___ before eleven."
+  ],
+  "market": [
+    "Vegetables are cheaper at the morning ___ ."
+  ],
+  "movie theater": [
+    "Please silence your phone inside the ___ ."
+  ],
+  "museum": [
+    "The ___ displays ancient pottery."
+  ],
+  "office": [
+    "She works in an ___ downtown."
+  ],
+  "park": [
+    "Let us have lunch in the ___ ."
+  ],
+  "post office": [
+    "You can buy stamps at the ___ ."
+  ],
+  "police station": [
+    "He reported the lost wallet at the ___ ."
+  ],
+  "rest room": [
+    "Excuse me, where is the ___ ?"
+  ],
+  "restaurant": [
+    "This ___ serves excellent seafood."
+  ],
+  "shop": [
+    "The corner ___ sells milk and bread."
+  ],
+  "store": [
+    "That ___ closes at ten every night."
+  ],
+  "supermarket": [
+    "We buy our groceries at the ___ ."
+  ],
+  "temple": [
+    "Many people visit the ___ at New Year."
+  ],
+  "theater": [
+    "The ___ was built over a century ago."
+  ],
+  "zoo": [
+    "The pandas at the ___ are very popular."
+  ],
+  "city": [
+    "Life in the ___ is noisy but exciting."
+  ],
+  "farm": [
+    "They raise cows on their ___ ."
+  ],
+  "place": [
+    "This is a quiet ___ to study."
+  ],
+  "town": [
+    "He grew up in a small fishing ___ ."
+  ],
+  "transportation": [
+    "Public ___ in this city is cheap."
+  ],
+  "airplane": [
+    "The ___ landed safely in the storm."
+  ],
+  "bicycle": [
+    "The front tire of my ___ has gone flat."
+  ],
+  "boat": [
+    "A fishing ___ was tied to the wooden pier."
+  ],
+  "bus": [
+    "The ___ was crowded this morning."
+  ],
+  "car": [
+    "Their ___ broke down on the highway."
+  ],
+  "motorcycle": [
+    "A ___ uses far less fuel than a car."
+  ],
+  "scooter": [
+    "She parks her ___ outside the shop."
+  ],
+  "ship": [
+    "The ___ sank during a violent storm."
+  ],
+  "taxi": [
+    "We took a ___ because it was raining."
+  ],
+  "train": [
+    "The ___ to Taichung leaves at noon."
+  ],
+  "truck": [
+    "A heavy ___ blocked the narrow road."
+  ],
+  "airport": [
+    "We arrived at the ___ two hours early."
+  ],
+  "bus stop": [
+    "Wait for me at the ___ ."
+  ],
+  "station": [
+    "The ___ was full of tired travelers."
+  ],
+  "train station": [
+    "The ___ is being renovated."
+  ],
+  "block": [
+    "Traffic was stopped for an entire ___ ."
+  ],
+  "bridge": [
+    "The ___ crosses the widest river."
+  ],
+  "metro": [
+    "Take the ___ ; it is faster than a bus."
+  ],
+  "MRT": [
+    "The ___ runs until midnight."
+  ],
+  "railway": [
+    "Never walk along the ___ ."
+  ],
+  "sidewalk": [
+    "Snow covered the ___ outside our door."
+  ],
+  "traffic": [
+    "The ___ was terrible this morning."
+  ],
+  "arrive": [
+    "What time will they ___ ?"
+  ],
+  "cross": [
+    "A bridge lets you ___ without getting wet."
+  ],
+  "drive": [
+    "He is too young to ___ a car."
+  ],
+  "fly": [
+    "Some birds ___ thousands of miles."
+  ],
+  "ride": [
+    "Would you like to ___ with us?"
+  ],
+  "turn": [
+    "___ around and look behind you."
+  ],
+  "centimeter": [
+    "The plant grew two ___ s in a single week."
+  ],
+  "gram": [
+    "Add fifty ___ s of butter to the bowl."
+  ],
+  "kilogram": [
+    "The newborn baby weighs three ___ s."
+  ],
+  "inch": [
+    "The snow was six ___ es deep."
+  ],
+  "mile": [
+    "We walked one ___ to the station."
+  ],
+  "pound": [
+    "The fish weighed almost two ___ s."
+  ],
+  "circle": [
+    "Draw a ___ around the correct answer."
+  ],
+  "dot": [
+    "There is a small red ___ on the map."
+  ],
+  "line": [
+    "Stand behind the yellow ___ ."
+  ],
+  "point": [
+    "The two roads meet at this ___ ."
+  ],
+  "row": [
+    "We sat in the very front ___ ."
+  ],
+  "shape": [
+    "What ___ is this cookie?"
+  ],
+  "square": [
+    "The crowd gathered in the town ___ ."
+  ],
+  "big": [
+    "That is a ___ mistake to make."
+  ],
+  "far": [
+    "How ___ is it to the beach?"
+  ],
+  "high": [
+    "The wall is too ___ to climb."
+  ],
+  "large": [
+    "She ordered a ___ bowl of noodles."
+  ],
+  "little": [
+    "A ___ girl waved at us from the window."
+  ],
+  "long": [
+    "It was a ___ walk home."
+  ],
+  "low": [
+    "Speak in a ___ voice in the library."
+  ],
+  "medium": [
+    "I would like a ___ coffee, please."
+  ],
+  "small": [
+    "These shoes are too ___ for me."
+  ],
+  "straight": [
+    "Walk ___ ahead until you see the park."
+  ],
+  "round": [
+    "The table is ___ , not square."
+  ],
+  "bottle": [
+    "Please recycle every plastic ___ ."
+  ],
+  "dozen": [
+    "We need a ___ eggs for the cake."
+  ],
+  "package": [
+    "A ___ arrived for you this morning."
+  ],
+  "pair": [
+    "Bring a ___ of scissors to art class."
+  ],
+  "size": [
+    "This shirt comes in three different ___ s."
+  ],
+  "country": [
+    "Which ___ would you like to visit?"
+  ],
+  "world": [
+    "She dreams of traveling around the ___ ."
+  ],
+  "America": [
+    "He moved to ___ about ten years ago."
+  ],
+  "China": [
+    "Millions of people in ___ speak Mandarin."
+  ],
+  "Taiwan": [
+    "___ is famous for its night markets."
+  ],
+  "USA": [
+    "She flew to the ___ to study medicine."
+  ],
+  "Chinese": [
+    "She is learning to write ___ characters."
+  ],
+  "English": [
+    "He speaks ___ with a British accent."
+  ],
+  "Chinese New Year": [
+    "Families gather for dinner at ___ ."
+  ],
+  "lantern": [
+    "The children carried a paper ___ ."
+  ],
+  "Moon Festival": [
+    "We eat pomelos during the ___ ."
+  ],
+  "Teacher's Day": [
+    "Our school holds a ceremony for ___ ."
+  ],
+  "Christmas": [
+    "They decorate the tree before ___ ."
+  ],
+  "Easter": [
+    "___ always falls on a Sunday in spring."
+  ],
+  "Halloween": [
+    "She dressed as a witch for ___ ."
+  ],
+  "New Year's Eve": [
+    "The restaurant is fully booked for ___ ."
+  ],
+  "New Year's Day": [
+    "Most offices are closed on ___ ."
+  ],
+  "Mother's Day": [
+    "He gave his mom flowers on ___ ."
+  ],
+  "Father's Day": [
+    "We took Dad to dinner on ___ ."
+  ],
+  "festival": [
+    "The lantern ___ lasts three days."
+  ],
+  "holiday": [
+    "Monday is a national ___ ."
+  ],
+  "vacation": [
+    "They went on ___ to Japan."
+  ],
+  "celebrate": [
+    "How do you ___ your birthday?"
+  ],
+  "actor": [
+    "That ___ has won three awards."
+  ],
+  "actress": [
+    "The ___ played the queen beautifully."
+  ],
+  "boss": [
+    "My ___ asked me to work late."
+  ],
+  "businessman": [
+    "The ___ travels abroad every month."
+  ],
+  "clerk": [
+    "The ___ at the counter was very polite."
+  ],
+  "cook": [
+    "The ___ prepared a wonderful meal."
+  ],
+  "dentist": [
+    "Visit the ___ twice a year."
+  ],
+  "driver": [
+    "The bus ___ waited for the old lady."
+  ],
+  "engineer": [
+    "An ___ designed this bridge."
+  ],
+  "farmer": [
+    "The ___ gets up before sunrise."
+  ],
+  "fisherman": [
+    "The ___ sold his catch at the market."
+  ],
+  "housewife": [
+    "She was a ___ for twenty years."
+  ],
+  "lawyer": [
+    "He hired a ___ to help him."
+  ],
+  "mailman": [
+    "Our dog barks whenever the ___ appears."
+  ],
+  "nurse": [
+    "A very kind ___ took care of him."
+  ],
+  "police officer": [
+    "A ___ directed the traffic."
+  ],
+  "reporter": [
+    "The ___ interviewed the mayor."
+  ],
+  "salesman": [
+    "A ___ came to our door today."
+  ],
+  "secretary": [
+    "His ___ arranged all the meetings."
+  ],
+  "shopkeeper": [
+    "The ___ knows every customer by name."
+  ],
+  "singer": [
+    "The crowd cheered when the ___ came on stage."
+  ],
+  "soldier": [
+    "The ___ served for ten years."
+  ],
+  "waiter": [
+    "The ___ brought us the menu."
+  ],
+  "waitress": [
+    "The ___ refilled our glasses."
+  ],
+  "worker": [
+    "Every ___ wore a safety helmet."
+  ],
+  "writer": [
+    "The ___ published her first novel."
+  ],
+  "business": [
+    "Their family ___ is doing very well."
+  ],
+  "job": [
+    "She found a new ___ downtown."
+  ],
+  "work": [
+    "There is a lot of ___ to finish."
+  ],
+  "weather": [
+    "What is the ___ like today?"
+  ],
+  "clear": [
+    "The sky is ___ tonight; you can see stars."
+  ],
+  "cloudy": [
+    "It was ___ all afternoon."
+  ],
+  "cold": [
+    "My hands are ___ without gloves."
+  ],
+  "cool": [
+    "That new phone design looks really ___ ."
+  ],
+  "dry": [
+    "Please ___ the dishes with this cloth."
+  ],
+  "hot": [
+    "The soup is too ___ to eat right now."
+  ],
+  "rainy": [
+    "We stayed inside on that ___ day."
+  ],
+  "snowy": [
+    "The village looks lovely on a ___ morning."
+  ],
+  "sunny": [
+    "It should be ___ tomorrow."
+  ],
+  "warm": [
+    "Spring days are pleasantly ___ ."
+  ],
+  "windy": [
+    "It is too ___ to fly a kite safely."
+  ],
+  "rainbow": [
+    "A ___ appeared over the valley."
+  ],
+  "snow": [
+    "The ___ melted by noon."
+  ],
+  "snowman": [
+    "The children built a ___ in the yard."
+  ],
+  "typhoon": [
+    "The ___ closed all the schools."
+  ],
+  "wind": [
+    "The ___ blew the door shut."
+  ],
+  "rain": [
+    "The ___ fell all night long."
+  ],
+  "shine": [
+    "Polish the shoes until they ___ ."
+  ],
+  "wet": [
+    "My shoes are ___ from the puddle."
+  ],
+  "nature": [
+    "He loves taking long walks in ___ ."
+  ],
+  "air": [
+    "The ___ at the top of the mountain is thin."
+  ],
+  "earth": [
+    "The ___ takes a year to circle the sun."
+  ],
+  "earthquake": [
+    "Taiwan sits where an ___ can happen at any time."
+  ],
+  "moon": [
+    "The ___ was full and very bright."
+  ],
+  "sky": [
+    "There was not a single cloud in the ___ ."
+  ],
+  "sun": [
+    "The ___ sets behind the hills."
+  ],
+  "star": [
+    "That bright ___ is actually a planet."
+  ],
+  "land": [
+    "The sailors were glad to see ___ ."
+  ],
+  "beach": [
+    "We collected shells on the ___ ."
+  ],
+  "hill": [
+    "The house stands on a small ___ ."
+  ],
+  "island": [
+    "They sailed to a tiny ___ ."
+  ],
+  "lake": [
+    "The ___ freezes over in winter."
+  ],
+  "mountain": [
+    "Snow covers the ___ all year round."
+  ],
+  "pond": [
+    "Ducks swim in the village ___ ."
+  ],
+  "pool": [
+    "The hotel has a large indoor ___ ."
+  ],
+  "river": [
+    "We crossed the ___ by a small wooden bridge."
+  ],
+  "sea": [
+    "The ___ was calm that morning."
+  ],
+  "why": [
+    "___ did you leave so early?"
+  ],
+  "be": [
+    "They will ___ here by six o'clock."
+  ],
+  "do": [
+    "There is nothing left to ___ ."
+  ],
+  "have": [
+    "They ___ three children and a dog."
+  ],
+  "can": [
+    "___ you swim across the river?"
+  ],
+  "will": [
+    "I ___ call you as soon as I arrive."
+  ],
+  "must": [
+    "You ___ wear a seatbelt in the car."
+  ],
+  "shall": [
+    "___ we take a short break now?"
+  ],
+  "should": [
+    "You ___ apologize to your sister."
+  ],
+  "about": [
+    "The whole trip takes ___ two hours."
+  ],
+  "above": [
+    "A lamp hangs ___ the table."
+  ],
+  "across": [
+    "They swam ___ the narrow river."
+  ],
+  "along": [
+    "We walked ___ the riverbank."
+  ],
+  "below": [
+    "The temperature fell ___ zero."
+  ],
+  "behind": [
+    "The cat hid ___ the sofa."
+  ],
+  "before": [
+    "Wash your hands ___ dinner."
+  ],
+  "after": [
+    "We had dessert ___ the meal."
+  ],
+  "between": [
+    "The bank sits ___ two tall buildings."
+  ],
+  "near": [
+    "They live ___ the train station."
+  ],
+  "beside": [
+    "She sat ___ her grandmother."
+  ],
+  "around": [
+    "A wooden fence runs ___ the garden."
+  ],
+  "at": [
+    "We will meet ___ the front gate."
+  ],
+  "by": [
+    "The whole letter was written ___ hand."
+  ],
+  "down": [
+    "The ball rolled ___ the hill."
+  ],
+  "during": [
+    "It rained ___ the entire trip."
+  ],
+  "except": [
+    "Everyone in the class came ___ Tom."
+  ],
+  "for": [
+    "This present is ___ your sister."
+  ],
+  "from": [
+    "He comes ___ a small village."
+  ],
+  "in": [
+    "The keys are ___ my school bag."
+  ],
+  "inside": [
+    "It is much warmer ___ the house."
+  ],
+  "into": [
+    "She poured the milk ___ the glass."
+  ],
+  "like": [
+    "He sings ___ a professional."
+  ],
+  "of": [
+    "The roof ___ the house is red."
+  ],
+  "off": [
+    "The book fell ___ the shelf."
+  ],
+  "on": [
+    "Put the plate ___ the table."
+  ],
+  "out": [
+    "The children ran ___ to play."
+  ],
+  "outside": [
+    "It is freezing ___ tonight."
+  ],
+  "over": [
+    "A bridge passes ___ the highway."
+  ],
+  "since": [
+    "I have not seen him ___ last summer."
+  ],
+  "than": [
+    "This box is heavier ___ that one."
+  ],
+  "to": [
+    "She walks ___ school every day."
+  ],
+  "under": [
+    "The dog sleeps ___ the table."
+  ],
+  "until": [
+    "Wait here ___ I come back."
+  ],
+  "up": [
+    "The balloon floated ___ into the sky."
+  ],
+  "with": [
+    "He went to the movie ___ his friends."
+  ],
+  "without": [
+    "Do not leave ___ your umbrella."
+  ],
+  "and": [
+    "Bring a pen ___ some paper."
+  ],
+  "as": [
+    "___ she entered, everyone stood up."
+  ],
+  "because": [
+    "We stayed home ___ it was raining."
+  ],
+  "but": [
+    "He is small ___ very strong."
+  ],
+  "though": [
+    "___ it was late, she kept working."
+  ],
+  "however": [
+    "It rained; ___ , the game went on."
+  ],
+  "if": [
+    "Call me ___ you need any help."
+  ],
+  "or": [
+    "Would you like tea ___ coffee?"
+  ],
+  "hello": [
+    "___ , is anyone home?"
+  ],
+  "hey": [
+    "___ , watch where you are going!"
+  ],
+  "hi": [
+    "She waved and said ___ to us."
+  ],
+  "good-bye": [
+    "He said ___ and closed the door."
+  ],
+  "welcome": [
+    "___ to our school, everyone!"
   ]
 }
