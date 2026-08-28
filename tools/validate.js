@@ -92,6 +92,39 @@ function checkSet(label, list) {
   checkOverlap(label, list);
 }
 
+// 文章專區的檢查
+const ARTICLES = grab('ARTICLES', '[', ']', true) || [];
+
+function checkArticles() {
+  console.log('\n文章專區 ARTICLES');
+  if (!ARTICLES.length) { console.log('  （沒有文章）'); return; }
+  const bank = new Map();
+  flatWords.forEach(w => bank.set(w.en.toLowerCase(), w));
+  REVIEW_WORDS.forEach(w => { if (!bank.has(w.en.toLowerCase())) bank.set(w.en.toLowerCase(), w); });
+
+  const notInBank = [], noBlanks = [], dupId = [], tooFew = [];
+  const ids = new Set();
+  ARTICLES.forEach(a => {
+    if (ids.has(a.id)) dupId.push(a.id);
+    ids.add(a.id);
+    const blanks = [...a.text.matchAll(/\[\[(.+?)\]\]/g)].map(m => m[1]);
+    const words = a.text.replace(/\[\[|\]\]/g, '').split(/\s+/).filter(Boolean).length;
+    if (!blanks.length) noBlanks.push(a.id);
+    if (blanks.length < 8) tooFew.push(`${a.id}(${blanks.length})`);
+    blanks.forEach(b => { if (!bank.has(b.toLowerCase())) notInBank.push(`${a.id}: ${b}`); });
+    console.log(`  ${a.title} — ${words} 字、${blanks.length} 個空格`);
+  });
+
+  // 挖空的字一定要在題庫裡，否則干擾選項生不出來，也失去複習意義。
+  // 文章其他地方出現超綱字沒關係（老師指定可以）。
+  notInBank.length
+    ? fail('挖空的單字不在題庫裡：' + notInBank.join('、'))
+    : ok('所有挖空的單字都在題庫裡');
+  noBlanks.length ? fail('沒有任何空格的文章：' + noBlanks.join('、')) : ok('每篇都有空格');
+  tooFew.length ? fail('空格太少（少於 8 個）：' + tooFew.join('、')) : ok('每篇空格數量足夠');
+  dupId.length ? fail('文章 id 重複：' + dupId.join('、')) : ok('文章 id 不重複');
+}
+
 // 額外例句（ALT_SENTENCES）的品質檢查
 const ALT = grab('ALT_SENTENCES', '{', '}', true) || {};
 
@@ -173,6 +206,7 @@ checkSet('本次考試範圍 WORDS', flatWords);
 console.log('  單元組成：' + Object.entries(WORDS).map(([c, a]) => c + ' ' + a.length).join('、'));
 checkSet('總複習題庫 REVIEW_WORDS', REVIEW_WORDS);
 checkAltSentences();
+checkArticles();
 
 // 3. 本次範圍必須已併入總複習題庫
 const reviewEn = new Set(REVIEW_WORDS.map(w => w.en.toLowerCase()));

@@ -15,6 +15,9 @@
 | `tools/e2e-transfer.mjs` | 回報碼跨裝置傳遞的端對端測試 |
 | `tools/e2e-sync.mjs` | 自動同步的端對端測試 |
 | `data/alt-sentences.json` | 每個單字的第二句例句（來源檔） |
+| `data/articles.json` | 文章專區的三篇文章（來源檔） |
+| `tools/apply-articles.js` | 把文章寫進 index.html |
+| `tools/e2e-article.mjs` | 文章專區的端對端測試 |
 | `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
@@ -89,6 +92,16 @@ node tools/apply-alt-sentences.js && node tools/validate.js
 1. **平常測驗練習**（吊人遊戲）— 可自選單元／題型／題數，答錯滿 5 題立刻結束
 2. **正式考試** — 設定不可調整：全部單元、全部題型、固定 40 題（每單元各 8 題），結束後給成績單
 3. **總複習** — 從過去教過的所有單元出題，可選題型與題數
+
+**文章閱讀** — 讀一篇約 300 字的短文，把文章裡挖空的 12–14 個單字填回去。
+每填一格文章就補上該字，答錯的字一樣進錯題紀錄（題型記為「文章填空」）。
+文章放在 `data/articles.json`，`[[word]]` 就是挖空記號；改完跑：
+
+```bash
+node tools/apply-articles.js && node tools/validate.js
+```
+
+挖空的字**必須在題庫裡**（驗證會擋），文章其他地方出現超綱字沒關係。
 
 另外主頁的「錯題重練」會從錯題紀錄出題（可選 10／20／30／全部），答對一次該單字扣 1 次紀錄。
 重練的查找範圍是**考試範圍＋總複習題庫**，所以在總複習答錯的字也練得到。

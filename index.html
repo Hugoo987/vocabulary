@@ -114,6 +114,42 @@
   .sync-status.ok{ color: var(--good); }
   .sync-status.bad{ color: var(--bad); }
 
+  /* ---- Article reading ---- */
+  .mode-grid-1{ grid-template-columns: 1fr; }
+  .mode-card.article{ background: #E8EFF7; }
+  .art-intro{ font-size:12px; color:var(--ink-soft); line-height:1.7; margin-bottom:14px; }
+  .art-card{
+    border:2px solid var(--ink); border-radius:12px; padding:14px; margin-bottom:12px;
+    background:#fff; cursor:pointer; transition: transform .12s ease;
+  }
+  .art-card:active{ transform: scale(0.98); }
+  .art-card .t{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:16px; }
+  .art-card .z{ font-size:13px; font-weight:700; color:var(--ink-soft); margin-top:1px; }
+  .art-card .meta{ font-size:11px; color:var(--ink-soft); margin-top:7px; }
+  .art-card .done{
+    display:inline-block; background:var(--good); color:#fff; font-size:10px; font-weight:700;
+    padding:1px 8px; border-radius:12px; margin-left:6px;
+  }
+  .art-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:12px; }
+  .art-title{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:19px; }
+  .art-sub{ font-size:12px; color:var(--ink-soft); margin-top:1px; }
+  .art-text{
+    font-size:15px; line-height:2.1; margin:16px 0; color:var(--ink);
+    background:#FCFAF4; border-radius:10px; padding:14px 15px;
+    border:1.5px solid var(--paper-line);
+  }
+  .art-text p{ margin:0 0 12px; }
+  .art-text p:last-child{ margin-bottom:0; }
+  .art-blank{
+    display:inline-block; min-width:76px; text-align:center; border-bottom:2.5px solid var(--ink-soft);
+    font-weight:700; color:var(--ink-soft); padding:0 5px; margin:0 2px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:13px;
+  }
+  .art-blank.current{ border-bottom-color: var(--exam); background:#E8EFF7; color:var(--exam); }
+  .art-blank.ok{ border-bottom-color: var(--good); color: var(--good); font-family:inherit; font-size:15px; }
+  .art-blank.no{ border-bottom-color: var(--bad); color: var(--bad); font-family:inherit; font-size:15px; }
+  .art-question{ border-top:2px dashed var(--paper-line); padding-top:14px; }
+
   /* ---- Transfer code ---- */
   .xfer{ margin-top: 14px; }
   .xfer-body{ margin-top: 10px; display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
@@ -366,6 +402,14 @@
       </div>
     </div>
 
+    <div class="mode-grid mode-grid-1" style="margin-top:12px;">
+      <div class="mode-card article" id="modeArticle">
+        <div class="icon">📖</div>
+        <h3>文章閱讀</h3>
+        <p>讀一篇短文，把文章裡挖空的單字填回去。看整段句子選字，比單句克漏字更接近真正的閱讀。</p>
+      </div>
+    </div>
+
     <div id="historyPanel" class="history-panel hidden">
       <div class="history-head">
         <div class="row-label" style="margin:0;">📌 我的錯題紀錄</div>
@@ -439,6 +483,43 @@
       <button class="mini-btn" id="clearStudentBtn">清除學生紀錄</button>
     </div>
     <div class="history-sub" id="clearStudentHint">清除後無法復原，錯題與歷次成績都會刪除。</div>
+  </div>
+
+  <!-- ARTICLE LIST SCREEN -->
+  <div class="card hidden" id="articleListScreen">
+    <div class="row-label" style="margin-top:0;">選一篇文章</div>
+    <div class="art-intro">
+      每篇約 300 字，文章裡有 12–14 個空格。讀完整段再選字，答錯的單字一樣會存進錯題紀錄。
+    </div>
+    <div id="articleList"></div>
+    <div class="hint" id="artBackHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
+  </div>
+
+  <!-- ARTICLE READING SCREEN -->
+  <div class="card hidden" id="articleScreen">
+    <div class="art-head">
+      <div>
+        <div class="art-title" id="artTitle"></div>
+        <div class="art-sub" id="artSub"></div>
+      </div>
+      <div class="score-chip" id="artScore">✓ 0</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-num" id="artProgress">1 / 12</div>
+      <div class="progress-bar"><div class="progress-fill" id="artFill"></div></div>
+    </div>
+
+    <div class="art-text" id="artText"></div>
+
+    <div class="art-question" id="artQuestion">
+      <div class="row-label" style="margin-top:0;">第 <span id="artBlankNo">1</span> 格要填哪個字？</div>
+      <div id="artOptions"></div>
+      <div class="feedback" id="artFeedback"></div>
+      <button class="big-btn hidden" id="artNextBtn">下一格 →</button>
+    </div>
+
+    <button class="big-btn hidden" id="artFinishBtn">看結果</button>
+    <div class="hint" id="artQuitHint" style="cursor:pointer;text-decoration:underline;">← 返回主頁（結束本次閱讀）</div>
   </div>
 
   <!-- SETUP SCREEN (practice mode only) -->
@@ -863,7 +944,7 @@ const WORDS = {
 
 const CAT_LABEL = { nouns:"NOUNS 其他名詞", verbs1:"VERBS 動詞① 感官・情感・思考", verbs2:"VERBS 動詞② 動作 A–W", verbs3:"VERBS 動詞③ 其他 A–W", adjectives:"ADJECTIVES 其他形容詞" };
 const CAT_COLOR = { nouns:"var(--money)", verbs1:"var(--family)", verbs2:"var(--time)", verbs3:"var(--places)", adjectives:"var(--numbers)" };
-const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字" };
+const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空" };
 const TYPE_DESC = {
   en2zh: "英翻中：看英文單字，選出正確的中文意思。",
   zh2en: "中翻英：看中文意思，選出正確的英文單字。",
@@ -1923,6 +2004,8 @@ let questionCount = 20;
 const roleScreen = document.getElementById('roleScreen');
 const modeScreen = document.getElementById('modeScreen');
 const reportScreen = document.getElementById('reportScreen');
+const articleListScreen = document.getElementById('articleListScreen');
+const articleScreen = document.getElementById('articleScreen');
 const setupScreen = document.getElementById('setupScreen');
 const examConfirmScreen = document.getElementById('examConfirmScreen');
 const reviewSetupScreen = document.getElementById('reviewSetupScreen');
@@ -1930,8 +2013,9 @@ const quizScreen = document.getElementById('quizScreen');
 const resultScreen = document.getElementById('resultScreen');
 
 function showScreen(el){
-  [roleScreen, modeScreen, reportScreen, setupScreen, examConfirmScreen,
-   reviewSetupScreen, quizScreen, resultScreen].forEach(s=>s.classList.add('hidden'));
+  [roleScreen, modeScreen, reportScreen, articleListScreen, articleScreen,
+   setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
+    .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
 }
 
@@ -2200,6 +2284,226 @@ function clearHistory(){
   renderHistory();
 }
 
+// ---------------- Article reading ----------------
+// Written in data/articles.json and injected by tools/apply-articles.js.
+// [[word]] marks a blank; every blanked word must exist in the word banks so
+// the distractors can be drawn from them. Words outside the banks may appear in
+// the prose, just never as a blank.
+const ARTICLES = [
+  {
+    id: "saturday",
+    title: "A Special Saturday",
+    zh: "特別的星期六",
+    topic: "日常生活・野餐・天氣",
+    text: "On Saturday morning I woke up early. The [[sun]] was bright and the sky was clear, so I knew it would be a fine day. My mother was already in the [[kitchen]]. She was making breakfast, and the smell of fresh [[bread]] filled the house.\n\n\"Do you remember your plan?\" she asked. \"You will meet your friends at nine.\"\n\nI had forgotten! Our class had a [[picnic]] at the park near the river. I put on a clean T-shirt and my favorite blue [[jacket]], and then I packed my bag. My mother gave me a big bottle of water and some cookies. \"Do not lose your key,\" she said.\n\nI rode my [[bicycle]] to the park. It took me twenty minutes. My classmates were already there. Some of them were playing basketball. Some were sitting on the [[grass]] under a big tree. Our teacher brought a Frisbee, and we played with it for an hour. I was so [[tired]] that I had to rest on a bench.\n\nAt [[noon]] we shared our food. There were sandwiches, rice, fruit, and a large cake. All of it tasted [[delicious]]. My friend Amy told a story about her little brother, and we all began to [[laugh]].\n\nIn the afternoon the sky became dark and the [[wind]] grew strong. \"It may rain soon,\" our teacher said. \"We should go home now.\" Ten minutes later the rain fell. We ran to the bus stop and waited there, wet but glad.\n\nThat night, before I went to sleep, I wrote about the day in my [[notebook]]. The weather was terrible at the end, but it was still one of the great days of the year."
+  },
+  {
+    id: "restaurant",
+    title: "My Family's Restaurant",
+    zh: "我家的餐廳",
+    topic: "食物・職業・家庭",
+    text: "My parents own a small [[restaurant]] near the train station. It is not big, but it is always busy. My father is the [[cook]]. He gets up at five every morning to buy fresh [[vegetable]]s and meat at the market. My mother is the [[boss]]. She takes the orders, talks to the guests, and counts the money at the end of the day.\n\nOn Saturdays I help them. I wear a clean white [[shirt]] and carry the plates to the tables. It is not easy work. Once I dropped a [[bowl]] of hot soup on the floor and everyone looked at me. My face turned [[red]]. My mother only smiled and said, \"Do not worry. Try again.\"\n\nOur [[menu]] is short. We sell beef noodles, dumplings, fried rice, and three kinds of soup. The beef noodle soup is the most [[popular]] dish. Many people come from other towns just to [[taste]] it. My father will not tell anyone how he makes it, not even me.\n\nThe busiest time is between six and eight in the [[evening]]. Sometimes there is no seat left, and people must wait outside on the sidewalk. My mother gives them hot [[tea]] while they wait.\n\nAt nine o'clock we close the door. My father cooks one last [[meal]] for our family. We sit at the table together and eat. He is always tired, but he looks glad.\n\n\"Do you want to be a cook someday?\" he asked me last week.\n\nI am not sure. Being a cook is [[difficult]] work. But when I watch my father cook, I think it is also a kind of art."
+  },
+  {
+    id: "island",
+    title: "The Trip to the Island",
+    zh: "小島之旅",
+    topic: "交通・地理・自然",
+    text: "Last summer my class took a [[trip]] to a small island in the south. We left the school at six in the morning and rode a [[bus]] to the harbor. Then we got on a [[ship]]. The way across the water took two hours.\n\nI had never been on a boat before. At first the [[sea]] was calm and the sky was clear. I stood outside and watched the birds. Later the wind grew stronger and the boat began to [[move]] up and down. My [[stomach]] felt terrible. My classmate Ben gave me some [[medicine]] and told me to look at the mountain far away. It helped.\n\nWhen we arrived, the island was quieter than I expected. There were no high buildings, only small houses with white [[wall]]s. An old [[fisherman]] was fixing his net beside the water. He smiled at us and said hello.\n\nWe walked along the [[beach]] and collected shells. The sand was warm under our feet. Our teacher showed us a [[map]] and explained how the island was made long ago. Then we ate lunch under a big tree. Nothing tasted better than cold [[watermelon]] on a hot day.\n\nIn the afternoon we climbed a small [[hill]]. From the top we could see the whole island and the blue sea around it. Some students took [[photo]]s. I just stood there and looked.\n\nOn the way home everyone was quiet. Most of my classmates fell asleep on the boat. I stayed awake and watched the sun go down. The sky turned orange, then purple, then dark.\n\nIt was a long day, but I would go again tomorrow."
+  }
+];
+
+let article = null;      // the article being read
+let artBlanks = [];      // [{ en, zh, cat, options, correct, answered, right }]
+let artIndex = 0;
+let artScore = 0;
+
+// Split "text with [[blank]]s" into renderable pieces.
+function parseArticle(text){
+  const parts = [];
+  const blanks = [];
+  const re = /\[\[(.+?)\]\]/g;
+  let last = 0, m;
+  while((m = re.exec(text)) !== null){
+    if(m.index > last) parts.push({ t: 'text', v: text.slice(last, m.index) });
+    parts.push({ t: 'blank', i: blanks.length });
+    blanks.push(m[1]);
+    last = m.index + m[0].length;
+  }
+  if(last < text.length) parts.push({ t: 'text', v: text.slice(last) });
+  return { parts, blanks };
+}
+
+function startArticle(a){
+  article = a;
+  const { blanks } = parseArticle(a.text);
+  const lookup = {};
+  retrainPool().forEach(w => { lookup[w.en.toLowerCase()] = w; });
+
+  artBlanks = blanks.map(en => {
+    const w = lookup[en.toLowerCase()] || { en, zh: '', cat: '' };
+    // Same rule as the single-sentence cloze: distractors come from other units
+    // so exactly one option can fit the sentence.
+    const distractors = pickDistractors(fullPool().concat(REVIEW_WORDS), w, 'en', false);
+    return {
+      en: w.en, zh: w.zh, cat: w.cat,
+      options: shuffle([w.en, ...distractors.map(d => d.en)]),
+      answered: false, right: false
+    };
+  });
+  artIndex = 0;
+  artScore = 0;
+  mode = 'article';
+  quizIsReview = false;
+  document.getElementById('artTitle').textContent = a.title;
+  document.getElementById('artSub').textContent = a.zh + '　·　' + a.topic;
+  document.getElementById('artFinishBtn').classList.add('hidden');
+  document.getElementById('artQuestion').classList.remove('hidden');
+  renderArticle();
+  showScreen(articleScreen);
+}
+
+function renderArticle(){
+  const { parts } = parseArticle(article.text);
+  const host = document.getElementById('artText');
+  host.innerHTML = '';
+  // Blank lines in the source separate paragraphs.
+  let para = document.createElement('p');
+  host.appendChild(para);
+
+  parts.forEach(p => {
+    if(p.t === 'text'){
+      const chunks = p.v.split(/\n\n+/);
+      chunks.forEach((chunk, i) => {
+        if(i > 0){ para = document.createElement('p'); host.appendChild(para); }
+        para.appendChild(document.createTextNode(chunk.replace(/\n/g, ' ')));
+      });
+    } else {
+      const b = artBlanks[p.i];
+      const el = document.createElement('span');
+      el.className = 'art-blank'
+        + (p.i === artIndex && !b.answered ? ' current' : '')
+        + (b.answered ? (b.right ? ' ok' : ' no') : '');
+      el.textContent = b.answered ? b.en : '(' + (p.i + 1) + ')';
+      para.appendChild(el);
+    }
+  });
+
+  const total = artBlanks.length;
+  document.getElementById('artProgress').textContent = `${Math.min(artIndex + 1, total)} / ${total}`;
+  document.getElementById('artFill').style.width = (artIndex / total * 100) + '%';
+  document.getElementById('artScore').textContent = `✓ ${artScore}`;
+  document.getElementById('artBlankNo').textContent = artIndex + 1;
+
+  const box = document.getElementById('artOptions');
+  box.innerHTML = '';
+  const cur = artBlanks[artIndex];
+  if(!cur) return;
+  cur.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => answerArticle(opt, btn));
+    box.appendChild(btn);
+  });
+  document.getElementById('artFeedback').textContent = '';
+  document.getElementById('artFeedback').className = 'feedback';
+  document.getElementById('artNextBtn').classList.add('hidden');
+}
+
+function answerArticle(chosen, btnEl){
+  const b = artBlanks[artIndex];
+  if(b.answered) return;
+  const right = (chosen === b.en);
+  b.answered = true;
+  b.right = right;
+
+  document.querySelectorAll('#artOptions .opt').forEach(x => {
+    x.disabled = true;
+    if(x.textContent === b.en) x.classList.add('correct');
+  });
+  if(!right && btnEl) btnEl.classList.add('wrong');
+
+  const fb = document.getElementById('artFeedback');
+  if(right){
+    artScore++;
+    fb.textContent = '答對了！🎉';
+    fb.className = 'feedback good';
+  } else {
+    fb.textContent = `答錯了，正確答案是「${b.en}」${b.zh ? '（' + b.zh + '）' : ''}`;
+    fb.className = 'feedback bad';
+    recordWrong(b.en, b.zh, 'article', b.cat);
+  }
+  renderArticleFilled();
+  document.getElementById('artScore').textContent = `✓ ${artScore}`;
+  document.getElementById('artNextBtn').classList.remove('hidden');
+}
+
+// Redraw only the passage, leaving the question box as it is.
+function renderArticleFilled(){
+  const { parts } = parseArticle(article.text);
+  const host = document.getElementById('artText');
+  host.innerHTML = '';
+  let para = document.createElement('p');
+  host.appendChild(para);
+  parts.forEach(p => {
+    if(p.t === 'text'){
+      p.v.split(/\n\n+/).forEach((chunk, i) => {
+        if(i > 0){ para = document.createElement('p'); host.appendChild(para); }
+        para.appendChild(document.createTextNode(chunk.replace(/\n/g, ' ')));
+      });
+    } else {
+      const b = artBlanks[p.i];
+      const el = document.createElement('span');
+      el.className = 'art-blank'
+        + (p.i === artIndex && !b.answered ? ' current' : '')
+        + (b.answered ? (b.right ? ' ok' : ' no') : '');
+      el.textContent = b.answered ? b.en : '(' + (p.i + 1) + ')';
+      para.appendChild(el);
+    }
+  });
+}
+
+function finishArticle(){
+  // Feed the same record and result screens the quiz modes use.
+  results = artBlanks.map(b => ({
+    type: 'article', en: b.en, zh: b.zh, correctText: b.en, isCorrect: b.right
+  }));
+  score = artScore;
+  sessionEndedEarly = false;
+  markArticleDone(article.id);
+  showResult();
+}
+
+// Which articles this profile has finished, so the list can show a tick.
+function articlesDone(){
+  const p = currentProfile();
+  if(!Array.isArray(p.articles)) p.articles = [];
+  return p.articles;
+}
+function markArticleDone(id){
+  const done = articlesDone();
+  if(!done.includes(id)) done.push(id);
+  saveHistory();
+}
+
+function renderArticleList(){
+  const host = document.getElementById('articleList');
+  host.innerHTML = '';
+  const done = articlesDone();
+  ARTICLES.forEach(a => {
+    const n = (a.text.match(/\[\[(.+?)\]\]/g) || []).length;
+    const words = a.text.replace(/\[\[|\]\]/g, '').split(/\s+/).filter(Boolean).length;
+    const card = document.createElement('div');
+    card.className = 'art-card';
+    card.innerHTML = `<div class="t">${esc(a.title)}${done.includes(a.id) ? '<span class="done">讀過了</span>' : ''}</div>
+      <div class="z">${esc(a.zh)}</div>
+      <div class="meta">${words} 字　·　${n} 個空格　·　${esc(a.topic)}</div>`;
+    card.addEventListener('click', () => startArticle(a));
+    host.appendChild(card);
+  });
+}
+
 // ---------------- Transfer code ----------------
 // Records live in one browser on one device, so a teacher on their own phone
 // cannot see them. A static page has no server to sync through, so instead the
@@ -2454,7 +2758,7 @@ const REVIEW_CAT_LABEL = {
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
-const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練' };
+const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練', article:'文章閱讀' };
 
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
@@ -2665,6 +2969,53 @@ clearBtnEl.addEventListener('click', ()=>{
   clearBtnEl.style.color = '';
   clearBtnEl.style.borderColor = '';
   clearHistory();
+});
+
+// ---------------- Article reading wiring ----------------
+document.getElementById('modeArticle').addEventListener('click', ()=>{
+  renderArticleList();
+  showScreen(articleListScreen);
+});
+document.getElementById('artBackHint').addEventListener('click', ()=> showScreen(modeScreen));
+
+document.getElementById('artNextBtn').addEventListener('click', ()=>{
+  artIndex++;
+  if(artIndex >= artBlanks.length){
+    // Every blank is filled: show the finished passage, then the result.
+    document.getElementById('artQuestion').classList.add('hidden');
+    document.getElementById('artFinishBtn').classList.remove('hidden');
+    document.getElementById('artFill').style.width = '100%';
+    document.getElementById('artProgress').textContent = `${artBlanks.length} / ${artBlanks.length}`;
+    renderArticleFilled();
+  } else {
+    renderArticle();
+  }
+});
+document.getElementById('artFinishBtn').addEventListener('click', finishArticle);
+
+// Tap-twice to leave, matching the quiz screen (window.confirm is blocked here).
+let artQuitArmed = false;
+let artQuitTimer = null;
+const artQuitEl = document.getElementById('artQuitHint');
+function resetArtQuit(){
+  artQuitArmed = false;
+  artQuitEl.textContent = '← 返回主頁（結束本次閱讀）';
+  artQuitEl.style.color = '';
+}
+artQuitEl.addEventListener('click', ()=>{
+  if(!artQuitArmed){
+    artQuitArmed = true;
+    artQuitEl.textContent = '⚠️ 確定返回？本次閱讀將結束（再按一次確認）';
+    artQuitEl.style.color = 'var(--bad)';
+    clearTimeout(artQuitTimer);
+    artQuitTimer = setTimeout(resetArtQuit, 3000);
+    return;
+  }
+  clearTimeout(artQuitTimer);
+  resetArtQuit();
+  saveHistory();
+  renderHistory();
+  showScreen(modeScreen);
 });
 
 // ---------------- Mode select ----------------
@@ -4178,12 +4529,13 @@ function showResult(){
     else if(pct >= 0.6) title.textContent = '不錯喔，再加把勁 💪';
     else if(mode==='exam') title.textContent = '成績單出爐，一起檢討一下吧 📋';
     else if(mode==='review') title.textContent = '總複習結束，看看還要加強哪些單字 📚';
+    else if(mode==='article') title.textContent = '文章讀完了，來看看填空結果 📖';
     else title.textContent = '再複習一下這幾個單字吧 📖';
   }
 
   const gradeRow = document.getElementById('gradeRow');
   gradeRow.innerHTML = '';
-  if(mode==='exam' || mode==='review'){
+  if(mode==='exam' || mode==='review' || mode==='article'){
     const pct = total? Math.round(score/total*100) : 0;
     let grade = 'F';
     if(pct>=90) grade='A'; else if(pct>=80) grade='B'; else if(pct>=70) grade='C'; else if(pct>=60) grade='D';
@@ -4206,10 +4558,11 @@ function showResult(){
   const heading = document.createElement('div');
   heading.className = 'row-label';
   heading.style.marginTop = '0';
-  heading.textContent = (mode==='exam' || mode==='review') ? '詳細檢討（全部作答紀錄）' : '需要再複習的單字';
+  heading.textContent = (mode==='exam' || mode==='review' || mode==='article')
+    ? '詳細檢討（全部作答紀錄）' : '需要再複習的單字';
   list.appendChild(heading);
 
-  const toShow = (mode==='exam' || mode==='review')
+  const toShow = (mode==='exam' || mode==='review' || mode==='article')
     ? results.slice().sort((a,b)=> (a.isCorrect?1:0) - (b.isCorrect?1:0))
     : wrongOnes;
   if(toShow.length===0){
