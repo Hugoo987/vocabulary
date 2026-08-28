@@ -39,6 +39,8 @@
     padding: 28px 14px 60px;
   }
   .binder{ width:100%; max-width: 640px; }
+  /* 只有文章閱讀需要放得下兩欄 */
+  .binder.wide{ max-width: 1040px; }
   .masthead{
     display:flex; align-items: baseline; justify-content: space-between;
     margin-bottom: 18px; padding-bottom: 12px; border-bottom: 3px solid var(--ink);
@@ -133,6 +135,26 @@
   .art-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:12px; }
   .art-title{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:19px; }
   .art-sub{ font-size:12px; color:var(--ink-soft); margin-top:1px; }
+  /* Two columns once there is room for them; one below that. */
+  .art-body{ display:grid; grid-template-columns: minmax(0,1fr) 300px; gap:20px; align-items:start; }
+  .art-side{ position: sticky; top: 14px; }
+  .art-side #artFinishBtn{ margin-top:12px; }
+  @media (max-width: 860px){
+    .art-body{ grid-template-columns: 1fr; gap:0; }
+    /* Stacked, the choices pin to the bottom so they stay reachable while the
+       student scrolls back through the passage. */
+    .art-side{
+      position: sticky; top:auto; bottom:0; z-index:5;
+      margin:0 -22px -22px; padding:0 22px;
+      background:#fff; box-shadow:0 -6px 16px rgba(43,38,32,0.10);
+      border-top:2px solid var(--ink); border-radius:14px 14px 0 0;
+    }
+    .art-side .art-question{ border-top:none; padding-top:12px; padding-bottom:14px; }
+    /* Two across keeps the pinned panel from eating the screen. */
+    #artOptions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    #artOptions .opt{ margin:0; }
+  }
+
   .art-text{
     font-size:15px; line-height:2.1; margin:16px 0; color:var(--ink);
     background:#FCFAF4; border-radius:10px; padding:14px 15px;
@@ -148,7 +170,19 @@
   .art-blank.current{ border-bottom-color: var(--exam); background:#E8EFF7; color:var(--exam); }
   .art-blank.ok{ border-bottom-color: var(--good); color: var(--good); font-family:inherit; font-size:15px; }
   .art-blank.no{ border-bottom-color: var(--bad); color: var(--bad); font-family:inherit; font-size:15px; }
+  .art-exit{
+    font-size:12px; color:var(--ink-soft); cursor:pointer; text-decoration:underline;
+    margin: 10px 0 2px; display:inline-block;
+  }
   .art-question{ border-top:2px dashed var(--paper-line); padding-top:14px; }
+  /* 側欄裡的題目自成一張卡片，不需要那條分隔線 */
+  @media (min-width: 861px){
+    .art-question{
+      border-top:none; padding:14px 15px; background:#FCFAF4;
+      border:1.5px solid var(--paper-line); border-radius:10px; margin-top:16px;
+    }
+    .art-text{ margin-top:16px; }
+  }
 
   /* ---- Transfer code ---- */
   .xfer{ margin-top: 14px; }
@@ -509,17 +543,25 @@
       <div class="progress-bar"><div class="progress-fill" id="artFill"></div></div>
     </div>
 
-    <div class="art-text" id="artText"></div>
+    <!-- The way out lives at the top: on a phone the choices are pinned to the
+         bottom of the screen and would sit on top of a link placed down there. -->
+    <div class="art-exit" id="artQuitHint">← 返回主頁（結束本次閱讀）</div>
 
-    <div class="art-question" id="artQuestion">
-      <div class="row-label" style="margin-top:0;">第 <span id="artBlankNo">1</span> 格要填哪個字？</div>
-      <div id="artOptions"></div>
-      <div class="feedback" id="artFeedback"></div>
-      <button class="big-btn hidden" id="artNextBtn">下一格 →</button>
+    <!-- Wide screens put the passage left and the choices right; narrow ones
+         stack them and pin the choices to the bottom of the viewport. -->
+    <div class="art-body">
+      <div class="art-text" id="artText"></div>
+
+      <div class="art-side">
+        <div class="art-question" id="artQuestion">
+          <div class="row-label" style="margin-top:0;">第 <span id="artBlankNo">1</span> 格要填哪個字？</div>
+          <div id="artOptions"></div>
+          <div class="feedback" id="artFeedback"></div>
+          <button class="big-btn hidden" id="artNextBtn">下一格 →</button>
+        </div>
+        <button class="big-btn hidden" id="artFinishBtn">看結果</button>
+      </div>
     </div>
-
-    <button class="big-btn hidden" id="artFinishBtn">看結果</button>
-    <div class="hint" id="artQuitHint" style="cursor:pointer;text-decoration:underline;">← 返回主頁（結束本次閱讀）</div>
   </div>
 
   <!-- SETUP SCREEN (practice mode only) -->
@@ -2013,6 +2055,8 @@ const quizScreen = document.getElementById('quizScreen');
 const resultScreen = document.getElementById('resultScreen');
 
 function showScreen(el){
+  // The reading screen is the only one wide enough to need two columns.
+  document.querySelector('.binder').classList.toggle('wide', el === articleScreen);
   [roleScreen, modeScreen, reportScreen, articleListScreen, articleScreen,
    setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));

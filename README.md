@@ -18,6 +18,7 @@
 | `data/articles.json` | 文章專區的三篇文章（來源檔） |
 | `tools/apply-articles.js` | 把文章寫進 index.html |
 | `tools/e2e-article.mjs` | 文章專區的端對端測試 |
+| `tools/e2e-article-layout.mjs` | 文章閱讀版面（手機／桌機）的端對端測試 |
 | `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
@@ -94,6 +95,7 @@ node tools/apply-alt-sentences.js && node tools/validate.js
 3. **總複習** — 從過去教過的所有單元出題，可選題型與題數
 
 **文章閱讀** — 讀一篇約 300 字的短文，把文章裡挖空的 12–14 個單字填回去。
+寬螢幕時文章在左、選項在右並固定跟隨；手機則上下堆疊，選項吸附在畫面底部（2×2 排列）。
 每填一格文章就補上該字，答錯的字一樣進錯題紀錄（題型記為「文章填空」）。
 文章放在 `data/articles.json`，`[[word]]` 就是挖空記號；改完跑：
 
