@@ -50,13 +50,28 @@ function sensesOf(zh) {
     .filter(Boolean);
 }
 
+// 與 index.html 的 SYNONYM_GROUPS 相同：字串不同但學生眼中同義的中文。
+const SYNONYM_GROUPS = [
+  ['也許', '或許', '大概'],
+  ['總是', '一直'],
+  ['常常', '時常', '經常'],
+  ['幾乎', '差不多']
+];
+function synonymKey(sense) {
+  for (let i = 0; i < SYNONYM_GROUPS.length; i++) {
+    if (SYNONYM_GROUPS[i].includes(sense)) return 'syn' + i;
+  }
+  return sense;
+}
+
 function checkOverlap(label, list) {
   const hits = [];
   const seen = new Set();
   for (const a of list) {
     for (const b of list) {
       if (a.en === b.en || a.zh === b.zh) continue;   // 完全相同的另外抓
-      if (!sensesOf(a.zh).some(s => sensesOf(b.zh).includes(s))) continue;
+      const sb = sensesOf(b.zh).map(synonymKey);
+      if (!sensesOf(a.zh).map(synonymKey).some(s => sb.includes(s))) continue;
       const key = [a.en, b.en].sort().join('|');
       if (seen.has(key)) continue;
       seen.add(key);

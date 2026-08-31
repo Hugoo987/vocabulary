@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v9 · Topic 34-36</title>
+<title>單字大挑戰 v10 · 形容詞&副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -272,11 +272,8 @@
     padding: 1px 8px; border-radius: 20px; font-size: 11px;
   }
   .cat-tab.off{ filter: grayscale(0.75) brightness(0.85) saturate(0.4); opacity: 0.5; }
-  .cat-tab[data-cat="nouns"]{ background: var(--money); }
-  .cat-tab[data-cat="verbs1"]{ background: var(--family); }
-  .cat-tab[data-cat="verbs2"]{ background: var(--time); }
-  .cat-tab[data-cat="verbs3"]{ background: var(--places); }
-  .cat-tab[data-cat="adjectives"]{ background: var(--numbers); }
+  .cat-tab[data-cat="adjectives2"]{ background: var(--family); }
+  .cat-tab[data-cat="adverbs"]{ background: var(--time); }
 
   .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
   .pill{
@@ -383,11 +380,11 @@
   <div style="background:#C1272D;color:#fff;text-align:center;padding:8px 12px;
   font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:13px;border-radius:10px;
   margin-bottom:14px;">
-  ✅ 這是最新版 v9 ｜ Topic 34–36（其他名詞・動詞①②③・其他形容詞）｜ 286 字
+  ✅ 這是最新版 v10 ｜ 常見形容詞・常見副詞 ｜ 91 字
 </div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">基礎 1200 單字 · Ch.1 Topic 34–36 <span class="ver-badge">v9</span></div>
+    <div class="sub">基礎 1200 單字 · 常見形容詞&副詞 <span class="ver-badge">v10</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -417,7 +414,7 @@
       <span>目前身分：<span class="tag student" id="whoamiTag">學生</span></span>
       <button class="mini-btn" id="switchRoleBtn">切換身分</button>
     </div>
-    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v9 · Topic 34–36 · 286字</span></div>
+    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v10 · 形容詞&副詞 · 91字</span></div>
     <div class="mode-grid mode-grid-3">
       <div class="mode-card practice" id="modePractice">
         <div class="icon">🪢</div>
@@ -432,7 +429,7 @@
       <div class="mode-card review" id="modeReview">
         <div class="icon">📚</div>
         <h3>總複習</h3>
-        <p>從<b>學過的所有單元</b>（目前累積 980 個單字）出題，複習之前教過的內容。</p>
+        <p>從<b>學過的所有單元</b>（目前累積 1014 個單字）出題，複習之前教過的內容。</p>
       </div>
     </div>
 
@@ -596,7 +593,7 @@
   <!-- EXAM CONFIRM SCREEN (fixed settings, no choices) -->
   <div class="card hidden" id="examConfirmScreen">
     <div class="row-label" style="margin-top:0;">正式考試規則</div>
-    <div class="notice-box exam">📝 全部單元、全部題型、共 40 題，每個單元各 8 題，全部都是選擇題，不可調整設定。</div>
+    <div class="notice-box exam">📝 全部單元、全部題型、共 40 題，平均分配到各單元，全部都是選擇題，不可調整設定。</div>
     <button class="big-btn" id="examStartBtn">開始考試</button>
     <div class="hint" id="backHint2" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
@@ -620,7 +617,7 @@
     </div>
 
     <div class="row-label">題目範圍</div>
-    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">980</b> 個單字）中隨機出題，不限單一單元。</div>
+    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1014</b> 個單字）中隨機出題，不限單一單元。</div>
 
     <button class="big-btn" id="reviewStartBtn">開始總複習</button>
     <div class="hint" id="backHint3" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
@@ -686,244 +683,7 @@
 // English word appears only once overall, so no question can ever have two options
 // that are both correct.
 const WORDS = {
-  nouns: [
-    ["action","行動","This actor is always in ___ , never resting."],
-    ["age","年齡","She wrote her ___ on this page: eighteen."],
-    ["American","美國人","Eric comes from the USA; he is an ___ ."],
-    ["base","基地","This baseball team has a ___ of its own."],
-    ["bell","鐘","A ___ fell into the sea with a loud ring."],
-    ["birthday","生日","Did you get a ___ gift yesterday?"],
-    ["bottom","臀部","The button and the cotton are under its ___ ."],
-    ["cage","籠子","There are some pages flying in the tiger's ___ ."],
-    ["case","箱，盒","What causes the noise in this ___ ?"],
-    ["castle","城堡","He cast the case from the tall ___ ."],
-    ["cell phone","手機","I have some excellent ___ s to sell."],
-    ["center","中心","They want to enter the shopping ___ ."],
-    ["chance","機會","You have a ___ to find some change there."],
-    ["club","俱樂部","He is a member of the bulb ___ ."],
-    ["corner","街角","There is corn at the ___ of the street."],
-    ["date","日期","What's the ___ today?"],
-    ["deal","交易","It is a real good ___ , very cheap."],
-    ["dream","夢","There is an ice cream in its ___ ."],
-    ["e-mail","電子郵件","This mailman doesn't like ___ ."],
-    ["excuse","藉口","He used his dog as an ___ for being absent."],
-    ["experience","經驗","His ___ makes him an expert."],
-    ["fact","事實","No one knows the ___ of this factory."],
-    ["fire","火","There is ___ on the wire circle."],
-    ["foreigner","外國人","This ___ speaks a foreign language."],
-    ["flower","花","Please lower your ___ s so I can see."],
-    ["fun","樂趣","It is ___ to run under the sun."],
-    ["garbage","垃圾","There is a lot of ___ in his garage."],
-    ["gas","汽油","I guess we need some ___ for the car."],
-    ["ghost","鬼","The host dresses like a ___ ."],
-    ["gift","禮品","Her ___ was too big to lift."],
-    ["grass","草","She puts the ___ in a glass."],
-    ["ground","地面","He found some money on the ___ ."],
-    ["group","群，組","This ___ made a big bowl of soup."],
-    ["habit","習慣","She has a ___ of eating with her rabbit."],
-    ["heat","高溫","You can feel the ___ below the seat."],
-    ["honey","蜂蜜","No money! No ___ !"],
-    ["idea","主意","It was her ___ to put the deer on the wall."],
-    ["interest","興趣","He has an ___ in resting and watching TV."],
-    ["Internet","網際網路","Someone interviewed the mailman on the ___ ."],
-    ["interview","訪問","Someone did an ___ with the mailman online."],
-    ["joy","歡樂","This toy brings ___ to this boy."],
-    ["leader","領袖","She is a cheerleader and the class ___ ."],
-    ["lid","蓋子","The kid opens the ___ with his teeth."],
-    ["party","派對","There is a ___ at the park tonight."],
-    ["photo","照片","This man in the ___ looks hot."],
-    ["pin","胸針","He wants to win this ___ ."],
-    ["pipe","管子","He types with a ___ instead of a keyboard."],
-    ["planet","行星","Janet plans to find a new ___ in space."],
-    ["player","選手","This mayor is a golf ___ ."],
-    ["pleasure","愉快","\"Sure! It is my ___ ,\" he said politely."],
-    ["power","力量","This powder gives him a lot of ___ ."],
-    ["prize","獎品","The price for this ___ is high."],
-    ["program","訓練課程","He lost five grams in this ___ ."],
-    ["public","民眾","This pub is open to the ___ ."],
-    ["robot","機器人","Someone robbed Bob's ___ ."],
-    ["rock","岩石，搖滾樂","These ___ singers are from ROC."],
-    ["rope","繩子","He hopes he has a ___ to climb down."],
-    ["rose","玫瑰花","She put the ___ s close to her nose."],
-    ["rule","規則","It is a ___ that a mule can't enter."],
-    ["sale","特價；出售","This whale is on ___ at a low price."],
-    ["screen","螢幕","She screams at the ___ every day."],
-    ["seat","座位","You can feel the heat below the ___ ."],
-    ["seed","種子","Come and see my magic ___ grow."],
-    ["sentence","句子","He wrote a ___ on her fence."],
-    ["set","一套","We need to get one TV ___ ."],
-    ["side","邊，面","Please ride on the other ___ ."],
-    ["sight","景色","The ___ on the right is good."],
-    ["space","太空","She saw a face in the ___ ."],
-    ["subject","科目","He rejects learning any ___ at school."],
-    ["thing","東西","I think I have found a special ___ ."],
-    ["ticket","票","He uses his jacket to buy a ___ ."],
-    ["tool","工具","These two ___ s are fools."],
-    ["trash","廢棄物","Can you wash the ___ can?"],
-    ["tree","樹","These Christmas ___ s are free."],
-    ["trick","詭計","The brick is a ___ ."],
-    ["trouble","麻煩","You are in double ___ s now."],
-    ["memory","記憶","He has good ___ of history."],
-    ["voice","聲音","Her ___ is as cold as ice."],
-    ["way","方法；路","Mark always says, \"No ___ !\""],
-    ["word","文字","___ s travel around the world."]
-  ],
-  verbs1: [
-    ["feel","感覺","I ___ very happy when I am with my family."],
-    ["hear","聽見","Can you ___ the birds singing outside?"],
-    ["look","看","Please ___ at the picture on the wall."],
-    ["see","看見","I can ___ a big ship on the sea."],
-    ["smell","聞","The flowers ___ so sweet in the garden."],
-    ["sound","聽起來","Your idea ___s great to me."],
-    ["taste","嚐起來","This soup ___s a little salty."],
-    ["define","解釋；下定義","Can you ___ this word for me?"],
-    ["end","結束","The movie will ___ at nine o'clock."],
-    ["finish","完成","She will ___ her homework before dinner."],
-    ["forget","忘記","Don't ___ to bring your umbrella."],
-    ["guess","猜測","Can you ___ how old he is?"],
-    ["believe","相信","I ___ that he is telling the truth."],
-    ["smile","微笑","She always ___s when she sees me."],
-    ["cry","哭","The baby began to ___ in the night."],
-    ["hate","討厭","I ___ waiting in a long line."],
-    ["hope","希望（盼望）","I ___ the weather will be nice tomorrow."],
-    ["know","認識","Do you ___ that man over there?"],
-    ["love","愛","I ___ my parents very much."],
-    ["mind","在意","I don't ___ if you open the window."],
-    ["need","需要","I ___ some water. I am thirsty."],
-    ["remember","記得","Do you ___ his phone number?"],
-    ["surprise","驚訝","The gift will ___ her very much."],
-    ["swing","擺盪","The children like to ___ in the park."],
-    ["think","認為","I ___ this book is very useful."],
-    ["want","想要","I ___ a cup of hot tea."],
-    ["wish","希望（許願）","I ___ you a happy birthday."],
-    ["worry","使擔心","Don't ___ about the test."],
-    ["sorry","感到抱歉的","I am ___ that I came so late."],
-    ["act","扮演","He will ___ as a king in the play."],
-    ["blow","吹","The wind will ___ the leaves away."],
-    ["bow","鞠躬","The singer will ___ after the show."]
-  ],
-  verbs2: [
-    ["break","打破","Be careful, or you will ___ the glass."],
-    ["bring","帶來","Please ___ your notebook to class."],
-    ["brush","刷","I ___ my teeth every morning."],
-    ["carry","（用手等）提","Can you help me ___ this heavy box?"],
-    ["catch","接住","Try to ___ the ball with both hands."],
-    ["cheat","欺騙","It is wrong to ___ on a test."],
-    ["choose","選","You may ___ one gift from the box."],
-    ["clap","拍（手）","The crowd began to ___ after the song."],
-    ["close","關閉","Please ___ the door when you leave."],
-    ["come","來","Will you ___ to my party tonight?"],
-    ["collect","收集","My brother likes to ___ old coins."],
-    ["copy","複製","Please ___ this page for me."],
-    ["count","計算","Let's ___ the students in the room."],
-    ["cover","遮蓋","She used a cloth to ___ the table."],
-    ["cut","切","Can you ___ the cake into six pieces?"],
-    ["dig","挖","The dog likes to ___ a hole in the yard."],
-    ["drop","丟下","Don't ___ your phone on the floor."],
-    ["download","（電腦）下載","I want to ___ this song to my phone."],
-    ["enter","進入","You cannot ___ the room without a key."],
-    ["feed","餵","We ___ the cat twice a day."],
-    ["fight","打架","The two boys began to ___ after school."],
-    ["follow","跟隨","Please ___ me to the meeting room."],
-    ["fry","油炸","She will ___ the chicken for dinner."],
-    ["leave","離開","We must ___ the house at seven."],
-    ["go","去","I ___ to school by bus every day."],
-    ["hang","懸吊","Please ___ your coat behind the door."],
-    ["help","幫助","Can you ___ me with this problem?"],
-    ["hit","打","He used a stick to ___ the ball."],
-    ["hold","握著","Please ___ my hand when we cross."],
-    ["hop","（人）單足跳","The girl can ___ on one foot."],
-    ["hunt","打獵","Long ago, people had to ___ for food."],
-    ["hurry","趕忙","We must ___ or we will be late."],
-    ["jump","跳","He can ___ over that low wall."],
-    ["kick","踢","Try to ___ the ball into the goal."],
-    ["knock","敲","Please ___ before you come in."],
-    ["kill","殺死","The cold weather may ___ these plants."],
-    ["kiss","吻","The mother gave her son a ___."],
-    ["miss","錯過；小姐","Hurry, or you will ___ the last bus."],
-    ["laugh","笑","His funny story made us all ___."],
-    ["make","製作","She will ___ a cake for the party."],
-    ["meet","遇見","I will ___ my friend at the station."],
-    ["move","使移動","Can you help me ___ this desk?"],
-    ["nod","點頭","He will ___ his head to say yes."],
-    ["open","打開","Please ___ your books to page ten."],
-    ["pack","裝（行李）","I need to ___ my bags tonight."],
-    ["paste","黏貼","Cut the picture and ___ it here."],
-    ["pick","挑選","You may ___ any color you like."],
-    ["plant","栽種","We will ___ some trees this weekend."],
-    ["pull","拉","Please ___ the rope harder."],
-    ["push","推","Don't ___ the door; pull it."],
-    ["put","放","Please ___ the keys on the table."],
-    ["rise","上升","The sun will ___ at six tomorrow."],
-    ["roll","滾動","The ball began to ___ down the hill."],
-    ["rest","休息","You look tired. You should ___ a while."],
-    ["shout","呼喊","Don't ___ in the library."],
-    ["smoke","抽菸","You may not ___ inside the building."],
-    ["sign","簽（名）","Please ___ your name on this line."],
-    ["stand","站（立）","Please ___ up when your name is called."],
-    ["take","拿","Please ___ one paper and pass it on."],
-    ["tell","告訴","Can you ___ me the way to the park?"],
-    ["throw","投","Don't ___ the ball inside the house."],
-    ["touch","碰","Please don't ___ the wet paint."],
-    ["type","打字","She can ___ very fast."],
-    ["use","用","May I ___ your pen for a moment?"],
-    ["walk","走","I like to ___ in the park after dinner."]
-  ],
-  verbs3: [
-    ["cave","山洞","The bats live inside that dark ___."],
-    ["mop","用拖把擦","I will ___ the floor after dinner."],
-    ["agree","同意","I ___ with what you just said."],
-    ["appear","出現","A rainbow will ___ after the rain."],
-    ["attack","攻擊","The dog may ___ if you scare it."],
-    ["become","成為","He wants to ___ a doctor someday."],
-    ["begin","開始（著手）","Let's ___ the lesson on page five."],
-    ["belong","屬於","This bag ___s to my sister."],
-    ["plan","計畫","We ___ to visit Japan next summer."],
-    ["call","打電話","I will ___ you after work."],
-    ["care","保護；照顧","She will ___ for the sick dog."],
-    ["check","檢查","Please ___ your answers again."],
-    ["decide","決定","We must ___ where to eat tonight."],
-    ["die","死","The old tree may ___ this winter."],
-    ["enjoy","喜歡；享受","I really ___ playing basketball."],
-    ["fall","落下","Leaves ___ from the trees in autumn."],
-    ["fill","使充滿","Please ___ the bottle with water."],
-    ["find","發現","I can't ___ my keys anywhere."],
-    ["get","變成","It will ___ dark very soon."],
-    ["give","給","Please ___ this letter to your teacher."],
-    ["happen","發生","What will ___ if I press this button?"],
-    ["hide","躲","The cat likes to ___ under the bed."],
-    ["hurt","（使）受傷","He ___ his leg while playing soccer."],
-    ["invite","邀請","I will ___ ten friends to my party."],
-    ["join","結合；加入","Would you like to ___ our club?"],
-    ["keep","養","They ___ two rabbits at home."],
-    ["lead","帶領","She will ___ us to the front gate."],
-    ["let","讓","Please ___ me try one more time."],
-    ["lie","說謊","It is wrong to ___ to your friends."],
-    ["mean","（表示……的）意思","What does this word ___?"],
-    ["notice","注意到","Did you ___ the new sign outside?"],
-    ["own","擁有","They ___ a small shop downtown."],
-    ["please","請","___ close the window before you go."],
-    ["pray","祈禱","Many people ___ before a big game."],
-    ["prepare","準備","I must ___ dinner for my family."],
-    ["raise","舉起","Please ___ your hand if you know."],
-    ["save","救","The doctor tried to ___ his life."],
-    ["sell","賣","They ___ fresh fruit at that store."],
-    ["send","寄","I will ___ you a postcard from Japan."],
-    ["share","分享","Let's ___ this pizza together."],
-    ["show","示範","Can you ___ me how to use it?"],
-    ["sit","坐","Please ___ next to me."],
-    ["sleep","睡","I usually ___ eight hours a night."],
-    ["start","開始（起動）","The car won't ___ this morning."],
-    ["stay","停留","We will ___ in Tokyo for three days."],
-    ["stop","停止","The rain will ___ in an hour."],
-    ["thank","感謝","I want to ___ you for your help."],
-    ["treat","對待","We should ___ everyone with respect."],
-    ["try","嘗試","Please ___ this new dish."],
-    ["visit","拜訪","We will ___ our grandparents on Sunday."],
-    ["wait","等待","Please ___ here for ten minutes."],
-    ["wake","醒來","I ___ up at six every morning."]
-  ],
-  adjectives: [
+  adjectives2: [
     ["able","有能力的","He is ___ to speak three languages."],
     ["afraid","害怕的","She is ___ of big dogs."],
     ["bright","機靈的","That ___ boy learns very quickly."],
@@ -966,6 +726,12 @@ const WORDS = {
     ["ready","準備好的","Are you ___ to go?"],
     ["real","真正的","Is that a ___ diamond?"],
     ["safe","安全的","This street is ___ at night."],
+    ["thick","厚","The book is very ___ and heavy."],
+    ["tidy","整潔的","Her desk is always neat and ___."],
+    ["true","真實的","Is that story ___?"],
+    ["useful","有用的","This app is very ___ for students."],
+    ["wonderful","很棒的","We had a ___ time at the concert."],
+    ["wrong","錯的","You wrote the ___ answer on the form."],
     ["same","相同的","We live in the ___ building."],
     ["scared","恐懼的","She looked ___ when the lights went out."],
     ["serious","嚴肅的","His face was very ___ during the meeting."],
@@ -975,17 +741,47 @@ const WORDS = {
     ["strange","奇怪的","I heard a ___ noise last night."],
     ["sure","確信的","Are you ___ this is the right way?"],
     ["surprised","感到驚訝的","She was ___ to see us at the door."],
-    ["terrible","糟糕的","The weather was ___ all weekend."],
-    ["thick","厚","The book is very ___ and heavy."],
-    ["tidy","整潔的","Her desk is always neat and ___."],
-    ["true","真實的","Is that story ___?"],
-    ["useful","有用的","This app is very ___ for students."],
-    ["wonderful","很棒的","We had a ___ time at the concert."]
+    ["terrible","糟糕的","The weather was ___ all weekend."]
+  ],
+  adverbs: [
+    ["always","總是","She ___ arrives ten minutes early."],
+    ["ever","曾經","Have you ___ eaten a durian?"],
+    ["hard","努力地","He studied very ___ for the final exam."],
+    ["never","從不","My grandfather ___ drinks coffee."],
+    ["often","常常","We ___ eat dinner together on Sundays."],
+    ["seldom","很少","He ___ speaks in class."],
+    ["sometimes","有時","___ I walk to school instead of riding."],
+    ["usually","通常","I ___ finish my homework before dinner."],
+    ["again","再一次","Could you say that ___ , please?"],
+    ["too","太","This box is ___ heavy for one person."],
+    ["also","也","She plays the piano and ___ sings."],
+    ["away","遠離","The bird flew ___ before I could look."],
+    ["almost","幾乎","It is ___ eight o'clock; we should go."],
+    ["finally","最後","After three hours the bus ___ arrived."],
+    ["just","剛剛","She ___ walked out of the room."],
+    ["least","最少","Drink at ___ eight glasses of water a day."],
+    ["maybe","也許","___ it will clear up this afternoon."],
+    ["perhaps","或許","___ we should ask the teacher first."],
+    ["really","的確","That movie was ___ worth watching."],
+    ["so","所以","It was raining, ___ we stayed inside."],
+    ["still","仍然","The shop is ___ open at midnight."],
+    ["then","然後","Wash the rice, ___ put it in the pot."],
+    ["together","一起","The whole class sang ___ ."],
+    ["twice","兩次","I have seen that film ___ ."],
+    ["very","非常","The mountain air is ___ fresh."],
+    ["quite","相當","The test was ___ difficult for everyone."],
+    ["yet","尚未","The bus has not come ___ ."],
+    ["abroad","到國外","Her sister is studying ___ this year."],
+    ["ahead","向前","Look ___ and keep both hands on the wheel."],
+    ["somewhere","在某處","I left my keys ___ in this room."],
+    ["either","也不","If you will not go, I will not go ___ ."],
+    ["no","沒有（任何）","There is ___ milk left in the bottle."],
+    ["not","不","This answer is ___ correct."]
   ]
 };
 
-const CAT_LABEL = { nouns:"NOUNS 其他名詞", verbs1:"VERBS 動詞① 感官・情感・思考", verbs2:"VERBS 動詞② 動作 A–W", verbs3:"VERBS 動詞③ 其他 A–W", adjectives:"ADJECTIVES 其他形容詞" };
-const CAT_COLOR = { nouns:"var(--money)", verbs1:"var(--family)", verbs2:"var(--time)", verbs3:"var(--places)", adjectives:"var(--numbers)" };
+const CAT_LABEL = { adjectives2:"ADJECTIVES 常見形容詞", adverbs:"ADVERBS 常見副詞" };
+const CAT_COLOR = { adjectives2:"var(--family)", adverbs:"var(--time)" };
 const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空" };
 const TYPE_DESC = {
   en2zh: "英翻中：看英文單字，選出正確的中文意思。",
@@ -1129,7 +925,7 @@ const REVIEW_WORDS = [
   {en:"late",zh:"遲到（的）",sentence:"He was ___ for school again this morning.",cat:"time"},
   {en:"later",zh:"以後",sentence:"I have to leave now, so I will see you ___ .",cat:"time"},
   {en:"now",zh:"現在",sentence:"I am busy with schoolwork right ___ .",cat:"time"},
-  {en:"once",zh:"曾經",sentence:"I have visited Japan only ___ , many years ago.",cat:"time"},
+  {en:"once",zh:"一次",sentence:"I have visited Japan only ___ , many years ago.",cat:"time"},
   {en:"future",zh:"未來",sentence:"She often daydreams about what her ___ will look like.",cat:"time"},
   {en:"soon",zh:"很快地",sentence:"The next bus to downtown should arrive ___ .",cat:"time"},
   {en:"today",zh:"今天",sentence:"Do you happen to know what the date is ___ ?",cat:"time"},
@@ -1978,7 +1774,41 @@ const REVIEW_WORDS = [
   {en:"tidy",zh:"整潔的",sentence:"Her desk is always neat and ___.",cat:"adjectives"},
   {en:"true",zh:"真實的",sentence:"Is that story ___?",cat:"adjectives"},
   {en:"useful",zh:"有用的",sentence:"This app is very ___ for students.",cat:"adjectives"},
-  {en:"wonderful",zh:"很棒的",sentence:"We had a ___ time at the concert.",cat:"adjectives"}
+  {en:"wonderful",zh:"很棒的",sentence:"We had a ___ time at the concert.",cat:"adjectives"},
+  {en:"wrong",zh:"錯的",sentence:"You wrote the ___ answer on the form.",cat:"adjectives2"},
+  {en:"always",zh:"總是",sentence:"She ___ arrives ten minutes early.",cat:"adverbs"},
+  {en:"ever",zh:"曾經",sentence:"Have you ___ eaten a durian?",cat:"adverbs"},
+  {en:"hard",zh:"努力地",sentence:"He studied very ___ for the final exam.",cat:"adverbs"},
+  {en:"never",zh:"從不",sentence:"My grandfather ___ drinks coffee.",cat:"adverbs"},
+  {en:"often",zh:"常常",sentence:"We ___ eat dinner together on Sundays.",cat:"adverbs"},
+  {en:"seldom",zh:"很少",sentence:"He ___ speaks in class.",cat:"adverbs"},
+  {en:"sometimes",zh:"有時",sentence:"___ I walk to school instead of riding.",cat:"adverbs"},
+  {en:"usually",zh:"通常",sentence:"I ___ finish my homework before dinner.",cat:"adverbs"},
+  {en:"again",zh:"再一次",sentence:"Could you say that ___ , please?",cat:"adverbs"},
+  {en:"too",zh:"太",sentence:"This box is ___ heavy for one person.",cat:"adverbs"},
+  {en:"also",zh:"也",sentence:"She plays the piano and ___ sings.",cat:"adverbs"},
+  {en:"away",zh:"遠離",sentence:"The bird flew ___ before I could look.",cat:"adverbs"},
+  {en:"almost",zh:"幾乎",sentence:"It is ___ eight o'clock; we should go.",cat:"adverbs"},
+  {en:"finally",zh:"最後",sentence:"After three hours the bus ___ arrived.",cat:"adverbs"},
+  {en:"just",zh:"剛剛",sentence:"She ___ walked out of the room.",cat:"adverbs"},
+  {en:"least",zh:"最少",sentence:"Drink at ___ eight glasses of water a day.",cat:"adverbs"},
+  {en:"maybe",zh:"也許",sentence:"___ it will clear up this afternoon.",cat:"adverbs"},
+  {en:"perhaps",zh:"或許",sentence:"___ we should ask the teacher first.",cat:"adverbs"},
+  {en:"really",zh:"的確",sentence:"That movie was ___ worth watching.",cat:"adverbs"},
+  {en:"so",zh:"所以",sentence:"It was raining, ___ we stayed inside.",cat:"adverbs"},
+  {en:"still",zh:"仍然",sentence:"The shop is ___ open at midnight.",cat:"adverbs"},
+  {en:"then",zh:"然後",sentence:"Wash the rice, ___ put it in the pot.",cat:"adverbs"},
+  {en:"together",zh:"一起",sentence:"The whole class sang ___ .",cat:"adverbs"},
+  {en:"twice",zh:"兩次",sentence:"I have seen that film ___ .",cat:"adverbs"},
+  {en:"very",zh:"非常",sentence:"The mountain air is ___ fresh.",cat:"adverbs"},
+  {en:"quite",zh:"相當",sentence:"The test was ___ difficult for everyone.",cat:"adverbs"},
+  {en:"yet",zh:"尚未",sentence:"The bus has not come ___ .",cat:"adverbs"},
+  {en:"abroad",zh:"到國外",sentence:"Her sister is studying ___ this year.",cat:"adverbs"},
+  {en:"ahead",zh:"向前",sentence:"Look ___ and keep both hands on the wheel.",cat:"adverbs"},
+  {en:"somewhere",zh:"在某處",sentence:"I left my keys ___ in this room.",cat:"adverbs"},
+  {en:"either",zh:"也不",sentence:"If you will not go, I will not go ___ .",cat:"adverbs"},
+  {en:"no",zh:"沒有（任何）",sentence:"There is ___ milk left in the bottle.",cat:"adverbs"},
+  {en:"not",zh:"不",sentence:"This answer is ___ correct.",cat:"adverbs"}
 ];
 
 // ---------------- Teacher score reporting ----------------
@@ -2798,7 +2628,7 @@ const REVIEW_CAT_LABEL = {
   transport:'大眾運輸', sizes:'尺寸測量', countries:'國家語言', holidays:'假日節慶',
   occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
-  interjections:'感歎詞', nouns:'其他名詞',
+  interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
@@ -3183,6 +3013,7 @@ const ALT_SENTENCES = {
   "able": ["After months of training, he was ___ to run a marathon."],
   "about": ["The whole trip takes ___ two hours."],
   "above": ["A lamp hangs ___ the table."],
+  "abroad": ["They travel ___ every summer."],
   "across": ["They swam ___ the narrow river."],
   "act": ["Can you ___ like a robot for the show?"],
   "action": ["Talking is easy, but taking ___ is much harder."],
@@ -3191,14 +3022,19 @@ const ALT_SENTENCES = {
   "afraid": ["There is nothing to be ___ of in the dark."],
   "after": ["We had dessert ___ the meal."],
   "afternoon": ["The meeting was moved to Friday ___ ."],
+  "again": ["Try ___ ; you almost had it that time."],
   "age": ["Children under the ___ of six can enter for free."],
   "agree": ["Not everyone will ___ with this plan."],
+  "ahead": ["The runner in front was far ___ of us."],
   "air": ["The ___ at the top of the mountain is thin."],
   "airplane": ["The ___ landed safely in the storm."],
   "airport": ["We arrived at the ___ two hours early."],
   "all": ["___ the lights in the house were turned off."],
+  "almost": ["I ___ dropped the plate."],
   "along": ["We walked ___ the riverbank."],
   "already": ["The train had ___ left when we arrived."],
+  "also": ["My brother is ___ coming with us."],
+  "always": ["Does he ___ take the same bus?"],
   "and": ["Bring a pen ___ some paper."],
   "answer": ["Nobody knew the ___ to that question."],
   "any": ["Take ___ seat you like; they are all free."],
@@ -3216,6 +3052,7 @@ const ALT_SENTENCES = {
   "august": ["Typhoons often hit Taiwan in ___ ."],
   "aunt": ["My ___ sent me a birthday card from Japan."],
   "autumn": ["The air becomes cool and dry in ___ ."],
+  "away": ["Keep the medicine ___ from children."],
   "back": ["The garden is at the ___ of the house."],
   "badminton": ["We play ___ in the gym on Fridays."],
   "bag": ["Carry your heavy books in this ___ ."],
@@ -3429,6 +3266,7 @@ const ALT_SENTENCES = {
   "eight": ["An octopus has ___ arms."],
   "eighteen": ["In many countries you become an adult at ___ ."],
   "eighty": ["This bus can carry about ___ passengers."],
+  "either": ["She does not eat meat or fish ___ ."],
   "elementary school": ["My cousin just started ___ this year."],
   "eleven": ["My little brother will be ___ next month."],
   "else": ["Is there anything ___ you need from the store?"],
@@ -3440,6 +3278,7 @@ const ALT_SENTENCES = {
   "envelope": ["Write the address clearly on the ___ ."],
   "eraser": ["May I borrow your ___ ?"],
   "evening": ["We often take a walk in the cool ___ ."],
+  "ever": ["Nobody has ___ climbed that cliff."],
   "example": ["Give me one ___ of a mammal."],
   "excellent": ["The restaurant serves ___ seafood."],
   "except": ["Everyone in the class came ___ Tom."],
@@ -3468,6 +3307,7 @@ const ALT_SENTENCES = {
   "fight": ["Brothers sometimes ___ over very small things."],
   "file": ["Keep all these papers in one ___ ."],
   "fill": ["Warm bread began to ___ the room with a nice smell."],
+  "finally": ["___ , I want to thank my parents."],
   "find": ["Where did you ___ this old photograph?"],
   "fine": ["They spent a ___ evening together by the lake."],
   "finish": ["Did you ___ reading that thick book?"],
@@ -3541,6 +3381,7 @@ const ALT_SENTENCES = {
   "hamburger": ["She had a cheese ___ for lunch."],
   "hang": ["They will ___ colorful lights on the tree."],
   "happen": ["Accidents often ___ when people are careless."],
+  "hard": ["If you work ___ , you will improve."],
   "hat": ["Wear a ___ to keep the sun off your face."],
   "hate": ["My sister and I both ___ getting up early."],
   "have": ["They ___ three children and a dog."],
@@ -3611,6 +3452,7 @@ const ALT_SENTENCES = {
   "jump": ["The cat likes to ___ onto the kitchen counter."],
   "june": ["Graduation ceremonies are usually held in ___ ."],
   "junior high school": ["He will enter ___ next September."],
+  "just": ["The train has ___ left the station."],
   "keep": ["Some farmers ___ chickens for their eggs."],
   "key": ["I cannot find the ___ to the back door."],
   "kick": ["It is rude to ___ the chair in front of you."],
@@ -3636,6 +3478,7 @@ const ALT_SENTENCES = {
   "lead": ["This path will ___ you to the top of the hill."],
   "leader": ["A good ___ listens to everyone on the team."],
   "learn": ["It is never too late to ___ ."],
+  "least": ["He spent the ___ money of anyone here."],
   "leave": ["What time does the last bus ___ ?"],
   "left": ["Turn ___ at the traffic lights."],
   "lemon": ["Squeeze half a ___ into the hot tea."],
@@ -3679,6 +3522,7 @@ const ALT_SENTENCES = {
   "mat": ["She rolled out a yoga ___ on the floor."],
   "math": ["He solved the ___ problem in one minute."],
   "may": ["Mother's Day is celebrated in ___ ."],
+  "maybe": ["___ he forgot about the meeting."],
   "meal": ["That was the best ___ I have had all year."],
   "mean": ["These road signs ___ that you must slow down."],
   "meat": ["Vegetarians do not eat any ___ at all."],
@@ -3722,15 +3566,18 @@ const ALT_SENTENCES = {
   "nature": ["He loves taking long walks in ___ ."],
   "near": ["They live ___ the train station."],
   "need": ["You do not ___ to bring anything to the picnic."],
+  "never": ["I will ___ forget your kindness."],
   "new": ["Everything looks ___ after a fresh coat of paint."],
   "night": ["Owls hunt for food during the ___ ."],
   "nine": ["A baseball team has ___ players on the field."],
   "nineteen": ["Only ___ seats were left on the plane."],
   "ninety": ["A right angle measures ___ degrees."],
+  "no": ["___ student answered that hard question."],
   "nod": ["If you agree, please ___ your head."],
   "noodle": ["Boil the ___ s for three minutes only."],
   "noon": ["The sun is highest in the sky at ___ ."],
   "north": ["The wind blows from the ___ in January."],
+  "not": ["Please do ___ touch the wet paint."],
   "notebook": ["He fills a whole ___ every term."],
   "notice": ["Nobody seemed to ___ that he had left."],
   "november": ["The days get much shorter by ___ ."],
@@ -3741,6 +3588,7 @@ const ALT_SENTENCES = {
   "of": ["The roof ___ the house is red."],
   "off": ["The book fell ___ the shelf."],
   "office": ["She works in an ___ downtown."],
+  "often": ["How ___ do you visit your cousin?"],
   "oil": ["Heat the ___ before adding the vegetables."],
   "on": ["Put the plate ___ the table."],
   "once": ["This building was ___ a small village school."],
@@ -3772,6 +3620,7 @@ const ALT_SENTENCES = {
   "pen": ["This ___ has run out of ink."],
   "pencil": ["Sharpen your ___ before the test."],
   "pencil box": ["All her pens fit in one ___ ."],
+  "perhaps": ["She is late; ___ the traffic is bad."],
   "photo": ["He took a ___ of the sunset with his camera."],
   "piano": ["She practices the ___ for an hour daily."],
   "pick": ["Let the youngest child ___ the first card."],
@@ -3823,6 +3672,7 @@ const ALT_SENTENCES = {
   "quarter": ["The class ends at a ___ to four."],
   "question": ["Does anyone have a ___ ?"],
   "quiet": ["The library must stay ___ at all times."],
+  "quite": ["It is ___ cold outside this morning."],
   "quiz": ["He failed the ___ but passed the final exam."],
   "race": ["He came in second in the ___ ."],
   "radio": ["She listens to the ___ while cooking."],
@@ -3834,6 +3684,7 @@ const ALT_SENTENCES = {
   "read": ["How many books do you ___ a month?"],
   "ready": ["Dinner will be ___ in about ten minutes."],
   "real": ["Is this a ___ pearl or just glass?"],
+  "really": ["Do you ___ believe his story?"],
   "red": ["Stop when the light is ___ ."],
   "refrigerator": ["The ___ hums quietly all through the night."],
   "remember": ["Please ___ to lock the door before you leave."],
@@ -3884,6 +3735,7 @@ const ALT_SENTENCES = {
   "see": ["Did you ___ the rainbow after the rain?"],
   "seed": ["She planted a ___ and watered it every day."],
   "seesaw": ["Two children balanced on the ___ ."],
+  "seldom": ["It ___ snows in this warm city."],
   "sell": ["Do they ___ tickets at the gate?"],
   "send": ["Please ___ this package by express mail."],
   "senior high school": ["She studies science at a ___ downtown."],
@@ -3938,11 +3790,14 @@ const ALT_SENTENCES = {
   "snow": ["The ___ melted by noon."],
   "snowman": ["The children built a ___ in the yard."],
   "snowy": ["The village looks lovely on a ___ morning."],
+  "so": ["He was tired, ___ he went to bed early."],
   "soccer": ["___ is the most popular game in the world."],
   "sock": ["One ___ always disappears in the wash."],
   "sofa": ["He fell asleep on the ___ watching TV."],
   "soldier": ["The ___ served for ten years."],
   "some": ["___ of these apples have gone bad."],
+  "sometimes": ["The old radio ___ stops working."],
+  "somewhere": ["Let us find ___ quiet to talk."],
   "son": ["They named their ___ after his grandfather."],
   "song": ["This ___ always cheers me up."],
   "soon": ["Please write back to me ___ ."],
@@ -3968,6 +3823,7 @@ const ALT_SENTENCES = {
   "station": ["The ___ was full of tired travelers."],
   "stay": ["How long will you ___ in this city?"],
   "steak": ["He likes his ___ cooked medium rare."],
+  "still": ["Are you ___ waiting for the bus?"],
   "stomach": ["Do not swim right after a meal; it upsets your ___ ."],
   "stop": ["The bus does not ___ at this corner."],
   "store": ["That ___ closes at ten every night."],
@@ -4017,6 +3873,7 @@ const ALT_SENTENCES = {
   "than": ["This box is heavier ___ that one."],
   "thank": ["We should ___ the workers for their effort."],
   "theater": ["The ___ was built over a century ago."],
+  "then": ["We ate lunch and ___ went for a walk."],
   "there": ["Put the box over ___ by the wall."],
   "thick": ["Put on a ___ coat; it is freezing outside."],
   "thing": ["Do not forget to bring one ___ for the picnic."],
@@ -4038,9 +3895,11 @@ const ALT_SENTENCES = {
   "to": ["She walks ___ school every day."],
   "toast": ["He spread jam on his ___ this morning."],
   "today": ["There is no homework due ___ ."],
+  "together": ["Let us do the project ___ ."],
   "tomato": ["Slice the ___ for the sandwich."],
   "tomorrow": ["If it rains ___ , the picnic will be cancelled."],
   "tonight": ["The moon looks especially bright ___ ."],
+  "too": ["The soup was ___ salty to finish."],
   "tool": ["A hammer is a useful ___ for fixing things."],
   "top": ["Write the date at the ___ of the page."],
   "total": ["What is the ___ number of people coming?"],
@@ -4066,6 +3925,7 @@ const ALT_SENTENCES = {
   "turn": ["___ around and look behind you."],
   "twelve": ["A dozen eggs means ___ eggs."],
   "twenty": ["A score means ___ years."],
+  "twice": ["He calls his mother ___ a week."],
   "two": ["A bicycle has ___ wheels."],
   "type": ["It is faster to ___ than to write by hand."],
   "typhoon": ["The ___ closed all the schools."],
@@ -4078,8 +3938,10 @@ const ALT_SENTENCES = {
   "up": ["The balloon floated ___ into the sky."],
   "use": ["You may not ___ a dictionary during the test."],
   "useful": ["A map is ___ when you travel alone."],
+  "usually": ["The market is ___ busy on Saturday."],
   "vacation": ["They went on ___ to Japan."],
   "vegetable": ["Eat more ___ s and less fried food."],
+  "very": ["She was ___ pleased with the result."],
   "vest": ["He put a warm ___ under his coat."],
   "video": ["They watched an old ___ from the nineties."],
   "violin": ["The ___ has four strings."],
@@ -4130,10 +3992,12 @@ const ALT_SENTENCES = {
   "worry": ["His long silence began to ___ his parents."],
   "write": ["She hopes to ___ a novel one day."],
   "writer": ["The ___ published her first novel."],
+  "wrong": ["It is ___ to laugh at other people."],
   "yard": ["The children play in the front ___ ."],
   "year": ["Every four ___ s we have a leap day."],
   "yellow": ["Sunflowers are bright ___ ."],
   "yesterday": ["I finished the whole book ___ ."],
+  "yet": ["Have you finished your report ___ ?"],
   "yummy": ["Grandma's dumplings are always ___ ."],
   "zero": ["Water freezes at ___ degrees Celsius."],
   "zoo": ["The pandas at the ___ are very popular."]
@@ -4205,8 +4069,23 @@ function sensesOf(zh){
 // alone is not enough: asking 中翻英 for 「美國」 with USA as the answer and
 // America among the options gives two right answers, and 死 next to 死的 reads
 // as two right answers even when only one is.
+// Chinese glosses that are different strings but mean the same thing to a
+// student. Without this, 中翻英 for 「也許」 could offer both maybe and perhaps.
+const SYNONYM_GROUPS = [
+  ['也許', '或許', '大概'],
+  ['總是', '一直'],
+  ['常常', '時常', '經常'],
+  ['幾乎', '差不多']
+];
+function synonymKey(sense){
+  for(let i = 0; i < SYNONYM_GROUPS.length; i++){
+    if(SYNONYM_GROUPS[i].includes(sense)) return 'syn' + i;
+  }
+  return sense;
+}
+
 function meaningClash(a, b){
-  const sa = sensesOf(a.zh), sb = sensesOf(b.zh);
+  const sa = sensesOf(a.zh).map(synonymKey), sb = sensesOf(b.zh).map(synonymKey);
   return sa.some(s => sb.includes(s));
 }
 
