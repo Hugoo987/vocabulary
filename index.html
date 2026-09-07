@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v10 · 形容詞&副詞</title>
+<title>單字大挑戰 v11 · 其他副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -272,8 +272,7 @@
     padding: 1px 8px; border-radius: 20px; font-size: 11px;
   }
   .cat-tab.off{ filter: grayscale(0.75) brightness(0.85) saturate(0.4); opacity: 0.5; }
-  .cat-tab[data-cat="adjectives2"]{ background: var(--family); }
-  .cat-tab[data-cat="adverbs"]{ background: var(--time); }
+  .cat-tab[data-cat="adverbs2"]{ background: var(--time); }
 
   .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
   .pill{
@@ -380,11 +379,11 @@
   <div style="background:#C1272D;color:#fff;text-align:center;padding:8px 12px;
   font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:13px;border-radius:10px;
   margin-bottom:14px;">
-  ✅ 這是最新版 v10 ｜ 常見形容詞・常見副詞 ｜ 91 字
+  ✅ 這是最新版 v11 ｜ 其他副詞 ｜ 35 字
 </div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">基礎 1200 單字 · 常見形容詞&副詞 <span class="ver-badge">v10</span></div>
+    <div class="sub">基礎 1200 單字 · 其他副詞 <span class="ver-badge">v11</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -414,7 +413,7 @@
       <span>目前身分：<span class="tag student" id="whoamiTag">學生</span></span>
       <button class="mini-btn" id="switchRoleBtn">切換身分</button>
     </div>
-    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v10 · 形容詞&副詞 · 91字</span></div>
+    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v11 · 其他副詞 · 35字</span></div>
     <div class="mode-grid mode-grid-3">
       <div class="mode-card practice" id="modePractice">
         <div class="icon">🪢</div>
@@ -424,12 +423,12 @@
       <div class="mode-card exam" id="modeExam">
         <div class="icon">📝</div>
         <h3>正式考試</h3>
-        <p>固定題目：全部單元、全部題型、共 40 題，作答完畢直接產生成績單。</p>
+        <p>固定題目：全部單元、全部題型、共 <span class="exam-count">40</span> 題，作答完畢直接產生成績單。</p>
       </div>
       <div class="mode-card review" id="modeReview">
         <div class="icon">📚</div>
         <h3>總複習</h3>
-        <p>從<b>學過的所有單元</b>（目前累積 1014 個單字）出題，複習之前教過的內容。</p>
+        <p>從<b>學過的所有單元</b>（目前累積 1016 個單字）出題，複習之前教過的內容。</p>
       </div>
     </div>
 
@@ -593,7 +592,7 @@
   <!-- EXAM CONFIRM SCREEN (fixed settings, no choices) -->
   <div class="card hidden" id="examConfirmScreen">
     <div class="row-label" style="margin-top:0;">正式考試規則</div>
-    <div class="notice-box exam">📝 全部單元、全部題型、共 40 題，平均分配到各單元，全部都是選擇題，不可調整設定。</div>
+    <div class="notice-box exam">📝 全部單元、全部題型、共 <span class="exam-count">40</span> 題，平均分配到各單元，全部都是選擇題，不可調整設定。</div>
     <button class="big-btn" id="examStartBtn">開始考試</button>
     <div class="hint" id="backHint2" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
@@ -617,7 +616,7 @@
     </div>
 
     <div class="row-label">題目範圍</div>
-    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1014</b> 個單字）中隨機出題，不限單一單元。</div>
+    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1016</b> 個單字）中隨機出題，不限單一單元。</div>
 
     <button class="big-btn" id="reviewStartBtn">開始總複習</button>
     <div class="hint" id="backHint3" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
@@ -683,105 +682,47 @@
 // English word appears only once overall, so no question can ever have two options
 // that are both correct.
 const WORDS = {
-  adjectives2: [
-    ["able","有能力的","He is ___ to speak three languages."],
-    ["afraid","害怕的","She is ___ of big dogs."],
-    ["bright","機靈的","That ___ boy learns very quickly."],
-    ["certain","某種","She likes a ___ kind of music."],
-    ["clean","乾淨的","The kitchen is very ___ today."],
-    ["common","普通的","This is a very ___ family name."],
-    ["convenient","方便的","The store is ___ for everyone here."],
-    ["correct","正確的","Your answer is ___."],
-    ["dangerous","危險的","Swimming in this river is ___."],
-    ["dark","黑暗的","The room is too ___ to read in."],
-    ["dead","死的","The old plant on the desk is ___."],
-    ["dear","親愛的","___ Mom, I miss you very much."],
-    ["difficult","困難的","This question is too ___ for me."],
-    ["different","不同的","Their answers are quite ___."],
-    ["dirty","髒的","Your shoes are very ___."],
-    ["easy","容易的","This test was quite ___."],
-    ["else","其他","What ___ do you want to buy?"],
-    ["enough","足夠的","We have ___ chairs for everyone."],
-    ["excellent","出色的","She did an ___ job on the report."],
-    ["favorite","特別喜愛的","Blue is my ___ color."],
-    ["fine","美好的","It is a ___ day for a picnic."],
-    ["foreign","外國的","He is learning a ___ language."],
-    ["free","免費的","The drinks at the party are ___."],
-    ["fresh","新鮮的","These vegetables are very ___."],
-    ["glad","高興的","I am ___ to see you again."],
-    ["great","極好的","We had a ___ time at the beach."],
-    ["helpful","有幫助的","Your advice was very ___."],
-    ["important","重要的","This meeting is very ___."],
-    ["interesting","有趣的","That was an ___ story."],
-    ["loud","大聲的","The music is too ___."],
-    ["lucky","幸運的","You are so ___ to win the prize."],
-    ["magic","魔法的","He showed us a ___ trick."],
-    ["modern","現代的","They live in a ___ apartment."],
-    ["national","全國性的","His story became ___ news."],
-    ["new","新的","I bought a ___ bike last week."],
-    ["only","唯一的","He is the ___ child in the family."],
-    ["popular","受歡迎的","This song is very ___ now."],
-    ["possible","可能的","It is ___ that he will come late."],
-    ["quiet","沈默的","The boy is very ___ in class."],
-    ["ready","準備好的","Are you ___ to go?"],
-    ["real","真正的","Is that a ___ diamond?"],
-    ["safe","安全的","This street is ___ at night."],
-    ["thick","厚","The book is very ___ and heavy."],
-    ["tidy","整潔的","Her desk is always neat and ___."],
-    ["true","真實的","Is that story ___?"],
-    ["useful","有用的","This app is very ___ for students."],
-    ["wonderful","很棒的","We had a ___ time at the concert."],
-    ["wrong","錯的","You wrote the ___ answer on the form."],
-    ["same","相同的","We live in the ___ building."],
-    ["scared","恐懼的","She looked ___ when the lights went out."],
-    ["serious","嚴肅的","His face was very ___ during the meeting."],
-    ["sharp","銳利的","Be careful, this knife is very ___."],
-    ["simple","簡單的","The recipe is ___ enough for a child."],
-    ["special","特別的","Today is a ___ day for our family."],
-    ["strange","奇怪的","I heard a ___ noise last night."],
-    ["sure","確信的","Are you ___ this is the right way?"],
-    ["surprised","感到驚訝的","She was ___ to see us at the door."],
-    ["terrible","糟糕的","The weather was ___ all weekend."]
-  ],
-  adverbs: [
+  adverbs2: [
     ["always","總是","She ___ arrives ten minutes early."],
     ["ever","曾經","Have you ___ eaten a durian?"],
-    ["hard","努力地","He studied very ___ for the final exam."],
-    ["never","從不","My grandfather ___ drinks coffee."],
-    ["often","常常","We ___ eat dinner together on Sundays."],
+    ["hard","辛勤地","He studied very ___ for the final exam."],
+    ["never","從未","My grandfather ___ drinks coffee."],
+    ["often","經常","We ___ eat dinner together on Sundays."],
     ["seldom","很少","He ___ speaks in class."],
     ["sometimes","有時","___ I walk to school instead of riding."],
-    ["usually","通常","I ___ finish my homework before dinner."],
-    ["again","再一次","Could you say that ___ , please?"],
+    ["usually","通常地","I ___ finish my homework before dinner."],
+    ["again","又、再","Could you say that ___ , please?"],
     ["too","太","This box is ___ heavy for one person."],
     ["also","也","She plays the piano and ___ sings."],
-    ["away","遠離","The bird flew ___ before I could look."],
+    ["away","在遠處","The mountains looked blue and far ___ ."],
     ["almost","幾乎","It is ___ eight o'clock; we should go."],
-    ["finally","最後","After three hours the bus ___ arrived."],
-    ["just","剛剛","She ___ walked out of the room."],
-    ["least","最少","Drink at ___ eight glasses of water a day."],
-    ["maybe","也許","___ it will clear up this afternoon."],
+    ["finally","終於","After three hours the bus ___ arrived."],
+    ["just","只要","It costs ___ ten dollars, so I bought two."],
+    ["least","最少的","Drink at ___ eight glasses of water a day."],
+    ["maybe","可能","___ it will clear up this afternoon."],
     ["perhaps","或許","___ we should ask the teacher first."],
-    ["really","的確","That movie was ___ worth watching."],
-    ["so","所以","It was raining, ___ we stayed inside."],
-    ["still","仍然","The shop is ___ open at midnight."],
-    ["then","然後","Wash the rice, ___ put it in the pot."],
+    ["really","確實","That movie was ___ worth watching."],
+    ["so","也如此","She loves music, and ___ does her brother."],
+    ["still","還，仍然","The shop is ___ open at midnight."],
+    ["then","當時","We lived in Taichung back ___ ."],
     ["together","一起","The whole class sang ___ ."],
     ["twice","兩次","I have seen that film ___ ."],
-    ["very","非常","The mountain air is ___ fresh."],
+    ["very","非常，很","The mountain air is ___ fresh."],
     ["quite","相當","The test was ___ difficult for everyone."],
-    ["yet","尚未","The bus has not come ___ ."],
-    ["abroad","到國外","Her sister is studying ___ this year."],
-    ["ahead","向前","Look ___ and keep both hands on the wheel."],
+    ["yet","還（沒）","The bus has not come ___ ."],
+    ["abroad","在國外","Her sister is studying ___ this year."],
+    ["ahead","在前","The car ___ of us stopped very suddenly."],
     ["somewhere","在某處","I left my keys ___ in this room."],
-    ["either","也不","If you will not go, I will not go ___ ."],
-    ["no","沒有（任何）","There is ___ milk left in the bottle."],
-    ["not","不","This answer is ___ correct."]
+    ["either","也（否定句）","If you will not go, I will not go ___ ."],
+    ["no","不（沒有任何）","There is ___ milk left in the bottle."],
+    ["not","不","This answer is ___ correct."],
+    ["OK","還好","Are you ___ ? You look a little pale."],
+    ["yes","是","\"Did you finish the report?\" \"___ , I did.\""]
   ]
 };
 
-const CAT_LABEL = { adjectives2:"ADJECTIVES 常見形容詞", adverbs:"ADVERBS 常見副詞" };
-const CAT_COLOR = { adjectives2:"var(--family)", adverbs:"var(--time)" };
+const CAT_LABEL = { adverbs2:"ADVERBS 其他副詞" };
+const CAT_COLOR = { adverbs2:"var(--time)" };
 const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空" };
 const TYPE_DESC = {
   en2zh: "英翻中：看英文單字，選出正確的中文意思。",
@@ -1755,7 +1696,7 @@ const REVIEW_WORDS = [
   {en:"new",zh:"新的",sentence:"I bought a ___ bike last week.",cat:"adjectives"},
   {en:"only",zh:"唯一的",sentence:"He is the ___ child in the family.",cat:"adjectives"},
   {en:"popular",zh:"受歡迎的",sentence:"This song is very ___ now.",cat:"adjectives"},
-  {en:"possible",zh:"可能的",sentence:"It is ___ that he will come late.",cat:"adjectives"},
+  {en:"possible",zh:"有可能的",sentence:"It is ___ that he will come late.",cat:"adjectives"},
   {en:"quiet",zh:"沈默的",sentence:"The boy is very ___ in class.",cat:"adjectives"},
   {en:"ready",zh:"準備好的",sentence:"Are you ___ to go?",cat:"adjectives"},
   {en:"real",zh:"真正的",sentence:"Is that a ___ diamond?",cat:"adjectives"},
@@ -1776,39 +1717,41 @@ const REVIEW_WORDS = [
   {en:"useful",zh:"有用的",sentence:"This app is very ___ for students.",cat:"adjectives"},
   {en:"wonderful",zh:"很棒的",sentence:"We had a ___ time at the concert.",cat:"adjectives"},
   {en:"wrong",zh:"錯的",sentence:"You wrote the ___ answer on the form.",cat:"adjectives2"},
-  {en:"always",zh:"總是",sentence:"She ___ arrives ten minutes early.",cat:"adverbs"},
-  {en:"ever",zh:"曾經",sentence:"Have you ___ eaten a durian?",cat:"adverbs"},
-  {en:"hard",zh:"努力地",sentence:"He studied very ___ for the final exam.",cat:"adverbs"},
-  {en:"never",zh:"從不",sentence:"My grandfather ___ drinks coffee.",cat:"adverbs"},
-  {en:"often",zh:"常常",sentence:"We ___ eat dinner together on Sundays.",cat:"adverbs"},
-  {en:"seldom",zh:"很少",sentence:"He ___ speaks in class.",cat:"adverbs"},
-  {en:"sometimes",zh:"有時",sentence:"___ I walk to school instead of riding.",cat:"adverbs"},
-  {en:"usually",zh:"通常",sentence:"I ___ finish my homework before dinner.",cat:"adverbs"},
-  {en:"again",zh:"再一次",sentence:"Could you say that ___ , please?",cat:"adverbs"},
-  {en:"too",zh:"太",sentence:"This box is ___ heavy for one person.",cat:"adverbs"},
-  {en:"also",zh:"也",sentence:"She plays the piano and ___ sings.",cat:"adverbs"},
-  {en:"away",zh:"遠離",sentence:"The bird flew ___ before I could look.",cat:"adverbs"},
-  {en:"almost",zh:"幾乎",sentence:"It is ___ eight o'clock; we should go.",cat:"adverbs"},
-  {en:"finally",zh:"最後",sentence:"After three hours the bus ___ arrived.",cat:"adverbs"},
-  {en:"just",zh:"剛剛",sentence:"She ___ walked out of the room.",cat:"adverbs"},
-  {en:"least",zh:"最少",sentence:"Drink at ___ eight glasses of water a day.",cat:"adverbs"},
-  {en:"maybe",zh:"也許",sentence:"___ it will clear up this afternoon.",cat:"adverbs"},
-  {en:"perhaps",zh:"或許",sentence:"___ we should ask the teacher first.",cat:"adverbs"},
-  {en:"really",zh:"的確",sentence:"That movie was ___ worth watching.",cat:"adverbs"},
-  {en:"so",zh:"所以",sentence:"It was raining, ___ we stayed inside.",cat:"adverbs"},
-  {en:"still",zh:"仍然",sentence:"The shop is ___ open at midnight.",cat:"adverbs"},
-  {en:"then",zh:"然後",sentence:"Wash the rice, ___ put it in the pot.",cat:"adverbs"},
-  {en:"together",zh:"一起",sentence:"The whole class sang ___ .",cat:"adverbs"},
-  {en:"twice",zh:"兩次",sentence:"I have seen that film ___ .",cat:"adverbs"},
-  {en:"very",zh:"非常",sentence:"The mountain air is ___ fresh.",cat:"adverbs"},
-  {en:"quite",zh:"相當",sentence:"The test was ___ difficult for everyone.",cat:"adverbs"},
-  {en:"yet",zh:"尚未",sentence:"The bus has not come ___ .",cat:"adverbs"},
-  {en:"abroad",zh:"到國外",sentence:"Her sister is studying ___ this year.",cat:"adverbs"},
-  {en:"ahead",zh:"向前",sentence:"Look ___ and keep both hands on the wheel.",cat:"adverbs"},
-  {en:"somewhere",zh:"在某處",sentence:"I left my keys ___ in this room.",cat:"adverbs"},
-  {en:"either",zh:"也不",sentence:"If you will not go, I will not go ___ .",cat:"adverbs"},
-  {en:"no",zh:"沒有（任何）",sentence:"There is ___ milk left in the bottle.",cat:"adverbs"},
-  {en:"not",zh:"不",sentence:"This answer is ___ correct.",cat:"adverbs"}
+  {en:"always",zh:"總是",sentence:"She ___ arrives ten minutes early.",cat:"adverbs2"},
+  {en:"ever",zh:"曾經",sentence:"Have you ___ eaten a durian?",cat:"adverbs2"},
+  {en:"hard",zh:"辛勤地",sentence:"He studied very ___ for the final exam.",cat:"adverbs2"},
+  {en:"never",zh:"從未",sentence:"My grandfather ___ drinks coffee.",cat:"adverbs2"},
+  {en:"often",zh:"經常",sentence:"We ___ eat dinner together on Sundays.",cat:"adverbs2"},
+  {en:"seldom",zh:"很少",sentence:"He ___ speaks in class.",cat:"adverbs2"},
+  {en:"sometimes",zh:"有時",sentence:"___ I walk to school instead of riding.",cat:"adverbs2"},
+  {en:"usually",zh:"通常地",sentence:"I ___ finish my homework before dinner.",cat:"adverbs2"},
+  {en:"again",zh:"又、再",sentence:"Could you say that ___ , please?",cat:"adverbs2"},
+  {en:"too",zh:"太",sentence:"This box is ___ heavy for one person.",cat:"adverbs2"},
+  {en:"also",zh:"也",sentence:"She plays the piano and ___ sings.",cat:"adverbs2"},
+  {en:"away",zh:"在遠處",sentence:"The mountains looked blue and far ___ .",cat:"adverbs2"},
+  {en:"almost",zh:"幾乎",sentence:"It is ___ eight o'clock; we should go.",cat:"adverbs2"},
+  {en:"finally",zh:"終於",sentence:"After three hours the bus ___ arrived.",cat:"adverbs2"},
+  {en:"just",zh:"只要",sentence:"It costs ___ ten dollars, so I bought two.",cat:"adverbs2"},
+  {en:"least",zh:"最少的",sentence:"Drink at ___ eight glasses of water a day.",cat:"adverbs2"},
+  {en:"maybe",zh:"可能",sentence:"___ it will clear up this afternoon.",cat:"adverbs2"},
+  {en:"perhaps",zh:"或許",sentence:"___ we should ask the teacher first.",cat:"adverbs2"},
+  {en:"really",zh:"確實",sentence:"That movie was ___ worth watching.",cat:"adverbs2"},
+  {en:"so",zh:"也如此",sentence:"She loves music, and ___ does her brother.",cat:"adverbs2"},
+  {en:"still",zh:"還，仍然",sentence:"The shop is ___ open at midnight.",cat:"adverbs2"},
+  {en:"then",zh:"當時",sentence:"We lived in Taichung back ___ .",cat:"adverbs2"},
+  {en:"together",zh:"一起",sentence:"The whole class sang ___ .",cat:"adverbs2"},
+  {en:"twice",zh:"兩次",sentence:"I have seen that film ___ .",cat:"adverbs2"},
+  {en:"very",zh:"非常，很",sentence:"The mountain air is ___ fresh.",cat:"adverbs2"},
+  {en:"quite",zh:"相當",sentence:"The test was ___ difficult for everyone.",cat:"adverbs2"},
+  {en:"yet",zh:"還（沒）",sentence:"The bus has not come ___ .",cat:"adverbs2"},
+  {en:"abroad",zh:"在國外",sentence:"Her sister is studying ___ this year.",cat:"adverbs2"},
+  {en:"ahead",zh:"在前",sentence:"The car ___ of us stopped very suddenly.",cat:"adverbs2"},
+  {en:"somewhere",zh:"在某處",sentence:"I left my keys ___ in this room.",cat:"adverbs2"},
+  {en:"either",zh:"也（否定句）",sentence:"If you will not go, I will not go ___ .",cat:"adverbs2"},
+  {en:"no",zh:"不（沒有任何）",sentence:"There is ___ milk left in the bottle.",cat:"adverbs2"},
+  {en:"not",zh:"不",sentence:"This answer is ___ correct.",cat:"adverbs2"},
+  {en:"OK",zh:"還好",sentence:"Are you ___ ? You look a little pale.",cat:"adverbs2"},
+  {en:"yes",zh:"是",sentence:"\"Did you finish the report?\" \"___ , I did.\"",cat:"adverbs2"}
 ];
 
 // ---------------- Teacher score reporting ----------------
@@ -2165,25 +2108,25 @@ function clearHistory(){
 // the prose, just never as a blank.
 const ARTICLES = [
   {
-    id: "wallet",
-    title: "The Lost Wallet",
-    zh: "撿到的錢包",
-    topic: "形容詞・副詞・誠實",
-    text: "On Tuesday I found a brown [[wallet]] on the sidewalk outside the bank. It was [[quite]] heavy. Inside there was money, some cards, and a photo of an old woman holding a baby.\n\nI stood there for a moment, not [[sure]] what to do. Nobody was watching. My friend Ben said, \"Just keep it. Nobody will ever know.\"\n\nBut something felt [[wrong]]. I could not [[really]] explain it. I [[always]] think about how I would feel if I lost something [[important]] like that.\n\nSo we walked into the bank [[together]] and gave it to the clerk at the counter. She looked [[surprised]] and asked for my name and phone number. I [[almost]] said no, but Ben told her anyway.\n\nThree days later my mother called me to the phone. An old man was on the line. His [[voice]] was quiet and a little shaky. He said the wallet was his, and that the photo inside was of his wife and their first son. The money did not matter to him, but that photo could [[never]] be replaced.\n\nHe asked if he could thank me in person. On Saturday he came to our door with a box of moon cakes. He walked slowly with a stick, but his eyes were [[bright]].\n\n\"You did the [[correct]] thing,\" he said. \"Not everybody would.\"\n\nI [[still]] think about that afternoon [[sometimes]]. The moon cakes are long gone. What I remember is how [[glad]] I felt walking home."
+    id: "canada",
+    title: "A Winter in Canada",
+    zh: "在加拿大的那個冬天",
+    topic: "副詞・出國・家人",
+    text: "Last winter my aunt invited me to stay with her family in Canada for a month. I had [[never]] been [[abroad]] before, so I felt excited and a little afraid at the same time.\n\nThe flight took thirteen hours. When I [[finally]] walked out of the airport, the cold air hit my face like ice water. My aunt was waiting by the door with a thick [[coat]] for me.\n\nHer house was [[quite]] small, but it was warm inside. My cousin Amy shared her room with me, and every morning we ate breakfast [[together]] before she went to school.\n\nHave you [[ever]] tried to speak English all day long? By noon my ears were tired. At first I could not [[really]] follow what people said, so Amy learned to speak more slowly for me. She was patient every time I asked her to repeat something.\n\nWe went skating [[twice]] that month. The first time I fell down eleven times. The second time I fell only three times, and Amy said that was good progress for a girl from a warm island.\n\nOn the last Sunday her father drove us [[somewhere]] up in the mountains. I did not catch the name of the place. We drank hot soup out of paper cups and watched the snow come down on the [[quiet]] road. [[Maybe]] that was the best day of the whole trip.\n\nNow I am home. My aunt's gift is [[still]] hanging by the door, and it smells a little of that cold air. When people ask me if I would go back, I say [[yes]] before they finish the question."
   },
   {
-    id: "firstjob",
-    title: "My First Job",
-    zh: "第一份打工",
-    topic: "形容詞・副詞・工作",
-    text: "Last summer I worked at a small [[bakery]] near the station. It was my first [[real]] job. I had to get up at five, which was [[terrible]] at first.\n\nThe owner, Mrs. Lin, was [[serious]] but [[helpful]]. On my first morning she showed me how to carry the trays without dropping them. \"Do it slowly,\" she said. \"[[Never]] run with hot bread.\"\n\nThe work was [[hard]]. My shoulders hurt for the first week. I [[often]] wanted to quit. But the smell of fresh bread at six in the morning was [[wonderful]], and the customers were [[usually]] kind.\n\nAn old woman came in at seven every single day and bought the same two rolls. After a week she started calling me by my name. Small things like that made the early mornings easier.\n\nOne morning I made a [[dangerous]] mistake. I left the oven door open and burned a whole tray. I thought Mrs. Lin would shout at me. She looked at the black bread, [[then]] at my face, and said, \"Everybody does that [[once]]. Clean it up and start [[again]].\"\n\nBy August I could do everything [[quite]] fast. I knew every kind of bread by name. [[Finally]], on my last day, Mrs. Lin gave me an [[envelope]] with my pay and a note inside. It said: \"You were [[ready]] to learn. That is the most [[useful]] thing a person can be.\"\n\nI keep that note in my drawer to this day."
+    id: "bicycle",
+    title: "Learning to Ride",
+    zh: "學會騎腳踏車",
+    topic: "副詞・練習・不放棄",
+    text: "My father says I was born stubborn. When I was seven, every child on our street could ride a [[bicycle]]. I could not. My legs were [[too]] short for my cousin's old bike, and I was [[afraid]] of falling.\n\nOne Saturday my father wheeled the bike out to the [[park]]. \"We are [[just]] going to try,\" he said. \"If you fall, we stop.\"\n\nI fell. Then I fell [[again]], and my knee was bleeding. I said [[no]] to a third try, and my father did not argue. He [[usually]] lets me decide such things by myself.\n\nBut that night I could not sleep. I [[seldom]] give up on anything, and it made me angry to lie there thinking about it.\n\nSo we went back on Sunday, and on Monday, and after that we went [[almost]] every evening. I practiced very [[hard]]. My father ran beside me holding the seat, and he [[often]] let go without telling me.\n\nThe day I rode down the whole path by myself, I did not even know he had stopped running. I was looking [[ahead]] at the road, not behind me.\n\n\"Are you [[OK]]?\" he shouted from somewhere far behind.\n\n\"I am fine!\" I shouted back, and I did not stop until I reached the gate at the end of the path.\n\nNow I ride to school every morning, and I [[always]] take the long way home past the river. My father is fifty now and his knees hurt, but he still gets his bike out when I ask him."
   },
   {
-    id: "nightmarket",
-    title: "The Night Market",
-    zh: "夜市",
-    topic: "形容詞・副詞・食物",
-    text: "My cousin came from abroad last month, and I took her to the night [[market]] on Friday evening. She had [[never]] been to one before.\n\nThe street was [[so]] crowded that we had to walk one behind the other. The air was warm and full of noise. On both sides there were lights, [[loud]] music, and the smell of fried food.\n\nWe started at the entrance and worked our way down. Every few steps someone was calling out prices, and the steam from the food stalls rose into the lights above our heads. My cousin kept stopping to take photos of things I had walked past a hundred times without looking.\n\nThe first thing she wanted to try was stinky tofu. I told her the smell was [[strange]] but the taste was [[excellent]]. She was not [[sure]], but she tried a small piece. Her face turned red. \"It is [[really]] good,\" she said, [[quite]] surprised.\n\nWe [[also]] ate oyster omelets, pineapple cake, and a bowl of shaved [[ice]] together. Everything was [[fresh]] and cheap. I spent [[almost]] all my money in one hour.\n\nAt a game stall I threw rings at bottles [[twice]] and won nothing. My cousin threw [[just]] one time and won a large toy bear. That was [[lucky]], and a little unfair.\n\nBy ten o'clock we were [[tired]] and our bags were heavy. Walking home, my cousin said the night market was the most [[interesting]] place she had seen in Taiwan.\n\n\"Do you come here [[often]]?\" she asked.\n\n\"[[Seldom]],\" I said. \"But [[maybe]] I should.\""
+    id: "play",
+    title: "The School Play",
+    zh: "班上的話劇",
+    topic: "副詞・校園・團隊",
+    text: "Our class decided to put on a short play for the school festival. Nobody wanted the main part, and I did [[not]] want it [[either]]. Our teacher chose me anyway.\n\nThere were forty lines to remember. At [[least]] that is what I told my mother; the true number was closer to sixty. I read them on the bus, at dinner, and [[sometimes]] in my dreams.\n\nTwo weeks before the show, our best singer moved [[away]] to Kaohsiung with her family. We had no [[music]] and only one week to find some, and we were [[so]] worried that we nearly gave the whole thing up.\n\n[[Then]] Mr. Chen, who teaches math, told us he had played the [[guitar]] in college. He had never taken it out of its case in twenty years, and he was [[very]] slow at first. He came to practice with us after school anyway. He was [[also]] the loudest person on the stage, which made everyone laugh.\n\nOn the night of the show my hands were cold. I looked out from behind the curtain at the rows of seats. Were my parents here [[yet]]? I could see only strangers in the first three rows. [[Perhaps]] they were stuck in traffic, I thought, and I said my first line to a woman in the third row instead.\n\nWhen the lights came up at the end, my mother was standing near the back door with her phone held high above her head. She had missed the beginning, but she told me later that she heard every word from the hallway."
   }
 ];
 
@@ -2629,6 +2572,7 @@ const REVIEW_CAT_LABEL = {
   occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
   interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
+  adverbs2:'其他副詞',
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
@@ -3005,6 +2949,7 @@ const ALT_SENTENCES = {
   "Mother's Day": ["He gave his mom flowers on ___ ."],
   "New Year's Day": ["Most offices are closed on ___ ."],
   "New Year's Eve": ["The restaurant is fully booked for ___ ."],
+  "OK": ["The food was ___ , but nothing special."],
   "PE": ["We have ___ twice a week."],
   "T-shirt": ["She sleeps in an old cotton ___ ."],
   "Taiwan": ["___ is famous for its night markets."],
@@ -3025,7 +2970,7 @@ const ALT_SENTENCES = {
   "again": ["Try ___ ; you almost had it that time."],
   "age": ["Children under the ___ of six can enter for free."],
   "agree": ["Not everyone will ___ with this plan."],
-  "ahead": ["The runner in front was far ___ of us."],
+  "ahead": ["There is a long line ___ , so we must wait."],
   "air": ["The ___ at the top of the mountain is thin."],
   "airplane": ["The ___ landed safely in the storm."],
   "airport": ["We arrived at the ___ two hours early."],
@@ -3052,7 +2997,7 @@ const ALT_SENTENCES = {
   "august": ["Typhoons often hit Taiwan in ___ ."],
   "aunt": ["My ___ sent me a birthday card from Japan."],
   "autumn": ["The air becomes cool and dry in ___ ."],
-  "away": ["Keep the medicine ___ from children."],
+  "away": ["Keep the medicine ___ from small children."],
   "back": ["The garden is at the ___ of the house."],
   "badminton": ["We play ___ in the gym on Fridays."],
   "bag": ["Carry your heavy books in this ___ ."],
@@ -3452,7 +3397,7 @@ const ALT_SENTENCES = {
   "jump": ["The cat likes to ___ onto the kitchen counter."],
   "june": ["Graduation ceremonies are usually held in ___ ."],
   "junior high school": ["He will enter ___ next September."],
-  "just": ["The train has ___ left the station."],
+  "just": ["___ one more question and we can go home."],
   "keep": ["Some farmers ___ chickens for their eggs."],
   "key": ["I cannot find the ___ to the back door."],
   "kick": ["It is rude to ___ the chair in front of you."],
@@ -3790,7 +3735,7 @@ const ALT_SENTENCES = {
   "snow": ["The ___ melted by noon."],
   "snowman": ["The children built a ___ in the yard."],
   "snowy": ["The village looks lovely on a ___ morning."],
-  "so": ["He was tired, ___ he went to bed early."],
+  "so": ["He was tired, and ___ was everyone else."],
   "soccer": ["___ is the most popular game in the world."],
   "sock": ["One ___ always disappears in the wash."],
   "sofa": ["He fell asleep on the ___ watching TV."],
@@ -3873,7 +3818,7 @@ const ALT_SENTENCES = {
   "than": ["This box is heavier ___ that one."],
   "thank": ["We should ___ the workers for their effort."],
   "theater": ["The ___ was built over a century ago."],
-  "then": ["We ate lunch and ___ went for a walk."],
+  "then": ["I was only six years old ___ , so I remember little."],
   "there": ["Put the box over ___ by the wall."],
   "thick": ["Put on a ___ coat; it is freezing outside."],
   "thing": ["Do not forget to bring one ___ for the picnic."],
@@ -3996,6 +3941,7 @@ const ALT_SENTENCES = {
   "yard": ["The children play in the front ___ ."],
   "year": ["Every four ___ s we have a leap day."],
   "yellow": ["Sunflowers are bright ___ ."],
+  "yes": ["She nodded and said ___ to the invitation."],
   "yesterday": ["I finished the whole book ___ ."],
   "yet": ["Have you finished your report ___ ?"],
   "yummy": ["Grandma's dumplings are always ___ ."],
@@ -4158,6 +4104,16 @@ function weightedSample(pool, n){
   return keyed.slice(0, n).map(x=>x.w);
 }
 
+// The exam can never ask more questions than the scope has words, so the two
+// places that advertise the count must follow the scope instead of the ceiling.
+function examQuestionCount(){
+  const total = ALL_CATS.reduce((n,c)=>n+WORDS[c].length, 0);
+  return Math.min(EXAM_QUESTION_COUNT, total);
+}
+function paintExamCount(){
+  document.querySelectorAll('.exam-count').forEach(el=>{ el.textContent = examQuestionCount(); });
+}
+
 function buildQuiz(cats, types, count){
   const pool = poolWords(cats);
   const n = Math.min(count, pool.length);
@@ -4169,11 +4125,11 @@ function buildQuiz(cats, types, count){
 // proportionally to category size) so the biggest topic can't dominate.
 function buildExamQuiz(){
   const alloc = {};
-  let remaining = EXAM_QUESTION_COUNT;
+  let remaining = examQuestionCount();
   // 先讓每個單元拿到均等的題數（規格要求「平均分配到各單元」），
   // 但不能超過最小單元實際擁有的字數。剩下的再依單元大小分配。
   const smallestCat = Math.min(...ALL_CATS.map(c => WORDS[c].length));
-  const perCatMin = Math.max(1, Math.min(smallestCat, Math.floor(EXAM_QUESTION_COUNT / ALL_CATS.length)));
+  const perCatMin = Math.max(1, Math.min(smallestCat, Math.floor(examQuestionCount() / ALL_CATS.length)));
   ALL_CATS.forEach(c=>{ alloc[c] = Math.min(perCatMin, WORDS[c].length); remaining -= alloc[c]; });
   while(remaining > 0){
     let best = null, bestRatio = -1;
@@ -4542,6 +4498,7 @@ quitHintEl.addEventListener('click', ()=>{
 (async function init(){
   await loadHistory();
   renderHistory();
+  paintExamCount();
   // A remembered role skips straight to the modes; otherwise ask first.
   showScreen(role ? modeScreen : roleScreen);
 })();

@@ -77,6 +77,9 @@
   "above": [
     "A lamp hangs ___ the table."
   ],
+  "abroad": [
+    "They travel ___ every summer."
+  ],
   "across": [
     "They swam ___ the narrow river."
   ],
@@ -101,11 +104,17 @@
   "afternoon": [
     "The meeting was moved to Friday ___ ."
   ],
+  "again": [
+    "Try ___ ; you almost had it that time."
+  ],
   "age": [
     "Children under the ___ of six can enter for free."
   ],
   "agree": [
     "Not everyone will ___ with this plan."
+  ],
+  "ahead": [
+    "There is a long line ___ , so we must wait."
   ],
   "air": [
     "The ___ at the top of the mountain is thin."
@@ -119,11 +128,20 @@
   "all": [
     "___ the lights in the house were turned off."
   ],
+  "almost": [
+    "I ___ dropped the plate."
+  ],
   "along": [
     "We walked ___ the riverbank."
   ],
   "already": [
     "The train had ___ left when we arrived."
+  ],
+  "also": [
+    "My brother is ___ coming with us."
+  ],
+  "always": [
+    "Does he ___ take the same bus?"
   ],
   "and": [
     "Bring a pen ___ some paper."
@@ -175,6 +193,9 @@
   ],
   "autumn": [
     "The air becomes cool and dry in ___ ."
+  ],
+  "away": [
+    "Keep the medicine ___ from small children."
   ],
   "back": [
     "The garden is at the ___ of the house."
@@ -815,6 +836,9 @@
   "eighty": [
     "This bus can carry about ___ passengers."
   ],
+  "either": [
+    "She does not eat meat or fish ___ ."
+  ],
   "elementary school": [
     "My cousin just started ___ this year."
   ],
@@ -847,6 +871,9 @@
   ],
   "evening": [
     "We often take a walk in the cool ___ ."
+  ],
+  "ever": [
+    "Nobody has ___ climbed that cliff."
   ],
   "example": [
     "Give me one ___ of a mammal."
@@ -931,6 +958,9 @@
   ],
   "fill": [
     "Warm bread began to ___ the room with a nice smell."
+  ],
+  "finally": [
+    "___ , I want to thank my parents."
   ],
   "find": [
     "Where did you ___ this old photograph?"
@@ -1151,6 +1181,9 @@
   "happen": [
     "Accidents often ___ when people are careless."
   ],
+  "hard": [
+    "If you work ___ , you will improve."
+  ],
   "hat": [
     "Wear a ___ to keep the sun off your face."
   ],
@@ -1361,6 +1394,9 @@
   "junior high school": [
     "He will enter ___ next September."
   ],
+  "just": [
+    "___ one more question and we can go home."
+  ],
   "keep": [
     "Some farmers ___ chickens for their eggs."
   ],
@@ -1435,6 +1471,9 @@
   ],
   "learn": [
     "It is never too late to ___ ."
+  ],
+  "least": [
+    "He spent the ___ money of anyone here."
   ],
   "leave": [
     "What time does the last bus ___ ?"
@@ -1565,6 +1604,9 @@
   "may": [
     "Mother's Day is celebrated in ___ ."
   ],
+  "maybe": [
+    "___ he forgot about the meeting."
+  ],
   "meal": [
     "That was the best ___ I have had all year."
   ],
@@ -1694,6 +1736,9 @@
   "need": [
     "You do not ___ to bring anything to the picnic."
   ],
+  "never": [
+    "I will ___ forget your kindness."
+  ],
   "new": [
     "Everything looks ___ after a fresh coat of paint."
   ],
@@ -1709,6 +1754,9 @@
   "ninety": [
     "A right angle measures ___ degrees."
   ],
+  "no": [
+    "___ student answered that hard question."
+  ],
   "nod": [
     "If you agree, please ___ your head."
   ],
@@ -1720,6 +1768,9 @@
   ],
   "north": [
     "The wind blows from the ___ in January."
+  ],
+  "not": [
+    "Please do ___ touch the wet paint."
   ],
   "notebook": [
     "He fills a whole ___ every term."
@@ -1750,6 +1801,9 @@
   ],
   "office": [
     "She works in an ___ downtown."
+  ],
+  "often": [
+    "How ___ do you visit your cousin?"
   ],
   "oil": [
     "Heat the ___ before adding the vegetables."
@@ -1843,6 +1897,9 @@
   ],
   "pencil box": [
     "All her pens fit in one ___ ."
+  ],
+  "perhaps": [
+    "She is late; ___ the traffic is bad."
   ],
   "photo": [
     "He took a ___ of the sunset with his camera."
@@ -1997,6 +2054,9 @@
   "quiet": [
     "The library must stay ___ at all times."
   ],
+  "quite": [
+    "It is ___ cold outside this morning."
+  ],
   "quiz": [
     "He failed the ___ but passed the final exam."
   ],
@@ -2029,6 +2089,9 @@
   ],
   "real": [
     "Is this a ___ pearl or just glass?"
+  ],
+  "really": [
+    "Do you ___ believe his story?"
   ],
   "red": [
     "Stop when the light is ___ ."
@@ -2179,6 +2242,9 @@
   ],
   "seesaw": [
     "Two children balanced on the ___ ."
+  ],
+  "seldom": [
+    "It ___ snows in this warm city."
   ],
   "sell": [
     "Do they ___ tickets at the gate?"
@@ -2342,6 +2408,9 @@
   "snowy": [
     "The village looks lovely on a ___ morning."
   ],
+  "so": [
+    "He was tired, and ___ was everyone else."
+  ],
   "soccer": [
     "___ is the most popular game in the world."
   ],
@@ -2356,6 +2425,12 @@
   ],
   "some": [
     "___ of these apples have gone bad."
+  ],
+  "sometimes": [
+    "The old radio ___ stops working."
+  ],
+  "somewhere": [
+    "Let us find ___ quiet to talk."
   ],
   "son": [
     "They named their ___ after his grandfather."
@@ -2431,6 +2506,9 @@
   ],
   "steak": [
     "He likes his ___ cooked medium rare."
+  ],
+  "still": [
+    "Are you ___ waiting for the bus?"
   ],
   "stomach": [
     "Do not swim right after a meal; it upsets your ___ ."
@@ -2579,6 +2657,9 @@
   "theater": [
     "The ___ was built over a century ago."
   ],
+  "then": [
+    "I was only six years old ___ , so I remember little."
+  ],
   "there": [
     "Put the box over ___ by the wall."
   ],
@@ -2642,6 +2723,9 @@
   "today": [
     "There is no homework due ___ ."
   ],
+  "together": [
+    "Let us do the project ___ ."
+  ],
   "tomato": [
     "Slice the ___ for the sandwich."
   ],
@@ -2650,6 +2734,9 @@
   ],
   "tonight": [
     "The moon looks especially bright ___ ."
+  ],
+  "too": [
+    "The soup was ___ salty to finish."
   ],
   "tool": [
     "A hammer is a useful ___ for fixing things."
@@ -2726,6 +2813,9 @@
   "twenty": [
     "A score means ___ years."
   ],
+  "twice": [
+    "He calls his mother ___ a week."
+  ],
   "two": [
     "A bicycle has ___ wheels."
   ],
@@ -2762,11 +2852,17 @@
   "useful": [
     "A map is ___ when you travel alone."
   ],
+  "usually": [
+    "The market is ___ busy on Saturday."
+  ],
   "vacation": [
     "They went on ___ to Japan."
   ],
   "vegetable": [
     "Eat more ___ s and less fried food."
+  ],
+  "very": [
+    "She was ___ pleased with the result."
   ],
   "vest": [
     "He put a warm ___ under his coat."
@@ -2918,6 +3014,9 @@
   "writer": [
     "The ___ published her first novel."
   ],
+  "wrong": [
+    "It is ___ to laugh at other people."
+  ],
   "yard": [
     "The children play in the front ___ ."
   ],
@@ -2930,6 +3029,9 @@
   "yesterday": [
     "I finished the whole book ___ ."
   ],
+  "yet": [
+    "Have you finished your report ___ ?"
+  ],
   "yummy": [
     "Grandma's dumplings are always ___ ."
   ],
@@ -2939,106 +3041,10 @@
   "zoo": [
     "The pandas at the ___ are very popular."
   ],
-  "wrong": [
-    "It is ___ to laugh at other people."
+  "OK": [
+    "The food was ___ , but nothing special."
   ],
-  "always": [
-    "Does he ___ take the same bus?"
-  ],
-  "ever": [
-    "Nobody has ___ climbed that cliff."
-  ],
-  "hard": [
-    "If you work ___ , you will improve."
-  ],
-  "never": [
-    "I will ___ forget your kindness."
-  ],
-  "often": [
-    "How ___ do you visit your cousin?"
-  ],
-  "seldom": [
-    "It ___ snows in this warm city."
-  ],
-  "sometimes": [
-    "The old radio ___ stops working."
-  ],
-  "usually": [
-    "The market is ___ busy on Saturday."
-  ],
-  "again": [
-    "Try ___ ; you almost had it that time."
-  ],
-  "too": [
-    "The soup was ___ salty to finish."
-  ],
-  "also": [
-    "My brother is ___ coming with us."
-  ],
-  "away": [
-    "Keep the medicine ___ from children."
-  ],
-  "almost": [
-    "I ___ dropped the plate."
-  ],
-  "finally": [
-    "___ , I want to thank my parents."
-  ],
-  "just": [
-    "The train has ___ left the station."
-  ],
-  "least": [
-    "He spent the ___ money of anyone here."
-  ],
-  "maybe": [
-    "___ he forgot about the meeting."
-  ],
-  "perhaps": [
-    "She is late; ___ the traffic is bad."
-  ],
-  "really": [
-    "Do you ___ believe his story?"
-  ],
-  "so": [
-    "He was tired, ___ he went to bed early."
-  ],
-  "still": [
-    "Are you ___ waiting for the bus?"
-  ],
-  "then": [
-    "We ate lunch and ___ went for a walk."
-  ],
-  "together": [
-    "Let us do the project ___ ."
-  ],
-  "twice": [
-    "He calls his mother ___ a week."
-  ],
-  "very": [
-    "She was ___ pleased with the result."
-  ],
-  "quite": [
-    "It is ___ cold outside this morning."
-  ],
-  "yet": [
-    "Have you finished your report ___ ?"
-  ],
-  "abroad": [
-    "They travel ___ every summer."
-  ],
-  "ahead": [
-    "The runner in front was far ___ of us."
-  ],
-  "somewhere": [
-    "Let us find ___ quiet to talk."
-  ],
-  "either": [
-    "She does not eat meat or fish ___ ."
-  ],
-  "no": [
-    "___ student answered that hard question."
-  ],
-  "not": [
-    "Please do ___ touch the wet paint."
+  "yes": [
+    "She nodded and said ___ to the invitation."
   ]
 }
