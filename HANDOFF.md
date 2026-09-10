@@ -72,6 +72,16 @@
   學生端 `checkAssignment()` 在背景抓，抓到就在主頁最上面顯示卡片，作答記為 `assigned`
 - 學生做完會把 `store.assignDone` 記在本機，卡片改成「已完成」但仍可再考一次
 
+### 版面規則（v12 起，改 CSS 前先看）
+- `showScreen()` 會在作答／閱讀／成績單畫面給 `.binder` 加上 `focus`：收起紅色橫幅、
+  縮小 masthead。手機上這樣可以多出約 110px 給選項
+- 手機（≤640px）`#nextBtn` 是 `position:sticky; bottom:10px`，因為答完後按鈕原本
+  會落在畫面外，導致每一題都要捲動
+- 手機（≤520px）模式卡用 `grid-template-columns:32px 1fr`（圖示一欄、文字一欄）。
+  不要改回 flex，h3 會被擠成一個字一行
+- 手機上 `.mini-btn`／`.pill` 有加大的 padding，是為了觸控目標，不要為了整齊改小
+- 這些都寫在 `tools/e2e-mobile.mjs` 裡量測，改完跑一次
+
 ### 三種題型（全部都是四選一選擇題）
 - **英翻中**：看英文單字選中文意思
 - **中翻英**：看中文意思選英文單字
