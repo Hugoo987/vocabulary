@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v11 · 其他副詞</title>
+<title>單字大挑戰 v12 · 其他副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -297,6 +297,58 @@
   .notice-box.exam{ background:#EAF1FB; border-color: var(--exam); color: var(--exam); }
   .notice-box.review{ background:#FFF3D6; border-color: var(--review); color: var(--review); }
 
+  /* ---- Speak button (browser built-in speech, no network) ---- */
+  .say-btn{
+    border:1.5px solid var(--ink); background:#fff; color:var(--ink);
+    width:26px; height:26px; border-radius:50%; padding:0; line-height:1;
+    font-size:13px; cursor:pointer; flex-shrink:0;
+  }
+  .say-btn:active{ transform: translateY(1px); }
+  .say-btn.small{ width:22px; height:22px; font-size:11px; }
+
+  /* ---- Word list (study before the quiz) ---- */
+  .mode-card.wordlist{ background: #E9F5EF; }
+  .wl-hint{ font-size:12px; color:var(--ink-soft); line-height:1.7; margin:10px 0 4px; }
+  .wl-item{ padding:10px 4px; border-bottom:1.5px dashed var(--paper-line); }
+  .wl-head{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .wl-head b{ font-family:'Baloo 2',sans-serif; font-size:19px; font-weight:700; }
+  .wl-head .zh{ font-size:14px; color:var(--ink-soft); }
+  .wl-sent{
+    display:flex; align-items:flex-start; gap:8px; font-size:13px; line-height:1.7;
+    margin-top:5px; color:var(--ink);
+  }
+  .wl-sent b{ font-weight:700; border-bottom:2px solid var(--good); }
+  .wl-count{ font-size:12px; color:var(--ink-soft); margin:8px 0 2px; }
+  .wl-search{ margin-top:12px; }
+
+  /* ---- Assigned exam (teacher -> student) ---- */
+  .assign-card{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    border:2px solid var(--exam); background:#EAF1FB; border-radius:12px;
+    padding:12px 14px; margin-bottom:14px; font-size:13px;
+  }
+  .assign-card .when{ font-size:11px; color:var(--ink-soft); margin-top:3px; }
+  .assign-card.done{ border-color: var(--good); background:#E7F3EC; }
+
+  /* ---- Printable mistake paper ---- */
+  .paper-actions{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px; }
+  .paper{ border:2px solid var(--ink); border-radius:12px; padding:16px; background:#fff; margin-top:12px; }
+  .paper h2{ font-family:'Baloo 2',sans-serif; font-size:18px; margin:0 0 2px; }
+  .paper .paper-sub{ font-size:12px; color:var(--ink-soft); margin-bottom:12px; }
+  .paper-q{ margin-bottom:13px; font-size:13px; line-height:1.7; break-inside: avoid; }
+  .paper-q .stem{ font-weight:700; }
+  .paper-q .stem .blank{ display:inline-block; border-bottom:2px solid var(--ink); min-width:64px; }
+  .paper-opts{ display:grid; grid-template-columns:1fr 1fr; gap:2px 14px; margin-top:3px; }
+  .paper-key{ margin-top:14px; padding-top:12px; border-top:2px dashed var(--paper-line); font-size:12px; line-height:1.9; }
+  .paper-key b{ font-family:'Baloo 2',sans-serif; }
+  @media print{
+    body{ background:#fff !important; padding:0; }
+    body *{ visibility:hidden; }
+    #examPaper, #examPaper *{ visibility:visible; }
+    #examPaper{ position:absolute; left:0; top:0; width:100%; border:none; padding:0; }
+    .paper-opts{ grid-template-columns:1fr 1fr 1fr 1fr; }
+  }
+
   /* ---- Quiz shared ---- */
   .progress-row{ display:flex; align-items:center; gap:10px; margin-bottom: 14px; }
   .progress-bar{
@@ -379,11 +431,11 @@
   <div style="background:#C1272D;color:#fff;text-align:center;padding:8px 12px;
   font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:13px;border-radius:10px;
   margin-bottom:14px;">
-  ✅ 這是最新版 v11 ｜ 其他副詞 ｜ 35 字
+  ✅ 這是最新版 v12 ｜ 其他副詞 ｜ 35 字
 </div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">基礎 1200 單字 · 其他副詞 <span class="ver-badge">v11</span></div>
+    <div class="sub">基礎 1200 單字 · 其他副詞 <span class="ver-badge">v12</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -413,7 +465,15 @@
       <span>目前身分：<span class="tag student" id="whoamiTag">學生</span></span>
       <button class="mini-btn" id="switchRoleBtn">切換身分</button>
     </div>
-    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v11 · 其他副詞 · 35字</span></div>
+    <div class="assign-card hidden" id="assignCard">
+      <div>
+        <b id="assignTitle">📩 老師指派的考卷</b>
+        <div class="when" id="assignWhen"></div>
+      </div>
+      <button class="mini-btn" id="startAssignBtn"
+        style="background:var(--exam); color:#fff; border-color:var(--exam);">開始作答</button>
+    </div>
+    <div class="row-label" style="margin-top:0;">請選擇模式　<span class="ver-badge">v12 · 其他副詞 · 35字</span></div>
     <div class="mode-grid mode-grid-3">
       <div class="mode-card practice" id="modePractice">
         <div class="icon">🪢</div>
@@ -432,11 +492,16 @@
       </div>
     </div>
 
-    <div class="mode-grid mode-grid-1" style="margin-top:12px;">
+    <div class="mode-grid" style="margin-top:12px;">
       <div class="mode-card article" id="modeArticle">
         <div class="icon">📖</div>
         <h3>文章閱讀</h3>
         <p>讀一篇短文，把文章裡挖空的單字填回去。看整段句子選字，比單句克漏字更接近真正的閱讀。</p>
+      </div>
+      <div class="mode-card wordlist" id="modeWordList">
+        <div class="icon">📔</div>
+        <h3>單字表</h3>
+        <p>先看過再考：中文、兩句例句都在，點 🔊 還能聽發音。也可以查以前教過的任何單字。</p>
       </div>
     </div>
 
@@ -509,10 +574,53 @@
     </div>
 
     <div class="history-head" style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--paper-line);">
+      <div class="row-label" style="margin:0;">📝 產生錯題考卷</div>
+      <button class="mini-btn" id="makePaperBtn"
+        style="background:var(--exam); color:#fff; border-color:var(--exam);">產生考卷</button>
+    </div>
+    <div class="history-sub" id="paperHint">從學生錯最多次的單字出題，每題四選一，三種題型輪流。可以直接列印，也可以指派到學生的網頁上作答。</div>
+    <div class="retry-row">
+      <span class="retry-label">題數</span>
+      <div class="pill-row" id="paperCountRow">
+        <div class="pill" data-count="10">10 題</div>
+        <div class="pill active" data-count="20">20 題</div>
+        <div class="pill" data-count="30">30 題</div>
+        <div class="pill" data-count="9999">全部錯題</div>
+      </div>
+    </div>
+    <div id="paperBox" class="hidden">
+      <div class="paper-actions">
+        <button class="mini-btn" id="printPaperBtn">🖨 列印考卷</button>
+        <button class="mini-btn" id="assignPaperBtn"
+          style="background:var(--address); color:#fff; border-color:var(--address);">☁️ 指派給學生</button>
+        <button class="mini-btn" id="regenPaperBtn">🔀 換一份</button>
+      </div>
+      <div class="xfer-note" id="assignNote"></div>
+      <div class="paper" id="examPaper"></div>
+    </div>
+
+    <div class="history-head" style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--paper-line);">
       <div class="row-label" style="margin:0;">管理紀錄</div>
       <button class="mini-btn" id="clearStudentBtn">清除學生紀錄</button>
     </div>
     <div class="history-sub" id="clearStudentHint">清除後無法復原，錯題與歷次成績都會刪除。</div>
+  </div>
+
+  <!-- WORD LIST SCREEN (study before being tested) -->
+  <div class="card hidden" id="wordListScreen">
+    <div class="row-label" style="margin-top:0;">單字表</div>
+    <div class="art-intro">
+      考試前可以先看過一遍。點 🔊 聽發音（用手機／電腦內建的語音，不用網路）。
+    </div>
+    <div class="pill-row" id="wlTabRow">
+      <div class="pill active" data-wl="scope">本次範圍</div>
+      <div class="pill" data-wl="wrong">我的錯題</div>
+      <div class="pill" data-wl="all">查以前教過的字</div>
+    </div>
+    <input class="name-input wl-search" id="wlSearch" placeholder="輸入英文或中文搜尋…">
+    <div class="wl-hint" id="wlHint"></div>
+    <div id="wlList"></div>
+    <div class="hint" id="wlBackHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- ARTICLE LIST SCREEN -->
@@ -1819,6 +1927,7 @@ let questionCount = 20;
 const roleScreen = document.getElementById('roleScreen');
 const modeScreen = document.getElementById('modeScreen');
 const reportScreen = document.getElementById('reportScreen');
+const wordListScreen = document.getElementById('wordListScreen');
 const articleListScreen = document.getElementById('articleListScreen');
 const articleScreen = document.getElementById('articleScreen');
 const setupScreen = document.getElementById('setupScreen');
@@ -1830,7 +1939,7 @@ const resultScreen = document.getElementById('resultScreen');
 function showScreen(el){
   // The reading screen is the only one wide enough to need two columns.
   document.querySelector('.binder').classList.toggle('wide', el === articleScreen);
-  [roleScreen, modeScreen, reportScreen, articleListScreen, articleScreen,
+  [roleScreen, modeScreen, reportScreen, wordListScreen, articleListScreen, articleScreen,
    setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
@@ -1843,6 +1952,7 @@ function setRole(r){
   saveHistory();
   renderHistory();
   showScreen(modeScreen);
+  checkAssignment();
 }
 
 document.getElementById('roleStudent').addEventListener('click', ()=> setRole('student'));
@@ -1967,7 +2077,8 @@ let storageOK = false;     // whether localStorage actually works here
 function blankProfile(){ return { words: {}, sessions: [] }; }
 
 function blankStore(){
-  return { version: 2, role: null, profiles: { student: blankProfile(), teacher: blankProfile() } };
+  return { version: 2, role: null, assignDone: null,
+           profiles: { student: blankProfile(), teacher: blankProfile() } };
 }
 
 function canUseLocalStorage(){
@@ -2013,6 +2124,7 @@ async function loadHistory(){
           store.role = (parsed.role === 'student' || parsed.role === 'teacher') ? parsed.role : null;
           store.profiles.student = normalizeProfile(parsed.profiles && parsed.profiles.student);
           store.profiles.teacher = normalizeProfile(parsed.profiles && parsed.profiles.teacher);
+          store.assignDone = Number(parsed.assignDone) || null;
         }
       } else {
         // First run on this build: carry over any old { en: {en,zh,count} } record.
@@ -2283,8 +2395,11 @@ function renderArticleFilled(){
 
 function finishArticle(){
   // Feed the same record and result screens the quiz modes use.
+  const artLookup = {};
+  retrainPool().forEach(w=>{ artLookup[w.en] = w; });
   results = artBlanks.map(b => ({
-    type: 'article', en: b.en, zh: b.zh, correctText: b.en, isCorrect: b.right
+    type: 'article', en: b.en, zh: b.zh, correctText: b.en, isCorrect: b.right,
+    sentence: artLookup[b.en] ? pickSentence(artLookup[b.en]) : ''
   }));
   score = artScore;
   sessionEndedEarly = false;
@@ -2348,8 +2463,10 @@ function b64decode(b64){
 const DAY = 86400000;
 const TYPE_CODE = { en2zh:'e', zh2en:'z', cloze:'c' };
 const CODE_TYPE = { e:'en2zh', z:'zh2en', c:'cloze' };
-const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t' };
-const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry' };
+// Every mode needs a code here: an unknown mode falls back to 'p', which would
+// quietly report a reading or an assigned paper as ordinary practice.
+const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t', article:'a', assigned:'s' };
+const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry', a:'article', s:'assigned' };
 
 // The compact record shared by both transfer routes: the pasted code and the
 // cloud sync below send exactly this.
@@ -2486,6 +2603,53 @@ async function syncPull(){
   }
 }
 
+// The assigned paper lives at its own key so a student's record upload (a whole
+// -object PUT) can never overwrite it. The shape keeps the v/w children the
+// database rules require.
+function assignUrl(){
+  return SYNC_CONFIG.dbUrl.replace(/\/+$/, '') + '/vocab/'
+    + encodeURIComponent(SYNC_CONFIG.classKey + '__exam') + '.json';
+}
+
+// Teacher -> cloud.
+async function pushAssignment(qs){
+  if(!syncReady()) return { ok:false, skipped:true };
+  try{
+    const body = { v: 1, t: Date.now(), w: qs.map(q=>({
+      e:q.en, z:q.zh, c:q.cat || '', y:q.type, s:q.sentence || '',
+      o:q.options, a:q.correctText
+    })) };
+    const res = await fetch(assignUrl(), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return { ok:true, n: qs.length };
+  }catch(err){
+    return { ok:false, error: String(err.message || err) };
+  }
+}
+
+// Cloud -> student.
+async function pullAssignment(){
+  if(!syncReady()) return { ok:false, skipped:true };
+  try{
+    const res = await fetch(assignUrl(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    if(!d || !Array.isArray(d.w) || !d.w.length) return { ok:true, empty:true };
+    const questions = d.w.map(x=>({
+      en:x.e, zh:x.z, cat:x.c || '', type:x.y, sentence:x.s || '',
+      options: Array.isArray(x.o) ? x.o : [], correctText: x.a
+    })).filter(q => q.en && q.options.length === 4 && q.options.includes(q.correctText));
+    if(!questions.length) return { ok:true, empty:true };
+    return { ok:true, at: d.t || null, questions };
+  }catch(err){
+    return { ok:false, error: String(err.message || err) };
+  }
+}
+
 let lastSyncAt = null;
 
 // Teacher wiping the student's record — separate from the teacher's own.
@@ -2498,6 +2662,7 @@ function clearStudentRecord(){
 }
 
 function renderHistory(){
+  renderAssignCard();
   const panel = document.getElementById('historyPanel');
   const list = document.getElementById('historyList');
   const sub = document.getElementById('historySub');
@@ -2576,7 +2741,8 @@ const REVIEW_CAT_LABEL = {
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
-const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練', article:'文章閱讀' };
+const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練',
+  article:'文章閱讀', assigned:'老師指派考卷' };
 
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
@@ -2787,6 +2953,83 @@ clearBtnEl.addEventListener('click', ()=>{
   clearBtnEl.style.color = '';
   clearBtnEl.style.borderColor = '';
   clearHistory();
+});
+
+// ---------------- Word list (study before the quiz) ----------------
+// The app could only ever test; this is the one screen where a word can be
+// looked at before it is asked about.
+let wlTab = 'scope';
+
+function wlWords(){
+  if(wlTab === 'wrong') return retrainable();
+  if(wlTab === 'all') return REVIEW_WORDS;
+  return fullPool();
+}
+
+function wlMatch(w, q){
+  if(!q) return true;
+  return w.en.toLowerCase().includes(q) || String(w.zh).includes(q);
+}
+
+function renderWordList(){
+  const box = document.getElementById('wlList');
+  const hint = document.getElementById('wlHint');
+  const q = (document.getElementById('wlSearch').value || '').trim().toLowerCase();
+  const all = wlWords();
+  const hits = all.filter(w => wlMatch(w, q));
+  // The full bank is a thousand words; drawing them all is slow and useless.
+  const LIMIT = 60;
+  const shown = hits.slice(0, LIMIT);
+
+  if(wlTab === 'wrong' && all.length === 0){
+    hint.textContent = '目前沒有錯題，先做一次測驗吧。';
+  } else if(hits.length === 0){
+    hint.textContent = q ? `找不到「${q}」這個字。` : '這裡還沒有單字。';
+  } else if(hits.length > LIMIT){
+    hint.textContent = `符合的有 ${hits.length} 個字，先列出前 ${LIMIT} 個 —— 再輸入幾個字母就會變少。`;
+  } else {
+    hint.textContent = `共 ${hits.length} 個字`;
+  }
+
+  box.innerHTML = shown.map(w=>{
+    const chip = w.cat
+      ? `<span class="unit-chip" style="background:${catColor(w.cat)};">${esc(catLabel(w.cat))}</span>`
+      : '';
+    const wrong = historyData[w.en]
+      ? `<span class="cnt">錯 ${historyData[w.en].count} 次</span>` : '';
+    const sents = sentencesFor(w).map(sen =>
+      `<div class="wl-sent">${sayBtn(filledSentence(sen, w.en).replace(/\u0000/g,''), true)}
+        <span>${filledSentenceHTML(sen, w.en)}</span></div>`).join('');
+    return `<div class="wl-item">
+      <div class="wl-head">${sayBtn(w.en)}<b>${esc(w.en)}</b>
+        <span class="zh">${esc(w.zh)}</span>${chip}${wrong}</div>
+      ${sents}
+    </div>`;
+  }).join('');
+}
+
+function openWordList(){
+  document.querySelectorAll('#wlTabRow .pill').forEach(el=>{
+    el.classList.toggle('active', el.dataset.wl === wlTab);
+  });
+  renderWordList();
+  showScreen(wordListScreen);
+}
+
+document.getElementById('modeWordList').addEventListener('click', ()=>{
+  wlTab = 'scope';
+  document.getElementById('wlSearch').value = '';
+  openWordList();
+});
+document.getElementById('wlBackHint').addEventListener('click', ()=> showScreen(modeScreen));
+document.getElementById('wlSearch').addEventListener('input', renderWordList);
+document.querySelectorAll('#wlTabRow .pill').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    wlTab = el.dataset.wl;
+    document.querySelectorAll('#wlTabRow .pill').forEach(x=> x.classList.remove('active'));
+    el.classList.add('active');
+    renderWordList();
+  });
 });
 
 // ---------------- Article reading wiring ----------------
@@ -3949,6 +4192,61 @@ const ALT_SENTENCES = {
   "zoo": ["The pandas at the ___ are very popular."]
 };
 
+// ---------------- Pronunciation ----------------
+// Uses the browser's built-in speech engine: no network, no account, no cost,
+// and it keeps working offline. Older browsers simply don't get the buttons.
+function ttsOK(){
+  try{
+    return typeof window.speechSynthesis !== 'undefined'
+        && typeof window.SpeechSynthesisUtterance !== 'undefined';
+  }catch(e){ return false; }
+}
+
+function speak(text){
+  if(!ttsOK() || !text) return false;
+  try{
+    // The blank marker would be read out as "underscore", so drop it.
+    const say = String(text).replace(/_{2,}/g, ' ').replace(/\s+/g, ' ').trim();
+    if(!say) return false;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(say);
+    u.lang = 'en-US';
+    u.rate = 0.9;
+    window.speechSynthesis.speak(u);
+    return true;
+  }catch(e){ return false; }
+}
+
+// Any element with data-say speaks when tapped, wherever it was rendered.
+document.addEventListener('click', ev=>{
+  const btn = ev.target.closest('[data-say]');
+  if(!btn) return;
+  ev.preventDefault();
+  speak(btn.getAttribute('data-say'));
+});
+
+function sayBtn(text, small){
+  if(!ttsOK()) return '';
+  return `<button class="say-btn${small ? ' small' : ''}" type="button"
+    data-say="${esc(text)}" title="唸出來" aria-label="唸出 ${esc(text)}">🔊</button>`;
+}
+
+// Study view: put the word back into the blank so the sentence reads normally.
+function filledSentence(sentence, en){
+  if(!sentence) return '';
+  // The bank writes "___ ," to keep the blank clear; once the word is back in
+  // place that space before the punctuation looks wrong.
+  return String(sentence)
+    .replace(/_{2,}/, '\u0000' + en + '\u0000')
+    .replace(/\s+([,.!?;:])/g, '$1');
+}
+// ...and render it with the word marked, without letting the word's own text
+// become markup.
+function filledSentenceHTML(sentence, en){
+  const parts = filledSentence(sentence, en).split('\u0000');
+  return parts.map((t,i)=> i % 2 ? `<b>${esc(t)}</b>` : esc(t)).join('');
+}
+
 function sentencesFor(w){
   const alt = ALT_SENTENCES[w.en];
   return (alt && alt.length) ? [w.sentence, ...alt] : [w.sentence];
@@ -4065,10 +4363,16 @@ function pickDistractors(candidatePool, correctW, field, preferSameCat){
 
 // Shared question builder: attaches type/options/answer to a list of words.
 function attachQuestions(list, types, distractorPool){
-  const globalPool = fullPool();
   const typesArr = [...types];
-  return list.map(w=>{
-    const type = typesArr[Math.floor(Math.random()*typesArr.length)];
+  return list.map(w =>
+    makeQuestion(w, typesArr[Math.floor(Math.random()*typesArr.length)], distractorPool));
+}
+
+// One four-choice question for a given word and question type. Split out of
+// attachQuestions so the teacher's paper can rotate types deliberately.
+function makeQuestion(w, type, distractorPool){
+  const globalPool = fullPool();
+  {
     let q = { ...w, type };
     if(type==='en2zh'){
       const distractors = pickDistractors(distractorPool, w, 'zh', true);
@@ -4089,7 +4393,7 @@ function attachQuestions(list, types, distractorPool){
       q.sentence = pickSentence(w);
     }
     return q;
-  });
+  }
 }
 
 // Weighted sampling: words the user answered wrong before are more likely to
@@ -4184,6 +4488,146 @@ function startReviewQuiz(){
   quiz = attachQuestions(list, new Set(ALL_TYPES), retrainPool());
   beginQuiz();
 }
+
+// ---------------- Mistake paper (teacher) ----------------
+// The same four-choice questions the app asks, but fixed and shareable: print
+// it as a paper test, or push it to the student's page as an assigned exam.
+let paperCount = 20;
+let paperQuestions = [];
+const OPT_LETTER = ['A','B','C','D'];
+
+// The student's wrong words, most-missed first, limited to words that still
+// exist in a bank (so the question can actually be built).
+function studentWrongWords(){
+  const lookup = {};
+  retrainPool().forEach(w=>{ lookup[w.en] = w; });
+  return Object.values(store.profiles.student.words)
+    .sort((a,b)=> b.count - a.count || a.en.localeCompare(b.en))
+    .map(e => lookup[e.en])
+    .filter(Boolean);
+}
+
+function buildPaper(count){
+  const words = studentWrongWords().slice(0, count);
+  const pool = retrainPool();
+  // Rotate the three types so one paper never tests a single skill only.
+  return words.map((w, i) => makeQuestion(w, ALL_TYPES[i % ALL_TYPES.length], pool));
+}
+
+function paperStemHTML(q){
+  if(q.type === 'en2zh') return `${esc(q.en)}　的中文意思是？`;
+  if(q.type === 'zh2en') return `「${esc(q.zh)}」的英文是？`;
+  return esc(q.sentence || '').replace(/_{2,}/, '<span class="blank"></span>');
+}
+
+function renderPaper(){
+  const box = document.getElementById('examPaper');
+  let html = `<h2>錯題考卷</h2>
+    <div class="paper-sub">共 ${paperQuestions.length} 題　·　${esc(fmtDate(Date.now()))} 產生　·　每題四選一</div>`;
+  paperQuestions.forEach((q,i)=>{
+    html += `<div class="paper-q">
+      <div class="stem">${i+1}. ${paperStemHTML(q)}
+        <span style="font-weight:400;color:var(--ink-soft);">（${esc(TYPE_LABEL[q.type] || q.type)}）</span></div>
+      <div class="paper-opts">${q.options.map((o,j)=>
+        `<div>(${OPT_LETTER[j]}) ${esc(o)}</div>`).join('')}</div>
+    </div>`;
+  });
+  html += `<div class="paper-key"><b>解答　</b>` + paperQuestions.map((q,i)=>{
+    const idx = q.options.indexOf(q.correctText);
+    return `${i+1}.${OPT_LETTER[idx] || '?'}`;
+  }).join('　') + `</div>`;
+  box.innerHTML = html;
+}
+
+function makePaper(){
+  const note = document.getElementById('assignNote');
+  const available = studentWrongWords();
+  if(available.length === 0){
+    document.getElementById('paperBox').classList.add('hidden');
+    document.getElementById('paperHint').textContent =
+      '學生目前沒有錯題可以出卷 —— 等他做過一次測驗再來。';
+    return;
+  }
+  paperQuestions = buildPaper(paperCount);
+  note.textContent = '';
+  note.className = 'xfer-note';
+  renderPaper();
+  document.getElementById('paperBox').classList.remove('hidden');
+  document.getElementById('paperHint').textContent =
+    `已產生 ${paperQuestions.length} 題（學生共有 ${available.length} 個錯字）。`;
+}
+
+document.getElementById('makePaperBtn').addEventListener('click', makePaper);
+document.getElementById('regenPaperBtn').addEventListener('click', makePaper);
+document.getElementById('printPaperBtn').addEventListener('click', ()=>{
+  try{ window.print(); }
+  catch(e){
+    const note = document.getElementById('assignNote');
+    note.textContent = 'ℹ️ 這個瀏覽器擋住了列印，請用瀏覽器選單的「列印」。';
+    note.className = 'xfer-note';
+  }
+});
+document.querySelectorAll('#paperCountRow .pill').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#paperCountRow .pill').forEach(x=> x.classList.remove('active'));
+    el.classList.add('active');
+    paperCount = Number(el.dataset.count) || 20;
+    if(paperQuestions.length) makePaper();
+  });
+});
+
+document.getElementById('assignPaperBtn').addEventListener('click', async ()=>{
+  const note = document.getElementById('assignNote');
+  if(!paperQuestions.length) return;
+  if(!syncReady()){
+    note.textContent = '✕ 這台裝置沒有開啟自動同步，只能用列印的。';
+    note.className = 'xfer-note bad';
+    return;
+  }
+  note.textContent = '☁️ 指派中…';
+  note.className = 'xfer-note';
+  const r = await pushAssignment(paperQuestions);
+  note.textContent = r.ok
+    ? `✅ 已指派 ${r.n} 題，學生打開網頁就會看到`
+    : '✕ 指派失敗：' + (r.error || '請檢查網路');
+  note.className = 'xfer-note ' + (r.ok ? 'ok' : 'bad');
+});
+
+// ---------------- Assigned exam (student side) ----------------
+let assignment = null;
+
+function renderAssignCard(){
+  const card = document.getElementById('assignCard');
+  if(!card) return;
+  const qs = assignment && assignment.questions;
+  if(role !== 'student' || !qs || !qs.length){ card.classList.add('hidden'); return; }
+  const done = !!(store.assignDone && assignment.at && store.assignDone >= assignment.at);
+  card.classList.remove('hidden');
+  card.classList.toggle('done', done);
+  document.getElementById('assignTitle').textContent =
+    done ? '✅ 老師指派的考卷（已完成）' : '📩 老師指派的考卷';
+  document.getElementById('assignWhen').textContent =
+    `共 ${qs.length} 題　·　${assignment.at ? fmtDate(assignment.at) + ' 指派' : ''}`;
+  document.getElementById('startAssignBtn').textContent = done ? '再考一次' : '開始作答';
+}
+
+// Checked in the background: a slow or failed lookup must never delay the page.
+async function checkAssignment(){
+  if(role !== 'student' || !syncReady()) return;
+  const r = await pullAssignment();
+  if(r.ok && !r.empty){
+    assignment = r;
+    renderAssignCard();
+  }
+}
+
+document.getElementById('startAssignBtn').addEventListener('click', ()=>{
+  if(!assignment || !assignment.questions.length) return;
+  mode = 'assigned';
+  quizIsReview = false;
+  quiz = assignment.questions.map(q=>({ ...q }));
+  beginQuiz();
+});
 
 // ---------------- Quiz state ----------------
 let quiz = [];
@@ -4322,7 +4766,9 @@ function handleAnswer(chosen, correctText, btnEl){
     recordWrong(q.en, q.zh, q.type, q.cat);
   }
   document.getElementById('scoreChip').textContent = `✓ ${score}`;
-  results.push({ type:q.type, en:q.en, zh:q.zh, correctText:q.correctText, isCorrect });
+  results.push({ type:q.type, en:q.en, zh:q.zh, correctText:q.correctText, isCorrect,
+    // Keep the sentence the student just saw (cloze) or pick one for review.
+    sentence: q.type === 'cloze' ? q.sentence : pickSentence(q) });
 
   if(mode==='practice'){
     updateHangman();
@@ -4357,6 +4803,9 @@ function showResult(){
       endedEarly: !!sessionEndedEarly,
       wrong: results.filter(r=>!r.isCorrect).map(r=>r.en)
     });
+  }
+  if(mode === 'assigned' && assignment){
+    store.assignDone = assignment.at || Date.now();
   }
   saveHistory();
   // Upload in the background so the teacher sees this round without the student
@@ -4409,12 +4858,13 @@ function showResult(){
     else if(mode==='exam') title.textContent = '成績單出爐，一起檢討一下吧 📋';
     else if(mode==='review') title.textContent = '總複習結束，看看還要加強哪些單字 📚';
     else if(mode==='article') title.textContent = '文章讀完了，來看看填空結果 📖';
+    else if(mode==='assigned') title.textContent = '老師指派的考卷完成了 📩';
     else title.textContent = '再複習一下這幾個單字吧 📖';
   }
 
   const gradeRow = document.getElementById('gradeRow');
   gradeRow.innerHTML = '';
-  if(mode==='exam' || mode==='review' || mode==='article'){
+  if(mode==='exam' || mode==='review' || mode==='article' || mode==='assigned'){
     const pct = total? Math.round(score/total*100) : 0;
     let grade = 'F';
     if(pct>=90) grade='A'; else if(pct>=80) grade='B'; else if(pct>=70) grade='C'; else if(pct>=60) grade='D';
@@ -4437,11 +4887,11 @@ function showResult(){
   const heading = document.createElement('div');
   heading.className = 'row-label';
   heading.style.marginTop = '0';
-  heading.textContent = (mode==='exam' || mode==='review' || mode==='article')
+  heading.textContent = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned')
     ? '詳細檢討（全部作答紀錄）' : '需要再複習的單字';
   list.appendChild(heading);
 
-  const toShow = (mode==='exam' || mode==='review' || mode==='article')
+  const toShow = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned')
     ? results.slice().sort((a,b)=> (a.isCorrect?1:0) - (b.isCorrect?1:0))
     : wrongOnes;
   if(toShow.length===0){
@@ -4455,9 +4905,22 @@ function showResult(){
     toShow.forEach(r=>{
       const row = document.createElement('div');
       row.className = 'review-item';
-      row.innerHTML = `<div class="left"><b>${r.en}</b><span class="zh">${r.zh}</span></div>
+      row.innerHTML = `<div class="left">${sayBtn(r.en, true)}<b>${esc(r.en)}</b><span class="zh">${esc(r.zh)}</span></div>
         <div class="mark ${r.isCorrect?'ok':'no'}">${r.isCorrect? '✓ 正確' : '✕ 錯誤'}</div>`;
+      row.querySelector('.left').style.display = 'flex';
+      row.querySelector('.left').style.alignItems = 'center';
+      row.querySelector('.left').style.gap = '7px';
       list.appendChild(row);
+      // A word answered wrong is worth showing in a sentence — the answer alone
+      // teaches nothing.
+      if(!r.isCorrect && r.sentence){
+        const sen = document.createElement('div');
+        sen.className = 'wl-sent';
+        sen.style.padding = '0 4px 9px';
+        sen.innerHTML = `${sayBtn(filledSentence(r.sentence, r.en).replace(/\u0000/g,''), true)}
+          <span>${filledSentenceHTML(r.sentence, r.en)}</span>`;
+        list.appendChild(sen);
+      }
     });
   }
 }
@@ -4499,6 +4962,7 @@ quitHintEl.addEventListener('click', ()=>{
   await loadHistory();
   renderHistory();
   paintExamCount();
+  checkAssignment();
   // A remembered role skips straight to the modes; otherwise ask first.
   showScreen(role ? modeScreen : roleScreen);
 })();
