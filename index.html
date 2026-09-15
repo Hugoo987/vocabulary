@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v12 · 其他副詞</title>
+<title>單字大挑戰 v13 · 其他形容詞&副詞（進階）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -281,7 +281,8 @@
     padding: 1px 8px; border-radius: 20px; font-size: 11px;
   }
   .cat-tab.off{ filter: grayscale(0.75) brightness(0.85) saturate(0.4); opacity: 0.5; }
-  .cat-tab[data-cat="adverbs2"]{ background: var(--time); }
+  .cat-tab[data-cat="adjectives3"]{ background: var(--numbers); }
+  .cat-tab[data-cat="adverbs3"]{ background: var(--time); }
 
   .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
   .pill{
@@ -485,10 +486,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v12 ｜ 其他副詞 ｜ 35 字</div>
+  <div class="top-banner">✅ 這是最新版 v13 ｜ 其他形容詞・其他副詞（進階）｜ 16 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">基礎 1200 單字 · 其他副詞 <span class="ver-badge">v12</span></div>
+    <div class="sub">進階 800 單字 · 其他形容詞&副詞 <span class="ver-badge">v13</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -541,7 +542,7 @@
       <div class="mode-card review" id="modeReview">
         <div class="icon">📚</div>
         <h3>總複習</h3>
-        <p>從<b>學過的所有單元</b>（目前累積 1016 個單字）出題，複習之前教過的內容。</p>
+        <p>從<b>學過的所有單元</b>（目前累積 1032 個單字）出題，複習之前教過的內容。</p>
       </div>
     </div>
 
@@ -778,7 +779,7 @@
     </div>
 
     <div class="row-label">題目範圍</div>
-    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1016</b> 個單字）中隨機出題，不限單一單元。</div>
+    <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1032</b> 個單字）中隨機出題，不限單一單元。</div>
 
     <button class="big-btn" id="reviewStartBtn">開始總複習</button>
     <div class="hint" id="backHint3" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
@@ -844,47 +845,30 @@
 // English word appears only once overall, so no question can ever have two options
 // that are both correct.
 const WORDS = {
-  adverbs2: [
-    ["always","總是","She ___ arrives ten minutes early."],
-    ["ever","曾經","Have you ___ eaten a durian?"],
-    ["hard","辛勤地","He studied very ___ for the final exam."],
-    ["never","從未","My grandfather ___ drinks coffee."],
-    ["often","經常","We ___ eat dinner together on Sundays."],
-    ["seldom","很少","He ___ speaks in class."],
-    ["sometimes","有時","___ I walk to school instead of riding."],
-    ["usually","通常地","I ___ finish my homework before dinner."],
-    ["again","又、再","Could you say that ___ , please?"],
-    ["too","太","This box is ___ heavy for one person."],
-    ["also","也","She plays the piano and ___ sings."],
-    ["away","在遠處","The mountains looked blue and far ___ ."],
-    ["almost","幾乎","It is ___ eight o'clock; we should go."],
-    ["finally","終於","After three hours the bus ___ arrived."],
-    ["just","只要","It costs ___ ten dollars, so I bought two."],
-    ["least","最少的","Drink at ___ eight glasses of water a day."],
-    ["maybe","可能","___ it will clear up this afternoon."],
-    ["perhaps","或許","___ we should ask the teacher first."],
-    ["really","確實","That movie was ___ worth watching."],
-    ["so","也如此","She loves music, and ___ does her brother."],
-    ["still","還，仍然","The shop is ___ open at midnight."],
-    ["then","當時","We lived in Taichung back ___ ."],
-    ["together","一起","The whole class sang ___ ."],
-    ["twice","兩次","I have seen that film ___ ."],
-    ["very","非常，很","The mountain air is ___ fresh."],
-    ["quite","相當","The test was ___ difficult for everyone."],
-    ["yet","還（沒）","The bus has not come ___ ."],
-    ["abroad","在國外","Her sister is studying ___ this year."],
-    ["ahead","在前","The car ___ of us stopped very suddenly."],
-    ["somewhere","在某處","I left my keys ___ in this room."],
-    ["either","也（否定句）","If you will not go, I will not go ___ ."],
-    ["no","不（沒有任何）","There is ___ milk left in the bottle."],
-    ["not","不","This answer is ___ correct."],
-    ["OK","還好","Are you ___ ? You look a little pale."],
-    ["yes","是","\"Did you finish the report?\" \"___ , I did.\""]
+  adjectives3: [
+    ["absent","缺席的","He is ___ . So, he sent me a card and a cake."],
+    ["blank","空白的","It wrote on this ___ blanket."]
+  ],
+  adverbs3: [
+    ["besides","此外","___ , there is a snake inside the house."],
+    ["therefore","所以","There are women in the house. ___ , he went out for some peace."],
+    ["actually","實際上","___ , he is usually late."],
+    ["altogether","總而言之","___ , we need to work together."],
+    ["especially","尤其","They are special, their talk ___ ."],
+    ["even","甚至","He can't ___ use the oven."],
+    ["hardly","幾乎不","He ___ takes any rest from his hard work."],
+    ["nearly","幾乎","No one can get near that pear. They are ___ crazy."],
+    ["probably","或許","It is ___ a big problem."],
+    ["rather","相當","These two rats are ___ large."],
+    ["alike","相像的","She likes her rabbit. They are ___ ."],
+    ["aloud","大聲地","It cries ___ at the cloud."],
+    ["everywhere","無論何處","We welcome people from ___ and anywhere."],
+    ["anywhere","任何地方","We welcome people from everywhere and ___ ."]
   ]
 };
 
-const CAT_LABEL = { adverbs2:"ADVERBS 其他副詞" };
-const CAT_COLOR = { adverbs2:"var(--time)" };
+const CAT_LABEL = { adjectives3:"ADJECTIVES 其他形容詞（進階）", adverbs3:"ADVERBS 其他副詞（進階）" };
+const CAT_COLOR = { adjectives3:"var(--numbers)", adverbs3:"var(--time)" };
 const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空" };
 const TYPE_DESC = {
   en2zh: "英翻中：看英文單字，選出正確的中文意思。",
@@ -1891,12 +1875,12 @@ const REVIEW_WORDS = [
   {en:"too",zh:"太",sentence:"This box is ___ heavy for one person.",cat:"adverbs2"},
   {en:"also",zh:"也",sentence:"She plays the piano and ___ sings.",cat:"adverbs2"},
   {en:"away",zh:"在遠處",sentence:"The mountains looked blue and far ___ .",cat:"adverbs2"},
-  {en:"almost",zh:"幾乎",sentence:"It is ___ eight o'clock; we should go.",cat:"adverbs2"},
+  {en:"almost",zh:"差不多",sentence:"It is ___ eight o'clock; we should go.",cat:"adverbs2"},
   {en:"finally",zh:"終於",sentence:"After three hours the bus ___ arrived.",cat:"adverbs2"},
   {en:"just",zh:"只要",sentence:"It costs ___ ten dollars, so I bought two.",cat:"adverbs2"},
   {en:"least",zh:"最少的",sentence:"Drink at ___ eight glasses of water a day.",cat:"adverbs2"},
   {en:"maybe",zh:"可能",sentence:"___ it will clear up this afternoon.",cat:"adverbs2"},
-  {en:"perhaps",zh:"或許",sentence:"___ we should ask the teacher first.",cat:"adverbs2"},
+  {en:"perhaps",zh:"也許",sentence:"___ we should ask the teacher first.",cat:"adverbs2"},
   {en:"really",zh:"確實",sentence:"That movie was ___ worth watching.",cat:"adverbs2"},
   {en:"so",zh:"也如此",sentence:"She loves music, and ___ does her brother.",cat:"adverbs2"},
   {en:"still",zh:"還，仍然",sentence:"The shop is ___ open at midnight.",cat:"adverbs2"},
@@ -1904,7 +1888,7 @@ const REVIEW_WORDS = [
   {en:"together",zh:"一起",sentence:"The whole class sang ___ .",cat:"adverbs2"},
   {en:"twice",zh:"兩次",sentence:"I have seen that film ___ .",cat:"adverbs2"},
   {en:"very",zh:"非常，很",sentence:"The mountain air is ___ fresh.",cat:"adverbs2"},
-  {en:"quite",zh:"相當",sentence:"The test was ___ difficult for everyone.",cat:"adverbs2"},
+  {en:"quite",zh:"十分",sentence:"The test was ___ difficult for everyone.",cat:"adverbs2"},
   {en:"yet",zh:"還（沒）",sentence:"The bus has not come ___ .",cat:"adverbs2"},
   {en:"abroad",zh:"在國外",sentence:"Her sister is studying ___ this year.",cat:"adverbs2"},
   {en:"ahead",zh:"在前",sentence:"The car ___ of us stopped very suddenly.",cat:"adverbs2"},
@@ -1913,7 +1897,23 @@ const REVIEW_WORDS = [
   {en:"no",zh:"不（沒有任何）",sentence:"There is ___ milk left in the bottle.",cat:"adverbs2"},
   {en:"not",zh:"不",sentence:"This answer is ___ correct.",cat:"adverbs2"},
   {en:"OK",zh:"還好",sentence:"Are you ___ ? You look a little pale.",cat:"adverbs2"},
-  {en:"yes",zh:"是",sentence:"\"Did you finish the report?\" \"___ , I did.\"",cat:"adverbs2"}
+  {en:"yes",zh:"是",sentence:"\"Did you finish the report?\" \"___ , I did.\"",cat:"adverbs2"},
+  {en:"absent",zh:"缺席的",sentence:"He is ___ . So, he sent me a card and a cake.",cat:"adjectives3"},
+  {en:"blank",zh:"空白的",sentence:"It wrote on this ___ blanket.",cat:"adjectives3"},
+  {en:"besides",zh:"此外",sentence:"___ , there is a snake inside the house.",cat:"adverbs3"},
+  {en:"therefore",zh:"所以",sentence:"There are women in the house. ___ , he went out for some peace.",cat:"adverbs3"},
+  {en:"actually",zh:"實際上",sentence:"___ , he is usually late.",cat:"adverbs3"},
+  {en:"altogether",zh:"總而言之",sentence:"___ , we need to work together.",cat:"adverbs3"},
+  {en:"especially",zh:"尤其",sentence:"They are special, their talk ___ .",cat:"adverbs3"},
+  {en:"even",zh:"甚至",sentence:"He can't ___ use the oven.",cat:"adverbs3"},
+  {en:"hardly",zh:"幾乎不",sentence:"He ___ takes any rest from his hard work.",cat:"adverbs3"},
+  {en:"nearly",zh:"幾乎",sentence:"No one can get near that pear. They are ___ crazy.",cat:"adverbs3"},
+  {en:"probably",zh:"或許",sentence:"It is ___ a big problem.",cat:"adverbs3"},
+  {en:"rather",zh:"相當",sentence:"These two rats are ___ large.",cat:"adverbs3"},
+  {en:"alike",zh:"相像的",sentence:"She likes her rabbit. They are ___ .",cat:"adverbs3"},
+  {en:"aloud",zh:"大聲地",sentence:"It cries ___ at the cloud.",cat:"adverbs3"},
+  {en:"everywhere",zh:"無論何處",sentence:"We welcome people from ___ and anywhere.",cat:"adverbs3"},
+  {en:"anywhere",zh:"任何地方",sentence:"We welcome people from everywhere and ___ .",cat:"adverbs3"}
 ];
 
 // ---------------- Teacher score reporting ----------------
@@ -2001,6 +2001,9 @@ function showScreen(el){
    setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
+  // Switching screens keeps the old scroll position otherwise: tap 錯題重練 at
+  // the bottom of a long list and the quiz opens already scrolled down.
+  try{ window.scrollTo(0, 0); }catch(e){ /* older browsers */ }
 }
 
 // ---------------- Role selection ----------------
@@ -2808,7 +2811,7 @@ const REVIEW_CAT_LABEL = {
   occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
   interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
-  adverbs2:'其他副詞',
+  adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）',
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
@@ -3286,11 +3289,13 @@ const ALT_SENTENCES = {
   "about": ["The whole trip takes ___ two hours."],
   "above": ["A lamp hangs ___ the table."],
   "abroad": ["They travel ___ every summer."],
+  "absent": ["Three students were ___ from class because of the flu."],
   "across": ["They swam ___ the narrow river."],
   "act": ["Can you ___ like a robot for the show?"],
   "action": ["Talking is easy, but taking ___ is much harder."],
   "actor": ["That ___ has won three awards."],
   "actress": ["The ___ played the queen beautifully."],
+  "actually": ["This bag looks new, but ___ my mother bought it ten years ago."],
   "afraid": ["There is nothing to be ___ of in the dark."],
   "after": ["We had dessert ___ the meal."],
   "afternoon": ["The meeting was moved to Friday ___ ."],
@@ -3301,15 +3306,19 @@ const ALT_SENTENCES = {
   "air": ["The ___ at the top of the mountain is thin."],
   "airplane": ["The ___ landed safely in the storm."],
   "airport": ["We arrived at the ___ two hours early."],
+  "alike": ["The twins dress ___ every single day."],
   "all": ["___ the lights in the house were turned off."],
   "almost": ["I ___ dropped the plate."],
   "along": ["We walked ___ the riverbank."],
+  "aloud": ["Please read the poem ___ so that everyone can hear."],
   "already": ["The train had ___ left when we arrived."],
   "also": ["My brother is ___ coming with us."],
+  "altogether": ["___ , the whole trip cost us five thousand dollars."],
   "always": ["Does he ___ take the same bus?"],
   "and": ["Bring a pen ___ some paper."],
   "answer": ["Nobody knew the ___ to that question."],
   "any": ["Take ___ seat you like; they are all free."],
+  "anywhere": ["You may sit ___ you like; none of the seats are taken."],
   "apartment": ["They rent a small ___ near the station."],
   "appear": ["Stars begin to ___ as the sky grows dark."],
   "apple": ["She sliced a red ___ for her lunchbox."],
@@ -3359,12 +3368,14 @@ const ALT_SENTENCES = {
   "belt": ["His trousers need a ___ to stay up."],
   "bench": ["The ___ was still wet from the morning rain."],
   "beside": ["She sat ___ her grandmother."],
+  "besides": ["I have no time to go; ___ , the ticket is too expensive."],
   "between": ["The bank sits ___ two tall buildings."],
   "bicycle": ["The front tire of my ___ has gone flat."],
   "big": ["That is a ___ mistake to make."],
   "birthday": ["My ___ falls on the first day of spring."],
   "black": ["The night sky was completely ___ ."],
   "blackboard": ["Someone erased everything from the ___ ."],
+  "blank": ["Please write your name on the ___ line above."],
   "blanket": ["Pull the ___ up if you feel cold."],
   "block": ["Traffic was stopped for an entire ___ ."],
   "blow": ["Please ___ out the candles on your cake."],
@@ -3549,8 +3560,11 @@ const ALT_SENTENCES = {
   "enter": ["Please knock before you ___ my room."],
   "envelope": ["Write the address clearly on the ___ ."],
   "eraser": ["May I borrow your ___ ?"],
+  "especially": ["I love fruit, ___ mangoes in summer."],
+  "even": ["She left without a word and did not ___ look back."],
   "evening": ["We often take a walk in the cool ___ ."],
   "ever": ["Nobody has ___ climbed that cliff."],
+  "everywhere": ["We looked ___ for the lost cat, but we could not find it."],
   "example": ["Give me one ___ of a mammal."],
   "excellent": ["The restaurant serves ___ seafood."],
   "except": ["Everyone in the class came ___ Tom."],
@@ -3654,6 +3668,7 @@ const ALT_SENTENCES = {
   "hang": ["They will ___ colorful lights on the tree."],
   "happen": ["Accidents often ___ when people are careless."],
   "hard": ["If you work ___ , you will improve."],
+  "hardly": ["The room was so dark that I could ___ see my own hand."],
   "hat": ["Wear a ___ to keep the sun off your face."],
   "hate": ["My sister and I both ___ getting up early."],
   "have": ["They ___ three children and a dog."],
@@ -3837,6 +3852,7 @@ const ALT_SENTENCES = {
   "national": ["The team will play in the ___ championship."],
   "nature": ["He loves taking long walks in ___ ."],
   "near": ["They live ___ the train station."],
+  "nearly": ["We waited ___ two hours for the next train."],
   "need": ["You do not ___ to bring anything to the picnic."],
   "never": ["I will ___ forget your kindness."],
   "new": ["Everything looks ___ after a fresh coat of paint."],
@@ -3933,6 +3949,7 @@ const ALT_SENTENCES = {
   "prepare": ["Students should ___ well before the exam."],
   "present": ["She unwrapped her birthday ___ slowly."],
   "prize": ["She won first ___ in the singing contest."],
+  "probably": ["She is ___ still on the bus, so let us wait a little."],
   "problem": ["This math ___ is really hard."],
   "program": ["He joined a summer ___ to learn computer skills."],
   "public": ["The museum is now open to the ___ ."],
@@ -3953,6 +3970,7 @@ const ALT_SENTENCES = {
   "rainbow": ["A ___ appeared over the valley."],
   "rainy": ["We stayed inside on that ___ day."],
   "raise": ["The workers used a crane to ___ the heavy beam."],
+  "rather": ["The test was ___ easy for most of the class."],
   "read": ["How many books do you ___ a month?"],
   "ready": ["Dinner will be ___ in about ten minutes."],
   "real": ["Is this a ___ pearl or just glass?"],
@@ -4147,6 +4165,7 @@ const ALT_SENTENCES = {
   "theater": ["The ___ was built over a century ago."],
   "then": ["I was only six years old ___ , so I remember little."],
   "there": ["Put the box over ___ by the wall."],
+  "therefore": ["The road was closed; ___ , we took the long way home."],
   "thick": ["Put on a ___ coat; it is freezing outside."],
   "thing": ["Do not forget to bring one ___ for the picnic."],
   "think": ["What do you ___ about the new teacher?"],
@@ -4318,10 +4337,17 @@ function sayBtn(text, small){
 // Study view: put the word back into the blank so the sentence reads normally.
 function filledSentence(sentence, en){
   if(!sentence) return '';
+  const src = String(sentence);
+  const m = src.match(/_{2,}/);
+  if(!m) return src;
+  // Words are stored lowercase, so a blank that opens a sentence needs its
+  // capital back: "therefore, he went out" reads as a typo otherwise.
+  const before = src.slice(0, m.index).replace(/\s+$/, '');
+  const opensSentence = before === '' || /[.!?]["']?$/.test(before);
+  const word = opensSentence ? en.charAt(0).toUpperCase() + en.slice(1) : en;
   // The bank writes "___ ," to keep the blank clear; once the word is back in
   // place that space before the punctuation looks wrong.
-  return String(sentence)
-    .replace(/_{2,}/, '\u0000' + en + '\u0000')
+  return (src.slice(0, m.index) + '\u0000' + word + '\u0000' + src.slice(m.index + m[0].length))
     .replace(/\s+([,.!?;:])/g, '$1');
 }
 // ...and render it with the word marked, without letting the word's own text
@@ -4403,7 +4429,10 @@ const SYNONYM_GROUPS = [
   ['也許', '或許', '大概'],
   ['總是', '一直'],
   ['常常', '時常', '經常'],
-  ['幾乎', '差不多']
+  ['幾乎', '差不多'],
+  ['相當', '十分', '頗'],
+  ['確實', '實際上'],
+  ['無論何處', '任何地方', '到處']
 ];
 function synonymKey(sense){
   for(let i = 0; i < SYNONYM_GROUPS.length; i++){
@@ -4438,9 +4467,16 @@ function pickDistractors(candidatePool, correctW, field, preferSameCat){
   }
   tryPool(primary, false);
   if(chosen.length < 3) tryPool(fallback, false);
-  // Last resort: never render a question with fewer than four options. With
-  // pools this size it should not be reachable, but a tiny custom selection
-  // (one small unit) must still produce a usable question.
+  // The selection itself can hold fewer than four words — practice mode with a
+  // single two-word unit ticked — and then no amount of retrying the same pool
+  // will fill the options. Widen to every word taught: a distractor from
+  // another unit is far better than a question with two choices.
+  if(chosen.length < 3){
+    const wide = REVIEW_WORDS.concat(fullPool()).filter(p => p.en !== correctW.en);
+    tryPool(wide, false);
+    if(chosen.length < 3) tryPool(wide, true);
+  }
+  // Last resort: never render a question with fewer than four options.
   if(chosen.length < 3) tryPool(fallback, true);
   return chosen;
 }

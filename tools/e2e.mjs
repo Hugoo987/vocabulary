@@ -234,6 +234,35 @@ check(note.includes('不允許儲存'), '有提示無法儲存紀錄');
 check(errs2.length === 0, errs2.length ? 'JS 爆掉：' + errs2.join(' | ') : '沒有 JS 例外');
 await p2.close();
 
+console.log('\n12. 每一題都要有四個選項（含只勾一個很小的單元）');
+// 單元只有兩個字時，干擾選項湊不出四個 —— 曾經真的出過兩個選項的題目。
+const optCheck = await page.evaluate(() => {
+  const result = {};
+  const run = (label, cats, rounds) => {
+    let q = 0, short = 0, missing = 0;
+    for (let i = 0; i < rounds; i++) {
+      buildQuiz(new Set(cats), new Set(ALL_TYPES), 9999).forEach(x => {
+        q++;
+        if (new Set(x.options).size !== 4) short++;
+        if (!x.options.includes(x.correctText)) missing++;
+      });
+    }
+    result[label] = { q, short, missing };
+  };
+  const smallest = ALL_CATS.slice().sort((a, b) => WORDS[a].length - WORDS[b].length)[0];
+  run('smallest', [smallest], 200);
+  run('all', ALL_CATS, 100);
+  result.smallestName = smallest;
+  result.smallestSize = WORDS[smallest].length;
+  return result;
+});
+check(optCheck.smallest.short === 0,
+  `只勾最小的單元（${optCheck.smallestName}，${optCheck.smallestSize} 字）也有四個相異選項`
+  + `（${optCheck.smallest.q} 題中不足四個：${optCheck.smallest.short}）`);
+check(optCheck.smallest.missing === 0, '而且每題都含正解');
+check(optCheck.all.short === 0 && optCheck.all.missing === 0,
+  `全單元出題也都是四個相異選項（${optCheck.all.q} 題）`);
+
 console.log('\n9. JS 執行期錯誤');
 check(errs.length === 0, errs.length ? 'JS 錯誤：\n    ' + errs.join('\n    ') : '沒有 JS 執行期錯誤');
 

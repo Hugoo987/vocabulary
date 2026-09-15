@@ -18,10 +18,25 @@ check(await page.isVisible('#wordListScreen'), '進得去單字表');
 const scopeN = await page.evaluate(()=>fullPool().length);
 check(await page.locator('.wl-item').count() === scopeN, `列出本次範圍全部 ${scopeN} 個字`);
 const first = await page.locator('.wl-item').first().innerText();
-check(/總是/.test(first), '有中文意思');
+const firstZh = await page.evaluate(()=>fullPool()[0].zh);
+check(first.includes(firstZh), `有中文意思（${firstZh}）`);
 check((first.match(/\n/g)||[]).length >= 2, '每個字都有兩句例句');
 check(!/_{2,}/.test(await page.locator('#wlList').innerText()), '例句的空格已經填回單字（不是 ___）');
 check(!/\s,/.test(await page.locator('#wlList').innerText()), '填回後沒有「字 ，」這種多餘空格');
+const caseCheck = await page.evaluate(()=>{
+  // 句首（或句號後）的空格填回去要大寫
+  const bad = [];
+  fullPool().forEach(w => sentencesFor(w).forEach(sen => {
+    const filled = filledSentence(sen, w.en).replace(/\u0000/g,'');
+    filled.split(/(?<=[.!?])\s+/).forEach(part => {
+      const t = part.trim();
+      if(t && /^[a-z]/.test(t)) bad.push(w.en + ': ' + t.slice(0, 28));
+    });
+  }));
+  return bad;
+});
+check(caseCheck.length === 0,
+  '句首的字填回去是大寫' + (caseCheck.length ? `（${caseCheck.length} 句沒有：${caseCheck[0]}…）` : ''));
 check(await page.locator('.wl-item').first().locator('.say-btn').count() >= 3, '單字與兩句例句都有發音鈕');
 const said = await page.evaluate(()=>{
   const calls=[];
@@ -32,8 +47,14 @@ const said = await page.evaluate(()=>{
 check(said.length===1 && /^[A-Za-z]/.test(said[0]), `點發音鈕會唸出英文（唸了「${said[0]}」）`);
 
 console.log('\n【單字表：搜尋與分頁】');
-await page.fill('#wlSearch','終於'); await page.waitForTimeout(150);
-check(await page.locator('.wl-item').count() === 1, '用中文搜尋找得到（終於 → finally）');
+// 用本次範圍裡實際存在的中文搜，不要綁死某一次的單字範圍
+const probe = await page.evaluate(()=>{
+  const w = fullPool().find(x=>fullPool().filter(y=>y.zh===x.zh).length===1);
+  return { zh:w.zh, en:w.en };
+});
+await page.fill('#wlSearch', probe.zh); await page.waitForTimeout(150);
+check(await page.locator('.wl-item').count() === 1,
+  `用中文搜尋找得到（${probe.zh} → ${probe.en}）`);
 await page.click('#wlTabRow .pill[data-wl="all"]');
 await page.fill('#wlSearch','watermelon'); await page.waitForTimeout(150);
 check((await page.locator('.wl-item').first().innerText()).includes('西瓜'), '查得到以前教過的字（watermelon）');

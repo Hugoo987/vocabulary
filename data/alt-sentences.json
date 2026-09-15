@@ -53,6 +53,9 @@
   "New Year's Eve": [
     "The restaurant is fully booked for ___ ."
   ],
+  "OK": [
+    "The food was ___ , but nothing special."
+  ],
   "PE": [
     "We have ___ twice a week."
   ],
@@ -3026,6 +3029,9 @@
   "yellow": [
     "Sunflowers are bright ___ ."
   ],
+  "yes": [
+    "She nodded and said ___ to the invitation."
+  ],
   "yesterday": [
     "I finished the whole book ___ ."
   ],
@@ -3041,10 +3047,52 @@
   "zoo": [
     "The pandas at the ___ are very popular."
   ],
-  "OK": [
-    "The food was ___ , but nothing special."
+  "absent": [
+    "Three students were ___ from class because of the flu."
   ],
-  "yes": [
-    "She nodded and said ___ to the invitation."
+  "blank": [
+    "Please write your name on the ___ line above."
+  ],
+  "besides": [
+    "I have no time to go; ___ , the ticket is too expensive."
+  ],
+  "therefore": [
+    "The road was closed; ___ , we took the long way home."
+  ],
+  "actually": [
+    "This bag looks new, but ___ my mother bought it ten years ago."
+  ],
+  "altogether": [
+    "___ , the whole trip cost us five thousand dollars."
+  ],
+  "especially": [
+    "I love fruit, ___ mangoes in summer."
+  ],
+  "even": [
+    "She left without a word and did not ___ look back."
+  ],
+  "hardly": [
+    "The room was so dark that I could ___ see my own hand."
+  ],
+  "nearly": [
+    "We waited ___ two hours for the next train."
+  ],
+  "probably": [
+    "She is ___ still on the bus, so let us wait a little."
+  ],
+  "rather": [
+    "The test was ___ easy for most of the class."
+  ],
+  "alike": [
+    "The twins dress ___ every single day."
+  ],
+  "aloud": [
+    "Please read the poem ___ so that everyone can hear."
+  ],
+  "everywhere": [
+    "We looked ___ for the lost cat, but we could not find it."
+  ],
+  "anywhere": [
+    "You may sit ___ you like; none of the seats are taken."
   ]
 }
