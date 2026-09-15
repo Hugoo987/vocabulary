@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v14 · 形容詞・人物・副詞</title>
+<title>單字大挑戰 v15 · 形容詞・人物・副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -179,10 +179,13 @@
   .art-blank.current{ border-bottom-color: var(--exam); background:#E8EFF7; color:var(--exam); }
   .art-blank.ok{ border-bottom-color: var(--good); color: var(--good); font-family:inherit; font-size:15px; }
   .art-blank.no{ border-bottom-color: var(--bad); color: var(--bad); font-family:inherit; font-size:15px; }
-  .art-exit{
+  /* 返回鍵一律放在畫面上方，樣式統一 */
+  .back-link{
     font-size:12px; color:var(--ink-soft); cursor:pointer; text-decoration:underline;
-    margin: 10px 0 2px; display:inline-block;
+    display:inline-block; margin: 0 0 14px; padding: 4px 2px 4px 0;
   }
+  .back-link:active{ opacity:.6; }
+  @media (max-width: 640px){ .back-link{ padding: 7px 4px 7px 0; margin-bottom: 12px; } }
   .art-question{ border-top:2px dashed var(--paper-line); padding-top:14px; }
   /* 側欄裡的題目自成一張卡片，不需要那條分隔線 */
   @media (min-width: 861px){
@@ -389,6 +392,34 @@
     .assign-card{ padding:11px 12px; }
   }
 
+  /* ---- Activity heatmap (GitHub 那種) ---- */
+  .hm-wrap{ margin-top:4px; }
+  .hm-stats{ font-size:12px; color:var(--ink-soft); line-height:1.8; margin-bottom:8px; }
+  .hm-stats b{ color:var(--ink); font-family:'Baloo 2',sans-serif; font-size:14px; }
+  .hm-months{
+    display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:2px;
+    font-size:9px; color:var(--ink-soft); margin-bottom:3px; height:12px;
+  }
+  /* 手機上一欄只有 10px 寬，不加這行「3月」會斷成兩行 */
+  .hm-months span{ white-space:nowrap; }
+  .hm-grid{
+    display:grid; grid-template-rows:repeat(7, 1fr); grid-auto-flow:column;
+    grid-auto-columns:1fr; gap:2px;
+  }
+  .hm-cell{ aspect-ratio:1; border-radius:2px; background:#EFE7D6; }
+  .hm-cell.lv1{ background:#CFE7D9; }
+  .hm-cell.lv2{ background:#96CDB0; }
+  .hm-cell.lv3{ background:#57A981; }
+  .hm-cell.lv4{ background:var(--good); }
+  .hm-cell.today{ box-shadow:0 0 0 1.5px var(--ink); }
+  .hm-cell.future{ background:transparent; }
+  .hm-legend{
+    display:flex; align-items:center; justify-content:flex-end; gap:4px;
+    font-size:10px; color:var(--ink-soft); margin-top:7px;
+  }
+  .hm-legend i{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+  .hm-note{ font-size:11px; color:var(--ink-soft); margin-top:6px; line-height:1.7; }
+
   /* ---- Printable mistake paper ---- */
   .paper-actions{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px; }
   .paper{ border:2px solid var(--ink); border-radius:12px; padding:16px; background:#fff; margin-top:12px; }
@@ -487,10 +518,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v14 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
+  <div class="top-banner">✅ 這是最新版 v15 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v14</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v15</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -606,13 +637,13 @@
 
   <!-- TEACHER REPORT SCREEN -->
   <div class="card hidden" id="reportScreen">
+    <div class="back-link" id="reportBackBtn">← 返回主頁</div>
     <div class="whoami">
       <span>學生學習報告</span>
       <span style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
         <button class="mini-btn" id="syncRefreshBtn">🔄 重新整理</button>
         <button class="mini-btn" id="gotoPaperBtn"
           style="background:var(--exam); color:#fff; border-color:var(--exam);">📝 出考卷</button>
-        <button class="mini-btn" id="reportBackBtn">← 返回主頁</button>
       </span>
     </div>
     <div id="syncStatus" class="sync-status hidden"></div>
@@ -665,6 +696,7 @@
 
   <!-- WORD LIST SCREEN (study before being tested) -->
   <div class="card hidden" id="wordListScreen">
+    <div class="back-link" id="wlBackHint">← 返回選擇模式</div>
     <div class="row-label" style="margin-top:0;">單字表</div>
     <div class="art-intro">
       考試前可以先看過一遍。點 🔊 聽發音（用手機／電腦內建的語音，不用網路）。
@@ -677,19 +709,19 @@
     <input class="name-input wl-search" id="wlSearch" placeholder="輸入英文或中文搜尋…">
     <div class="wl-hint" id="wlHint"></div>
     <div id="wlList"></div>
-    <div class="hint" id="wlBackHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- ARTICLE LIST SCREEN -->
   <div class="card hidden" id="articleListScreen">
+    <div class="back-link" id="artBackHint">← 返回選擇模式</div>
     <div class="row-label" style="margin-top:0;">選一篇文章</div>
     <div class="art-intro" id="artIntro"></div>
     <div id="articleList"></div>
-    <div class="hint" id="artBackHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- ARTICLE READING SCREEN -->
   <div class="card hidden" id="articleScreen">
+    <div class="back-link" id="artQuitHint">← 返回主頁（結束本次閱讀）</div>
     <div class="art-head">
       <div>
         <div class="art-title" id="artTitle"></div>
@@ -704,7 +736,6 @@
 
     <!-- The way out lives at the top: on a phone the choices are pinned to the
          bottom of the screen and would sit on top of a link placed down there. -->
-    <div class="art-exit" id="artQuitHint">← 返回主頁（結束本次閱讀）</div>
 
     <!-- Wide screens put the passage left and the choices right; narrow ones
          stack them and pin the choices to the bottom of the viewport. -->
@@ -725,6 +756,7 @@
 
   <!-- SETUP SCREEN (practice mode only) -->
   <div class="card hidden" id="setupScreen">
+    <div class="back-link" id="backHint">← 返回選擇模式</div>
     <div class="row-label" style="margin-top:0;" id="catPickLabel">選擇要考的單元（可複選）</div>
     <div class="cat-grid" id="catGrid"></div>
     <div class="scope-note hidden" id="catSingleNote"></div>
@@ -750,19 +782,19 @@
 
     <button class="big-btn" id="startBtn">開始</button>
     <div class="hint" id="poolHint"></div>
-    <div class="hint" id="backHint" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- EXAM CONFIRM SCREEN (fixed settings, no choices) -->
   <div class="card hidden" id="examConfirmScreen">
+    <div class="back-link" id="backHint2">← 返回選擇模式</div>
     <div class="row-label" style="margin-top:0;">正式考試規則</div>
     <div class="notice-box exam">📝 全部單元、全部題型、共 <span class="exam-count">40</span> 題，平均分配到各單元，全部都是選擇題，不可調整設定。</div>
     <button class="big-btn" id="examStartBtn">開始考試</button>
-    <div class="hint" id="backHint2" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- REVIEW SETUP SCREEN (cumulative review across every past unit) -->
   <div class="card hidden" id="reviewSetupScreen">
+    <div class="back-link" id="backHint3">← 返回選擇模式</div>
     <div class="row-label" style="margin-top:0;">題型（可複選，全部都是選擇題）</div>
     <div class="pill-row" id="reviewTypeRow">
       <div class="pill active" data-type="en2zh">英翻中</div>
@@ -783,11 +815,11 @@
     <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1112</b> 個單字）中隨機出題，不限單一單元。</div>
 
     <button class="big-btn" id="reviewStartBtn">開始總複習</button>
-    <div class="hint" id="backHint3" style="cursor:pointer;text-decoration:underline;">← 返回選擇模式</div>
   </div>
 
   <!-- QUIZ SCREEN -->
   <div class="card hidden" id="quizScreen">
+    <div class="back-link" id="quitHint">← 返回主頁（結束本次作答）</div>
     <div id="hangmanBox" class="hangman-wrap hidden">
       <svg id="hangmanSvg" width="90" height="100" viewBox="0 0 90 100">
         <line x1="5" y1="95" x2="60" y2="95" stroke="#2B2620" stroke-width="4"/>
@@ -823,11 +855,11 @@
 
     <div class="feedback" id="feedback"></div>
     <button class="big-btn hidden" id="nextBtn">下一題 →</button>
-    <div class="hint" id="quitHint" style="cursor:pointer;text-decoration:underline;">← 返回主頁（結束本次作答）</div>
   </div>
 
   <!-- RESULT SCREEN -->
   <div class="card hidden" id="resultScreen">
+    <div class="back-link" id="resultBackLink">← 回到模式選擇</div>
     <div class="score-circle">
       <div class="num" id="finalScore">0/0</div>
       <div class="lbl">答對題數</div>
@@ -2298,7 +2330,9 @@ let store = null;
 let historyData = {};      // live view of the current role's words: { en: {...} }
 let storageOK = false;     // whether localStorage actually works here
 
-function blankProfile(){ return { words: {}, sessions: [] }; }
+// days: { 20260915: 3 } —— 那天做了幾次測驗。sessions 只留最近 60 筆，
+// 熱力圖要看半年，所以另外存一份很小的每日計數。
+function blankProfile(){ return { words: {}, sessions: [], days: {} }; }
 
 function blankStore(){
   return { version: 2, role: null, assignDone: null,
@@ -2332,7 +2366,30 @@ function normalizeProfile(p){
     }
   }
   if(Array.isArray(p.sessions)) out.sessions = p.sessions.slice(-60);
+  if(p.days && typeof p.days === 'object'){
+    for(const [k, n] of Object.entries(p.days)){
+      if(/^\d{8}$/.test(k) && Number(n) > 0) out.days[k] = Number(n);
+    }
+  }
+  seedDaysFromSessions(out);
   return out;
+}
+
+// 一天的代號：20260915。用本地日期，學生看到的「今天」才會對。
+function dayNum(date){
+  return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+}
+
+// 舊資料沒有 days，先用還留著的 sessions 補一份，報告不會整片空白。
+function seedDaysFromSessions(p){
+  if(!p.days) p.days = {};
+  if(Object.keys(p.days).length) return p;
+  (p.sessions || []).forEach(x=>{
+    if(!x || !x.date) return;
+    const k = dayNum(new Date(x.date));
+    p.days[k] = (p.days[k] || 0) + 1;
+  });
+  return p;
 }
 
 async function loadHistory(){
@@ -2422,6 +2479,9 @@ function recordWrong(en, zh, type, cat){
 
 function recordSession(entry){
   const p = currentProfile();
+  if(!p.days) p.days = {};
+  const k = dayNum(new Date(entry && entry.date ? entry.date : Date.now()));
+  p.days[k] = (p.days[k] || 0) + 1;
   p.sessions.push(entry);
   if(p.sessions.length > 60) p.sessions = p.sessions.slice(-60);
 }
@@ -2720,7 +2780,11 @@ function buildPayload(){
     ]),
     s: p.sessions.map(s => [
       Math.round(s.date / DAY), MODE_CODE[s.mode] || 'p', s.total, s.correct
-    ])
+    ]),
+    // 熱力圖用的每日計數。只帶最近 400 天，回報碼才不會長到貼不動。
+    d: Object.entries(p.days || {})
+      .filter(([k]) => Number(k) >= dayNum(new Date(Date.now() - 400 * DAY)))
+      .map(([k, n]) => [Number(k), n])
   };
 }
 
@@ -2758,6 +2822,13 @@ function payloadToProfile(data){
       wrong: []
     });
   });
+  (Array.isArray(data.d) ? data.d : []).forEach(row => {
+    if(!Array.isArray(row)) return;
+    const [k, n] = row;
+    if(/^\d{8}$/.test(String(k)) && Number(n) > 0) profile.days[String(k)] = Number(n);
+  });
+  // 對方是舊版本、沒有 d 的話，至少用 sessions 補回來
+  seedDaysFromSessions(profile);
   return profile;
 }
 
@@ -3026,6 +3097,76 @@ function gradeColor(g){
   return 'var(--bad)';
 }
 
+// ---------------- Activity heatmap ----------------
+// 一欄是一週（由上到下 週日→週六），顏色越深代表那天做越多次測驗。
+const HEAT_WEEKS = 26;
+
+function heatLevel(n){
+  if(!n) return 0;
+  if(n === 1) return 1;
+  if(n === 2) return 2;
+  if(n <= 4) return 3;
+  return 4;
+}
+
+function heatCells(days, weeks){
+  const today = new Date(); today.setHours(0,0,0,0);
+  // 最後一欄補滿到本週週六，格子才會對齊星期
+  const end = new Date(today); end.setDate(end.getDate() + (6 - end.getDay()));
+  const start = new Date(end); start.setDate(start.getDate() - (weeks * 7 - 1));
+  const cells = [];
+  for(let i = 0; i < weeks * 7; i++){
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const k = dayNum(d);
+    cells.push({ d, k, n: Number((days || {})[k]) || 0,
+                 future: d > today, isToday: k === dayNum(today) });
+  }
+  return cells;
+}
+
+function heatStats(cells){
+  const done = cells.filter(c => !c.future);
+  const total = done.reduce((a, c) => a + c.n, 0);
+  const activeDays = done.filter(c => c.n > 0).length;
+  let best = 0, run = 0;
+  done.forEach(c => { run = c.n > 0 ? run + 1 : 0; if(run > best) best = run; });
+  // 目前連續：從今天（或昨天，今天還沒做不算斷）往回數
+  let now = 0;
+  for(let i = done.length - 1; i >= 0; i--){
+    if(done[i].n > 0) now++;
+    else if(i === done.length - 1) continue;   // 今天還沒做
+    else break;
+  }
+  return { total, activeDays, best, now };
+}
+
+function renderHeatmap(days){
+  const cells = heatCells(days, HEAT_WEEKS);
+  const st = heatStats(cells);
+  let months = '';
+  for(let c = 0; c < HEAT_WEEKS; c++){
+    const first = cells[c * 7].d;
+    const prev = c ? cells[(c - 1) * 7].d : null;
+    months += `<span>${(!prev || prev.getMonth() !== first.getMonth()) ? (first.getMonth() + 1) + '月' : ''}</span>`;
+  }
+  const grid = cells.map(c => {
+    if(c.future) return '<div class="hm-cell future"></div>';
+    const label = `${c.d.getMonth() + 1}/${c.d.getDate()}　` + (c.n ? `做了 ${c.n} 次測驗` : '沒有練習');
+    return `<div class="hm-cell lv${heatLevel(c.n)}${c.isToday ? ' today' : ''}" title="${label}"></div>`;
+  }).join('');
+  const legend = [0,1,2,3,4].map(l => `<i class="hm-cell lv${l}" style="aspect-ratio:auto;"></i>`).join('');
+  return `<div class="hm-wrap">
+    <div class="hm-stats">
+      最近半年共做了 <b>${st.total}</b> 次測驗，其中 <b>${st.activeDays}</b> 天有練習　·　
+      最長連續 <b>${st.best}</b> 天　·　目前連續 <b>${st.now}</b> 天
+    </div>
+    <div class="hm-months">${months}</div>
+    <div class="hm-grid">${grid}</div>
+    <div class="hm-legend">少 ${legend} 多</div>
+    <div class="hm-note">一格是一天（一欄是一週，由上到下是週日到週六），顏色越深表示那天做越多次。滑過或長按格子會顯示日期。</div>
+  </div>`;
+}
+
 function renderReport(){
   const body = document.getElementById('reportBody');
   const p = store.profiles.student;
@@ -3054,6 +3195,10 @@ function renderReport(){
       <div class="stat"><div class="n">${avgPct === null ? '—' : avgPct + '%'}</div><div class="l">平均正確率</div></div>
     </div>
   </div>`;
+
+  // ---- When did the student actually practise ----
+  html += `<div class="report-block"><div class="row-label" style="margin-top:0;">練習紀錄（越深表示那天做越多次）</div>`
+        + renderHeatmap(p.days) + `</div>`;
 
   // ---- Which units are weak ----
   const byCat = {};
@@ -5311,6 +5456,10 @@ function showResult(){
   }
 }
 
+document.getElementById('resultBackLink').addEventListener('click', ()=>{
+  renderHistory();
+  showScreen(modeScreen);
+});
 document.getElementById('restartBtn').addEventListener('click', ()=>{
   renderHistory();
   showScreen(modeScreen);

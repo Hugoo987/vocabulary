@@ -126,6 +126,35 @@ const real = await page.evaluate(()=>{
 check(intro.includes(String(real.lo)) && intro.includes(String(real.hi)),
   `空格數是算出來的，不是寫死的（「${intro.trim()}」）`);
 
+console.log('\n【返回鍵一律在畫面上方】');
+const backs = await page.evaluate(()=>{
+  const map = [
+    ['練習設定', 'setupScreen', 'backHint'],
+    ['正式考試確認', 'examConfirmScreen', 'backHint2'],
+    ['總複習設定', 'reviewSetupScreen', 'backHint3'],
+    ['單字表', 'wordListScreen', 'wlBackHint'],
+    ['文章清單', 'articleListScreen', 'artBackHint'],
+    ['文章閱讀', 'articleScreen', 'artQuitHint'],
+    ['作答中', 'quizScreen', 'quitHint'],
+    ['成績單', 'resultScreen', 'resultBackLink'],
+    ['老師報告', 'reportScreen', 'reportBackBtn'],
+  ];
+  const out = [];
+  map.forEach(([name, screenId, linkId])=>{
+    const screen = document.getElementById(screenId);
+    const link = document.getElementById(linkId);
+    showScreen(screen);
+    const s = screen.getBoundingClientRect(), l = link.getBoundingClientRect();
+    out.push({ name, offset: Math.round(l.top - s.top), h: Math.round(l.height) });
+  });
+  showScreen(document.getElementById('modeScreen'));
+  return out;
+});
+backs.forEach(b=>{
+  check(b.offset >= 0 && b.offset < 70, `${b.name}：返回鍵離卡片頂端 ${b.offset}px`);
+});
+check(backs.every(b=>b.h >= 24), `返回鍵在手機上夠好按（最小 ${Math.min(...backs.map(b=>b.h))}px）`);
+
 check(errs.length===0, '沒有 JS 例外' + (errs.length? '：'+errs[0] : ''));
 await br.close();
 console.log(fails ? `\n❌ ${fails} 項未通過` : '\n✅ 全部通過');

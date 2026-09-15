@@ -234,6 +234,54 @@ check(note.includes('不允許儲存'), '有提示無法儲存紀錄');
 check(errs2.length === 0, errs2.length ? 'JS 爆掉：' + errs2.join(' | ') : '沒有 JS 例外');
 await p2.close();
 
+console.log('\n13. 練習熱力圖');
+// 做完任一測驗都要在「那一天」記上一筆，而且要能撐得比 sessions（只留 60 筆）久
+const heat = await page.evaluate(() => {
+  const today = dayNum(new Date());
+  const before = (currentProfile().days || {})[today] || 0;
+  recordSession({ date: Date.now(), mode: 'practice', total: 5, correct: 4, wrong: [] });
+  recordSession({ date: Date.now(), mode: 'article', total: 9, correct: 9, wrong: [] });
+  saveHistory();
+  return { today, before, after: currentProfile().days[today] };
+});
+check(heat.after === heat.before + 2, `做兩次測驗，今天的格子從 ${heat.before} 變成 ${heat.after}`);
+
+const heatKeep = await page.evaluate(() => {
+  const p = currentProfile();
+  // 塞 80 筆作答紀錄：sessions 會被砍到剩 60 筆，days 不該跟著不見
+  for(let i = 0; i < 80; i++) recordSession({ date: Date.now(), mode: 'practice', total: 1, correct: 1, wrong: [] });
+  saveHistory();
+  return { sessions: p.sessions.length, today: p.days[dayNum(new Date())] };
+});
+check(heatKeep.sessions === 60 && heatKeep.today >= 82,
+  `sessions 上限 60 筆，但熱力圖仍記得今天的 ${heatKeep.today} 次`);
+
+const heatCalc = await page.evaluate(() => {
+  const DAYMS = 86400000;
+  const days = {};
+  const mk = back => { const d = new Date(Date.now() - back * DAYMS); return dayNum(d); };
+  days[mk(0)] = 1; days[mk(1)] = 3; days[mk(2)] = 6; days[mk(9)] = 1;   // 連續 3 天
+  const cells = heatCells(days, HEAT_WEEKS);
+  const st = heatStats(cells);
+  return { n: cells.length, weeks: HEAT_WEEKS, levels: [0,1,3,6].map(heatLevel), st,
+           future: cells.filter(c => c.future).length };
+});
+check(heatCalc.n === heatCalc.weeks * 7, `畫半年份的格子（${heatCalc.n} 格＝${heatCalc.weeks} 週）`);
+check(JSON.stringify(heatCalc.levels) === JSON.stringify([0,1,3,4]),
+  '做越多次顏色越深（0→無色、1→淺、3→中、6→最深）');
+check(heatCalc.st.total === 11 && heatCalc.st.activeDays === 4,
+  `統計正確：共 ${heatCalc.st.total} 次、${heatCalc.st.activeDays} 天有練習`);
+check(heatCalc.st.now === 3, `目前連續 ${heatCalc.st.now} 天`);
+check(heatCalc.future > 0, '本週未來的日子留白，不會畫成「沒練習」');
+
+const heatRound = await page.evaluate(() => {
+  const back = payloadToProfile(buildPayload());
+  const today = dayNum(new Date());
+  return { sent: store.profiles.student.days[today], got: back.days[today] };
+});
+check(heatRound.sent === heatRound.got && heatRound.got > 0,
+  `同步／回報碼會把熱力圖帶過去（今天 ${heatRound.got} 次）`);
+
 console.log('\n12. 每一題都要有四個選項（含只勾一個很小的單元）');
 // 單元只有兩個字時，干擾選項湊不出四個 —— 曾經真的出過兩個選項的題目。
 const optCheck = await page.evaluate(() => {
