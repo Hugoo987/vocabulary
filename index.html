@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v15 · 形容詞・人物・副詞</title>
+<title>單字大挑戰 v16 · 形容詞・人物・副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -45,8 +45,12 @@
     display:flex; align-items: baseline; justify-content: space-between;
     margin-bottom: 18px; padding-bottom: 12px; border-bottom: 3px solid var(--ink);
   }
-  .masthead h1{ font-family:'Baloo 2', sans-serif; font-weight:800; font-size: 25px; margin:0; }
-  .masthead .sub{ font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .masthead h1{
+    font-family:'Baloo 2', sans-serif; font-weight:800; font-size: 25px; margin:0;
+    white-space:nowrap; flex-shrink:0;   /* 手機上不要被右邊的說明擠成兩行 */
+  }
+  .masthead .sub{ font-size: 12px; color: var(--ink-soft); font-weight: 500; text-align:right; }
+  @media (max-width: 520px){ .masthead .sub{ font-size: 10.5px; } }
   .top-banner{
     background:#C1272D; color:#fff; text-align:center; padding:8px 12px;
     font-weight:700; font-size:13px; border-radius:10px; margin-bottom:14px;
@@ -322,6 +326,8 @@
 
   /* ---- Word list (study before the quiz) ---- */
   .mode-card.wordlist{ background: #E9F5EF; }
+  .mode-card.report{ background: #EFEAF6; }
+  .mode-card.paper{ background: #EAF1FB; }
   .wl-hint{ font-size:12px; color:var(--ink-soft); line-height:1.7; margin:10px 0 4px; }
   .wl-item{ padding:10px 4px; border-bottom:1.5px dashed var(--paper-line); }
   .wl-head{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
@@ -518,18 +524,18 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v15 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
+  <div class="top-banner">✅ 這是最新版 v16 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v15</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v16</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
   <div class="card" id="roleScreen">
     <div class="row-label" style="margin-top:0;">請問你是誰？</div>
     <div class="role-intro">
-      選好身分後，這台裝置會記住，下次打開就直接進入。<b>學生的作答紀錄和老師的是分開存的</b>，
-      老師自己試做題目不會影響學生的錯題統計。
+      選好身分後，這台裝置會記住，下次打開就直接進入。
+      <b>老師看到的是報告與數據，不會出現測驗</b>；學生看到的才是測驗。
     </div>
     <div class="role-grid">
       <div class="mode-card student" id="roleStudent">
@@ -540,7 +546,7 @@
       <div class="mode-card teacher" id="roleTeacher">
         <div class="icon">🍎</div>
         <h3>我是老師</h3>
-        <p>查看學生的學習報告：常錯單字、各單元弱點、各題型正確率與歷次成績。</p>
+        <p>只看報告與數據：練習熱力圖、常錯單字、各單元弱點、各題型正確率與歷次成績，也可以出錯題考卷。</p>
       </div>
     </div>
   </div>
@@ -559,6 +565,7 @@
       <button class="mini-btn" id="startAssignBtn"
         style="background:var(--exam); color:#fff; border-color:var(--exam);">開始作答</button>
     </div>
+    <div id="studentModes">
     <div class="row-label" style="margin-top:0;">請選擇模式</div>
     <div class="mode-grid mode-grid-3">
       <div class="mode-card practice" id="modePractice">
@@ -589,6 +596,7 @@
         <h3>單字表</h3>
         <p>先看過再考：中文、兩句例句都在，點 🔊 還能聽發音。也可以查以前教過的任何單字。</p>
       </div>
+    </div>
     </div>
 
     <div id="historyPanel" class="history-panel hidden">
@@ -624,12 +632,20 @@
     </div>
 
     <!-- Teacher-only entry point into the student's report -->
-    <div id="teacherEntry" class="history-panel hidden">
-      <div class="history-head">
-        <div class="row-label" style="margin:0;">📊 學生學習報告</div>
-        <button class="mini-btn" id="openReportBtn" style="background:var(--address); color:#fff; border-color:var(--address);">查看報告</button>
+    <div id="teacherEntry" class="hidden">
+      <div class="row-label" style="margin-top:0;">老師工具</div>
+      <div class="mode-grid">
+        <div class="mode-card report" id="openReportBtn">
+          <div class="icon">📊</div>
+          <h3>學生學習報告</h3>
+          <p id="teacherEntrySub"></p>
+        </div>
+        <div class="mode-card paper" id="openPaperBtn">
+          <div class="icon">📝</div>
+          <h3>產生錯題考卷</h3>
+          <p>從學生錯最多次的單字出題，每題四選一。可以直接列印，也可以指派到學生的網頁上作答。</p>
+        </div>
       </div>
-      <div class="history-sub" id="teacherEntrySub"></div>
     </div>
 
     <div id="storageNote" class="storage-note hidden"></div>
@@ -2982,6 +2998,9 @@ function renderHistory(){
   tag.textContent = roleLabel(role);
   tag.className = 'tag ' + (role === 'teacher' ? 'teacher' : 'student');
 
+  // 老師的介面只有報告與數據，測驗入口整塊收起來
+  document.getElementById('studentModes').classList.toggle('hidden', role === 'teacher');
+
   const teacherEntry = document.getElementById('teacherEntry');
   if(role === 'teacher'){
     teacherEntry.classList.remove('hidden');
@@ -2998,14 +3017,17 @@ function renderHistory(){
   note.classList.remove('hidden');
   if(storageOK){
     note.textContent = role === 'teacher'
-      ? '✅ 紀錄存在這台裝置的瀏覽器裡。你自己試做題目會記在「老師」名下，不會影響學生的統計。'
+      ? '✅ 學生的紀錄存在這台裝置的瀏覽器裡，也會從雲端同步過來。老師這邊只看報告，不會出題給自己做。'
       : '✅ 你的錯題紀錄已儲存在這台裝置，下次打開這個頁面仍會看到。';
   } else {
     note.textContent = 'ℹ️ 這個瀏覽器不允許儲存資料（可能是無痕視窗，或關閉了網站資料）。這次的錯題仍會累計，但關閉頁面後不會保留。';
   }
 
-  const heading = panel.querySelector('.row-label');
-  if(heading) heading.textContent = role === 'teacher' ? '📌 我（老師）的錯題紀錄' : '📌 我的錯題紀錄';
+  // 老師不作答，所以沒有「我的錯題紀錄」這一區
+  if(role === 'teacher'){
+    panel.classList.add('hidden');
+    return;
+  }
 
   if(entries.length === 0){
     panel.classList.add('hidden');
@@ -5078,6 +5100,16 @@ function makePaper(){
 
 document.getElementById('makePaperBtn').addEventListener('click', makePaper);
 // The paper lives below the whole report, so the header gets a shortcut to it.
+// 主頁的「產生錯題考卷」：進報告、產出、捲到考卷
+document.getElementById('openPaperBtn').addEventListener('click', async ()=>{
+  showScreen(reportScreen);
+  await refreshReport();
+  makePaper();
+  const box = document.getElementById('paperBox');
+  const target = box.classList.contains('hidden') ? document.getElementById('paperHint') : box;
+  target.scrollIntoView({ behavior:'smooth', block:'center' });
+});
+
 document.getElementById('gotoPaperBtn').addEventListener('click', ()=>{
   makePaper();
   const box = document.getElementById('paperBox');

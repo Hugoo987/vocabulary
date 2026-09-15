@@ -117,7 +117,21 @@ await page.click('#roleTeacher');
 await page.waitForTimeout(200);
 check((await page.locator('#whoamiTag').innerText()).includes('老師'), '身分標示為老師');
 check(await page.locator('#teacherEntry').isVisible(), '老師看得到報告入口');
-check(!(await page.locator('#historyPanel').isVisible()), '老師自己的錯題紀錄是空的（面板隱藏）');
+check(await page.locator('#openPaperBtn').isVisible(), '老師看得到「產生錯題考卷」入口');
+// 老師的介面不放測驗，只有報告與數據
+const teacherUI = await page.evaluate(()=>({
+  modes: !document.getElementById('studentModes').classList.contains('hidden'),
+  practice: !!document.getElementById('modePractice').offsetParent,
+  exam: !!document.getElementById('modeExam').offsetParent,
+  review: !!document.getElementById('modeReview').offsetParent,
+  article: !!document.getElementById('modeArticle').offsetParent,
+  wordlist: !!document.getElementById('modeWordList').offsetParent,
+  myWrong: !!document.getElementById('historyPanel').offsetParent,
+}));
+check(!teacherUI.modes && !teacherUI.practice && !teacherUI.exam && !teacherUI.review
+      && !teacherUI.article && !teacherUI.wordlist,
+  '老師看不到任何測驗入口（練習／考試／總複習／文章／單字表）');
+check(!teacherUI.myWrong, '老師也不會看到「我的錯題紀錄」');
 
 console.log('\n6. 打開學生學習報告');
 await page.click('#openReportBtn');
@@ -130,12 +144,16 @@ check(rep.includes('哪種題型最容易錯'), '報告有題型分析');
 check(rep.includes('歷次作答紀錄'), '報告有歷次成績');
 check(rep.includes('平常練習'), '成績列出模式名稱');
 
-console.log('\n7. 老師自己做題目，不能污染學生紀錄');
+console.log('\n7. 紀錄分離：即使在老師身分下作答，也不會污染學生紀錄');
 await page.click('#reportBackBtn');
 await page.waitForTimeout(150);
-await page.click('#modePractice');
-await page.waitForTimeout(150);
-await page.click('#startBtn');
+// 介面上老師已經沒有測驗入口了，所以直接叫起來跑一輪，確認底層的分離仍然成立
+await page.evaluate(()=>{
+  mode = 'practice';
+  quizIsReview = false;
+  quiz = buildQuiz(new Set(ALL_CATS), new Set(ALL_TYPES), 6);
+  beginQuiz();
+});
 await page.waitForTimeout(200);
 await playAllWrong();
 await page.waitForTimeout(400);
@@ -152,7 +170,7 @@ check(sep.tea > 0, `老師自己的錯題記在老師名下（${sep.tea} 字）`
 check(sep.teaSess === 1, '老師的作答紀錄記在老師名下');
 
 console.log('\n8. 清除學生紀錄（需按兩次）');
-await page.click('#restartBtn');
+await page.click('#resultBackLink');
 await page.waitForTimeout(200);
 await page.click('#openReportBtn');
 await page.waitForTimeout(200);
