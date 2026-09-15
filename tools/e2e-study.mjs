@@ -60,7 +60,11 @@ await page.fill('#wlSearch','watermelon'); await page.waitForTimeout(150);
 check((await page.locator('.wl-item').first().innerText()).includes('西瓜'), '查得到以前教過的字（watermelon）');
 await page.fill('#wlSearch',''); await page.waitForTimeout(200);
 const hint = await page.textContent('#wlHint');
-check(/前 60 個/.test(hint), `一千多字時只列前 60 筆，不會卡住（${hint.trim()}）`);
+check(/前 60 個/.test(hint), `查全部題庫時只列前 60 筆，不會卡住（${hint.trim()}）`);
+await page.click('#wlTabRow .pill[data-wl="scope"]'); await page.waitForTimeout(250);
+const scopeAll = await page.evaluate(()=>fullPool().length);
+check(await page.locator('.wl-item').count() === scopeAll,
+  `本次範圍不套用 60 筆上限，${scopeAll} 個字全部列出`);
 await page.fill('#wlSearch','zzzzz'); await page.waitForTimeout(150);
 check(/找不到/.test(await page.textContent('#wlHint')), '查無結果會說明');
 

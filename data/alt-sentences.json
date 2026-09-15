@@ -83,6 +83,9 @@
   "abroad": [
     "They travel ___ every summer."
   ],
+  "absent": [
+    "Three students were ___ from class because of the flu."
+  ],
   "across": [
     "They swam ___ the narrow river."
   ],
@@ -97,6 +100,9 @@
   ],
   "actress": [
     "The ___ played the queen beautifully."
+  ],
+  "actually": [
+    "This bag looks new, but ___ my mother bought it ten years ago."
   ],
   "afraid": [
     "There is nothing to be ___ of in the dark."
@@ -128,6 +134,9 @@
   "airport": [
     "We arrived at the ___ two hours early."
   ],
+  "alike": [
+    "The twins dress ___ every single day."
+  ],
   "all": [
     "___ the lights in the house were turned off."
   ],
@@ -137,11 +146,17 @@
   "along": [
     "We walked ___ the riverbank."
   ],
+  "aloud": [
+    "Please read the poem ___ so that everyone can hear."
+  ],
   "already": [
     "The train had ___ left when we arrived."
   ],
   "also": [
     "My brother is ___ coming with us."
+  ],
+  "altogether": [
+    "___ , the whole trip cost us five thousand dollars."
   ],
   "always": [
     "Does he ___ take the same bus?"
@@ -154,6 +169,9 @@
   ],
   "any": [
     "Take ___ seat you like; they are all free."
+  ],
+  "anywhere": [
+    "You may sit ___ you like; none of the seats are taken."
   ],
   "apartment": [
     "They rent a small ___ near the station."
@@ -302,6 +320,9 @@
   "beside": [
     "She sat ___ her grandmother."
   ],
+  "besides": [
+    "I have no time to go; ___ , the ticket is too expensive."
+  ],
   "between": [
     "The bank sits ___ two tall buildings."
   ],
@@ -319,6 +340,9 @@
   ],
   "blackboard": [
     "Someone erased everything from the ___ ."
+  ],
+  "blank": [
+    "Please write your name on the ___ line above."
   ],
   "blanket": [
     "Pull the ___ up if you feel cold."
@@ -872,11 +896,20 @@
   "eraser": [
     "May I borrow your ___ ?"
   ],
+  "especially": [
+    "I love fruit, ___ mangoes in summer."
+  ],
+  "even": [
+    "She left without a word and did not ___ look back."
+  ],
   "evening": [
     "We often take a walk in the cool ___ ."
   ],
   "ever": [
     "Nobody has ___ climbed that cliff."
+  ],
+  "everywhere": [
+    "We looked ___ for the lost cat, but we could not find it."
   ],
   "example": [
     "Give me one ___ of a mammal."
@@ -1186,6 +1219,9 @@
   ],
   "hard": [
     "If you work ___ , you will improve."
+  ],
+  "hardly": [
+    "The room was so dark that I could ___ see my own hand."
   ],
   "hat": [
     "Wear a ___ to keep the sun off your face."
@@ -1736,6 +1772,9 @@
   "near": [
     "They live ___ the train station."
   ],
+  "nearly": [
+    "We waited ___ two hours for the next train."
+  ],
   "need": [
     "You do not ___ to bring anything to the picnic."
   ],
@@ -2024,6 +2063,9 @@
   "prize": [
     "She won first ___ in the singing contest."
   ],
+  "probably": [
+    "She is ___ still on the bus, so let us wait a little."
+  ],
   "problem": [
     "This math ___ is really hard."
   ],
@@ -2083,6 +2125,9 @@
   ],
   "raise": [
     "The workers used a crane to ___ the heavy beam."
+  ],
+  "rather": [
+    "The test was ___ easy for most of the class."
   ],
   "read": [
     "How many books do you ___ a month?"
@@ -2666,6 +2711,9 @@
   "there": [
     "Put the box over ___ by the wall."
   ],
+  "therefore": [
+    "The road was closed; ___ , we took the long way home."
+  ],
   "thick": [
     "Put on a ___ coat; it is freezing outside."
   ],
@@ -3047,52 +3095,244 @@
   "zoo": [
     "The pandas at the ___ are very popular."
   ],
-  "absent": [
-    "Three students were ___ from class because of the flu."
+  "alive": [
+    "After three days in the snow, the climber was found ___ ."
   ],
-  "blank": [
-    "Please write your name on the ___ line above."
+  "alone": [
+    "I do not like walking home ___ after dark."
   ],
-  "besides": [
-    "I have no time to go; ___ , the ticket is too expensive."
+  "ancient": [
+    "The museum keeps ___ coins from the Roman age."
   ],
-  "therefore": [
-    "The road was closed; ___ , we took the long way home."
+  "asleep": [
+    "Please be quiet; my father is ___ on the sofa."
   ],
-  "actually": [
-    "This bag looks new, but ___ my mother bought it ten years ago."
+  "available": [
+    "The meeting room is ___ from two to four."
   ],
-  "altogether": [
-    "___ , the whole trip cost us five thousand dollars."
+  "basic": [
+    "The course teaches the ___ rules of the game."
   ],
-  "especially": [
-    "I love fruit, ___ mangoes in summer."
+  "broad": [
+    "He has ___ shoulders and can carry that heavy box."
   ],
-  "even": [
-    "She left without a word and did not ___ look back."
+  "classical": [
+    "The concert last night was all ___ , no pop songs."
   ],
-  "hardly": [
-    "The room was so dark that I could ___ see my own hand."
+  "colorful": [
+    "She drew a ___ picture with ten different pens."
   ],
-  "nearly": [
-    "We waited ___ two hours for the next train."
+  "crowded": [
+    "The night market was so ___ that we could hardly walk."
   ],
-  "probably": [
-    "She is ___ still on the bus, so let us wait a little."
+  "electric": [
+    "Her voice was so ___ that nobody moved until she stopped."
   ],
-  "rather": [
-    "The test was ___ easy for most of the class."
+  "equal": [
+    "Every child in the class gets an ___ share of the cake."
   ],
-  "alike": [
-    "The twins dress ___ every single day."
+  "false": [
+    "The news turned out to be ___ , so nobody believed him."
   ],
-  "aloud": [
-    "Please read the poem ___ so that everyone can hear."
+  "fantastic": [
+    "The food at that little shop is ___ and cheap."
   ],
-  "everywhere": [
-    "We looked ___ for the lost cat, but we could not find it."
+  "fair": [
+    "The weather will stay ___ until the weekend."
   ],
-  "anywhere": [
-    "You may sit ___ you like; none of the seats are taken."
+  "fashionable": [
+    "My aunt always wears ___ hats to a party."
+  ],
+  "formal": [
+    "We must wear ___ clothes to the wedding."
+  ],
+  "former": [
+    "The ___ mayor still lives on this street."
+  ],
+  "general": [
+    "This book gives a ___ picture of Taiwan's history."
+  ],
+  "homesick": [
+    "She was so ___ that she called her mother every night."
+  ],
+  "horrible": [
+    "We had a ___ storm last night and lost the power."
+  ],
+  "impossible": [
+    "Nothing is ___ if you keep trying."
+  ],
+  "independent": [
+    "The country became ___ fifty years ago."
+  ],
+  "instant": [
+    "Her answer was ___ ; she did not think twice."
+  ],
+  "latest": [
+    "This is her ___ book, published only last month."
+  ],
+  "latter": [
+    "Of the two plans, the ___ costs much less."
+  ],
+  "likely": [
+    "He is the most ___ person to win the race."
+  ],
+  "main": [
+    "Rice is the ___ food in many Asian countries."
+  ],
+  "major": [
+    "The city made a ___ change to the bus routes."
+  ],
+  "marvelous": [
+    "She told us a ___ story about a talking cat."
+  ],
+  "minor": [
+    "He had a ___ part in the school play."
+  ],
+  "necessary": [
+    "Sleep is as ___ as food for a growing child."
+  ],
+  "negative": [
+    "Please do not be so ___ about the new plan."
+  ],
+  "noisy": [
+    "Our class is too ___ for the teacher to be heard."
+  ],
+  "ordinary": [
+    "He looks like an ___ man, but he is a famous writer."
+  ],
+  "overseas": [
+    "She has three ___ friends who write to her often."
+  ],
+  "peaceful": [
+    "The lake was quiet and ___ in the early morning."
+  ],
+  "perfect": [
+    "This is a ___ day for a picnic by the river."
+  ],
+  "personal": [
+    "That is her ___ choice, not a rule of the school."
+  ],
+  "pleasant": [
+    "The nurse has a ___ voice that calms people down."
+  ],
+  "positive": [
+    "The teacher wrote a ___ comment on her report."
+  ],
+  "precious": [
+    "Water is ___ in a place with little rain."
+  ],
+  "primary": [
+    "Health is the ___ concern of every parent."
+  ],
+  "private": [
+    "He keeps a ___ diary that nobody may read."
+  ],
+  "rare": [
+    "The zoo keeps a ___ bird from Africa."
+  ],
+  "regular": [
+    "He eats three ___ meals a day."
+  ],
+  "responsible": [
+    "You are ___ for feeding the dog this week."
+  ],
+  "secondary": [
+    "After six years of primary school comes ___ school."
+  ],
+  "silent": [
+    "She stayed ___ and would not tell us her secret."
+  ],
+  "similar": [
+    "These two songs sound very ___ to me."
+  ],
+  "single": [
+    "The form asks whether you are married or ___ ."
+  ],
+  "skillful": [
+    "The ___ driver got us through the traffic quickly."
+  ],
+  "sleepy": [
+    "I always feel ___ after a big lunch."
+  ],
+  "such": [
+    "___ problems are hard to solve in one day."
+  ],
+  "sudden": [
+    "There was a ___ change in the weather."
+  ],
+  "super": [
+    "She showed ___ courage when the fire started."
+  ],
+  "terrific": [
+    "The band gave a ___ show last night."
+  ],
+  "traditional": [
+    "She wore a ___ dress made by her grandmother."
+  ],
+  "unique": [
+    "The little shop sells ___ gifts you cannot find elsewhere."
+  ],
+  "usual": [
+    "He took his ___ seat at the back of the bus."
+  ],
+  "valuable": [
+    "Keep your ___ things in the hotel safe."
+  ],
+  "social": [
+    "Dogs are ___ animals and hate being left alone."
+  ],
+  "whole": [
+    "The ___ class went to the museum on Friday."
+  ],
+  "wild": [
+    "The dog became ___ the moment it saw the cat."
+  ],
+  "adult": [
+    "Every ___ in the room stood up to sing."
+  ],
+  "angel": [
+    "The child drew an ___ with big white wings."
+  ],
+  "couple": [
+    "A ___ of birds built a nest above our window."
+  ],
+  "customer": [
+    "A ___ asked the clerk for a smaller size."
+  ],
+  "fool": [
+    "He felt like a ___ after asking that question."
+  ],
+  "genius": [
+    "It takes a ___ to write music like this."
+  ],
+  "gentleman": [
+    "He is a real ___ ; he never raises his voice."
+  ],
+  "guest": [
+    "Every ___ at the party got a small gift."
+  ],
+  "hero": [
+    "In the story, the ___ saves the whole village."
+  ],
+  "host": [
+    "Taiwan will be the ___ of the games next year."
+  ],
+  "lady": [
+    "The ___ in the blue coat is our new principal."
+  ],
+  "male": [
+    "The ___ lion has a thick golden mane."
+  ],
+  "master": [
+    "He learned to cook from a ___ in Tainan."
+  ],
+  "partner": [
+    "She started the shop with a business ___ ."
+  ],
+  "visitor": [
+    "Every ___ must sign this book before going in."
+  ],
+  "youth": [
+    "In her ___ she wanted to become a singer."
   ]
 }

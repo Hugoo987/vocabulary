@@ -15,26 +15,40 @@
 | 項目 | 內容 |
 |---|---|
 | 最新檔案 | `index.html`（單一真實來源） |
-| 版本標記 | v13（頁面最上方有紅色橫幅） |
+| 版本標記 | v14（頁面最上方有紅色橫幅） |
 | 發布方式 | GitHub Pages：https://hugoo987.github.io/vocabulary/ |
-| 目前考試範圍 | 其他形容詞＋其他副詞（Chapter 2 進階 800 單字 Topic 31、32），共 **16 字** |
-| 總複習題庫 | 累積 **1032 字**（教過的全部） |
+| 目前考試範圍 | 其他形容詞＋人物＋其他副詞（Chapter 2 Topic 31、02、32），共 **96 字** |
+| 總複習題庫 | 累積 **1112 字**（教過的全部） |
 | 身分區分 | 學生／老師，各有獨立紀錄（v8 新增） |
 | 跨裝置 | 自動同步（Firebase，見 `SETUP-FIREBASE.md`）＋回報碼備援 |
 | 紀錄儲存 | `localStorage`，key `vocabQuiz:v2` |
 | 成績回報 | 程式碼已寫好但**關閉中**（老師說「先不回報」） |
 
-目前範圍兩個單元：
-- `adjectives3` ADJECTIVES 其他形容詞（進階）（2 字：absent、blank）
-- `adverbs3` ADVERBS 其他副詞（進階）（14 字）
+目前範圍三個單元：
+- `adjectives3` ADJECTIVES 其他形容詞（66 字，Topic 31 全部）
+- `people` PEOPLE 人物（16 字，Topic 02）
+- `adverbs3` ADVERBS 其他副詞（14 字，Topic 32）
 
-⚠️ Topic 31 老師只拍到 `421-03`、`421-04` 兩個字，前面的 421-01、421-02 還沒收到；
-補拍之後再加進 `adjectives3` 即可。
+96 個字裡有 94 個是題庫沒有的新字（absent、blank 是 v13 先加的）。
 
-16 個字全部都是題庫裡沒有的新字。為了不出現「兩個選項都對」，三個舊字改了中文：
-`almost` 差不多（原本「幾乎」，讓給 `nearly`）、`perhaps` 也許（讓給 `probably` 或許）、
-`quite` 十分（讓給 `rather` 相當）。`SYNONYM_GROUPS` 也加了三組
-（相當/十分/頗、確實/實際上、無論何處/任何地方/到處），兩份檔案都要改。
+為了不出現「兩個選項都對」，老師給的中文有幾個做了調整，另外改了幾個舊字：
+
+| 情況 | 處理 |
+|---|---|
+| `main` 主要的 ↔ `major` 主要的（都是這次的字） | `major` → 重大的 |
+| `ordinary` 通常的 ↔ `usual` 通常的（都是這次的字） | `ordinary` → 平凡的 |
+| `host` 主人 ↔ `master` 主人（都是這次的字） | host → 主人；主辦人、master → 主人；師傅 |
+| `equal` 相當 ↔ `rather` 相當（上一批的字） | `equal` → 相等的；等同 |
+| `fantastic` 極好的 ↔ 舊字 `great` | 舊字 `great` → 了不起的 |
+| `secondary` 中等的 ↔ 舊字 `medium` | 舊字 `medium` → 中號的 |
+| `silent` 沉默的 ↔ 舊字 `quiet` 沈默的（只差一個字，驗證器抓不到） | 舊字 `quiet` → 安靜的 |
+
+`SYNONYM_GROUPS` 現在有 16 組（極好/非常好/了不起/很棒、相似/相像/類似、
+特殊/特別/獨特、主要/首要/重大、私人/個人、客人/訪客/來賓/顧客、
+通常/平凡/普通/一般、安靜/沉默/沈默、一對/一雙/一副 等）。
+**注意：同一份清單在 `index.html` 和 `tools/validate.js` 各有一份，兩邊都要改。**
+
+上一批（v11–v13）的紀錄：
 
 以下是上一批（v11–v12）的說明，保留給對照：
 - `adverbs2` ADVERBS 其他副詞（35 字）
