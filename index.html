@@ -3195,8 +3195,13 @@ function renderReport(){
   const words = Object.values(p.words).sort((a,b)=> b.count - a.count || a.en.localeCompare(b.en));
   const sessions = p.sessions.slice().reverse();
 
+  const heatBlock = `<div class="report-block">
+    <div class="row-label" style="margin-top:0;">📅 練習熱力圖（顏色越深表示那天做越多次）</div>`
+    + renderHeatmap(p.days) + `</div>`;
+
   if(words.length === 0 && sessions.length === 0){
-    body.innerHTML = `<div class="empty-note">學生還沒有留下任何紀錄。<br>
+    // 熱力圖照樣畫：一整片空白也是一種資訊（學生根本沒在練）
+    body.innerHTML = heatBlock + `<div class="empty-note">學生還沒有留下任何紀錄。<br>
       請他用「我是學生」進入，做完一次測驗後，這裡就會出現常錯單字與成績分析。</div>`;
     return;
   }
@@ -3219,8 +3224,7 @@ function renderReport(){
   </div>`;
 
   // ---- When did the student actually practise ----
-  html += `<div class="report-block"><div class="row-label" style="margin-top:0;">練習紀錄（越深表示那天做越多次）</div>`
-        + renderHeatmap(p.days) + `</div>`;
+  html += heatBlock;
 
   // ---- Which units are weak ----
   const byCat = {};

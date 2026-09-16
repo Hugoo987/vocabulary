@@ -292,6 +292,24 @@ check(heatCalc.st.total === 11 && heatCalc.st.activeDays === 4,
 check(heatCalc.st.now === 3, `目前連續 ${heatCalc.st.now} 天`);
 check(heatCalc.future > 0, '本週未來的日子留白，不會畫成「沒練習」');
 
+// 學生一筆紀錄都沒有時，報告仍要畫出（空的）熱力圖，不然老師會以為功能不見了
+const emptyHeat = await page.evaluate(() => {
+  const keep = store.profiles.student;
+  store.profiles.student = blankProfile();
+  renderReport();
+  const body = document.getElementById('reportBody');
+  const out = { cells: body.querySelectorAll('.hm-cell').length,
+                stats: (body.querySelector('.hm-stats') || {}).textContent || '',
+                note: /還沒有留下任何紀錄/.test(body.textContent) };
+  store.profiles.student = keep;
+  renderReport();
+  return out;
+});
+check(emptyHeat.cells > 180 && emptyHeat.note,
+  `學生沒有紀錄時照樣畫熱力圖（${emptyHeat.cells} 格）並說明原因`);
+check(/共做了0次/.test(emptyHeat.stats.replace(/\s+/g,'')),
+  `空的熱力圖寫「0 次」（${emptyHeat.stats.replace(/\s+/g,' ').trim()}）`);
+
 const heatRound = await page.evaluate(() => {
   const back = payloadToProfile(buildPayload());
   const today = dayNum(new Date());
