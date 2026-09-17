@@ -15,7 +15,7 @@
 | 項目 | 內容 |
 |---|---|
 | 最新檔案 | `index.html`（單一真實來源） |
-| 版本標記 | v16（頁面最上方有紅色橫幅） |
+| 版本標記 | v17（頁面最上方有紅色橫幅） |
 | 發布方式 | GitHub Pages：https://hugoo987.github.io/vocabulary/ |
 | 目前考試範圍 | 其他形容詞＋人物＋其他副詞（Chapter 2 Topic 31、02、32），共 **96 字** |
 | 總複習題庫 | 累積 **1112 字**（教過的全部） |
@@ -105,6 +105,15 @@
 
 底層的紀錄分離（老師作答不會寫進學生名下）仍然保留並且有測試，
 只是介面上不再提供入口。
+
+### 每天提醒（v17 新增）
+- 學生主頁「⏰ 設定每天提醒」→ 選時間 → 連到 `reminders/HHMM.ics`（靜態檔）
+- 檔案由 `node tools/make-reminders.js` 產生，時間清單同時寫在
+  `index.html` 的 `REMIND_TIMES`，兩邊要對得起來 —— `tools/validate.js` 會檢查
+- 改時間選項：改 `make-reminders.js` 的 `TIMES` 與 `index.html` 的 `REMIND_TIMES`，
+  然後重新產生檔案
+- 不要改成用 JS 產生 Blob 下載：iOS Safari 會把檔案丟進「檔案」App，
+  學生要多兩個步驟才加得到行事曆
 
 ### 練習熱力圖（v15 新增）
 - 每做完一次測驗（含文章閱讀、老師指派的考卷），`recordSession()` 會在

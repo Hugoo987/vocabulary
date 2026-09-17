@@ -252,6 +252,48 @@ check(note.includes('不允許儲存'), '有提示無法儲存紀錄');
 check(errs2.length === 0, errs2.length ? 'JS 爆掉：' + errs2.join(' | ') : '沒有 JS 例外');
 await p2.close();
 
+console.log('\n14. 每天提醒（加到手機行事曆）');
+await page.click('#restartBtn').catch(()=>{});
+await page.evaluate(()=> showScreen(modeScreen));
+await page.waitForTimeout(150);
+check(await page.locator('#remindBody').isHidden(), '一開始是收起來的，不佔版面');
+await page.click('#remindToggleBtn');
+await page.waitForTimeout(150);
+check(await page.locator('#remindBody').isVisible(), '按下去展開時間選項');
+const times = await page.locator('#remindTimeRow .pill').count();
+check(times === 13, `提供 ${times} 個時間（16:00–22:00，每半小時）`);
+const def = await page.evaluate(()=>({
+  href: document.getElementById('remindAddBtn').getAttribute('href'),
+  text: document.getElementById('remindAddBtn').textContent.trim(),
+  active: document.querySelector('#remindTimeRow .pill.active').dataset.t
+}));
+check(def.active === '2000' && def.href === 'reminders/2000.ics' && def.text.includes('20:00'),
+  `預設 20:00，連到 ${def.href}`);
+await page.click('#remindTimeRow .pill[data-t="1930"]');
+await page.waitForTimeout(120);
+const picked = await page.evaluate(()=>({
+  href: document.getElementById('remindAddBtn').getAttribute('href'),
+  text: document.getElementById('remindAddBtn').textContent.trim()
+}));
+check(picked.href === 'reminders/1930.ics' && picked.text.includes('19:30'),
+  `改選 19:30 後按鈕跟著換（${picked.text}）`);
+
+// 真的把檔案抓下來看內容：連結壞掉或格式錯，學生按了只會得到一個打不開的檔
+const ics = await page.evaluate(async ()=>{
+  const res = await fetch('reminders/1930.ics', { cache:'no-store' });
+  return { ok: res.ok, type: res.headers.get('content-type') || '', body: await res.text() };
+});
+check(ics.ok, '檔案抓得到（不是 404）');
+check(/BEGIN:VCALENDAR/.test(ics.body) && /END:VCALENDAR/.test(ics.body), '是一份完整的行事曆檔');
+check(/RRULE:FREQ=DAILY/.test(ics.body), '設定成每天重複');
+check(/DTSTART:\d{8}T193000/.test(ics.body), '時間就是選的 19:30');
+check(/BEGIN:VALARM[\s\S]*TRIGGER:PT0S[\s\S]*END:VALARM/.test(ics.body), '時間到會跳提醒（VALARM）');
+check(ics.body.includes('\r\n'), '用 CRLF 換行（行事曆 App 才吃得下）');
+check(!(await page.evaluate(()=> {
+  const el = document.getElementById('remindToggleBtn');
+  return !!el.offsetParent && store.role === 'teacher';
+})), '老師端不會看到這個設定（在學生模式區塊裡）');
+
 console.log('\n13. 練習熱力圖');
 // 做完任一測驗都要在「那一天」記上一筆，而且要能撐得比 sessions（只留 60 筆）久
 const heat = await page.evaluate(() => {

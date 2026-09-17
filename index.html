@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v16 · 形容詞・人物・副詞</title>
+<title>單字大挑戰 v17 · 形容詞・人物・副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -398,6 +398,14 @@
     .assign-card{ padding:11px 12px; }
   }
 
+  /* ---- 每日提醒（行事曆檔） ---- */
+  .remind{ margin-top:16px; padding-top:14px; border-top:2px dashed var(--paper-line); }
+  .remind-body{ margin-top:10px; }
+  .remind-times{ margin:8px 0 2px; }
+  .remind-times .pill{ padding:7px 11px; font-size:12.5px; font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px){ .remind-times .pill{ padding:8px 10px; font-size:12px; } }
+  #remindAddBtn{ display:block; text-align:center; text-decoration:none; margin-top:14px; }
+
   /* ---- Activity heatmap (GitHub 那種) ---- */
   .hm-wrap{ margin-top:4px; }
   .hm-stats{ font-size:12px; color:var(--ink-soft); line-height:1.8; margin-bottom:8px; }
@@ -524,10 +532,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v16 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
+  <div class="top-banner">✅ 這是最新版 v17 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v16</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v17</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -595,6 +603,17 @@
         <div class="icon">📔</div>
         <h3>單字表</h3>
         <p>先看過再考：中文、兩句例句都在，點 🔊 還能聽發音。也可以查以前教過的任何單字。</p>
+      </div>
+    </div>
+
+    <div class="remind">
+      <button class="mini-btn" id="remindToggleBtn">⏰ 設定每天提醒</button>
+      <div class="remind-body hidden" id="remindBody">
+        <div class="xfer-hint">選一個時間，按下面的按鈕把提醒加到手機的行事曆。之後每天這個時間，手機就會提醒你來練習。</div>
+        <div class="pill-row remind-times" id="remindTimeRow"></div>
+        <a class="big-btn" id="remindAddBtn" href="reminders/2000.ics">📅 加入每日提醒</a>
+        <div class="xfer-hint">iPhone 請用 Safari 開這個網頁，按下去會跳出「加入行事曆」；Android 會問要加到哪個行事曆。<br>
+        不想要了，就到行事曆 App 裡把那個每天重複的事件刪掉。</div>
       </div>
     </div>
     </div>
@@ -3362,6 +3381,39 @@ clearBtnEl.addEventListener('click', ()=>{
   clearBtnEl.style.borderColor = '';
   clearHistory();
 });
+
+// ---------------- 每天提醒（行事曆檔） ----------------
+// 網頁沒有辦法自己在手機上排定每天的通知，所以改用手機自己的行事曆：
+// 點一個真的 .ics 連結，iPhone 會直接跳「加入行事曆」。檔案由
+// tools/make-reminders.js 產生，時間清單要對得起來（驗證器會檢查）。
+const REMIND_TIMES = ['1600','1630','1700','1730','1800','1830','1900','1930',
+                      '2000','2030','2100','2130','2200'];
+const REMIND_DEFAULT = '2000';
+let remindTime = REMIND_DEFAULT;
+
+function remindLabel(t){ return t.slice(0,2) + ':' + t.slice(2); }
+
+function paintRemind(){
+  document.querySelectorAll('#remindTimeRow .pill').forEach(el=>{
+    el.classList.toggle('active', el.dataset.t === remindTime);
+  });
+  const btn = document.getElementById('remindAddBtn');
+  btn.href = 'reminders/' + remindTime + '.ics';
+  btn.textContent = `📅 加入每日提醒（${remindLabel(remindTime)}）`;
+}
+
+(function initRemind(){
+  const row = document.getElementById('remindTimeRow');
+  row.innerHTML = REMIND_TIMES.map(t=>
+    `<div class="pill" data-t="${t}">${remindLabel(t)}</div>`).join('');
+  row.querySelectorAll('.pill').forEach(el=>{
+    el.addEventListener('click', ()=>{ remindTime = el.dataset.t; paintRemind(); });
+  });
+  document.getElementById('remindToggleBtn').addEventListener('click', ()=>{
+    document.getElementById('remindBody').classList.toggle('hidden');
+  });
+  paintRemind();
+})();
 
 // ---------------- Word list (study before the quiz) ----------------
 // The app could only ever test; this is the one screen where a word can be

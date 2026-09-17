@@ -22,13 +22,14 @@
 | `tools/e2e-study.mjs` | 單字表、發音、成績單例句的端對端測試 |
 | `tools/e2e-paper.mjs` | 錯題考卷（列印／指派給學生）的端對端測試 |
 | `tools/e2e-mobile.mjs` | 手機版面的端對端測試（小螢幕上量到的問題別再回來） |
+| `tools/make-reminders.js` | 產生每日提醒的行事曆檔 `reminders/*.ics` |
 | `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
 
 ## 目前版本
 
-- 版本：**v16**（頁面最上方有紅色橫幅可一眼確認）
+- 版本：**v17**（頁面最上方有紅色橫幅可一眼確認）
 - 考試範圍：其他形容詞＋人物＋其他副詞（進階 800 單字 Topic 31、02、32），共 **96 字**
 - 總複習題庫：累積 **1112 字**（教過的全部）
 
@@ -128,6 +129,21 @@ node tools/apply-articles.js && node tools/validate.js
 | 產生錯題考卷（列印／指派） | ❌ | ✅ |
 
 老師這邊只有報告與數據，主頁就兩張卡。
+
+## 每天提醒（加到手機行事曆）
+
+學生主頁最下面有「⏰ 設定每天提醒」：選一個時間（16:00–22:00，每半小時），
+按下去把一個每天重複的行事曆事件加到手機裡，時間到系統就會提醒他來練習。
+
+- 檔案是靜態的 `reminders/HHMM.ics`，由 `node tools/make-reminders.js` 產生
+- 用「浮動時間」（不帶時區），學生手機幾點就是幾點
+- 為什麼不是網頁當場產生：手機上點一個真的 .ics 連結，iPhone 會直接跳
+  「加入行事曆」；用 JS 產生 Blob 下載，在 iOS Safari 會先掉進「檔案」App
+- `tools/validate.js` 會檢查網頁上每個時間都有對應的檔案（不會按了 404），
+  以及 .ics 的 CRLF 換行、75 bytes 折行、RRULE、VALARM 都正確
+
+網頁**沒有辦法**自己在手機上排定每天的通知（那個 API 從來沒有真正上線），
+真正的推播要有伺服器在固定時間送，所以這裡改用手機自己的行事曆。
 
 ## 練習熱力圖
 

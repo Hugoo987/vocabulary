@@ -45,11 +45,12 @@ console.log('\n【作答：一屏之內看完並按得到】');
 await page.click('#modePractice'); await page.click('#startBtn'); await page.waitForTimeout(300);
 const banner = await page.evaluate(()=>{
   const b = document.querySelector('.top-banner');
+  // 量頁首本身，不要量選項位置 —— 題型是隨機的，克漏字例句長短會讓選項上下浮動
   return { hidden: getComputedStyle(b).display === 'none',
-           firstOptTop: Math.round(document.querySelector('#mcBox .opt').getBoundingClientRect().top) };
+           cardTop: Math.round(document.getElementById('quizScreen').getBoundingClientRect().top) };
 });
 check(banner.hidden, '作答時收起頁首橫幅（把空間讓給選項）');
-check(banner.firstOptTop < 380, `第一個選項不會被頂到半屏以下（y=${banner.firstOptTop}，原本 427）`);
+check(banner.cardTop < 110, `頁首只佔 ${banner.cardTop}px（主頁是 142px）`);
 const opts = await page.evaluate(()=>{
   const o=[...document.querySelectorAll('#mcBox .opt')];
   return { last: Math.round(o[o.length-1].getBoundingClientRect().bottom), vh: window.innerHeight };

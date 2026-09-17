@@ -235,6 +235,37 @@ checkSet('總複習題庫 REVIEW_WORDS', REVIEW_WORDS);
 checkAltSentences();
 checkArticles();
 
+// 2.5 每日提醒：網頁上提供的每個時間，都要有對應的 .ics 檔而且內容正確
+function checkReminders() {
+  console.log('\n每日提醒 reminders/*.ics');
+  const m = html.match(/const REMIND_TIMES = \[([\s\S]*?)\];/);
+  if (!m) { fail('index.html 找不到 REMIND_TIMES'); return; }
+  const times = [...m[1].matchAll(/'(\d{4})'/g)].map(x => x[1]);
+  const def = (html.match(/const REMIND_DEFAULT = '(\d{4})'/) || [])[1];
+  const dir = path.join(path.dirname(file), 'reminders');
+  const missingFiles = [], broken = [];
+  times.forEach(t => {
+    const f = path.join(dir, t + '.ics');
+    if (!fs.existsSync(f)) { missingFiles.push(t); return; }
+    const raw = fs.readFileSync(f, 'utf8');
+    const need = ['BEGIN:VCALENDAR', 'RRULE:FREQ=DAILY', 'BEGIN:VALARM', 'TRIGGER:PT0S',
+                  `DTSTART:`, `T${t}00`, 'END:VCALENDAR'];
+    const miss = need.filter(x => !raw.includes(x));
+    // RFC 5545 要求 CRLF 換行，而且一行不超過 75 個 octet
+    const lines = raw.split('\r\n');
+    const longLine = lines.find(l => Buffer.from(l, 'utf8').length > 75);
+    if (miss.length) broken.push(`${t}: 缺 ${miss.join('、')}`);
+    else if (raw.includes('\n') && !raw.includes('\r\n')) broken.push(`${t}: 沒有用 CRLF 換行`);
+    else if (longLine) broken.push(`${t}: 有一行超過 75 bytes`);
+  });
+  console.log(`  共 ${times.length} 個時間選項（預設 ${def || '?'}）`);
+  missingFiles.length ? fail('這些時間沒有對應的 .ics 檔（按鈕會 404）：' + missingFiles.join('、'))
+                      : ok('每個時間都有對應的 .ics 檔');
+  broken.length ? fail('這些 .ics 內容不對：' + broken.join(' ｜ ')) : ok('.ics 內容格式正確');
+  if (def && !times.includes(def)) fail(`預設時間 ${def} 不在清單裡`);
+}
+checkReminders();
+
 // 3. 本次範圍必須已併入總複習題庫
 const reviewEn = new Set(REVIEW_WORDS.map(w => w.en.toLowerCase()));
 const missing = flatWords.filter(w => !reviewEn.has(w.en.toLowerCase())).map(w => w.en);
