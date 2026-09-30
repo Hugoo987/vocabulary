@@ -67,6 +67,7 @@ async function playAllWrong() {
 
 console.log('\n1. 第一次進來');
 await page.goto(URL);
+await page.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await page.waitForTimeout(300);
 check(await visible('roleScreen'), '一開始顯示身分選擇畫面');
 check(!(await visible('modeScreen')), '尚未顯示模式畫面');
@@ -242,6 +243,7 @@ await p2.addInitScript(() => {
   });
 });
 await p2.goto(URL);
+await p2.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await p2.waitForTimeout(400);
 check(await p2.locator('#roleScreen').isVisible(), '仍然顯示身分選擇畫面');
 await p2.click('#roleStudent');

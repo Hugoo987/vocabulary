@@ -1,0 +1,15 @@
+{
+  "name": "vocab-quiz",
+  "private": true,
+  "description": "單字大挑戰：題庫驗證與端對端測試",
+  "scripts": {
+    "build": "node tools/build-bank.js",
+    "validate": "node tools/validate.js",
+    "test": "node tools/run-e2e.mjs",
+    "serve": "http-server -p 8099 -s ."
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "playwright": "^1.49.1"
+  }
+}

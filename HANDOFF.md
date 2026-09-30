@@ -14,8 +14,8 @@
 
 | 項目 | 內容 |
 |---|---|
-| 最新檔案 | `index.html`（單一真實來源） |
-| 版本標記 | v19（頁面最上方有紅色橫幅） |
+| 最新檔案 | `index.html`（程式）＋ `data/`（題庫來源）＋ `bank/`（打包給網頁用） |
+| 版本標記 | v20（頁面最上方有紅色橫幅） |
 | 發布方式 | GitHub Pages：https://hugoo987.github.io/vocabulary/ |
 | 目前考試範圍 | 其他形容詞＋人物＋其他副詞（Chapter 2 Topic 31、02、32），共 **96 字** |
 | 總複習題庫 | 累積 **1112 字**（教過的全部） |
@@ -81,7 +81,7 @@
   克漏字題目才不會每次都是同一句
 - 讀完給成績單，答錯的字進錯題紀錄，題型記為 `article`（文章填空）
 - 文章來源是 `data/articles.json`，`[[word]]` 是挖空記號，跑
-  `node tools/apply-articles.js` 寫進 index.html
+  `npm run build` 打包進 bank/
 - **挖空的字一定要在題庫裡**（驗證器會擋），否則干擾選項生不出來；
   文章其他地方可以有超綱字，這是老師同意的
 
@@ -108,8 +108,18 @@
 底層的紀錄分離（老師作答不會寫進學生名下）仍然保留並且有測試，
 只是介面上不再提供入口。
 
+### 題庫與程式分開（v20 起，改東西前先看）
+- `index.html` 只剩程式碼與**本次考試範圍** `WORDS`；總複習題庫、例句、文章、
+  文法片語都在 `data/`，打包成 `bank/bank.<內容雜湊>.json`
+- **改完 `data/` 一定要跑 `npm run build`**，否則 index.html 還指著舊的打包檔。
+  `npm run validate` 會比對雜湊，忘了 build 會被擋下來
+- 網頁啟動流程：`loadHistory()` → `loadBank()` → 畫面。抓不到打包檔時會用
+  `localStorage` 裡上一份（所以收訊不好仍能用）；全新裝置又抓不到才顯示錯誤畫面
+- 端對端測試都要等 `window.__bankReady === true` 再操作
+- 部署只會上傳 `index.html`、`bank/`、`reminders/` 三樣（見 pages.yml）
+
 ### 文法・片語（v19 新增）
-- 內容：`data/grammar.json` →『node tools/apply-grammar.js』注入成 `GRAMMAR_DATA`
+- 內容：`data/grammar.json` →『npm run build』打包進 bank/，網頁啟動時載入成 `GRAMMAR_DATA`
 - 結構：`grammar[]`（id/title/sub/point/tips/examples/questions）與
   `phrases[]`（id/en/zh/note/examples/questions）
 - 題型四種：`mc`（填空四選一，stem 要有 `___`）、`phrase`（看中文選片語）、

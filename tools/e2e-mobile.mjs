@@ -16,6 +16,7 @@ const ctx = await br.newContext({ viewport:{width:375,height:667}, deviceScaleFa
 const page = await ctx.newPage();
 const errs=[]; page.on('pageerror',e=>errs.push(String(e)));
 await page.goto(URL); await page.waitForTimeout(300);
+await page.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await page.click('#roleStudent'); await page.waitForTimeout(250);
 
 console.log('\n【主頁：不要一路捲到天邊】');

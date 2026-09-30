@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 
 const file = process.argv[2] || path.join(__dirname, '..', 'index.html');
 const html = fs.readFileSync(file, 'utf8');
@@ -34,8 +35,44 @@ const grab = (name, open, close, optional) => {
   return vm.runInNewContext('(' + m[0].replace('const ' + name + ' = ', '').replace(/;$/, '') + ')');
 };
 const WORDS = grab('WORDS', '{', '}');
-const REVIEW_WORDS = grab('REVIEW_WORDS', '[', ']');
-if (!WORDS || !REVIEW_WORDS) process.exit(1);
+if (!WORDS) process.exit(1);
+
+// 題庫本體從 data/ 讀（v20 起不再寫在 index.html 裡）
+const dataDir = path.join(path.dirname(file), 'data');
+const readData = f => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
+let REVIEW_WORDS, ALT_RAW, ARTICLES_RAW, GRAMMAR_RAW;
+try {
+  REVIEW_WORDS = readData('review-words.json');
+  ALT_RAW = readData('alt-sentences.json');
+  ARTICLES_RAW = readData('articles.json');
+  GRAMMAR_RAW = readData('grammar.json');
+} catch (e) {
+  fail('讀不到 data/ 裡的題庫：' + e.message);
+  process.exit(1);
+}
+
+// 打包出去的那一份要跟 data/ 一致，否則學生拿到的是舊題庫
+function checkBankFresh() {
+  console.log('\n題庫打包 bank/');
+  const m = html.match(/const BANK_FILE = '([^']+)';/);
+  if (!m) { fail('index.html 找不到 BANK_FILE'); return; }
+  const want = crypto.createHash('sha1').update(JSON.stringify({
+    review: REVIEW_WORDS, alt: ALT_RAW, articles: ARTICLES_RAW, grammar: GRAMMAR_RAW
+  })).digest('hex').slice(0, 10);
+  const expected = `bank/bank.${want}.json`;
+  const onDisk = path.join(path.dirname(file), m[1]);
+  console.log(`  index.html 指向 ${m[1]}`);
+  if (m[1] !== expected) {
+    fail(`打包檔跟 data/ 對不起來（應該是 ${expected}）—— 請跑 npm run build`);
+  } else if (!fs.existsSync(onDisk)) {
+    fail(`${m[1]} 不存在 —— 請跑 npm run build`);
+  } else {
+    ok('打包檔是最新的，跟 data/ 一致');
+    const extra = fs.readdirSync(path.dirname(onDisk))
+      .filter(f => /^bank\.[0-9a-f]+\.json$/.test(f) && f !== path.basename(onDisk));
+    extra.length ? fail('bank/ 還留著舊檔：' + extra.join('、')) : ok('沒有留下舊的打包檔');
+  }
+}
 
 // WORDS 是 { cat: [[en, zh, sentence], ...] }，REVIEW_WORDS 是 [{en, zh, sentence, cat}, ...]
 const flatWords = Object.entries(WORDS).flatMap(([cat, arr]) =>
@@ -120,7 +157,7 @@ function checkSet(label, list) {
 }
 
 // 文章專區的檢查
-const ARTICLES = grab('ARTICLES', '[', ']', true) || [];
+  const ARTICLES = ARTICLES_RAW;
 
 function checkArticles() {
   console.log('\n文章專區 ARTICLES');
@@ -153,7 +190,7 @@ function checkArticles() {
 }
 
 // 額外例句（ALT_SENTENCES）的品質檢查
-const ALT = grab('ALT_SENTENCES', '{', '}', true) || {};
+  const ALT = ALT_RAW;
 
 function checkAltSentences() {
   const all = new Map();                       // en -> 第一句
@@ -238,7 +275,7 @@ checkArticles();
 // 2.4 文法・片語：內容與題目要能真的出得出來
 function checkGrammar() {
   console.log('\n文法・片語 GRAMMAR_DATA');
-  const G = grab('GRAMMAR_DATA', '{', '}');
+  const G = GRAMMAR_RAW;
   if (!G || !Array.isArray(G.grammar) || !Array.isArray(G.phrases)) {
     fail('找不到 GRAMMAR_DATA'); return;
   }
@@ -294,6 +331,7 @@ function checkGrammar() {
   badQ.length ? fail('題目有問題：' + badQ.slice(0, 6).join(' ｜ ')) : ok('每一題都出得出來，也都有解說');
 }
 checkGrammar();
+checkBankFresh();
 
 // 2.5 每日提醒：網頁上提供的每個時間，都要有對應的 .ics 檔而且內容正確
 function checkReminders() {

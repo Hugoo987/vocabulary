@@ -15,6 +15,7 @@ console.log('\n【學生的手機】');
 const stu = await (await br.newContext()).newPage();
 const e1=[]; stu.on('pageerror',e=>e1.push(String(e)));
 await stu.goto(URL); await stu.waitForTimeout(300);
+await stu.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await stu.click('#roleStudent'); await stu.waitForTimeout(200);
 await stu.evaluate(() => {
   const inScope=new Set(fullPool().map(w=>w.en));
@@ -46,6 +47,7 @@ console.log('\n【老師的手機 — 另一台裝置】');
 const tea = await (await br.newContext()).newPage();
 const e2=[]; tea.on('pageerror',e=>e2.push(String(e)));
 await tea.goto(URL); await tea.waitForTimeout(300);
+await tea.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 check(await tea.locator('#roleScreen').isVisible(), '全新裝置，重新詢問身分');
 await tea.click('#roleTeacher'); await tea.waitForTimeout(200);
 await tea.click('#openReportBtn'); await tea.waitForTimeout(250);

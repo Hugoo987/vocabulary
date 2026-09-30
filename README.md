@@ -8,7 +8,11 @@
 
 | 檔案 | 說明 |
 |---|---|
-| `index.html` | 網頁本體：完整程式碼與題庫，**唯一的真實來源** |
+| `index.html` | 網頁本體：程式碼與本次考試範圍（題庫本身在 `data/`） |
+| `data/review-words.json` | 總複習題庫（教過的全部字，**真實來源**） |
+| `bank/bank.<hash>.json` | 打包好給網頁載入的題庫，由 `npm run build` 產生，不要手改 |
+| `tools/build-bank.js` | 把 `data/` 打包成 `bank/`，並更新 index.html 的檔名 |
+| `tools/run-e2e.mjs` | 一次跑完所有端對端測試（`npm test`） |
 | `HANDOFF.md` | 專案交接說明：功能規格、更新範圍的標準流程、注意事項 |
 | `tools/validate.js` | 題庫驗證（查重、例句空格、語法） |
 | `tools/e2e.mjs` | 身分與紀錄系統的端對端測試 |
@@ -16,7 +20,6 @@
 | `tools/e2e-sync.mjs` | 自動同步的端對端測試 |
 | `data/alt-sentences.json` | 每個單字的第二句例句（來源檔） |
 | `data/articles.json` | 文章專區的三篇文章（來源檔） |
-| `tools/apply-articles.js` | 把文章寫進 index.html |
 | `tools/e2e-article.mjs` | 文章專區的端對端測試 |
 | `tools/e2e-article-layout.mjs` | 文章閱讀版面（手機／桌機）的端對端測試 |
 | `tools/e2e-study.mjs` | 單字表、發音、成績單例句的端對端測試 |
@@ -24,15 +27,40 @@
 | `tools/e2e-mobile.mjs` | 手機版面的端對端測試（小螢幕上量到的問題別再回來） |
 | `tools/make-reminders.js` | 產生每日提醒的行事曆檔 `reminders/*.ics` |
 | `data/grammar.json` | 文法點與片語的內容（來源檔） |
-| `tools/apply-grammar.js` | 把文法／片語寫進 index.html |
 | `tools/e2e-grammar.mjs` | 文法・片語區塊的端對端測試 |
-| `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
 
+## 開發指令
+
+```bash
+npm install          # 第一次：裝 playwright
+npm run build        # data/ → bank/bank.<hash>.json，並更新 index.html 的檔名
+npm run validate     # 題庫驗證（重複、例句、文法題、打包檔是否最新）
+npm test             # 九套端對端測試，自己開伺服器跑完再關掉
+npm run serve        # 本機預覽 http://127.0.0.1:8099
+```
+
+改完 `data/` 一定要跑 `npm run build`，否則網頁載到的還是舊題庫——
+`npm run validate` 會擋住這種情況（比對雜湊）。
+
+## 題庫與程式分開（v20 起）
+
+題庫（總複習 1112 字、每字三句例句、文法片語、文章）以前直接寫在 index.html 裡，
+佔了八成體積。現在拆成 `bank/bank.<內容雜湊>.json`，網頁啟動時載入：
+
+| | 拆分前 | 拆分後 |
+|---|---|---|
+| 只改程式時學生要重抓 | 110 KB | **48 KB** |
+| 開啟到可以操作（CPU 降速 4 倍） | 2,591 ms | **608 ms** |
+
+檔名帶內容雜湊，所以題庫沒變就吃瀏覽器快取。載入成功的題庫也會存一份在
+`localStorage`，**抓不到檔案時會自動用上一份**，收訊不好仍然能作答；
+全新裝置又抓不到才會顯示「題庫載入失敗」與重新載入按鈕。
+
 ## 目前版本
 
-- 版本：**v19**（頁面最上方有紅色橫幅可一眼確認）
+- 版本：**v20**（頁面最上方有紅色橫幅可一眼確認）
 - 考試範圍：其他形容詞＋人物＋其他副詞（進階 800 單字 Topic 31、02、32），共 **96 字**
 - 總複習題庫：累積 **1112 字**（教過的全部）
 
@@ -64,7 +92,7 @@
 改例句請改 `data/alt-sentences.json`，然後跑：
 
 ```bash
-node tools/apply-alt-sentences.js && node tools/validate.js
+npm run build && npm run validate
 ```
 
 驗證會擋掉：沒有 `___`、句子裡出現答案（送分題）、與第一句重複、過短、
@@ -107,7 +135,7 @@ node tools/apply-alt-sentences.js && node tools/validate.js
 文章放在 `data/articles.json`，`[[word]]` 就是挖空記號；改完跑：
 
 ```bash
-node tools/apply-articles.js && node tools/validate.js
+npm run build && npm run validate
 ```
 
 挖空的字**必須在題庫裡**（驗證會擋），文章其他地方出現超綱字沒關係。
@@ -150,7 +178,7 @@ node tools/apply-articles.js && node tools/validate.js
 內容放在 `data/grammar.json`，改完跑：
 
 ```bash
-node tools/apply-grammar.js && node tools/validate.js
+npm run build && npm run validate
 ```
 
 驗證器會擋掉出不了的題目：選項不是四個、選項裡沒有正解、填空題沒有 `___`、

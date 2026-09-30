@@ -21,6 +21,7 @@ const stu = await (await br.newContext()).newPage();
 const e1=[]; stu.on('pageerror',e=>e1.push(String(e)));
 await stu.addInitScript(()=>{ window.__cfg = true; });
 await stu.goto(URL); await stu.waitForTimeout(300);
+await stu.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await stu.evaluate(cfg);
 await stu.click('#roleStudent'); await stu.waitForTimeout(200);
 await stu.evaluate(cfg);   // 身分切換後再設一次，確保生效
@@ -48,6 +49,7 @@ console.log('\n【老師的手機】打開報告，應自動抓到最新');
 const tea = await (await br.newContext()).newPage();
 const e2=[]; tea.on('pageerror',e=>e2.push(String(e)));
 await tea.goto(URL); await tea.waitForTimeout(300);
+await tea.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await tea.evaluate(cfg);
 await tea.click('#roleTeacher'); await tea.waitForTimeout(200);
 await tea.evaluate(cfg);
@@ -95,6 +97,7 @@ console.log('\n【未設定同步時（預設狀態）】');
 const off = await (await br.newContext()).newPage();
 const e3=[]; off.on('pageerror',e=>e3.push(String(e)));
 await off.goto(URL); await off.waitForTimeout(300);
+await off.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 // 明確關閉，不依賴預設值（正式環境的預設值已經是開啟）
 await off.evaluate(()=>{ SYNC_CONFIG.enabled=false; });
 await off.click('#roleTeacher'); await off.waitForTimeout(200);

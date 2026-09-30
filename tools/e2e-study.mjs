@@ -10,6 +10,7 @@ const br = await chromium.launch();
 const page = await (await br.newContext()).newPage();
 const errs=[]; page.on('pageerror',e=>errs.push(String(e)));
 await page.goto(URL); await page.waitForTimeout(300);
+await page.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await page.click('#roleStudent'); await page.waitForTimeout(200);
 
 console.log('\n【單字表：本次範圍】');
@@ -105,6 +106,7 @@ const p2 = await (await br.newContext()).newPage();
 const errs2=[]; p2.on('pageerror',e=>errs2.push(String(e)));
 await p2.addInitScript(()=>{ try{ delete window.speechSynthesis; }catch(e){} });
 await p2.goto(URL); await p2.waitForTimeout(300);
+await p2.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await p2.click('#roleStudent'); await p2.waitForTimeout(200);
 await p2.click('#modeWordList'); await p2.waitForTimeout(300);
 check(await p2.locator('.wl-item').count() > 0, '單字表照常顯示');

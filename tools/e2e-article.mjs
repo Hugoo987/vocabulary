@@ -13,6 +13,7 @@ const br=await chromium.launch();
 const p=await (await br.newContext()).newPage();
 const errs=[]; p.on('pageerror',e=>errs.push(String(e)));
 await p.goto(URL); await p.waitForTimeout(400);
+await p.waitForFunction(()=>window.__bankReady===true, null, {timeout:15000}).catch(()=>{});
 await p.evaluate(()=>{ SYNC_CONFIG.enabled=false; });
 await p.click('#roleStudent'); await p.waitForTimeout(200);
 await p.evaluate(()=>{ SYNC_CONFIG.enabled=false; });

@@ -16,6 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # 題庫驗證：查重、例句、文法題、打包檔是不是最新的
   validate:
     runs-on: ubuntu-latest
     steps:
@@ -23,11 +24,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      # 題庫驗證沒過就不部署，避免把「兩個選項都對」的版本推給學生
       - run: node tools/validate.js
 
+  # 介面測試：九套端對端測試，跟本機 `npm test` 是同一條指令
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
   deploy:
-    needs: validate
+    needs: [validate, e2e]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -37,8 +49,19 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      # 只上傳網站真的會用到的檔案（以前整包 repo 都推上去，
+      # 連 tools/、data/、.github/ 都跟著上線）
+      - name: 準備要部署的檔案
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r bank _site/
+          cp -r reminders _site/
+          echo "部署內容："
+          find _site -type f | sort
+          du -sh _site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
