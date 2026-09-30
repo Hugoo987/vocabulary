@@ -235,6 +235,66 @@ checkSet('總複習題庫 REVIEW_WORDS', REVIEW_WORDS);
 checkAltSentences();
 checkArticles();
 
+// 2.4 文法・片語：內容與題目要能真的出得出來
+function checkGrammar() {
+  console.log('\n文法・片語 GRAMMAR_DATA');
+  const G = grab('GRAMMAR_DATA', '{', '}');
+  if (!G || !Array.isArray(G.grammar) || !Array.isArray(G.phrases)) {
+    fail('找不到 GRAMMAR_DATA'); return;
+  }
+  const items = [...G.grammar, ...G.phrases];
+  const qs = items.reduce((n, x) => n + (x.questions || []).length, 0);
+  console.log(`  ${G.grammar.length} 個文法點、${G.phrases.length} 個片語，共 ${qs} 題`);
+
+  const ids = items.map(x => x.id);
+  const dupId = ids.filter((x, i) => ids.indexOf(x) !== i);
+  dupId.length ? fail('id 重複：' + dupId.join('、')) : ok('id 不重複');
+
+  const noField = [], badQ = [];
+  items.forEach(it => {
+    const isPhrase = !!it.en;
+    if (!it.id) noField.push('(缺 id)');
+    if (isPhrase ? !it.zh : !it.point) noField.push(it.id + ': 缺中文/說明');
+    if (!Array.isArray(it.examples) || !it.examples.length) noField.push(it.id + ': 沒有例句');
+    (it.examples || []).forEach(ex => {
+      if (!Array.isArray(ex) || ex.length !== 2 || !ex[0] || !ex[1]) noField.push(it.id + ': 例句要有英文與中文');
+    });
+    if (!Array.isArray(it.questions) || it.questions.length < 2) noField.push(it.id + ': 題目少於 2 題');
+    (it.questions || []).forEach((q, i) => {
+      const where = `${it.id} 第 ${i + 1} 題`;
+      if (!q.why) badQ.push(where + ': 沒有解說');
+      if (q.type === 'mc' || q.type === 'phrase') {
+        if (!Array.isArray(q.options) || q.options.length !== 4) badQ.push(where + ': 選項不是四個');
+        else if (new Set(q.options).size !== 4) badQ.push(where + ': 選項有重複');
+        else if (!q.options.includes(q.answer)) badQ.push(where + ': 選項裡沒有正解');
+        if (!q.stem) badQ.push(where + ': 沒有題目');
+        if (q.type === 'mc' && !/_{2,}/.test(q.stem || '')) badQ.push(where + ': 填空題沒有 ___ 空格');
+        // 選擇題的題目裡不可以直接出現答案
+        if (q.type === 'mc' && q.answer &&
+            new RegExp('\\b' + String(q.answer).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i')
+              .test(String(q.stem).replace(/_{2,}/g, ' '))) badQ.push(where + ': 題目裡就有答案');
+      } else if (q.type === 'order') {
+        if (!Array.isArray(q.tokens) || q.tokens.length < 3) badQ.push(where + ': 重組的字太少');
+        if (!q.zh) badQ.push(where + ': 沒有中文提示');
+        // 排出來一定要剛好等於答案，否則學生永遠拼不對
+        const sorted = a => a.slice().sort().join('|');
+        if (Array.isArray(q.tokens) && sorted(q.tokens) !== sorted(String(q.answer).split(' ')))
+          badQ.push(where + ': 給的字拼不出答案');
+      } else if (q.type === 'error') {
+        if (!Array.isArray(q.parts) || q.parts.length < 3) badQ.push(where + ': 句子切得太少塊');
+        if (!(q.answerIndex >= 0 && q.answerIndex < (q.parts || []).length))
+          badQ.push(where + ': answerIndex 超出範圍');
+        if (!q.fix) badQ.push(where + ': 沒有寫正確說法');
+      } else {
+        badQ.push(where + ': 不認得的題型 ' + q.type);
+      }
+    });
+  });
+  noField.length ? fail('內容不完整：' + noField.slice(0, 6).join(' ｜ ')) : ok('每一項都有說明與例句');
+  badQ.length ? fail('題目有問題：' + badQ.slice(0, 6).join(' ｜ ')) : ok('每一題都出得出來，也都有解說');
+}
+checkGrammar();
+
 // 2.5 每日提醒：網頁上提供的每個時間，都要有對應的 .ics 檔而且內容正確
 function checkReminders() {
   console.log('\n每日提醒 reminders/*.ics');

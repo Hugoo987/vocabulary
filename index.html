@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v18 · 形容詞・人物・副詞</title>
+<title>單字大挑戰 v19 · 形容詞・人物・副詞</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -398,6 +398,69 @@
     .assign-card{ padding:11px 12px; }
   }
 
+  /* ---- 文法・片語 ---- */
+  .mode-card.grammar{ background: #FBEEE6; }
+  .gm-card{
+    border:2px solid var(--ink); border-radius:12px; padding:13px 14px; margin-bottom:11px;
+    background:#fff; cursor:pointer; transition: transform .12s ease;
+  }
+  .gm-card:active{ transform: scale(0.98); }
+  .gm-card .t{ font-weight:700; font-size:15px; }
+  .gm-card .t .en{ font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:800; }
+  .gm-card .s{ font-size:12px; color:var(--ink-soft); margin-top:3px; line-height:1.6; }
+  .gm-card .done{
+    float:right; font-size:11px; font-weight:700; color:#fff; background:var(--good);
+    padding:1px 9px; border-radius:12px;
+  }
+  .gm-card .wrong{
+    float:right; font-size:11px; font-weight:700; color:#fff; background:var(--bad);
+    padding:1px 9px; border-radius:12px; margin-left:5px;
+  }
+  .gm-title{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:21px; }
+  .gm-title .en{ font-size:24px; }
+  .gm-sub{ font-size:13px; color:var(--ink-soft); margin:2px 0 12px; }
+  .gm-point{
+    font-size:14px; line-height:1.9; background:#F7F2E6; border-radius:10px; padding:12px 13px;
+  }
+  .gm-tip{
+    font-size:12.5px; line-height:1.8; color:var(--ink); background:#FFF3D6;
+    border:1.5px solid var(--review); border-radius:10px; padding:10px 12px; margin-top:12px;
+  }
+  .gm-ex{ display:flex; align-items:flex-start; gap:8px; padding:9px 2px; border-bottom:1.5px dashed var(--paper-line); }
+  .gm-ex .en{ font-size:14px; line-height:1.7; }
+  .gm-ex .zh{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; line-height:1.6; }
+  .gm-stem{ font-size:18px; font-weight:600; line-height:1.9; margin:6px 0 14px; }
+  .gm-stem .blank{
+    display:inline-block; border-bottom:3px solid var(--ink); min-width:74px; text-align:center;
+  }
+  .gm-stem .zh-hint{ display:block; font-size:13px; font-weight:500; color:var(--ink-soft); margin-top:4px; }
+  /* 句子重組：已選的字排成一行，可以點掉 */
+  .gm-picked{
+    min-height:44px; border:2px dashed var(--paper-line); border-radius:10px; padding:8px 10px;
+    display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:12px;
+  }
+  .gm-picked:empty::before{ content:'點下面的字排出句子'; color:var(--ink-soft); font-size:12px; }
+  .tok{
+    border:2px solid var(--ink); background:#fff; border-radius:9px; padding:8px 12px;
+    font-size:15px; cursor:pointer; font-family:'Noto Sans TC',sans-serif;
+  }
+  .tok:active{ transform: translateY(1px); }
+  .tok.used{ opacity:.25; pointer-events:none; }
+  .tok-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  /* 挑錯：把句子切成幾塊，點出錯的那塊 */
+  .gm-parts{ display:flex; flex-wrap:wrap; gap:8px; }
+  .gm-parts .part{
+    border:2px solid var(--ink); background:#fff; border-radius:9px; padding:10px 13px;
+    font-size:15px; cursor:pointer;
+  }
+  .gm-parts .part.correct{ background:var(--good); color:#fff; border-color:var(--good); }
+  .gm-parts .part.wrong{ background:var(--bad); color:#fff; border-color:var(--bad); }
+  .gm-why{
+    font-size:13px; line-height:1.9; background:#F1EADA; border-radius:10px;
+    padding:11px 13px; margin-bottom:4px;
+  }
+  .gm-why b{ color:var(--good); }
+
   /* ---- 每日提醒（行事曆檔） ---- */
   .remind{ margin-top:16px; padding-top:14px; border-top:2px dashed var(--paper-line); }
   .remind-body{ margin-top:10px; }
@@ -532,10 +595,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v18 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
+  <div class="top-banner">✅ 這是最新版 v19 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v18</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v19</span></div>
   </div>
 
   <!-- ROLE SELECT SCREEN (first thing everyone sees) -->
@@ -603,6 +666,11 @@
         <div class="icon">📔</div>
         <h3>單字表</h3>
         <p>先看過再考：中文、兩句例句都在，點 🔊 還能聽發音。也可以查以前教過的任何單字。</p>
+      </div>
+      <div class="mode-card grammar" id="modeGrammar">
+        <div class="icon">📐</div>
+        <h3>文法・片語</h3>
+        <p>先看規則說明與例句，再做幾題練習：選擇、重組、挑錯、片語中翻英。</p>
       </div>
     </div>
 
@@ -727,6 +795,51 @@
       <button class="mini-btn" id="clearStudentBtn">清除學生紀錄</button>
     </div>
     <div class="history-sub" id="clearStudentHint">清除後無法復原，錯題與歷次成績都會刪除。</div>
+  </div>
+
+  <!-- GRAMMAR / PHRASE LIST -->
+  <div class="card hidden" id="grammarListScreen">
+    <div class="back-link" id="gmBackHint">← 返回選擇模式</div>
+    <div class="row-label" style="margin-top:0;">文法・片語</div>
+    <div class="art-intro">先看說明和例句，再做幾題練習。答錯的會記進錯題紀錄，老師看得到。</div>
+    <div class="pill-row" id="gmTabRow">
+      <div class="pill active" data-gm="grammar">文法</div>
+      <div class="pill" data-gm="phrases">片語</div>
+    </div>
+    <div id="gmList" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- GRAMMAR / PHRASE TEACHING CARD -->
+  <div class="card hidden" id="grammarCardScreen">
+    <div class="back-link" id="gmCardBack">← 返回清單</div>
+    <div class="gm-title" id="gmCardTitle"></div>
+    <div class="gm-sub" id="gmCardSub"></div>
+    <div class="gm-point" id="gmCardPoint"></div>
+    <div class="row-label">例句</div>
+    <div id="gmCardExamples"></div>
+    <div class="gm-tip hidden" id="gmCardTip"></div>
+    <button class="big-btn" id="gmStartBtn">開始練習</button>
+  </div>
+
+  <!-- GRAMMAR / PHRASE PRACTICE -->
+  <div class="card hidden" id="grammarQuizScreen">
+    <div class="back-link" id="gmQuitHint">← 返回（結束本次練習）</div>
+    <div class="progress-row">
+      <div class="progress-num" id="gmProgress">1 / 3</div>
+      <div class="progress-bar"><div class="progress-fill" id="gmFill"></div></div>
+      <div class="score-chip" id="gmScore">✓ 0</div>
+    </div>
+    <div class="tags-row">
+      <span class="topic-tag" id="gmTopicTag"></span>
+      <span class="type-tag" id="gmTypeTag"></span>
+    </div>
+    <div class="qprompt" id="gmPrompt"></div>
+    <div class="gm-stem" id="gmStem"></div>
+    <div id="gmPicked" class="gm-picked hidden"></div>
+    <div id="gmBox"></div>
+    <div class="feedback" id="gmFeedback"></div>
+    <div class="gm-why hidden" id="gmWhy"></div>
+    <button class="big-btn hidden" id="gmNextBtn">下一題 →</button>
   </div>
 
   <!-- WORD LIST SCREEN (study before being tested) -->
@@ -1019,7 +1132,8 @@ const WORDS = {
 
 const CAT_LABEL = { adjectives3:"ADJECTIVES 其他形容詞", people:"PEOPLE 人物", adverbs3:"ADVERBS 其他副詞" };
 const CAT_COLOR = { adjectives3:"var(--numbers)", people:"var(--address)", adverbs3:"var(--time)" };
-const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空" };
+const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空",
+  mc:"文法選擇", phrase:"片語中翻英", order:"句子重組", error:"挑錯" };
 const TYPE_DESC = {
   en2zh: "英翻中：看英文單字，選出正確的中文意思。",
   zh2en: "中翻英：看中文意思，選出正確的英文單字。",
@@ -2211,6 +2325,9 @@ let questionCount = 20;
 const roleScreen = document.getElementById('roleScreen');
 const modeScreen = document.getElementById('modeScreen');
 const reportScreen = document.getElementById('reportScreen');
+const grammarListScreen = document.getElementById('grammarListScreen');
+const grammarCardScreen = document.getElementById('grammarCardScreen');
+const grammarQuizScreen = document.getElementById('grammarQuizScreen');
 const wordListScreen = document.getElementById('wordListScreen');
 const articleListScreen = document.getElementById('articleListScreen');
 const articleScreen = document.getElementById('articleScreen');
@@ -2226,8 +2343,9 @@ function showScreen(el){
   binder.classList.toggle('wide', el === articleScreen);
   // Answering, reading and the score sheet get the compact header.
   binder.classList.toggle('focus',
-    el === quizScreen || el === articleScreen || el === resultScreen);
+    el === quizScreen || el === articleScreen || el === resultScreen || el === grammarQuizScreen);
   [roleScreen, modeScreen, reportScreen, wordListScreen, articleListScreen, articleScreen,
+   grammarListScreen, grammarCardScreen, grammarQuizScreen,
    setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
@@ -2367,7 +2485,7 @@ let storageOK = false;     // whether localStorage actually works here
 
 // days: { 20260915: 3 } —— 那天做了幾次測驗。sessions 只留最近 60 筆，
 // 熱力圖要看半年，所以另外存一份很小的每日計數。
-function blankProfile(){ return { words: {}, sessions: [], days: {} }; }
+function blankProfile(){ return { words: {}, sessions: [], days: {}, gm: {} }; }
 
 function blankStore(){
   return { version: 2, role: null, assignDone: null,
@@ -2407,6 +2525,13 @@ function normalizeProfile(p){
     }
   }
   seedDaysFromSessions(out);
+  if(p.gm && typeof p.gm === 'object'){
+    for(const [id, v] of Object.entries(p.gm)){
+      if(v && typeof v === 'object') out.gm[id] = {
+        n: Number(v.n) || 0, best: Number(v.best) || 0, total: Number(v.total) || 0
+      };
+    }
+  }
   return out;
 }
 
@@ -2531,6 +2656,1081 @@ function clearHistory(){
   if(role === 'student' && syncReady()) syncPush();
   renderHistory();
 }
+
+// ---------------- 文法與片語 ----------------
+// 內容寫在 data/grammar.json，用 tools/apply-grammar.js 注入。
+// 題型：mc（四選一填空）、zh2en（看中文選片語）、order（句子重組）、error（挑錯）。
+const GRAMMAR_DATA = {
+  "grammar": [
+    {
+      "id": "g-3rd-s",
+      "title": "現在簡單式：第三人稱單數",
+      "sub": "He / She / It 的動詞要加 -s",
+      "point": "講「平常、習慣、每天都這樣」的事，用現在簡單式。主詞如果是 he、she、it 或一個人、一個東西，動詞要加 -s 或 -es；其他主詞（I、you、we、they）動詞維持原形。",
+      "tips": "go、do、watch 這種以 o、ch、sh、s、x 結尾的字加 -es：goes、does、watches。",
+      "examples": [
+        [
+          "She goes to school by bus.",
+          "她搭公車上學。"
+        ],
+        [
+          "My father watches the news every night.",
+          "我爸爸每天晚上看新聞。"
+        ],
+        [
+          "They live in Taipei.",
+          "他們住在台北。（主詞是 they，動詞不加 s）"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "My sister ___ the piano every evening.",
+          "options": [
+            "play",
+            "plays",
+            "playing",
+            "played"
+          ],
+          "answer": "plays",
+          "why": "主詞 My sister 是第三人稱單數，動詞要加 -s。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "My brother",
+            "go",
+            "to the library",
+            "every Sunday."
+          ],
+          "answerIndex": 1,
+          "fix": "goes",
+          "why": "主詞 My brother 是單數，go 要變成 goes。"
+        },
+        {
+          "type": "order",
+          "zh": "他每天早上六點起床。",
+          "tokens": [
+            "He",
+            "gets",
+            "up",
+            "at",
+            "six",
+            "every",
+            "morning"
+          ],
+          "answer": "He gets up at six every morning",
+          "why": "主詞 He 用 gets；時間放句尾。"
+        }
+      ]
+    },
+    {
+      "id": "g-present-cont",
+      "title": "現在進行式",
+      "sub": "be 動詞 + V-ing：現在正在做",
+      "point": "講「此刻正在發生」的事，用 be 動詞（am / is / are）加上動詞的 -ing 形式。主詞是 I 用 am，he/she/it 用 is，you/we/they 用 are。",
+      "tips": "常跟 now、right now、at the moment、Look! 一起出現。",
+      "examples": [
+        [
+          "I am doing my homework now.",
+          "我現在正在寫功課。"
+        ],
+        [
+          "Look! The baby is sleeping.",
+          "你看！寶寶正在睡覺。"
+        ],
+        [
+          "They are waiting for the bus.",
+          "他們正在等公車。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "Be quiet! The baby ___ .",
+          "options": [
+            "sleeps",
+            "is sleeping",
+            "sleep",
+            "slept"
+          ],
+          "answer": "is sleeping",
+          "why": "「現在正在睡」用現在進行式 is + sleeping。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "We",
+            "are watch",
+            "a movie",
+            "right now."
+          ],
+          "answerIndex": 1,
+          "fix": "are watching",
+          "why": "be 動詞後面要用 V-ing，watch 要變 watching。"
+        },
+        {
+          "type": "order",
+          "zh": "我媽媽正在廚房煮晚餐。",
+          "tokens": [
+            "My",
+            "mother",
+            "is",
+            "cooking",
+            "dinner",
+            "in",
+            "the",
+            "kitchen"
+          ],
+          "answer": "My mother is cooking dinner in the kitchen",
+          "why": "is + cooking 表示正在進行，地點放句尾。"
+        }
+      ]
+    },
+    {
+      "id": "g-past",
+      "title": "過去簡單式",
+      "sub": "昨天、上週發生的事",
+      "point": "講已經發生、結束的事，動詞要用過去式。規則變化加 -ed（walk → walked）；不規則的要背（go → went、eat → ate、buy → bought）。否定與疑問用 did，後面動詞回到原形。",
+      "tips": "看到 yesterday、last night、two days ago、in 2020 幾乎都是過去式。",
+      "examples": [
+        [
+          "We visited my grandmother last Sunday.",
+          "我們上週日去看了我奶奶。"
+        ],
+        [
+          "He went to Japan two years ago.",
+          "他兩年前去了日本。"
+        ],
+        [
+          "I did not finish my homework last night.",
+          "我昨晚沒有寫完功課。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "We ___ a new bike for my brother last week.",
+          "options": [
+            "buy",
+            "buys",
+            "bought",
+            "buying"
+          ],
+          "answer": "bought",
+          "why": "last week 是過去，buy 的過去式是 bought。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "She",
+            "didn't went",
+            "to school",
+            "yesterday."
+          ],
+          "answerIndex": 1,
+          "fix": "didn't go",
+          "why": "didn't 後面的動詞要用原形，所以是 didn't go。"
+        },
+        {
+          "type": "order",
+          "zh": "他昨天在公園遇到他的老師。",
+          "tokens": [
+            "He",
+            "met",
+            "his",
+            "teacher",
+            "in",
+            "the",
+            "park",
+            "yesterday"
+          ],
+          "answer": "He met his teacher in the park yesterday",
+          "why": "meet 的過去式是 met；地點在前、時間在後。"
+        }
+      ]
+    },
+    {
+      "id": "g-comparative",
+      "title": "形容詞比較級",
+      "sub": "A 比 B 更……",
+      "point": "兩個東西比較時，短的形容詞加 -er（tall → taller），長的形容詞（三個音節以上、或 -ful、-ous 結尾）前面加 more（more beautiful）。比較的對象前面要加 than。",
+      "tips": "good → better、bad → worse、many/much → more 是不規則的，要背。",
+      "examples": [
+        [
+          "My brother is taller than me.",
+          "我哥哥比我高。"
+        ],
+        [
+          "This question is more difficult than that one.",
+          "這一題比那一題難。"
+        ],
+        [
+          "Today is better than yesterday.",
+          "今天比昨天好。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "This box is ___ than that one, so I will carry it.",
+          "options": [
+            "heavy",
+            "heavier",
+            "heaviest",
+            "more heavy"
+          ],
+          "answer": "heavier",
+          "why": "兩者比較用比較級；heavy 去 y 加 -ier 變 heavier。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "Her story is",
+            "more interesting",
+            "that",
+            "his story."
+          ],
+          "answerIndex": 2,
+          "fix": "than",
+          "why": "比較的對象前面要用 than，不是 that。"
+        },
+        {
+          "type": "order",
+          "zh": "這部電影比那本書有趣。",
+          "tokens": [
+            "This",
+            "movie",
+            "is",
+            "more",
+            "interesting",
+            "than",
+            "that",
+            "book"
+          ],
+          "answer": "This movie is more interesting than that book",
+          "why": "interesting 是長形容詞，用 more + 原級 + than。"
+        }
+      ]
+    },
+    {
+      "id": "g-future",
+      "title": "未來式",
+      "sub": "will 與 be going to",
+      "point": "will 用在「現在才決定、單純的預測」；be going to 用在「已經打算好、或有跡象快發生」。兩者後面都接動詞原形。",
+      "tips": "It is going to rain.（天很黑了，快下雨）／I will help you.（現在才決定要幫忙）",
+      "examples": [
+        [
+          "I will call you tonight.",
+          "我今晚會打給你。"
+        ],
+        [
+          "We are going to visit Tainan next month.",
+          "我們下個月要去台南。"
+        ],
+        [
+          "Look at the sky. It is going to rain.",
+          "看看天空，快下雨了。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "Look at those dark clouds. It ___ rain soon.",
+          "options": [
+            "is going to",
+            "was",
+            "goes to",
+            "will be"
+          ],
+          "answer": "is going to",
+          "why": "已經有跡象（烏雲）表示快發生，用 be going to。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "I",
+            "will to help",
+            "you",
+            "with the boxes."
+          ],
+          "answerIndex": 1,
+          "fix": "will help",
+          "why": "will 後面直接接動詞原形，不加 to。"
+        },
+        {
+          "type": "order",
+          "zh": "我們下個週末要去海邊。",
+          "tokens": [
+            "We",
+            "are",
+            "going",
+            "to",
+            "the",
+            "beach",
+            "next",
+            "weekend"
+          ],
+          "answer": "We are going to the beach next weekend",
+          "why": "be going to + 地點，表示已經計畫好的行程。"
+        }
+      ]
+    },
+    {
+      "id": "g-there-be",
+      "title": "There is / There are",
+      "sub": "某處有某物",
+      "point": "表示「有」某個東西存在時，用 There is（後接單數或不可數名詞）或 There are（後接複數名詞）。動詞要跟著後面那個名詞變，不是跟 there 變。",
+      "tips": "否定是 There is not / There are not；疑問把 be 動詞提前：Is there…? Are there…?",
+      "examples": [
+        [
+          "There is a cat under the table.",
+          "桌子底下有一隻貓。"
+        ],
+        [
+          "There are twenty students in my class.",
+          "我班上有二十個學生。"
+        ],
+        [
+          "Is there any milk in the fridge?",
+          "冰箱裡還有牛奶嗎？"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "mc",
+          "stem": "___ three books and a pen on the desk.",
+          "options": [
+            "There is",
+            "There are",
+            "It is",
+            "They are"
+          ],
+          "answer": "There are",
+          "why": "後面是複數（three books），所以用 There are。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "There",
+            "is",
+            "many people",
+            "in the night market."
+          ],
+          "answerIndex": 1,
+          "fix": "are",
+          "why": "many people 是複數，要用 There are。"
+        },
+        {
+          "type": "order",
+          "zh": "我家附近有一間便利商店。",
+          "tokens": [
+            "There",
+            "is",
+            "a",
+            "convenience",
+            "store",
+            "near",
+            "my",
+            "house"
+          ],
+          "answer": "There is a convenience store near my house",
+          "why": "單數名詞用 There is，地點放句尾。"
+        }
+      ]
+    }
+  ],
+  "phrases": [
+    {
+      "id": "p-look-for",
+      "en": "look for",
+      "zh": "尋找",
+      "note": "look for 是「找」的動作（還沒找到）；find 是「找到」的結果。",
+      "examples": [
+        [
+          "I am looking for my keys.",
+          "我正在找我的鑰匙。"
+        ],
+        [
+          "She looked for a new job all summer.",
+          "她整個夏天都在找新工作。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "尋找",
+          "options": [
+            "look for",
+            "look after",
+            "look at",
+            "look like"
+          ],
+          "answer": "look for",
+          "why": "look for＝尋找；look after＝照顧；look at＝看著。"
+        },
+        {
+          "type": "mc",
+          "stem": "What are you ___ ? Maybe I can help you find it.",
+          "options": [
+            "looking for",
+            "looking after",
+            "taking care",
+            "waiting"
+          ],
+          "answer": "looking for",
+          "why": "後面說「幫你找到」，所以前面是正在尋找。"
+        },
+        {
+          "type": "order",
+          "zh": "他在書桌底下找他的手機。",
+          "tokens": [
+            "He",
+            "is",
+            "looking",
+            "for",
+            "his",
+            "phone",
+            "under",
+            "the",
+            "desk"
+          ],
+          "answer": "He is looking for his phone under the desk",
+          "why": "look for + 要找的東西。"
+        }
+      ]
+    },
+    {
+      "id": "p-look-after",
+      "en": "look after",
+      "zh": "照顧",
+      "note": "等於 take care of。",
+      "examples": [
+        [
+          "Could you look after my dog this weekend?",
+          "這個週末你可以幫我照顧狗嗎？"
+        ],
+        [
+          "She looks after her little brother after school.",
+          "她放學後照顧她弟弟。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "照顧",
+          "options": [
+            "look after",
+            "look for",
+            "put on",
+            "turn off"
+          ],
+          "answer": "look after",
+          "why": "look after＝照顧，跟 take care of 同義。"
+        },
+        {
+          "type": "mc",
+          "stem": "My aunt will ___ the baby while my mother is at work.",
+          "options": [
+            "look after",
+            "look for",
+            "wait for",
+            "listen to"
+          ],
+          "answer": "look after",
+          "why": "照顧小孩用 look after。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "Please",
+            "look after to",
+            "my plants",
+            "while I am away."
+          ],
+          "answerIndex": 1,
+          "fix": "look after",
+          "why": "look after 後面直接接受詞，不要多一個 to。"
+        }
+      ]
+    },
+    {
+      "id": "p-take-care-of",
+      "en": "take care of",
+      "zh": "照料；處理",
+      "note": "除了照顧人，也可以指「處理」一件事。",
+      "examples": [
+        [
+          "I will take care of the dishes tonight.",
+          "今晚碗我來洗。"
+        ],
+        [
+          "Who takes care of your cat when you travel?",
+          "你旅行時誰照顧你的貓？"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "照料；處理",
+          "options": [
+            "take care of",
+            "get up",
+            "be good at",
+            "arrive at"
+          ],
+          "answer": "take care of",
+          "why": "take care of＝照料、處理。"
+        },
+        {
+          "type": "mc",
+          "stem": "Do not worry about the tickets. I will ___ them.",
+          "options": [
+            "take care of",
+            "look like",
+            "put off",
+            "wait for"
+          ],
+          "answer": "take care of",
+          "why": "這裡是「我會處理」。"
+        },
+        {
+          "type": "order",
+          "zh": "她在家照顧她的祖母。",
+          "tokens": [
+            "She",
+            "takes",
+            "care",
+            "of",
+            "her",
+            "grandmother",
+            "at",
+            "home"
+          ],
+          "answer": "She takes care of her grandmother at home",
+          "why": "主詞是 She，take 要加 -s。"
+        }
+      ]
+    },
+    {
+      "id": "p-get-up",
+      "en": "get up",
+      "zh": "起床",
+      "note": "get up 是「起床、起身」；wake up 是「醒來」。可以 wake up 之後躺著不 get up。",
+      "examples": [
+        [
+          "I get up at six every morning.",
+          "我每天早上六點起床。"
+        ],
+        [
+          "He got up late and missed the bus.",
+          "他太晚起床，錯過了公車。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "起床",
+          "options": [
+            "get up",
+            "give up",
+            "grow up",
+            "put up"
+          ],
+          "answer": "get up",
+          "why": "get up＝起床；give up＝放棄；grow up＝長大。"
+        },
+        {
+          "type": "mc",
+          "stem": "She ___ at five to catch the first train.",
+          "options": [
+            "gets up",
+            "gives up",
+            "looks up",
+            "grows up"
+          ],
+          "answer": "gets up",
+          "why": "為了趕第一班車而早起。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "I",
+            "get up",
+            "very late",
+            "in yesterday."
+          ],
+          "answerIndex": 3,
+          "fix": "yesterday",
+          "why": "yesterday 前面不加 in，直接說 yesterday。"
+        }
+      ]
+    },
+    {
+      "id": "p-turn-on",
+      "en": "turn on",
+      "zh": "打開（電器）",
+      "note": "相反是 turn off。開電視、燈、電腦用 turn on，不用 open。",
+      "examples": [
+        [
+          "Please turn on the light; it is too dark.",
+          "請開燈，太暗了。"
+        ],
+        [
+          "He turned on the radio and started to cook.",
+          "他打開收音機開始煮飯。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "打開（電器）",
+          "options": [
+            "turn on",
+            "turn off",
+            "put on",
+            "take off"
+          ],
+          "answer": "turn on",
+          "why": "turn on＝打開電器；turn off＝關掉。"
+        },
+        {
+          "type": "mc",
+          "stem": "It is dark in here. Could you ___ the light?",
+          "options": [
+            "turn on",
+            "turn off",
+            "put off",
+            "look after"
+          ],
+          "answer": "turn on",
+          "why": "太暗了所以要開燈。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "Please",
+            "open",
+            "the television",
+            "before dinner."
+          ],
+          "answerIndex": 1,
+          "fix": "turn on",
+          "why": "電器用 turn on，不用 open。"
+        }
+      ]
+    },
+    {
+      "id": "p-turn-off",
+      "en": "turn off",
+      "zh": "關掉（電器）",
+      "note": "離開房間前關燈、關冷氣都用 turn off。",
+      "examples": [
+        [
+          "Remember to turn off the air conditioner.",
+          "記得關冷氣。"
+        ],
+        [
+          "She turned off her phone during the exam.",
+          "考試時她把手機關機。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "關掉（電器）",
+          "options": [
+            "turn off",
+            "turn on",
+            "get off",
+            "take off"
+          ],
+          "answer": "turn off",
+          "why": "turn off＝關掉電器。"
+        },
+        {
+          "type": "mc",
+          "stem": "Please ___ the lights when you leave the classroom.",
+          "options": [
+            "turn off",
+            "turn on",
+            "look for",
+            "put on"
+          ],
+          "answer": "turn off",
+          "why": "離開教室要關燈。"
+        },
+        {
+          "type": "order",
+          "zh": "他睡覺前關掉了電視。",
+          "tokens": [
+            "He",
+            "turned",
+            "off",
+            "the",
+            "TV",
+            "before",
+            "he",
+            "went",
+            "to",
+            "bed"
+          ],
+          "answer": "He turned off the TV before he went to bed",
+          "why": "turn off 的過去式是 turned off。"
+        }
+      ]
+    },
+    {
+      "id": "p-be-good-at",
+      "en": "be good at",
+      "zh": "擅長",
+      "note": "at 後面接名詞或動名詞（V-ing），不是動詞原形。",
+      "examples": [
+        [
+          "She is good at math.",
+          "她擅長數學。"
+        ],
+        [
+          "My brother is good at playing basketball.",
+          "我哥哥很會打籃球。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "擅長",
+          "options": [
+            "be good at",
+            "be afraid of",
+            "be full of",
+            "be late for"
+          ],
+          "answer": "be good at",
+          "why": "be good at＝擅長。"
+        },
+        {
+          "type": "mc",
+          "stem": "He is good at ___ pictures of animals.",
+          "options": [
+            "draw",
+            "draws",
+            "drawing",
+            "drew"
+          ],
+          "answer": "drawing",
+          "why": "at 是介系詞，後面要用動名詞 V-ing。"
+        },
+        {
+          "type": "order",
+          "zh": "我姐姐很會說英文。",
+          "tokens": [
+            "My",
+            "sister",
+            "is",
+            "good",
+            "at",
+            "speaking",
+            "English"
+          ],
+          "answer": "My sister is good at speaking English",
+          "why": "be good at + V-ing。"
+        }
+      ]
+    },
+    {
+      "id": "p-wait-for",
+      "en": "wait for",
+      "zh": "等待",
+      "note": "等「人或東西」要加 for；不能說 wait somebody。",
+      "examples": [
+        [
+          "We waited for the bus for half an hour.",
+          "我們等公車等了半小時。"
+        ],
+        [
+          "Do not wait for me; start without me.",
+          "不用等我，你們先開始。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "等待",
+          "options": [
+            "wait for",
+            "look for",
+            "care for",
+            "ask for"
+          ],
+          "answer": "wait for",
+          "why": "wait for＝等待。"
+        },
+        {
+          "type": "mc",
+          "stem": "A lot of people are ___ the train on the platform.",
+          "options": [
+            "waiting for",
+            "waiting",
+            "looking",
+            "listening"
+          ],
+          "answer": "waiting for",
+          "why": "等某個東西要用 wait for。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "She",
+            "waited",
+            "me",
+            "at the school gate."
+          ],
+          "answerIndex": 2,
+          "fix": "for me",
+          "why": "wait 後面要加 for 才能接人。"
+        }
+      ]
+    },
+    {
+      "id": "p-listen-to",
+      "en": "listen to",
+      "zh": "聽",
+      "note": "listen 是「注意聽」的動作，接受詞時要加 to；hear 是「聽見」，不加 to。",
+      "examples": [
+        [
+          "I listen to music on the bus.",
+          "我在公車上聽音樂。"
+        ],
+        [
+          "Listen to your teacher carefully.",
+          "仔細聽老師說。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "聽（注意聽）",
+          "options": [
+            "listen to",
+            "look at",
+            "talk about",
+            "think of"
+          ],
+          "answer": "listen to",
+          "why": "listen to＝聽。"
+        },
+        {
+          "type": "error",
+          "parts": [
+            "She",
+            "listens",
+            "the radio",
+            "every morning."
+          ],
+          "answerIndex": 1,
+          "fix": "listens to",
+          "why": "listen 後面接受詞要加 to。"
+        },
+        {
+          "type": "order",
+          "zh": "他們在客廳聽音樂。",
+          "tokens": [
+            "They",
+            "are",
+            "listening",
+            "to",
+            "music",
+            "in",
+            "the",
+            "living",
+            "room"
+          ],
+          "answer": "They are listening to music in the living room",
+          "why": "listen to + 聽的東西。"
+        }
+      ]
+    },
+    {
+      "id": "p-put-on",
+      "en": "put on",
+      "zh": "穿上；戴上",
+      "note": "put on 是「穿上」這個動作；wear 是「穿著」的狀態。相反是 take off。",
+      "examples": [
+        [
+          "Put on your coat; it is cold outside.",
+          "把外套穿上，外面很冷。"
+        ],
+        [
+          "He put on his glasses and read the letter.",
+          "他戴上眼鏡，讀了那封信。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "穿上；戴上",
+          "options": [
+            "put on",
+            "take off",
+            "turn on",
+            "get up"
+          ],
+          "answer": "put on",
+          "why": "put on＝穿上、戴上。"
+        },
+        {
+          "type": "mc",
+          "stem": "It is raining. ___ your raincoat before you go out.",
+          "options": [
+            "Put on",
+            "Turn on",
+            "Look for",
+            "Wait for"
+          ],
+          "answer": "Put on",
+          "why": "下雨要穿上雨衣。"
+        },
+        {
+          "type": "order",
+          "zh": "她戴上帽子就出門了。",
+          "tokens": [
+            "She",
+            "put",
+            "on",
+            "her",
+            "hat",
+            "and",
+            "went",
+            "out"
+          ],
+          "answer": "She put on her hat and went out",
+          "why": "put on 的過去式同形，後面接穿戴的東西。"
+        }
+      ]
+    },
+    {
+      "id": "p-at-least",
+      "en": "at least",
+      "zh": "至少",
+      "note": "表示「最少、起碼」，也可以用來安慰別人（至少……還好）。",
+      "examples": [
+        [
+          "You should sleep at least seven hours.",
+          "你至少要睡七小時。"
+        ],
+        [
+          "We lost the game, but at least we tried.",
+          "我們輸了，但至少我們試過了。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "至少",
+          "options": [
+            "at least",
+            "at last",
+            "at once",
+            "at first"
+          ],
+          "answer": "at least",
+          "why": "at least＝至少；at last＝最後、終於。"
+        },
+        {
+          "type": "mc",
+          "stem": "The trip takes ___ four hours by bus, maybe longer.",
+          "options": [
+            "at least",
+            "at last",
+            "at once",
+            "at all"
+          ],
+          "answer": "at least",
+          "why": "「最少四小時，可能更久」用 at least。"
+        },
+        {
+          "type": "order",
+          "zh": "你每天至少應該喝八杯水。",
+          "tokens": [
+            "You",
+            "should",
+            "drink",
+            "at",
+            "least",
+            "eight",
+            "glasses",
+            "of",
+            "water",
+            "every",
+            "day"
+          ],
+          "answer": "You should drink at least eight glasses of water every day",
+          "why": "at least 放在數量前面。"
+        }
+      ]
+    },
+    {
+      "id": "p-of-course",
+      "en": "of course",
+      "zh": "當然",
+      "note": "回答別人的請求或問題時表示「當然可以、當然是」。",
+      "examples": [
+        [
+          "\"Can you help me?\" \"Of course!\"",
+          "「你可以幫我嗎？」「當然！」"
+        ],
+        [
+          "Of course she was tired after the race.",
+          "她比賽後當然會累。"
+        ]
+      ],
+      "questions": [
+        {
+          "type": "phrase",
+          "stem": "當然",
+          "options": [
+            "of course",
+            "in fact",
+            "by the way",
+            "after all"
+          ],
+          "answer": "of course",
+          "why": "of course＝當然。"
+        },
+        {
+          "type": "mc",
+          "stem": "\"May I borrow your eraser?\" \"___ . Here you are.\"",
+          "options": [
+            "Of course",
+            "At least",
+            "By the way",
+            "No way"
+          ],
+          "answer": "Of course",
+          "why": "答應別人的請求用 Of course。"
+        },
+        {
+          "type": "order",
+          "zh": "當然，我明天會去參加你的生日派對。",
+          "tokens": [
+            "Of",
+            "course",
+            "I",
+            "will",
+            "go",
+            "to",
+            "your",
+            "birthday",
+            "party",
+            "tomorrow"
+          ],
+          "answer": "Of course I will go to your birthday party tomorrow",
+          "why": "Of course 放句首表示「當然」。"
+        }
+      ]
+    }
+  ]
+};
 
 // ---------------- Article reading ----------------
 // Written in data/articles.json and injected by tools/apply-articles.js.
@@ -2797,8 +3997,10 @@ const TYPE_CODE = { en2zh:'e', zh2en:'z', cloze:'c' };
 const CODE_TYPE = { e:'en2zh', z:'zh2en', c:'cloze' };
 // Every mode needs a code here: an unknown mode falls back to 'p', which would
 // quietly report a reading or an assigned paper as ordinary practice.
-const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t', article:'a', assigned:'s' };
-const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry', a:'article', s:'assigned' };
+const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t', article:'a', assigned:'s',
+  grammar:'g' };
+const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry', a:'article', s:'assigned',
+  g:'grammar' };
 
 // The compact record shared by both transfer routes: the pasted code and the
 // cloud sync below send exactly this.
@@ -3087,11 +4289,12 @@ const REVIEW_CAT_LABEL = {
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
   interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
   adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）', people:'人物',
+  grammar:'文法', phrase:'片語',
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
 const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練',
-  article:'文章閱讀', assigned:'老師指派考卷' };
+  article:'文章閱讀', assigned:'老師指派考卷', grammar:'文法・片語練習' };
 
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
@@ -3380,6 +4583,285 @@ clearBtnEl.addEventListener('click', ()=>{
   clearBtnEl.style.color = '';
   clearBtnEl.style.borderColor = '';
   clearHistory();
+});
+
+// ---------------- 文法・片語 ----------------
+// 教學卡（規則說明＋例句）＋ 四種練習題：mc 四選一、phrase 看中文選片語、
+// order 句子重組、error 挑錯。答錯會進同一本錯題紀錄（cat: grammar / phrase），
+// 所以熱力圖、老師報告都看得到。
+let gmTab = 'grammar';
+let gmItem = null;
+let gmQuiz = [];
+let gmIndex = 0;
+let gmScore = 0;
+let gmResults = [];
+let gmPickedToks = [];
+let gmAnswered = false;
+
+function gmItems(tab){ return GRAMMAR_DATA[tab || gmTab] || []; }
+function gmFind(id){
+  return [...GRAMMAR_DATA.grammar, ...GRAMMAR_DATA.phrases].find(x => x.id === id) || null;
+}
+// 錯題紀錄的鍵：片語用英文本身，文法點用它的中文標題
+function gmKey(item){ return item.en || item.title; }
+function gmCat(item){ return item.en ? 'phrase' : 'grammar'; }
+function gmZh(item){ return item.en ? item.zh : (item.sub || ''); }
+
+function renderGmList(){
+  const box = document.getElementById('gmList');
+  const p = currentProfile();
+  document.querySelectorAll('#gmTabRow .pill').forEach(el=>{
+    el.classList.toggle('active', el.dataset.gm === gmTab);
+  });
+  box.innerHTML = gmItems().map(it=>{
+    const prog = (p.gm || {})[it.id];
+    const wrong = historyData[gmKey(it)];
+    const badges =
+      (wrong ? `<span class="wrong">錯 ${wrong.count} 次</span>` : '') +
+      (prog ? `<span class="done">最佳 ${prog.best}/${prog.total}</span>` : '');
+    const title = it.en
+      ? `<span class="en">${esc(it.en)}</span>　${esc(it.zh)}`
+      : esc(it.title);
+    const sub = esc(it.en ? (it.note || '') : (it.sub || ''));
+    return `<div class="gm-card" data-id="${esc(it.id)}">${badges}
+      <div class="t">${title}</div><div class="s">${sub}</div></div>`;
+  }).join('');
+  box.querySelectorAll('.gm-card').forEach(el=>{
+    el.addEventListener('click', ()=> openGmCard(gmFind(el.dataset.id)));
+  });
+}
+
+function openGmCard(item){
+  if(!item) return;
+  gmItem = item;
+  document.getElementById('gmCardTitle').innerHTML = item.en
+    ? `<span class="en">${esc(item.en)}</span>` : esc(item.title);
+  document.getElementById('gmCardSub').textContent = item.en ? item.zh : (item.sub || '');
+  document.getElementById('gmCardPoint').textContent = item.en ? (item.note || '') : item.point;
+  document.getElementById('gmCardExamples').innerHTML = (item.examples || []).map(([en, zh])=>
+    `<div class="gm-ex">${sayBtn(en, true)}<div><div class="en">${esc(en)}</div>
+      <div class="zh">${esc(zh)}</div></div></div>`).join('');
+  const tip = document.getElementById('gmCardTip');
+  tip.classList.toggle('hidden', !item.tips);
+  if(item.tips) tip.textContent = '💡 ' + item.tips;
+  document.getElementById('gmStartBtn').textContent = `開始練習（${item.questions.length} 題）`;
+  showScreen(grammarCardScreen);
+}
+
+function startGmQuiz(){
+  if(!gmItem) return;
+  gmQuiz = shuffle(gmItem.questions.slice());
+  gmIndex = 0; gmScore = 0; gmResults = [];
+  mode = 'grammar';
+  quizIsReview = false;
+  showScreen(grammarQuizScreen);
+  renderGmQuestion();
+}
+
+const GM_PROMPT = {
+  mc: '選出正確的答案',
+  phrase: '這個中文對應哪一個片語？',
+  order: '把下面的字排成正確的句子',
+  error: '這個句子有一個地方錯了，把它點出來'
+};
+
+function renderGmQuestion(){
+  const q = gmQuiz[gmIndex];
+  gmAnswered = false;
+  gmPickedToks = [];
+  document.getElementById('gmProgress').textContent = `${gmIndex + 1} / ${gmQuiz.length}`;
+  document.getElementById('gmFill').style.width = (gmIndex / gmQuiz.length * 100) + '%';
+  document.getElementById('gmScore').textContent = `✓ ${gmScore}`;
+  const tag = document.getElementById('gmTopicTag');
+  tag.textContent = gmItem.en ? gmItem.en : gmItem.title;
+  tag.style.background = gmItem.en ? 'var(--places)' : 'var(--address)';
+  document.getElementById('gmTypeTag').textContent = TYPE_LABEL[q.type] || q.type;
+  document.getElementById('gmPrompt').textContent = GM_PROMPT[q.type] || '';
+  document.getElementById('gmFeedback').textContent = '';
+  document.getElementById('gmFeedback').className = 'feedback';
+  document.getElementById('gmWhy').classList.add('hidden');
+  document.getElementById('gmNextBtn').classList.add('hidden');
+  const picked = document.getElementById('gmPicked');
+  const stem = document.getElementById('gmStem');
+  const box = document.getElementById('gmBox');
+  picked.classList.add('hidden');
+  picked.innerHTML = '';
+  box.innerHTML = '';
+
+  if(q.type === 'mc' || q.type === 'phrase'){
+    stem.innerHTML = q.type === 'mc'
+      ? esc(q.stem).replace(/_{2,}/, '<span class="blank"></span>')
+      : esc(q.stem);
+    shuffle(q.options.slice()).forEach(opt=>{
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.addEventListener('click', ()=> answerGm(opt === q.answer, q.answer, b));
+      box.appendChild(b);
+    });
+  } else if(q.type === 'order'){
+    stem.innerHTML = `<span class="zh-hint">${esc(q.zh)}</span>`;
+    picked.classList.remove('hidden');
+    const row = document.createElement('div');
+    row.className = 'tok-row';
+    shuffle(q.tokens.slice()).forEach(tk=>{
+      const b = document.createElement('button');
+      b.className = 'tok';
+      b.textContent = tk;
+      b.addEventListener('click', ()=>{
+        if(gmAnswered) return;
+        b.classList.add('used');
+        gmPickedToks.push({ text: tk, el: b });
+        paintGmPicked();
+        if(gmPickedToks.length === q.tokens.length){
+          const said = gmPickedToks.map(x=>x.text).join(' ');
+          answerGm(said === q.answer, q.answer, null);
+        }
+      });
+      row.appendChild(b);
+    });
+    box.appendChild(row);
+  } else if(q.type === 'error'){
+    stem.textContent = '';
+    const row = document.createElement('div');
+    row.className = 'gm-parts';
+    q.parts.forEach((part, i)=>{
+      const b = document.createElement('button');
+      b.className = 'part';
+      b.textContent = part;
+      b.addEventListener('click', ()=>{
+        if(gmAnswered) return;
+        const right = i === q.answerIndex;
+        b.classList.add(right ? 'correct' : 'wrong');
+        if(!right){
+          const target = row.children[q.answerIndex];
+          if(target) target.classList.add('correct');
+        }
+        answerGm(right, q.parts[q.answerIndex] + ' → ' + q.fix, null);
+      });
+      row.appendChild(b);
+    });
+    box.appendChild(row);
+  }
+}
+
+function paintGmPicked(){
+  const picked = document.getElementById('gmPicked');
+  picked.innerHTML = '';
+  gmPickedToks.forEach((tk, i)=>{
+    const b = document.createElement('button');
+    b.className = 'tok';
+    b.textContent = tk.text;
+    b.addEventListener('click', ()=>{
+      if(gmAnswered) return;
+      tk.el.classList.remove('used');
+      gmPickedToks.splice(i, 1);
+      paintGmPicked();
+    });
+    picked.appendChild(b);
+  });
+}
+
+function answerGm(isCorrect, correctText, btnEl){
+  if(gmAnswered) return;
+  gmAnswered = true;
+  const q = gmQuiz[gmIndex];
+  const fb = document.getElementById('gmFeedback');
+  if(isCorrect){
+    gmScore++;
+    fb.textContent = '答對了！🎉';
+    fb.className = 'feedback good';
+    if(btnEl){ btnEl.classList.add('correct'); }
+  } else {
+    fb.textContent = `答錯了，正確答案是「${correctText}」`;
+    fb.className = 'feedback bad';
+    if(btnEl){ btnEl.classList.add('wrong'); }
+    recordWrong(gmKey(gmItem), gmZh(gmItem), q.type, gmCat(gmItem));
+  }
+  // 選擇題把正解也標出來
+  if(q.type === 'mc' || q.type === 'phrase'){
+    document.querySelectorAll('#gmBox .opt').forEach(b=>{
+      if(b.textContent === q.answer) b.classList.add('correct');
+      b.disabled = true;
+    });
+  }
+  if(q.why){
+    const why = document.getElementById('gmWhy');
+    why.innerHTML = '<b>為什麼：</b>' + esc(q.why);
+    why.classList.remove('hidden');
+  }
+  document.getElementById('gmScore').textContent = `✓ ${gmScore}`;
+  document.getElementById('gmFill').style.width = ((gmIndex + 1) / gmQuiz.length * 100) + '%';
+  gmResults.push({
+    type: q.type,
+    en: gmKey(gmItem),
+    zh: gmZh(gmItem),
+    correctText: String(correctText),
+    isCorrect,
+    // 成績單上附一句完整的句子，比只寫答案有用
+    sentence: q.type === 'order' ? q.answer + '.'
+            : q.type === 'mc' ? q.stem
+            : (gmItem.examples && gmItem.examples[0] ? gmItem.examples[0][0] : '')
+  });
+  document.getElementById('gmNextBtn').classList.remove('hidden');
+}
+
+function finishGmQuiz(){
+  const p = currentProfile();
+  if(!p.gm) p.gm = {};
+  const prev = p.gm[gmItem.id];
+  p.gm[gmItem.id] = {
+    n: (prev ? prev.n : 0) + 1,
+    best: Math.max(prev ? prev.best : 0, gmScore),
+    total: gmQuiz.length
+  };
+  results = gmResults;
+  score = gmScore;
+  sessionEndedEarly = false;
+  showResult();
+}
+
+document.getElementById('modeGrammar').addEventListener('click', ()=>{
+  gmTab = 'grammar';
+  renderGmList();
+  showScreen(grammarListScreen);
+});
+document.getElementById('gmBackHint').addEventListener('click', ()=> showScreen(modeScreen));
+document.getElementById('gmCardBack').addEventListener('click', ()=>{
+  renderGmList();
+  showScreen(grammarListScreen);
+});
+document.querySelectorAll('#gmTabRow .pill').forEach(el=>{
+  el.addEventListener('click', ()=>{ gmTab = el.dataset.gm; renderGmList(); });
+});
+document.getElementById('gmStartBtn').addEventListener('click', startGmQuiz);
+document.getElementById('gmNextBtn').addEventListener('click', ()=>{
+  gmIndex++;
+  if(gmIndex >= gmQuiz.length) finishGmQuiz();
+  else renderGmQuestion();
+});
+
+// 練習中離開：跟其他畫面一樣要按兩次
+let gmQuitArmed = false;
+let gmQuitTimer = null;
+const gmQuitEl = document.getElementById('gmQuitHint');
+function resetGmQuit(){
+  gmQuitArmed = false;
+  gmQuitEl.textContent = '← 返回（結束本次練習）';
+  gmQuitEl.style.color = '';
+  if(gmQuitTimer){ clearTimeout(gmQuitTimer); gmQuitTimer = null; }
+}
+gmQuitEl.addEventListener('click', ()=>{
+  if(!gmQuitArmed){
+    gmQuitArmed = true;
+    gmQuitEl.textContent = '⚠️ 確定離開？這次練習不會計分（再按一次確認）';
+    gmQuitEl.style.color = 'var(--bad)';
+    gmQuitTimer = setTimeout(resetGmQuit, 4000);
+    return;
+  }
+  resetGmQuit();
+  renderGmList();
+  showScreen(grammarListScreen);
 });
 
 // ---------------- 每天提醒（行事曆檔） ----------------
@@ -5473,12 +6955,13 @@ function showResult(){
     else if(mode==='review') title.textContent = '總複習結束，看看還要加強哪些單字 📚';
     else if(mode==='article') title.textContent = '文章讀完了，來看看填空結果 📖';
     else if(mode==='assigned') title.textContent = '老師指派的考卷完成了 📩';
+    else if(mode==='grammar') title.textContent = '文法練習完成 📐';
     else title.textContent = '再複習一下這幾個單字吧 📖';
   }
 
   const gradeRow = document.getElementById('gradeRow');
   gradeRow.innerHTML = '';
-  if(mode==='exam' || mode==='review' || mode==='article' || mode==='assigned'){
+  if(mode==='exam' || mode==='review' || mode==='article' || mode==='assigned' || mode==='grammar'){
     const pct = total? Math.round(score/total*100) : 0;
     let grade = 'F';
     if(pct>=90) grade='A'; else if(pct>=80) grade='B'; else if(pct>=70) grade='C'; else if(pct>=60) grade='D';
@@ -5501,11 +6984,11 @@ function showResult(){
   const heading = document.createElement('div');
   heading.className = 'row-label';
   heading.style.marginTop = '0';
-  heading.textContent = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned')
+  heading.textContent = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned' || mode==='grammar')
     ? '詳細檢討（全部作答紀錄）' : '需要再複習的單字';
   list.appendChild(heading);
 
-  const toShow = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned')
+  const toShow = (mode==='exam' || mode==='review' || mode==='article' || mode==='assigned' || mode==='grammar')
     ? results.slice().sort((a,b)=> (a.isCorrect?1:0) - (b.isCorrect?1:0))
     : wrongOnes;
   if(toShow.length===0){
@@ -5519,7 +7002,9 @@ function showResult(){
     toShow.forEach(r=>{
       const row = document.createElement('div');
       row.className = 'review-item';
-      row.innerHTML = `<div class="left">${sayBtn(r.en, true)}<b>${esc(r.en)}</b><span class="zh">${esc(r.zh)}</span></div>
+      // 文法題的「題目」是中文標題，用英文語音唸它只會很怪
+      const canSay = /^[A-Za-z]/.test(String(r.en || ''));
+      row.innerHTML = `<div class="left">${canSay ? sayBtn(r.en, true) : ''}<b>${esc(r.en)}</b><span class="zh">${esc(r.zh)}</span></div>
         <div class="mark ${r.isCorrect?'ok':'no'}">${r.isCorrect? '✓ 正確' : '✕ 錯誤'}</div>`;
       row.querySelector('.left').style.display = 'flex';
       row.querySelector('.left').style.alignItems = 'center';

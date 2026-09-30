@@ -23,13 +23,16 @@
 | `tools/e2e-paper.mjs` | 錯題考卷（列印／指派給學生）的端對端測試 |
 | `tools/e2e-mobile.mjs` | 手機版面的端對端測試（小螢幕上量到的問題別再回來） |
 | `tools/make-reminders.js` | 產生每日提醒的行事曆檔 `reminders/*.ics` |
+| `data/grammar.json` | 文法點與片語的內容（來源檔） |
+| `tools/apply-grammar.js` | 把文法／片語寫進 index.html |
+| `tools/e2e-grammar.mjs` | 文法・片語區塊的端對端測試 |
 | `tools/apply-alt-sentences.js` | 把例句寫進 index.html |
 | `tools/mock-firebase.mjs` | 測試用的 Firebase 模擬伺服器 |
 | `SETUP-FIREBASE.md` | 開啟自動同步的設定步驟 |
 
 ## 目前版本
 
-- 版本：**v18**（頁面最上方有紅色橫幅可一眼確認）
+- 版本：**v19**（頁面最上方有紅色橫幅可一眼確認）
 - 考試範圍：其他形容詞＋人物＋其他副詞（進階 800 單字 Topic 31、02、32），共 **96 字**
 - 總複習題庫：累積 **1112 字**（教過的全部）
 
@@ -129,6 +132,33 @@ node tools/apply-articles.js && node tools/validate.js
 | 產生錯題考卷（列印／指派） | ❌ | ✅ |
 
 老師這邊只有報告與數據，主頁就兩張卡。
+
+## 文法・片語
+
+學生主頁的第六個入口。每一項先是一張**教學卡**（規則說明、例句可點發音、💡 小提醒），
+看完按「開始練習」，接著是幾題練習，答錯會顯示正確答案與**為什麼**。
+
+四種題型：
+
+| 題型 | 樣子 |
+|---|---|
+| 文法選擇 | `My sister ___ the piano every evening.` 四選一 |
+| 片語中翻英 | 看「照顧」選出 look after |
+| 句子重組 | 點單字排成正確的句子，可以點掉重排 |
+| 挑錯 | 句子切成幾塊，點出錯的那一塊，正解會變綠 |
+
+內容放在 `data/grammar.json`，改完跑：
+
+```bash
+node tools/apply-grammar.js && node tools/validate.js
+```
+
+驗證器會擋掉出不了的題目：選項不是四個、選項裡沒有正解、填空題沒有 `___`、
+題目裡就有答案、重組的字拼不出答案、`answerIndex` 超出範圍、沒有寫解說。
+
+答錯會進**同一本錯題紀錄**（分類記成「文法」或「片語」），所以熱力圖、
+老師報告的各單元弱點、常錯清單、題型分析都看得到。
+目前「錯題重練」和「錯題考卷」仍然只出單字題。
 
 ## 每天提醒（加到手機行事曆）
 

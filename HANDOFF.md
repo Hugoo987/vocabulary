@@ -15,7 +15,7 @@
 | 項目 | 內容 |
 |---|---|
 | 最新檔案 | `index.html`（單一真實來源） |
-| 版本標記 | v18（頁面最上方有紅色橫幅） |
+| 版本標記 | v19（頁面最上方有紅色橫幅） |
 | 發布方式 | GitHub Pages：https://hugoo987.github.io/vocabulary/ |
 | 目前考試範圍 | 其他形容詞＋人物＋其他副詞（Chapter 2 Topic 31、02、32），共 **96 字** |
 | 總複習題庫 | 累積 **1112 字**（教過的全部） |
@@ -107,6 +107,20 @@
 
 底層的紀錄分離（老師作答不會寫進學生名下）仍然保留並且有測試，
 只是介面上不再提供入口。
+
+### 文法・片語（v19 新增）
+- 內容：`data/grammar.json` →『node tools/apply-grammar.js』注入成 `GRAMMAR_DATA`
+- 結構：`grammar[]`（id/title/sub/point/tips/examples/questions）與
+  `phrases[]`（id/en/zh/note/examples/questions）
+- 題型四種：`mc`（填空四選一，stem 要有 `___`）、`phrase`（看中文選片語）、
+  `order`（tokens 排成 answer）、`error`（parts 切塊＋answerIndex＋fix）
+- **題型代號不要跟單字題型撞名**：片語中翻英叫 `phrase`，不叫 `zh2en`
+  （`zh2en` 已經是單字的「中翻英」，撞名會讓老師報告的題型分析混在一起）
+- 答錯記進同一本 `historyData`，鍵是片語英文或文法點的中文標題，
+  `cat` 是 `grammar` / `phrase`（`REVIEW_CAT_LABEL` 已有對應中文）
+- 每張教學卡的最佳成績存在 `profile.gm[id]`，只留在本機、不跟著同步
+- 還沒做：「錯題重練」與老師的「錯題考卷」仍只出單字題，文法錯題只會出現在
+  紀錄與報告裡。要做的話得讓 `retrainPool()` 之外另開一條路
 
 ### 每天提醒（v17 新增）
 - 學生主頁「⏰ 設定每天提醒」→ 選時間 → 連到 `reminders/HHMM.ics`（靜態檔）
