@@ -7,6 +7,8 @@
 //   · 答完題後「下一題」按鈕跑到畫面外，每一題都要捲動
 //   · 最長的克漏字例句把選項擠到摺線下
 //   · 作答時還在顯示頁首橫幅，佔掉 110px
+// 注意：這一套量的是版面。本機沙箱連不到 Google Fonts，會用替代字型，
+// 量出來的高度比實際小。**以 CI 的結果為準**（CI 載得到真的字型）。
 import { chromium } from 'playwright';
 const URL = process.env.QUIZ_URL || 'http://127.0.0.1:8099/index.html';
 let fails=0; const ok=m=>console.log('  ✓ '+m); const bad=m=>{console.log('  ✗ '+m);fails++;};
@@ -35,7 +37,9 @@ const home = await page.evaluate(()=>({
 }));
 check(home.cardH > 0 && home.cardH <= 110, `模式卡不再是整頁大海報（每張 ${home.cardH}px，原本 ~180px）`);
 check(home.titleLines > 0 && home.titleLines <= 30, `卡片標題排成一行，不會一個字一行（標題高 ${home.titleLines}px）`);
-check(home.panelTop < 1000, `錯題面板不用捲太久就看得到（y=${home.panelTop}）`);
+// 門檻放寬到 1200：CI（有真的 Google 字型）量到 996，本機（字型被擋）量到 764，
+// 這一項要擋的是「被推到一千五百 px 以外」那種，不是 200px 的字型差異
+check(home.panelTop < 1200, `錯題面板不用捲太久就看得到（y=${home.panelTop}）`);
 check(home.overflow <= 0, '沒有左右橫向捲動');
 const btnH = await page.evaluate(()=>
   Math.min(...[...document.querySelectorAll('.mini-btn')].filter(b=>b.offsetParent)
