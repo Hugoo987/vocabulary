@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v21 · 形容詞・人物・副詞・警專</title>
+<title>單字大挑戰 v22 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -606,10 +606,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v21 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字 ＋ 警專 60 字</div>
+  <div class="top-banner">✅ 這是最新版 v22 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 60 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v21</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v22</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -1183,11 +1183,155 @@ const WORDS = {
     ["aloud","大聲地","It cries ___ at the cloud."],
     ["everywhere","無論何處","We welcome people from ___ and anywhere."],
     ["anywhere","任何地方","We welcome people from everywhere and ___ ."]
+  ],
+  verbs3: [
+    ["cause","造成","Careless driving can ___ a terrible accident on this road."],
+    ["aim","瞄準","The hunter raised his gun to ___ at the wild bird."],
+    ["alarm","使驚慌","Loud thunder can ___ a small child in the middle of the night."],
+    ["court","法院","The judge asked both men to come to ___ next Monday morning."],
+    ["debate","辯論","Our class will ___ about school uniforms this Friday afternoon."],
+    ["desire","渴望","Many young people ___ a job that pays well and feels useful."],
+    ["lack","缺乏","Plants in this dark corner ___ the sunlight they need."],
+    ["link","連結","This bridge will ___ the island to the city next year."],
+    ["poison","下毒","Someone tried to ___ the king's wine at the dinner."],
+    ["report","報告","Please ___ the accident to the police at once."],
+    ["sense","感覺到","Dogs can ___ danger long before people notice anything."],
+    ["complete","使完整","We must ___ the whole project before the end of May."],
+    ["succeed","成功","Hard work helps people ___ in almost any job."],
+    ["survive","存活","Few plants can ___ in such a cold and dry place."],
+    ["affect","影響","Bad weather may ___ our plans for the weekend trip."],
+    ["blame","責怪","Please do not ___ the dog for the broken cup."],
+    ["bother","打擾","Please do not ___ your sister while she is studying."],
+    ["confuse","使困惑","These two words often ___ students who are learning English."],
+    ["consider","考慮","You should ___ the cost before you buy that computer."],
+    ["develop","發展","This small town began to ___ after the railway arrived."],
+    ["divide","劃分","Let us ___ the class into four groups of six."],
+    ["doubt","懷疑","I ___ that he will arrive on time tonight."],
+    ["embarrass","使尷尬","Please do not ___ me in front of all my friends."],
+    ["forgive","原諒","Please ___ me for being so late this morning."],
+    ["frighten","使害怕","Loud fireworks ___ my little dog every single year."],
+    ["gather","聚集","Our whole family will ___ at grandma's house this Sunday."],
+    ["imagine","想像","Close your eyes and ___ a quiet beach at sunset."],
+    ["inspire","啟發","Great teachers ___ their students to try new things."],
+    ["realize","領悟","It took me years to ___ how lucky I was."],
+    ["regret","後悔","You will ___ it if you quit school now."],
+    ["remind","提醒","Please ___ me to call the doctor tomorrow morning."],
+    ["bless","祝福","May the gods ___ this family with health and peace."],
+    ["bathe","沐浴","My mother helps ___ the baby every evening before bed."],
+    ["beat","打敗","Our school did ___ the champions in the final game."],
+    ["chase","追逐","The cat loves to ___ the little red ball."],
+    ["control","控制","A good driver must ___ the car on icy roads."],
+    ["dial","撥打","In an emergency you should ___ one one zero at once."],
+    ["deliver","遞送","The post office will ___ your package before noon."],
+    ["elect","選舉","Citizens will ___ a new mayor this coming Saturday."],
+    ["upload","上傳","Please ___ your homework to the school website tonight."],
+    ["exist","存在","Some scientists believe that life may ___ on other planets."],
+    ["greet","問候","Remember to ___ your teacher when you enter the room."],
+    ["lay","放置","Please ___ the baby gently on the soft blanket."],
+    ["lick","舔","My dog loves to ___ my hand when I come home."],
+    ["lift","抬起","Can you help me ___ this heavy box onto the shelf?"],
+    ["lock","鎖上","Please ___ the door before you leave the house."],
+    ["mix","混合","Please ___ the flour and the eggs in a large bowl."],
+    ["offer","提供","The hotel will ___ a free breakfast to every guest."],
+    ["pause","暫停","Please ___ the film while I answer the phone."],
+    ["print","列印","Please ___ two copies of this report for the meeting."],
+    ["pump","抽送","Firefighters had to ___ water out of the flooded basement."],
+    ["produce","生產","This factory can ___ three thousand bottles every day."],
+    ["protect","保護","Thick walls ___ the village from the cold north wind."],
+    ["recycle","回收","We should ___ paper and glass instead of throwing them away."],
+    ["revise","修訂","The writer had to ___ the ending of her novel."],
+    ["rub","摩擦","Please do not ___ your eyes with dirty hands."],
+    ["rob","搶劫","Two masked men tried to ___ the bank this morning."],
+    ["shake","搖動","Please ___ the bottle well before you open it."],
+    ["shoot","射擊","Soldiers learn never to ___ without a clear order."],
+    ["shut","關上","Please ___ the window; the rain is coming in."],
+    ["steal","偷竊","A hungry boy tried to ___ bread from the bakery."],
+    ["strike","敲擊","The old clock will ___ twelve times at midnight."],
+    ["trap","困住","Heavy snow may ___ the hikers on the mountain."],
+    ["vote","投票","Citizens over twenty may ___ in this election."],
+    ["hug","擁抱","The little girl ran to ___ her father at the airport."],
+    ["yell","吼叫","Please do not ___ at your little brother."],
+    ["accept","接受","Please ___ this small gift as a thank you."],
+    ["add","添加","Please ___ a little sugar to the hot tea."],
+    ["admire","欽佩","I really ___ people who stay calm under pressure."],
+    ["advise","勸告","Doctors ___ older people to walk every morning."],
+    ["allow","允許","My parents do not ___ me to stay out late."],
+    ["apologize","道歉","You should ___ to her for breaking the promise."],
+    ["appreciate","感激","We really ___ all the help you gave us last week."],
+    ["argue","爭論","Please do not ___ about money in front of the children."],
+    ["arrange","安排","Could you ___ a meeting for next Tuesday afternoon?"],
+    ["assume","假定","Do not ___ that everyone understood your instructions."],
+    ["avoid","避免","Try to ___ the main road during rush hour."],
+    ["broadcast","廣播","The station will ___ the match live on Sunday."],
+    ["burst","爆裂","The balloon will ___ if you keep blowing air into it."],
+    ["calm","使平靜","Soft music can ___ a crying baby in minutes."],
+    ["cancel","取消","Heavy snow forced the airline to ___ every flight."],
+    ["compare","比較","Please ___ these two phones before you decide."],
+    ["complain","抱怨","Guests began to ___ about the cold soup."],
+    ["concern","掛念","Your low grades did ___ your parents a great deal."],
+    ["continue","持續","Please ___ reading from the top of page ten."],
+    ["create","創造","Artists ___ beautiful things from ordinary materials."],
+    ["increase","增加","The company plans to ___ wages next spring."],
+    ["decrease","減少","Exercise can ___ the risk of heart disease."],
+    ["depend","依賴","Young children ___ on their parents for everything."],
+    ["describe","描述","Please ___ the man you saw outside the shop."],
+    ["detect","偵測","This machine can ___ smoke before you smell it."],
+    ["direct","指揮","A police officer came to ___ the traffic at the corner."],
+    ["disappear","消失","Snow will ___ quickly once the sun comes out."],
+    ["discover","發掘","Scientists hope to ___ a cure within ten years."],
+    ["discuss","討論","Let us ___ the problem calmly over dinner."],
+    ["emphasize","強調","Good teachers ___ meaning rather than memory."],
+    ["envy","羨慕","Many classmates ___ her beautiful handwriting."],
+    ["excite","使興奮","Fast music tends to ___ young children before bed."],
+    ["expect","期待","We ___ about thirty guests at the party."],
+    ["express","表達","Try to ___ your feelings in simple words."],
+    ["fancy","幻想","Do not ___ that money alone will make you happy."],
+    ["fit","適合","These shoes do not ___ my feet at all."],
+    ["focus","專注","Please ___ on your own paper during the test."],
+    ["form","形成","Ice began to ___ on the inside of the window."],
+    ["gain","獲得","Readers ___ knowledge from every good book."],
+    ["improve","改善","Daily practice will ___ your English quickly."],
+    ["include","包含","Does the price ___ breakfast and parking?"],
+    ["ignore","忽視","Do not ___ a warning light on the dashboard."],
+    ["indicate","指出","These dark clouds ___ that rain is coming."],
+    ["insist","堅持","My grandmother will ___ on paying the whole bill."],
+    ["interrupt","打斷","Please do not ___ while someone else is speaking."],
+    ["introduce","介紹","Let me ___ you to my new classmate."],
+    ["invent","發明","Someone will ___ a better battery one day."],
+    ["match","相配","This blue tie does not ___ your green shirt."],
+    ["obey","服從","Soldiers must ___ orders without asking questions."],
+    ["omit","省略","Please do not ___ your middle name on the form."],
+    ["pardon","寬恕","The president may ___ the prisoner next month."],
+    ["pollute","汙染","Factory waste will ___ the river within months."],
+    ["praise","讚美","Teachers should ___ effort, not only results."],
+    ["promise","承諾","Please ___ me that you will drive carefully."],
+    ["provide","供應","The hotel will ___ towels and soap for every room."],
+    ["quit","戒除","My uncle decided to ___ smoking last year."],
+    ["reach","抵達","We should ___ the airport before seven o'clock."],
+    ["receive","收到","You will ___ an email within three working days."],
+    ["refuse","拒絕","He will ___ to answer without a lawyer present."],
+    ["reject","駁回","The committee may ___ our plan for the park."],
+    ["rent","租借","Students usually ___ a small room near the campus."],
+    ["respect","尊敬","Students should ___ one another's opinions."],
+    ["return","歸還","Please ___ these books to the library by Friday."],
+    ["ruin","毀壞","A sudden storm did ___ the whole harvest."],
+    ["solve","解決","It took the team two months to ___ this case."],
+    ["satisfy","滿足","A small meal will not ___ a hungry teenager."],
+    ["search","搜尋","Officers began to ___ the whole building room by room."],
+    ["seem","似乎","You ___ tired after such a long journey."],
+    ["select","選出","Please ___ three questions and answer them fully."],
+    ["serve","服務","Waiters ___ about two hundred guests each evening."],
+    ["suggest","建議","May I ___ a shorter route to the station?"],
+    ["support","支持","Good friends ___ you when everything goes wrong."],
+    ["trust","信任","You can ___ her with any secret."],
+    ["waste","浪費","Please do not ___ water while brushing your teeth."]
   ]
 };
 
-const CAT_LABEL = { adjectives3:"ADJECTIVES 其他形容詞", people:"PEOPLE 人物", adverbs3:"ADVERBS 其他副詞" };
-const CAT_COLOR = { adjectives3:"var(--numbers)", people:"var(--address)", adverbs3:"var(--time)" };
+const CAT_LABEL = { adjectives3:"ADJECTIVES 其他形容詞", people:"PEOPLE 人物", adverbs3:"ADVERBS 其他副詞",
+  verbs3:"VERBS 其他動詞" };
+const CAT_COLOR = { adjectives3:"var(--numbers)", people:"var(--address)", adverbs3:"var(--time)",
+  verbs3:"var(--family)" };
 const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空",
   mc:"文法選擇", phrase:"片語中翻英", order:"句子重組", error:"挑錯" };
 const TYPE_DESC = {
@@ -1205,7 +1349,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.5d0580454a.json';
+const BANK_FILE = 'bank/bank.2e5a9858c3.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -2189,7 +2333,7 @@ const REVIEW_CAT_LABEL = {
   occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
   interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
-  adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）', people:'人物',
+  adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）', people:'人物', verbs3:'其他動詞（進階）',
   grammar:'文法', phrase:'片語',
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
@@ -2960,6 +3104,9 @@ ALL_CATS.forEach(cat=>{
   div.className = 'cat-tab';
   div.dataset.cat = cat;
   div.innerHTML = `<input type="checkbox" checked> ${CAT_LABEL[cat]} <span class="count">${WORDS[cat].length}</span>`;
+  // 底色跟著單元走。以前是靠 CSS 裡一條一條寫死的 .cat-tab[data-cat="…"]，
+  // 新增單元時漏寫就會變成白字印在米色卡片上，整格看不見。
+  div.style.background = catColor(cat);
   div.addEventListener('click', (e)=>{
     e.preventDefault();
     if(selectedCats.has(cat)){ selectedCats.delete(cat); div.classList.add('off'); }
@@ -3293,7 +3440,34 @@ const SYNONYM_GROUPS = [
   ['客人', '訪客', '來賓', '顧客'],
   ['通常', '平凡', '普通', '一般'],
   ['安靜', '沉默', '沈默'],
-  ['一對', '一雙', '一副']
+  ['一對', '一雙', '一副'],
+  // ↓ 其他動詞單元加進來時補的。兩邊的字義太近，出題時不可以同時出現，
+  //   否則同一題會有兩個都說得通的選項。
+  ['完成', '使完整', '做完'],
+  ['舉起', '抬起'],
+  ['關閉', '關上'],
+  ['使擔心', '掛念', '擔憂'],
+  ['發現', '發掘'],
+  ['拒絕', '駁回', '否決'],
+  ['建議', '勸告', '忠告'],
+  ['增加', '添加', '增添'],
+  ['供應', '提供', '給予'],
+  ['辯論', '爭論', '討論'],
+  ['存活', '存在'],
+  ['獲得', '收到', '得到'],
+  ['讚美', '欽佩', '尊敬', '敬佩', '仰慕'],
+  ['使害怕', '害怕', '使驚慌', '使恐懼'],
+  // ↓ 新動詞與舊題庫裡單字詞的對撞（選 vs 選舉、放 vs 放置…）
+  ['感覺', '感覺到', '察覺'],
+  ['選', '選舉', '選出', '挑選', '選擇'],
+  ['放', '放置', '擺'],
+  ['敲', '敲擊'],
+  ['比', '比較'],
+  ['投', '投票'],
+  ['信', '信任', '相信'],
+  ['從', '服從', '遵從'],
+  ['住', '困住'],
+  ['像', '想像', '幻想']
 ];
 function synonymKey(sense){
   for(let i = 0; i < SYNONYM_GROUPS.length; i++){
