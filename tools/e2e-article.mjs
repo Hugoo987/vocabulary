@@ -117,6 +117,31 @@ const body=await p.locator('#reportBody').innerText();
 check(body.includes('文章填空'), '報告的題型分析出現「文章填空」');
 check(body.includes('文章閱讀'), '歷次紀錄出現「文章閱讀」');
 
+console.log('\n【7. 選項不可以靠詞性就猜得到】');
+// 干擾選項只排除「同一個單元」是不夠的：題庫裡名詞遠多於動詞，動詞空格
+// 以前會拿到三個名詞選項，學生不讀句子也能選對（量過是 67%）。
+const cls = await p.evaluate(()=>{
+  const byEn=new Map(); REVIEW_WORDS.forEach(w=>byEn.set(w.en,w)); fullPool().forEach(w=>byEn.set(w.en,w));
+  let n=0, lone=0, notFour=0;
+  for(let r=0;r<20;r++){
+    ARTICLES.forEach(a=>{
+      startArticle(a);
+      artBlanks.forEach(bl=>{
+        n++;
+        if(new Set(bl.options).size!==4) notFour++;
+        const want = wordClass(bl.cat);
+        const same = bl.options.filter(o=>wordClass((byEn.get(o)||{}).cat)===want);
+        if(same.length===1) lone++;   // 只有正解是這個詞性
+      });
+    });
+  }
+  return { n, lone, notFour };
+});
+check(cls.notFour===0, `每個空格都有四個相異選項（${cls.n} 個空格中不足四個：${cls.notFour}）`);
+check(cls.lone===0,
+  cls.lone ? `有 ${cls.lone}/${cls.n} 個空格只有正解是該詞性，光看詞性就能猜對`
+           : `${cls.n} 個空格的四個選項都是同一種詞性，猜不出來`);
+
 check(errs.length===0, errs.length?'JS 例外：'+errs.join(' | '):'沒有 JS 例外');
 await br.close();
 console.log(fails?`\n❌ ${fails} 項未通過`:'\n✅ 全部通過');

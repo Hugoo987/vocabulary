@@ -354,6 +354,56 @@ function checkPolice() {
   });
   ok('每個主題內部沒有重複的中文意思');
 }
+// 新單元的 id 不能跟總複習題庫裡既有的單元撞號。撞到的話，別的教學單元的字
+// 會被併進新單元：出題的干擾選項、報告的單元分析、單元方塊的字數全部會跑掉。
+// （verbs3 就發生過：新動詞單元沿用了舊的 verbs3，52 個舊字被吃進來。）
+function checkCatIds() {
+  console.log('\n單元 id');
+  const scopeCats = Object.keys(WORDS);
+  const scopeEn = {};
+  scopeCats.forEach(c => { scopeEn[c] = new Set(WORDS[c].map(w => w[0].toLowerCase())); });
+  const bad = [];
+  scopeCats.forEach(c => {
+    const strangers = REVIEW_WORDS.filter(w => w.cat === c && !scopeEn[c].has(w.en.toLowerCase()));
+    if (strangers.length) {
+      bad.push(`${c}：總複習裡還有 ${strangers.length} 個不屬於本次範圍的字`
+        + `（${strangers.slice(0, 5).map(w => w.en).join('、')}${strangers.length > 5 ? '…' : ''}）`);
+    }
+  });
+  bad.length
+    ? fail('本次範圍的單元 id 跟舊單元撞號：' + bad.join('；'))
+    : ok('本次範圍的每個單元 id 都是獨立的，沒有混到舊單元的字');
+
+  // 同一個物件裡寫兩個相同的鍵，JS 只會留後面那個，前面那個靜靜消失
+  let dupFound = 0;
+  ['CAT_LABEL', 'CAT_COLOR', 'REVIEW_CAT_LABEL', 'TYPE_LABEL', 'MODE_LABEL', 'MODE_CODE', 'CODE_MODE']
+    .forEach(name => {
+      const keys = objKeys(name);
+      if (!keys) return;
+      const dup = [...new Set(keys.filter((k, i) => keys.indexOf(k) !== i))];
+      if (dup.length) { fail(`${name} 有重複的鍵（後面的會蓋掉前面的）：${dup.join('、')}`); dupFound++; }
+    });
+  if (!dupFound) ok('標籤對照表沒有重複的鍵');
+
+  // 本次範圍的每個單元都要有名稱與顏色，否則單元方塊會沒有字或沒有底色
+  [['CAT_LABEL', '名稱'], ['CAT_COLOR', '顏色']].forEach(([name, what]) => {
+    const keys = objKeys(name) || [];
+    const missing = scopeCats.filter(c => !keys.includes(c));
+    missing.length ? fail(`本次範圍有單元缺少${what}（${name}）：` + missing.join('、'))
+                   : ok(`本次範圍的每個單元都有${what}`);
+  });
+}
+function objSource(name) {
+  const m = js.match(new RegExp('const ' + name + ' = \\{[\\s\\S]*?\\};'));
+  return m ? m[0] : null;
+}
+function objKeys(name) {
+  const src = objSource(name);
+  if (!src) return null;
+  return [...src.matchAll(/([A-Za-z_][A-Za-z0-9_]*)\s*:/g)].map(x => x[1]);
+}
+checkCatIds();
+
 checkPolice();
 
 checkArticles();

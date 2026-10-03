@@ -1184,7 +1184,7 @@ const WORDS = {
     ["everywhere","無論何處","We welcome people from ___ and anywhere."],
     ["anywhere","任何地方","We welcome people from everywhere and ___ ."]
   ],
-  verbs3: [
+  verbs4: [
     ["cause","造成","Careless driving can ___ a terrible accident on this road."],
     ["aim","瞄準","The hunter raised his gun to ___ at the wild bird."],
     ["alarm","使驚慌","Loud thunder can ___ a small child in the middle of the night."],
@@ -1329,9 +1329,9 @@ const WORDS = {
 };
 
 const CAT_LABEL = { adjectives3:"ADJECTIVES 其他形容詞", people:"PEOPLE 人物", adverbs3:"ADVERBS 其他副詞",
-  verbs3:"VERBS 其他動詞" };
+  verbs4:"VERBS 其他動詞" };
 const CAT_COLOR = { adjectives3:"var(--numbers)", people:"var(--address)", adverbs3:"var(--time)",
-  verbs3:"var(--family)" };
+  verbs4:"var(--family)" };
 const TYPE_LABEL = { en2zh:"英翻中", zh2en:"中翻英", cloze:"克漏字", article:"文章填空",
   mc:"文法選擇", phrase:"片語中翻英", order:"句子重組", error:"挑錯" };
 const TYPE_DESC = {
@@ -1349,7 +1349,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.2e5a9858c3.json';
+const BANK_FILE = 'bank/bank.3b1bc75b1d.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -1812,6 +1812,23 @@ let artIndex = 0;
 let artScore = 0;
 
 // Split "text with [[blank]]s" into renderable pieces.
+// 粗略的詞性分桶。題庫的單元是按主題分的（food、sports…），只有動詞、
+// 形容詞、副詞三類在單元名稱上看得出來，其餘一律當名詞類。
+function wordClass(cat){
+  const c = String(cat || '');
+  if(/^verbs/.test(c)) return 'verb';
+  if(/^adjectives/.test(c)) return 'adj';
+  if(/^adverbs/.test(c)) return 'adv';
+  return 'other';
+}
+// 同詞性的候選字。同類的字太少就退回整個題庫 —— 寧可出一題靠詞性也猜得到的，
+// 也不要湊不出四個選項。
+function sameClassPool(w, pool){
+  const want = wordClass(w.cat);
+  const same = pool.filter(p => wordClass(p.cat) === want);
+  return same.length >= 12 ? same : pool;
+}
+
 function parseArticle(text){
   const parts = [];
   const blanks = [];
@@ -1833,11 +1850,16 @@ function startArticle(a){
   const lookup = {};
   retrainPool().forEach(w => { lookup[w.en.toLowerCase()] = w; });
 
+  const wholeBank = fullPool().concat(REVIEW_WORDS);
   artBlanks = blanks.map(en => {
     const w = lookup[en.toLowerCase()] || { en, zh: '', cat: '' };
     // Same rule as the single-sentence cloze: distractors come from other units
-    // so exactly one option can fit the sentence.
-    const distractors = pickDistractors(fullPool().concat(REVIEW_WORDS), w, 'en', false);
+    // so exactly one option can fit the sentence. But "other unit" alone is not
+    // enough here: the bank is mostly nouns, so a verb blank used to get three
+    // noun options and the student could answer on word class without reading
+    // anything (measured: 67% of blanks). Keep the distractors in the same word
+    // class so the sentence has to be understood.
+    const distractors = pickDistractors(sameClassPool(w, wholeBank), w, 'en', false);
     return {
       en: w.en, zh: w.zh, cat: w.cat,
       options: shuffle([w.en, ...distractors.map(d => d.en)]),
@@ -2333,9 +2355,9 @@ const REVIEW_CAT_LABEL = {
   occupations:'職業', weather:'天氣大自然', geography:'地理詞彙',
   auxiliaries:'Be動詞&助動詞', prepositions:'介系詞', conjunctions:'連接詞',
   interjections:'感歎詞', nouns:'其他名詞', adjectives2:'常見形容詞', adverbs:'常見副詞',
-  adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）', people:'人物', verbs3:'其他動詞（進階）',
+  adverbs2:'其他副詞', adverbs3:'其他副詞（進階）', adjectives3:'其他形容詞（進階）', people:'人物',
   grammar:'文法', phrase:'片語',
-  verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
+  verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', verbs4:'其他動詞（進階）', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
 const MODE_LABEL = { police:'警專單字', practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練',
