@@ -326,7 +326,10 @@ const heatCalc = await page.evaluate(() => {
   const cells = heatCells(days, HEAT_WEEKS);
   const st = heatStats(cells);
   return { n: cells.length, weeks: HEAT_WEEKS, levels: [0,1,3,6].map(heatLevel), st,
-           future: cells.filter(c => c.future).length };
+           future: cells.filter(c => c.future).length,
+           // 格子補滿到本週週六，所以「未來」的格子數就是本週還沒到的天數。
+           // 週六當天是 0 —— 之前這裡寫死 future > 0，每個週六都會誤判。
+           expectFuture: 6 - new Date().getDay() };
 });
 check(heatCalc.n === heatCalc.weeks * 7, `畫半年份的格子（${heatCalc.n} 格＝${heatCalc.weeks} 週）`);
 check(JSON.stringify(heatCalc.levels) === JSON.stringify([0,1,3,4]),
@@ -334,7 +337,10 @@ check(JSON.stringify(heatCalc.levels) === JSON.stringify([0,1,3,4]),
 check(heatCalc.st.total === 11 && heatCalc.st.activeDays === 4,
   `統計正確：共 ${heatCalc.st.total} 次、${heatCalc.st.activeDays} 天有練習`);
 check(heatCalc.st.now === 3, `目前連續 ${heatCalc.st.now} 天`);
-check(heatCalc.future > 0, '本週未來的日子留白，不會畫成「沒練習」');
+check(heatCalc.future === heatCalc.expectFuture,
+  heatCalc.expectFuture === 0
+    ? '今天是週六，本週沒有未來的日子，格子剛好畫到今天'
+    : `本週未來的 ${heatCalc.expectFuture} 天留白，不會畫成「沒練習」（實際 ${heatCalc.future}）`);
 
 // 學生一筆紀錄都沒有時，報告仍要畫出（空的）熱力圖，不然老師會以為功能不見了
 const emptyHeat = await page.evaluate(() => {

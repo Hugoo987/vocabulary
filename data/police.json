@@ -1,0 +1,93 @@
+{
+  "note": "警專單字專區。獨立題庫，不混進課本的「本次範圍」與「總複習」。單元 id 一律以 pol- 開頭。每個例句都要有一個 ___ 空格，且句子裡不能出現答案本身。",
+  "units": [
+    {
+      "id": "pol-crime",
+      "label": "犯罪・治安",
+      "color": "#C0504D",
+      "words": [
+        ["crime", "犯罪行為", "Stealing a car is a serious ___ in every country."],
+        ["criminal", "罪犯", "The ___ was sent away for ten years after the trial."],
+        ["suspect", "嫌疑犯", "The police questioned the ___ for three hours last night."],
+        ["victim", "受害者", "The ___ of the robbery was too scared to say anything."],
+        ["witness", "目擊證人", "A ___ told the police exactly what he saw that night."],
+        ["thief", "小偷", "A ___ broke into the shop and took all the money."],
+        ["steal", "偷走", "He tried to ___ a watch from the store yesterday."],
+        ["rob", "搶劫", "Two men with masks tried to ___ the bank this morning."],
+        ["violence", "暴力", "There is too much ___ in this movie for young children."],
+        ["dangerous", "危險的", "Walking alone on that street at night is very ___ ."],
+        ["protect", "保護", "The police work hard every day to ___ people in the city."],
+        ["prison", "監獄", "He spent five years in ___ before he came home."],
+        ["weapon", "武器", "The man was carrying a ___ when the officers found him."],
+        ["gang", "幫派", "The young man left the ___ and went back to school."],
+        ["drug", "毒品", "Selling this kind of ___ can send you to jail for years."]
+      ]
+    },
+    {
+      "id": "pol-law",
+      "label": "執法・法律",
+      "color": "#4C6EA8",
+      "words": [
+        ["police", "警察", "The ___ came very quickly after we called 110."],
+        ["officer", "警官", "A young ___ helped the old man cross the busy street."],
+        ["arrest", "逮捕", "The judge said they could ___ him if he broke the rules again."],
+        ["law", "法律", "Everyone must follow the ___ , even people with money."],
+        ["illegal", "非法的", "Parking your car in front of this gate is ___ ."],
+        ["court", "法院", "The judge asked the man to come to ___ next Monday."],
+        ["judge", "法官", "The ___ listened to both sides before making a decision."],
+        ["guilty", "有罪的", "The man was found ___ and had to pay a lot of money."],
+        ["punish", "處罰", "The school will ___ any student who cheats on a test."],
+        ["rule", "規則", "There is one ___ here: nobody may smoke inside the building."],
+        ["obey", "遵守", "Drivers must ___ the speed limit on this mountain road."],
+        ["prove", "證明", "He could not ___ that he was at home that night."],
+        ["evidence", "證據", "The officers found enough ___ to take the man away."],
+        ["investigate", "調查", "The police began to ___ the case early last week."],
+        ["fine", "罰款", "She had to pay a ___ of two thousand dollars for speeding."]
+      ]
+    },
+    {
+      "id": "pol-traffic",
+      "label": "交通・事故",
+      "color": "#C98A2E",
+      "words": [
+        ["accident", "意外事故", "The ___ happened because the driver was looking at his phone."],
+        ["traffic", "交通", "The ___ on this road is always heavy at eight in the morning."],
+        ["driver", "駕駛人", "The ___ of the blue car did not stop at the red light."],
+        ["license", "駕照", "The officer asked the man to show his ___ and his ID card."],
+        ["speed", "速度", "He was driving at a very high ___ when he hit the wall."],
+        ["crash", "撞上", "The two cars ___ into each other at the corner."],
+        ["injured", "受傷的", "Two people were ___ in the accident and sent away by ambulance."],
+        ["ambulance", "救護車", "The ___ arrived in five minutes and took the hurt man to the hospital."],
+        ["helmet", "安全帽", "You must wear a ___ when you ride a motorcycle in Taiwan."],
+        ["careful", "小心的", "Please be ___ when you walk on this busy street."],
+        ["cross", "穿越", "Look both ways before you ___ the road."],
+        ["sidewalk", "人行道", "People should walk on the ___ instead of on the road."],
+        ["signal", "號誌", "The traffic ___ turned red, so all the cars stopped."],
+        ["motorcycle", "機車", "He rides his ___ to school every morning, rain or shine."],
+        ["drunk", "喝醉的", "The man was ___ , so the officer would not let him drive."]
+      ]
+    },
+    {
+      "id": "pol-verb",
+      "label": "高頻動詞・形容詞",
+      "color": "#5B8C5A",
+      "words": [
+        ["happen", "發生", "Can anyone tell me what will ___ to him next?"],
+        ["discover", "發現", "The police hope to ___ the truth about the fire soon."],
+        ["escape", "逃走", "The thief tried to ___ through the back door of the shop."],
+        ["warn", "警告", "The officer will ___ you first before he gives you a ticket."],
+        ["refuse", "拒絕", "He will ___ to answer any more questions without a lawyer."],
+        ["admit", "承認", "In the end, the boy had to ___ that he took the money."],
+        ["explain", "解釋", "Please ___ to me why you were standing there so late."],
+        ["solve", "解決", "It took the team two months to ___ this difficult case."],
+        ["notice", "注意到", "Did you ___ anything strange around the building last night?"],
+        ["follow", "跟隨", "The little dog likes to ___ me everywhere I go."],
+        ["search", "搜查", "The officers began to ___ the whole building room by room."],
+        ["serious", "嚴重的", "The doctor said that her injury was not ___ at all."],
+        ["honest", "誠實的", "Please be ___ and tell me what really happened here."],
+        ["brave", "勇敢的", "The ___ girl ran into the fire to save her little cat."],
+        ["polite", "有禮貌的", "The young officer was very ___ when he spoke to us."]
+      ]
+    }
+  ]
+}

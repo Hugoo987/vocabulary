@@ -327,6 +327,8 @@
 
   /* ---- Word list (study before the quiz) ---- */
   .mode-card.wordlist{ background: #E9F5EF; }
+  .mode-card.police{ background: #EDEAF7; }
+  .notice-box.police{ background:#EDEAF7; border-color:#5B4B9B; color:#5B4B9B; }
   .mode-card.report{ background: #EFEAF6; }
   .mode-card.paper{ background: #EAF1FB; }
   .wl-hint{ font-size:12px; color:var(--ink-soft); line-height:1.7; margin:10px 0 4px; }
@@ -689,6 +691,16 @@
       </div>
     </div>
 
+    <div class="row-label">警專專區</div>
+    <div class="mode-grid">
+      <div class="mode-card police" id="modePolice">
+        <div class="icon">🚔</div>
+        <h3>警專單字</h3>
+        <p>考警專範圍的單字，和課本的進度分開算：<b><span id="policeWordCount">0</span></b> 個字，分
+          <span id="policeUnitCount">0</span> 個主題。可自選主題、題型與題數。</p>
+      </div>
+    </div>
+
     <div class="remind">
       <button class="mini-btn" id="remindToggleBtn">⏰ 設定每天提醒</button>
       <div class="remind-body hidden" id="remindBody">
@@ -867,6 +879,7 @@
     <div class="pill-row" id="wlTabRow">
       <div class="pill active" data-wl="scope">本次範圍</div>
       <div class="pill" data-wl="wrong">我的錯題</div>
+      <div class="pill" data-wl="police">警專單字</div>
       <div class="pill" data-wl="all">查以前教過的字</div>
     </div>
     <input class="name-input wl-search" id="wlSearch" placeholder="輸入英文或中文搜尋…">
@@ -978,6 +991,34 @@
     <div class="notice-box review" id="reviewPoolNote">從目前教過的所有單元（<b id="reviewPoolCount">1112</b> 個單字）中隨機出題，不限單一單元。</div>
 
     <button class="big-btn" id="reviewStartBtn">開始總複習</button>
+  </div>
+
+  <!-- POLICE ZONE SETUP (its own bank, so its own scope/type/count state) -->
+  <div class="card hidden" id="policeSetupScreen">
+    <div class="back-link" id="backHint4">← 返回選擇模式</div>
+    <div class="row-label" style="margin-top:0;">選擇要考的主題（可複選）</div>
+    <div class="cat-grid" id="policeCatGrid"></div>
+
+    <div class="row-label">題型（可複選，全部都是選擇題）</div>
+    <div class="pill-row" id="policeTypeRow">
+      <div class="pill active" data-type="en2zh">英翻中</div>
+      <div class="pill active" data-type="zh2en">中翻英</div>
+      <div class="pill active" data-type="cloze">克漏字</div>
+    </div>
+
+    <div class="row-label">題目數量</div>
+    <div class="pill-row" id="policeCountRow">
+      <div class="pill" data-count="10">10 題</div>
+      <div class="pill" data-count="20">20 題</div>
+      <div class="pill" data-count="30">30 題</div>
+      <div class="pill" data-count="9999">全部作答</div>
+    </div>
+
+    <div class="row-label">題目範圍</div>
+    <div class="notice-box police">🚔 只從警專的單字出題，不會混到課本的單元。答錯的字一樣會進「我的錯題紀錄」。</div>
+
+    <button class="big-btn" id="policeStartBtn">開始</button>
+    <div class="hint" id="policePoolHint"></div>
   </div>
 
   <!-- QUIZ SCREEN -->
@@ -1164,18 +1205,20 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.2e22eea1e4.json';
+const BANK_FILE = 'bank/bank.66fa36d5f3.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
 let ARTICLES = [];              // 文章專區
 let GRAMMAR_DATA = { grammar: [], phrases: [] };   // 文法與片語
+let POLICE_UNITS = [];          // 警專單字專區（獨立題庫，不混進課本範圍）
 
 function applyBank(d){
   REVIEW_WORDS = Array.isArray(d.review) ? d.review : [];
   ALT_SENTENCES = d.alt && typeof d.alt === 'object' ? d.alt : {};
   ARTICLES = Array.isArray(d.articles) ? d.articles : [];
   GRAMMAR_DATA = (d.grammar && d.grammar.grammar) ? d.grammar : { grammar: [], phrases: [] };
+  POLICE_UNITS = (d.police && Array.isArray(d.police.units)) ? d.police.units : [];
 }
 
 // 先連網路拿，拿不到就用上次成功載入的那一份（收訊不好時仍然能用）。
@@ -1280,6 +1323,7 @@ const wordListScreen = document.getElementById('wordListScreen');
 const articleListScreen = document.getElementById('articleListScreen');
 const articleScreen = document.getElementById('articleScreen');
 const setupScreen = document.getElementById('setupScreen');
+const policeSetupScreen = document.getElementById('policeSetupScreen');
 const examConfirmScreen = document.getElementById('examConfirmScreen');
 const reviewSetupScreen = document.getElementById('reviewSetupScreen');
 const quizScreen = document.getElementById('quizScreen');
@@ -1294,7 +1338,7 @@ function showScreen(el){
     el === quizScreen || el === articleScreen || el === resultScreen || el === grammarQuizScreen);
   [bootScreen, roleScreen, modeScreen, reportScreen, wordListScreen, articleListScreen, articleScreen,
    grammarListScreen, grammarCardScreen, grammarQuizScreen,
-   setupScreen, examConfirmScreen, reviewSetupScreen, quizScreen, resultScreen]
+   setupScreen, examConfirmScreen, reviewSetupScreen, policeSetupScreen, quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
   // Switching screens keeps the old scroll position otherwise: tap 錯題重練 at
@@ -1573,7 +1617,10 @@ function catOf(en){
     if(arr.some(w => w[0] === en)) return cat;
   }
   const r = REVIEW_WORDS.find(w => w.en === en);
-  return r ? r.cat : '';
+  if(r) return r.cat;
+  // 警專是獨立題庫，課本題庫找不到的字還要再找這裡，否則錯題會沒有單元
+  const pw = policeAllPool().find(w => w.en === en);
+  return pw ? pw.cat : '';
 }
 
 function recordWrong(en, zh, type, cat){
@@ -1852,9 +1899,9 @@ const CODE_TYPE = { e:'en2zh', z:'zh2en', c:'cloze' };
 // Every mode needs a code here: an unknown mode falls back to 'p', which would
 // quietly report a reading or an assigned paper as ordinary practice.
 const MODE_CODE = { practice:'p', exam:'e', review:'r', retry:'t', article:'a', assigned:'s',
-  grammar:'g' };
+  grammar:'g', police:'j' };
 const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry', a:'article', s:'assigned',
-  g:'grammar' };
+  g:'grammar', j:'police' };
 
 // The compact record shared by both transfer routes: the pasted code and the
 // cloud sync below send exactly this.
@@ -2147,7 +2194,7 @@ const REVIEW_CAT_LABEL = {
   verbs1:'動詞①感官情感', verbs2:'動詞②動作', verbs3:'動詞③其他', adjectives:'其他形容詞'
 };
 // TYPE_LABEL (英翻中／中翻英／克漏字) is declared with the quiz config above.
-const MODE_LABEL = { practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練',
+const MODE_LABEL = { police:'警專單字', practice:'平常練習', exam:'正式考試', review:'總複習', retry:'錯題重練',
   article:'文章閱讀', assigned:'老師指派考卷', grammar:'文法・片語練習' };
 
 function esc(s){
@@ -2178,10 +2225,14 @@ const FALLBACK_COLORS = ['var(--health)','var(--address)','var(--family)','var(-
 // current scope, so prefer it — CAT_LABEL's "BE & AUX Be動詞&助動詞" style is
 // too long for a chip and truncates badly.
 function catLabel(cat){
+  const pu = policeUnit(cat);
+  if(pu) return '警專 ' + pu.label;
   return REVIEW_CAT_LABEL[cat] || CAT_LABEL[cat] || cat || '其他';
 }
 
 function catColor(cat){
+  const pu = policeUnit(cat);
+  if(pu && pu.color) return pu.color;
   if(CAT_COLOR[cat]) return CAT_COLOR[cat];
   if(!cat) return 'var(--ink-soft)';
   let h = 0;
@@ -2759,6 +2810,7 @@ let wlTab = 'scope';
 function wlWords(){
   if(wlTab === 'wrong') return retrainable();
   if(wlTab === 'all') return REVIEW_WORDS;
+  if(wlTab === 'police') return policeAllPool();
   return fullPool();
 }
 
@@ -2891,7 +2943,13 @@ document.getElementById('modeReview').addEventListener('click', ()=>{
   mode = 'review';
   showScreen(reviewSetupScreen);
 });
+document.getElementById('modePolice').addEventListener('click', ()=>{
+  mode = 'police';
+  showScreen(policeSetupScreen);
+  updatePolicePoolHint();
+});
 document.getElementById('backHint').addEventListener('click', ()=> showScreen(modeScreen));
+document.getElementById('backHint4').addEventListener('click', ()=> showScreen(modeScreen));
 document.getElementById('backHint2').addEventListener('click', ()=> showScreen(modeScreen));
 document.getElementById('backHint3').addEventListener('click', ()=> showScreen(modeScreen));
 
@@ -2971,6 +3029,84 @@ document.querySelectorAll('#reviewCountRow .pill').forEach(p=>{
     reviewCount = parseInt(p.dataset.count);
   });
 });
+// ---------------- Setup: 警專專區（主題 + 題型 + 題數，與其他模式互不影響） ----------------
+const selectedPoliceCats = new Set();
+const selectedPoliceTypes = new Set(ALL_TYPES);
+let policeCount = 20;
+
+// 單元來自題庫，而題庫是載入後才有的，所以格子要等 loadBank() 之後才畫。
+function renderPoliceUnits(){
+  const grid = document.getElementById('policeCatGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  selectedPoliceCats.clear();
+  POLICE_UNITS.forEach(u=>{
+    selectedPoliceCats.add(u.id);
+    const div = document.createElement('label');
+    div.className = 'cat-tab';
+    div.dataset.cat = u.id;
+    div.innerHTML = `<input type="checkbox" checked> ${esc(u.label)} <span class="count">${u.words.length}</span>`;
+    div.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(selectedPoliceCats.has(u.id)){ selectedPoliceCats.delete(u.id); div.classList.add('off'); }
+      else{ selectedPoliceCats.add(u.id); div.classList.remove('off'); }
+      updatePolicePoolHint();
+    });
+    grid.appendChild(div);
+  });
+  const total = policeAllPool().length;
+  const wc = document.getElementById('policeWordCount');
+  const uc = document.getElementById('policeUnitCount');
+  if(wc) wc.textContent = total;
+  if(uc) uc.textContent = POLICE_UNITS.length;
+  // 題庫還沒有警專資料時不要讓入口看起來可以按
+  const card = document.getElementById('modePolice');
+  if(card) card.classList.toggle('hidden', total === 0);
+  updatePolicePoolHint();
+}
+
+function updatePolicePoolHint(){
+  const n = policePool(selectedPoliceCats).length;
+  const willAsk = Math.min(policeCount, n);
+  const hint = document.getElementById('policePoolHint');
+  const btn = document.getElementById('policeStartBtn');
+  if(!hint || !btn) return;
+  if(n === 0 || selectedPoliceTypes.size === 0){
+    hint.textContent = '請至少選擇一個主題與一種題型';
+  } else {
+    hint.textContent = `目前主題共有 ${n} 個單字，將出 ${willAsk} 題`;
+  }
+  btn.disabled = (n === 0 || selectedPoliceTypes.size === 0);
+}
+
+document.querySelectorAll('#policeTypeRow .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const t = p.dataset.type;
+    if(selectedPoliceTypes.has(t)){
+      if(selectedPoliceTypes.size>1){ selectedPoliceTypes.delete(t); p.classList.remove('active'); }
+    } else { selectedPoliceTypes.add(t); p.classList.add('active'); }
+    updatePolicePoolHint();
+  });
+});
+document.querySelectorAll('#policeCountRow .pill').forEach(p=>{
+  if(parseInt(p.dataset.count)===20) p.classList.add('active');
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#policeCountRow .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    policeCount = parseInt(p.dataset.count);
+    updatePolicePoolHint();
+  });
+});
+document.getElementById('policeStartBtn').addEventListener('click', ()=>{
+  const pool = policePool(selectedPoliceCats);
+  if(!pool.length || selectedPoliceTypes.size === 0) return;
+  mode = 'police';
+  quizIsReview = false;
+  const n = Math.min(policeCount, pool.length);
+  quiz = attachQuestions(shuffle(weightedSample(pool, n)), selectedPoliceTypes, pool);
+  beginQuiz();
+});
+
 document.querySelectorAll('#retryCountRow .pill').forEach(p=>{
   p.addEventListener('click', ()=>{
     document.querySelectorAll('#retryCountRow .pill').forEach(x=>x.classList.remove('active'));
@@ -3064,6 +3200,26 @@ function fullPool(){
   return poolWords(ALL_CATS);
 }
 
+// ---------------- 警專單字專區 ----------------
+// 自己的題庫、自己的單元，不混進「本次範圍」(WORDS) 或「總複習」(REVIEW_WORDS)：
+// 警專的字彙範圍是另一套，而且有 12 個字跟課本重疊、中文意思還不一樣
+// （例如 fine 在課本是「好的」、在警專考的是「罰款」）。混在一起出題會變成
+// 同一題有兩個都說得通的答案。
+function policeUnit(id){
+  return POLICE_UNITS.find(u => u.id === id) || null;
+}
+function policePool(ids){
+  let pool = [];
+  POLICE_UNITS.forEach(u=>{
+    if(ids && !ids.has(u.id)) return;
+    pool = pool.concat(u.words.map(w=>({ en:w[0], zh:w[1], sentence:w[2], cat:u.id })));
+  });
+  return pool;
+}
+function policeAllPool(){
+  return policePool(null);
+}
+
 // Every word the student could possibly have met — the current exam scope plus
 // the whole review bank. 錯題重練 has to search this, not just fullPool():
 // most of the review bank sits outside the current scope, and a word wrong in
@@ -3075,6 +3231,9 @@ function retrainPool(){
   // The current scope wins where a word appears in both: that gloss is the one
   // being taught right now (e.g. miss 錯過 rather than miss 小姐).
   fullPool().forEach(w => byEn.set(w.en, w));
+  // 警專的字也要能重練、也要查得到中文，否則老師匯入報告時會看到
+  // 「(已不在目前題庫)」。課本已經有的字不覆蓋，課本的解釋才是現在在教的。
+  policeAllPool().forEach(w => { if(!byEn.has(w.en)) byEn.set(w.en, w); });
   return [...byEn.values()];
 }
 function updatePoolHint(){
@@ -3189,7 +3348,10 @@ function attachQuestions(list, types, distractorPool){
 // One four-choice question for a given word and question type. Split out of
 // attachQuestions so the teacher's paper can rotate types deliberately.
 function makeQuestion(w, type, distractorPool){
-  const globalPool = fullPool();
+  // 克漏字的干擾選項刻意取自「其他單元」，這樣只有一個選項句意通。
+  // 警專是獨立題庫，所以那個「其他單元」要在警專裡面找，不然警專的題目
+  // 會冒出課本的字。
+  const globalPool = policeUnit(w.cat) ? policeAllPool() : fullPool();
   {
     let q = { ...w, type };
     if(type==='en2zh'){
@@ -3520,8 +3682,10 @@ function renderQuestion(){
     tag.textContent = '📚 總複習';
     tag.style.background = 'var(--review)';
   } else {
-    tag.textContent = CAT_LABEL[q.cat];
-    tag.style.background = CAT_COLOR[q.cat];
+    // catLabel/catColor 認得課本單元、總複習單元與警專主題，CAT_LABEL 只認得
+    // 本次範圍，警專的題目會變成空白的標籤。
+    tag.textContent = catLabel(q.cat);
+    tag.style.background = catColor(q.cat);
   }
   document.getElementById('typeTag').textContent = TYPE_LABEL[q.type];
 
@@ -3695,6 +3859,7 @@ function showResult(){
     else if(mode==='article') title.textContent = '文章讀完了，來看看填空結果 📖';
     else if(mode==='assigned') title.textContent = '老師指派的考卷完成了 📩';
     else if(mode==='grammar') title.textContent = '文法練習完成 📐';
+    else if(mode==='police') title.textContent = '警專單字練習完成 🚔';
     else title.textContent = '再複習一下這幾個單字吧 📖';
   }
 
@@ -3822,6 +3987,7 @@ function paintReviewCount(){
     return;
   }
   paintReviewCount();
+  renderPoliceUnits();
   renderHistory();
   paintExamCount();
   checkAssignment();

@@ -40,12 +40,13 @@ if (!WORDS) process.exit(1);
 // 題庫本體從 data/ 讀（v20 起不再寫在 index.html 裡）
 const dataDir = path.join(path.dirname(file), 'data');
 const readData = f => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
-let REVIEW_WORDS, ALT_RAW, ARTICLES_RAW, GRAMMAR_RAW;
+let REVIEW_WORDS, ALT_RAW, ARTICLES_RAW, GRAMMAR_RAW, POLICE_RAW;
 try {
   REVIEW_WORDS = readData('review-words.json');
   ALT_RAW = readData('alt-sentences.json');
   ARTICLES_RAW = readData('articles.json');
   GRAMMAR_RAW = readData('grammar.json');
+  POLICE_RAW = readData('police.json');
 } catch (e) {
   fail('讀不到 data/ 裡的題庫：' + e.message);
   process.exit(1);
@@ -57,7 +58,8 @@ function checkBankFresh() {
   const m = html.match(/const BANK_FILE = '([^']+)';/);
   if (!m) { fail('index.html 找不到 BANK_FILE'); return; }
   const want = crypto.createHash('sha1').update(JSON.stringify({
-    review: REVIEW_WORDS, alt: ALT_RAW, articles: ARTICLES_RAW, grammar: GRAMMAR_RAW
+    review: REVIEW_WORDS, alt: ALT_RAW, articles: ARTICLES_RAW, grammar: GRAMMAR_RAW,
+    police: POLICE_RAW
   })).digest('hex').slice(0, 10);
   const expected = `bank/bank.${want}.json`;
   const onDisk = path.join(path.dirname(file), m[1]);
@@ -270,6 +272,63 @@ checkSet('本次考試範圍 WORDS', flatWords);
 console.log('  單元組成：' + Object.entries(WORDS).map(([c, a]) => c + ' ' + a.length).join('、'));
 checkSet('總複習題庫 REVIEW_WORDS', REVIEW_WORDS);
 checkAltSentences();
+// 警專專區：獨立題庫，所以「英文不重複／中文不重複／沒有送分題」要在
+// 這一包自己成立。跟課本題庫重疊的字不算錯 —— 兩邊是分開出題的。
+function checkPolice() {
+  console.log('\n警專單字專區 data/police.json');
+  const units = (POLICE_RAW && Array.isArray(POLICE_RAW.units)) ? POLICE_RAW.units : null;
+  if (!units) { fail('找不到 units 陣列'); return; }
+
+  const ids = new Set(), dupId = [];
+  const flat = [];
+  units.forEach(u => {
+    if (!u.id || !/^pol-/.test(u.id)) fail(`單元 id 要以 pol- 開頭：${u.id}`);
+    if (ids.has(u.id)) dupId.push(u.id);
+    ids.add(u.id);
+    if (!u.label) fail(`單元 ${u.id} 沒有名稱`);
+    (u.words || []).forEach(w => {
+      if (!Array.isArray(w) || w.length !== 3) { fail(`${u.id} 有一筆格式不對：${JSON.stringify(w)}`); return; }
+      flat.push({ en: w[0], zh: w[1], sentence: w[2], cat: u.id });
+    });
+  });
+  console.log(`  ${units.length} 個主題、共 ${flat.length} 個字`
+    + `（${units.map(u => u.label + ' ' + (u.words || []).length).join('、')}）`);
+  dupId.length ? fail('單元 id 重複：' + dupId.join('、')) : ok('單元 id 不重複');
+
+  // 每個主題至少要有四個字，否則同一題湊不出四個選項
+  const tooSmall = units.filter(u => (u.words || []).length < 4).map(u => u.id);
+  tooSmall.length ? fail('主題不足四個字（湊不出四個選項）：' + tooSmall.join('、'))
+                  : ok('每個主題都至少四個字（出題湊得出四個選項）');
+
+  // 送分題：答案出現在自己的例句裡
+  const giveaway = flat.filter(w => {
+    const bare = String(w.sentence).replace(/_{2,}/g, ' ');
+    return new RegExp('\\b' + w.en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(bare);
+  }).map(w => `${w.en}: ${w.sentence}`);
+  giveaway.length ? fail('例句直接出現答案（送分題）：' + giveaway.join(' ｜ '))
+                  : ok('沒有例句洩漏答案');
+
+  const tooShort = flat.filter(w => String(w.sentence).split(/\s+/).length < 6)
+    .map(w => `${w.en}(${String(w.sentence).split(/\s+/).length} 字)`);
+  tooShort.length ? fail('例句過短（線索不足）：' + tooShort.join('、'))
+                  : ok('每個例句都夠長（至少 6 個字）');
+
+  // 英文／中文不重複 ＋ 語意重疊檢查（checkSet 會一併跑 checkOverlap）
+  checkSet('  └ 警專題庫整體', flat);
+
+  // 真正會害人的是「同一個主題裡兩個選項都對」：en2zh / zh2en 的干擾選項
+  // 優先取自同一個主題。
+  units.forEach(u => {
+    const list = (u.words || []).map(w => ({ en: w[0], zh: w[1], sentence: w[2], cat: u.id }));
+    const zh = new Map();
+    list.forEach(w => zh.set(w.zh, (zh.get(w.zh) || 0) + 1));
+    const dup = [...zh].filter(([, n]) => n > 1).map(([k]) => k);
+    if (dup.length) fail(`主題 ${u.label} 裡中文意思重複：${dup.join('、')}`);
+  });
+  ok('每個主題內部沒有重複的中文意思');
+}
+checkPolice();
+
 checkArticles();
 
 // 2.4 文法・片語：內容與題目要能真的出得出來

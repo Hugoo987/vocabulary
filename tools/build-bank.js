@@ -17,7 +17,8 @@ const bank = {
   review: read('review-words.json'),
   alt: read('alt-sentences.json'),
   articles: read('articles.json'),
-  grammar: read('grammar.json')
+  grammar: read('grammar.json'),
+  police: read('police.json')
 };
 const json = JSON.stringify(bank);
 const hash = crypto.createHash('sha1').update(json).digest('hex').slice(0, 10);
@@ -39,5 +40,6 @@ fs.writeFileSync(htmlPath, html.replace(re, `const BANK_FILE = 'bank/${name}';`)
 const kb = n => (n / 1024).toFixed(0) + ' KB';
 console.log(`✅ bank/${name}（${kb(json.length)}）`);
 console.log(`   總複習 ${bank.review.length} 字、額外例句 ${Object.keys(bank.alt).length} 個字、`
-  + `文章 ${bank.articles.length} 篇、文法 ${bank.grammar.grammar.length}＋片語 ${bank.grammar.phrases.length}`);
+  + `文章 ${bank.articles.length} 篇、文法 ${bank.grammar.grammar.length}＋片語 ${bank.grammar.phrases.length}、`
+  + `警專 ${bank.police.units.reduce((n, u) => n + u.words.length, 0)} 字（${bank.police.units.length} 單元）`);
 console.log(`   index.html 現在 ${kb(fs.statSync(htmlPath).size)}`);
