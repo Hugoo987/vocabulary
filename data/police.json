@@ -48,7 +48,7 @@
     {
       "id": "pol-traffic",
       "label": "交通・事故",
-      "color": "#C98A2E",
+      "color": "#9A6923",
       "words": [
         ["accident", "意外事故", "The ___ happened because the driver was looking at his phone."],
         ["traffic", "交通", "The ___ on this road is always heavy at eight in the morning."],
@@ -70,7 +70,7 @@
     {
       "id": "pol-verb",
       "label": "高頻動詞・形容詞",
-      "color": "#5B8C5A",
+      "color": "#537F52",
       "words": [
         ["happen", "發生", "Can anyone tell me what will ___ to him next?"],
         ["discover", "發現", "The police hope to ___ the truth about the fire soon."],

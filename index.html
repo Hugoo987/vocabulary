@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v20 · 形容詞・人物・副詞</title>
+<title>單字大挑戰 v21 · 形容詞・人物・副詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -606,10 +606,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v20 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字</div>
+  <div class="top-banner">✅ 這是最新版 v21 ｜ 其他形容詞・人物・其他副詞 ｜ 96 字 ＋ 警專 60 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v20</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞 <span class="ver-badge">v21</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -1205,7 +1205,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.66fa36d5f3.json';
+const BANK_FILE = 'bank/bank.5d0580454a.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -3046,6 +3046,10 @@ function renderPoliceUnits(){
     div.className = 'cat-tab';
     div.dataset.cat = u.id;
     div.innerHTML = `<input type="checkbox" checked> ${esc(u.label)} <span class="count">${u.words.length}</span>`;
+    // .cat-tab 的字是白色，底色靠 CSS 裡寫死的 .cat-tab[data-cat="…"] 給。
+    // 警專的主題對不到那幾條，底色會是透明的 —— 白字印在米色卡片上看不見。
+    // 這裡直接把主題自己的顏色指定上去。
+    div.style.background = u.color || catColor(u.id);
     div.addEventListener('click', (e)=>{
       e.preventDefault();
       if(selectedPoliceCats.has(u.id)){ selectedPoliceCats.delete(u.id); div.classList.add('off'); }

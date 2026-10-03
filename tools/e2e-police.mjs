@@ -35,6 +35,42 @@ const tabs = await page.locator('#policeCatGrid .cat-tab').count();
 check(tabs === bank.units.length, `列出 ${tabs} 個主題可勾選`);
 check((await page.textContent('#policePoolHint')).includes(String(bank.total)),
   `預設全選，提示寫出 ${bank.total} 個字`);
+
+// .cat-tab 的字是白色，底色靠 CSS 裡一條一條寫死的 .cat-tab[data-cat="…"] 給。
+// 新主題對不到那些規則時底色是透明的，白字印在米色卡片上就完全看不見 ——
+// 這正是第一版踩到的。這一項驗的是「看得見」，不是「存在」。
+const legible = await page.evaluate(()=>{
+  const parse = c => {
+    const m = String(c).match(/rgba?\(([^)]+)\)/);
+    if(!m) return null;
+    const [r,g,b,a] = m[1].split(',').map(x=>parseFloat(x));
+    return { r, g, b, a: a === undefined ? 1 : a };
+  };
+  const lum = c => {
+    const f = v => { v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); };
+    return 0.2126*f(c.r) + 0.7152*f(c.g) + 0.0722*f(c.b);
+  };
+  return [...document.querySelectorAll('#policeCatGrid .cat-tab')].map(el=>{
+    const cs = getComputedStyle(el);
+    const bg = parse(cs.backgroundColor), fg = parse(cs.color);
+    let ratio = null;
+    if(bg && fg && bg.a > 0){
+      const L1 = Math.max(lum(bg), lum(fg)), L2 = Math.min(lum(bg), lum(fg));
+      ratio = (L1 + 0.05) / (L2 + 0.05);
+    }
+    return { cat: el.dataset.cat, label: el.textContent.trim(),
+             transparent: !bg || bg.a === 0, ratio: ratio && Math.round(ratio*10)/10 };
+  });
+});
+const invisible = legible.filter(t => t.transparent);
+check(invisible.length === 0,
+  invisible.length ? `主題方塊沒有底色，白字會看不見：${invisible.map(t=>t.cat).join('、')}`
+                   : '每個主題方塊都有自己的底色（白字看得見）');
+// 13px 粗體在 WCAG 算「一般文字」，門檻是 4.5:1
+const lowContrast = legible.filter(t => t.ratio !== null && t.ratio < 4.5);
+check(lowContrast.length === 0,
+  lowContrast.length ? `主題方塊對比太低：${lowContrast.map(t=>`${t.cat} ${t.ratio}:1`).join('、')}`
+                     : `每個主題方塊的文字對比都夠（最低 ${Math.min(...legible.map(t=>t.ratio))}:1）`);
 // 只留一個主題
 const firstId = bank.units[0].id;
 for(const u of bank.units.slice(1)) await page.click(`#policeCatGrid .cat-tab[data-cat="${u.id}"]`);
