@@ -217,6 +217,47 @@ console.log('\n【6. 雲端變少時，老師端不會被洗掉】');
   await ctx.close();
 }
 
+console.log('\n【7. 測試機器不可以碰到正式環境的資料庫】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(()=>({
+    host: location.hostname,
+    prodUrl: PROD_DB_URL,
+    enabled: SYNC_CONFIG.enabled,
+    ready: syncReady(),
+    blocked: syncBlockedHere()
+  }));
+  check(r.enabled === true, '設定檔裡同步本來是開著的（正式站要用）');
+  check(r.blocked === true, `在 ${r.host} 上判定為「不可同步」`);
+  check(r.ready === false,
+    'syncReady() 回傳 false —— 測試不會把資料寫進正式的 Firebase');
+
+  // 真的試一次：以學生身分做完測驗，不可以送出任何請求到正式網址
+  const hits = [];
+  p.on('request', req=>{ if(req.url().startsWith(r.prodUrl)) hits.push(req.method()+' '+req.url()); });
+  const pushed = await p.evaluate(async ()=>{
+    setRole('student');
+    historyData['absent'] = { en:'absent', zh:'x', cat:'adjectives3', count:1, types:{}, lastWrong:Date.now() };
+    return await syncPush();
+  });
+  await p.waitForTimeout(300);
+  check(pushed.skipped === true, '上傳被跳過（skipped）');
+  check(hits.length === 0,
+    hits.length ? `竟然連到了正式網址：${hits[0]}` : '完全沒有對正式網址發出任何請求');
+
+  // 把 dbUrl 指到模擬伺服器時要恢復正常，否則同步測不了
+  const viaMock = await p.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'guard-test';
+    return { ready: syncReady(), blocked: syncBlockedHere(), push: (await syncPush()).ok };
+  }, MOCK);
+  check(viaMock.ready && !viaMock.blocked && viaMock.push,
+    '改指到模擬伺服器之後同步恢復正常（同步測試不受影響）');
+  await ctx.close();
+}
+
 await br.close();
 console.log(fails? `\n❌ ${fails} 項未通過` : '\n✅ 全部通過');
 process.exit(fails?1:0);

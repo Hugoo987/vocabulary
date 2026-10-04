@@ -2275,7 +2275,25 @@ const SYNC_CONFIG = {
   classKey: 'lee-p9f4yyn51s'   // also the path the record lives at
 };
 
+// 正式環境的那一份紀錄只有一份，沒有備份，所以不可以從開發或測試機器寫進去。
+//
+// 這裡踩過一次很慘的坑：端對端測試是對著真的 index.html 跑的，而 SYNC_CONFIG
+// 預設就指向正式的 Firebase 與學生的 classKey。有幾套測試會以學生身分做完一輪
+// 測驗，做完就 syncPush() —— 於是每跑一次 CI，就用測試資料覆蓋掉學生雲端的
+// 真實紀錄一次。
+//
+// 所以：在 localhost / 127.0.0.1 上，只要 dbUrl 還是正式那一個，就一律當作
+// 沒有設定同步。要測同步的那幾套會自己把 dbUrl 指到模擬伺服器，不受影響。
+const PROD_DB_URL = SYNC_CONFIG.dbUrl;
+function isLocalHost(){
+  const h = location.hostname;
+  return h === 'localhost' || h === '127.0.0.1' || h === '::1' || h === '' || h === '0.0.0.0';
+}
+function syncBlockedHere(){
+  return isLocalHost() && SYNC_CONFIG.dbUrl === PROD_DB_URL;
+}
 function syncReady(){
+  if(syncBlockedHere()) return false;
   return !!(SYNC_CONFIG.enabled && SYNC_CONFIG.dbUrl && SYNC_CONFIG.classKey);
 }
 function syncUrl(){
