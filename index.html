@@ -1628,8 +1628,14 @@ function blankStore(){
            profiles: { student: blankProfile(), teacher: blankProfile() } };
 }
 
-function canUseLocalStorage(){
-  // Private windows and blocked-site-data settings throw on access, not just on write.
+// 讀與寫要分開判斷。以前這裡只有一個「寫得進去嗎」的測試，而 loadHistory()
+// 把讀取包在它的 if 裡面 —— 儲存空間一滿，寫入失敗，就連讀都不讀了，學生的
+// 錯題和身分看起來整個消失（其實資料還好好地在 localStorage 裡）。
+function canReadLocalStorage(){
+  try{ window.localStorage.getItem('__vq_probe__'); return true; }
+  catch(e){ return false; }   // 無痕視窗／封鎖網站資料時，連存取都會丟例外
+}
+function canWriteLocalStorage(){
   try{
     const probe = '__vq_probe__';
     window.localStorage.setItem(probe, '1');
@@ -1690,9 +1696,10 @@ function seedDaysFromSessions(p){
 
 async function loadHistory(){
   store = blankStore();
-  storageOK = canUseLocalStorage();
+  storageOK = canWriteLocalStorage();
 
-  if(storageOK){
+  // 讀取不受 storageOK 影響：寫不進去不代表讀不出來。
+  if(canReadLocalStorage()){
     try{
       const raw = window.localStorage.getItem(STORE_KEY);
       if(raw){
@@ -1747,12 +1754,32 @@ function currentProfile(){
   return store.profiles[(role === 'teacher') ? 'teacher' : 'student'];
 }
 
+// 空間不足時「題庫快取」是可以犧牲的（下次連網重抓就好），學生的錯題不是。
+function freeBankCache(){
+  try{ window.localStorage.removeItem(BANK_CACHE_KEY); return true; }
+  catch(e){ return false; }
+}
 function saveHistory(){
-  if(!storageOK || !store) return;
+  if(!store) return;
+  store.role = role;
+  const payload = JSON.stringify(store);
   try{
-    store.role = role;
-    window.localStorage.setItem(STORE_KEY, JSON.stringify(store));
-  }catch(err){ /* quota or blocked — the session still works, just not saved */ }
+    window.localStorage.setItem(STORE_KEY, payload);
+    storageOK = true;
+    return;
+  }catch(err){
+    // 存不下就先把題庫快取讓出來再試一次，不要直接放棄學生的紀錄
+    if(freeBankCache()){
+      try{
+        window.localStorage.setItem(STORE_KEY, payload);
+        storageOK = true;
+        paintStorageNote();
+        return;
+      }catch(e2){ /* 讓出來還是不夠 */ }
+    }
+  }
+  storageOK = false;
+  paintStorageNote();
 }
 
 // Which unit a word belongs to, for the teacher's per-unit breakdown.
@@ -1792,7 +1819,7 @@ function clearHistory(){
   saveHistory();
   // Push the cleared state too, or the teacher's next pull would restore what
   // the student just deleted.
-  if(role === 'student' && syncReady()) syncPush();
+  if(role === 'student' && syncReady()) syncPush(true);
   renderHistory();
 }
 
@@ -2180,13 +2207,32 @@ function syncUrl(){
 
 // Student -> cloud. Fire and forget: a failed upload must never block the quiz,
 // and the record is already safe in localStorage.
-async function syncPush(){
+// 上傳是整包覆蓋（PUT）。如果這台裝置的紀錄因為任何原因變空了
+// （儲存空間滿、換瀏覽器、清掉網站資料…），一做完測驗就會把雲端那份
+// 唯一的備份蓋掉，本來救得回來的資料就真的沒了。
+// 所以空的紀錄不准覆蓋雲端上有資料的紀錄；只有學生自己按「清除紀錄」
+// 時才帶 force，那是他本人的意思。
+async function syncPush(force){
   if(!syncReady() || role !== 'student') return { ok:false, skipped:true };
+  const payload = buildPayload();
+  if(!force && !payload.w.length && !payload.s.length){
+    try{
+      const res = await fetch(syncUrl(), { cache: 'no-store' });
+      if(res.ok){
+        const cloud = await res.json();
+        const cloudHas = cloud && ((cloud.w && cloud.w.length) || (cloud.s && cloud.s.length));
+        if(cloudHas){
+          return { ok:false, refused:true,
+            error:'這台裝置目前沒有任何紀錄，為了不蓋掉雲端既有的紀錄，這次不上傳。' };
+        }
+      }
+    }catch(e){ /* 讀不到雲端就照舊上傳，至少不會卡住學生 */ }
+  }
   try{
     const res = await fetch(syncUrl(), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildPayload())
+      body: JSON.stringify(payload)
     });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     lastSyncAt = Date.now();
@@ -2273,12 +2319,31 @@ function clearStudentRecord(){
   renderHistory();
 }
 
+// 存不進去有兩種完全不同的原因，給的建議也不一樣：
+//   讀得到但寫不進去 → 空間滿了，清一下就好，而且既有紀錄還在
+//   連讀都讀不到     → 無痕視窗或封鎖了網站資料
+function paintStorageNote(){
+  const note = document.getElementById('storageNote');
+  if(!note) return;
+  note.classList.remove('hidden');
+  if(storageOK){
+    note.textContent = role === 'teacher'
+      ? '✅ 學生的紀錄存在這台裝置的瀏覽器裡，也會從雲端同步過來。老師這邊只看報告，不會出題給自己做。'
+      : '✅ 你的錯題紀錄已儲存在這台裝置，下次打開這個頁面仍會看到。';
+    return;
+  }
+  note.innerHTML = canReadLocalStorage()
+    ? '⚠️ 這台裝置的儲存空間滿了，<b>接下來的紀錄存不下來</b>。'
+      + '以前的紀錄還在，不會消失。<br>請到瀏覽器設定清一下網站資料，或刪掉一些照片／App 空出空間，再重新整理這一頁。'
+    : 'ℹ️ 這個瀏覽器不允許儲存資料（可能是無痕視窗，或關閉了網站資料）。'
+      + '這次的錯題仍會累計，但關閉頁面後不會保留。';
+}
+
 function renderHistory(){
   renderAssignCard();
   const panel = document.getElementById('historyPanel');
   const list = document.getElementById('historyList');
   const sub = document.getElementById('historySub');
-  const note = document.getElementById('storageNote');
   const entries = Object.values(historyData).sort((a,b)=> b.count - a.count);
 
   // Identity bar + teacher's way into the student's report
@@ -2290,6 +2355,8 @@ function renderHistory(){
   document.getElementById('studentModes').classList.toggle('hidden', role === 'teacher');
 
   const teacherEntry = document.getElementById('teacherEntry');
+  paintStorageNote();
+
   if(role === 'teacher'){
     teacherEntry.classList.remove('hidden');
     const sw = Object.values(store.profiles.student.words);
@@ -2301,15 +2368,7 @@ function renderHistory(){
     teacherEntry.classList.add('hidden');
   }
 
-  // Storage-availability note
-  note.classList.remove('hidden');
-  if(storageOK){
-    note.textContent = role === 'teacher'
-      ? '✅ 學生的紀錄存在這台裝置的瀏覽器裡，也會從雲端同步過來。老師這邊只看報告，不會出題給自己做。'
-      : '✅ 你的錯題紀錄已儲存在這台裝置，下次打開這個頁面仍會看到。';
-  } else {
-    note.textContent = 'ℹ️ 這個瀏覽器不允許儲存資料（可能是無痕視窗，或關閉了網站資料）。這次的錯題仍會累計，但關閉頁面後不會保留。';
-  }
+  paintStorageNote();
 
   // 老師不作答，所以沒有「我的錯題紀錄」這一區
   if(role === 'teacher'){
@@ -4013,7 +4072,9 @@ function showResult(){
     syncPush().then(r => {
       const el = document.getElementById('reportStatus');
       if(!el) return;
-      el.textContent = r.ok ? '☁️ 已同步給老師' : '☁️ 尚未同步（等下次連上網路會再試）';
+      el.textContent = r.ok ? '☁️ 已同步給老師'
+        : r.refused ? '⚠️ 這台裝置的紀錄是空的，為了不蓋掉雲端既有的紀錄，這次沒有上傳'
+        : '☁️ 尚未同步（等下次連上網路會再試）';
       el.className = 'report-status ' + (r.ok ? 'ok' : 'pending');
     });
   }
