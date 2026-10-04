@@ -258,6 +258,42 @@ console.log('\n【7. 測試機器不可以碰到正式環境的資料庫】');
   await ctx.close();
 }
 
+console.log('\n【8. 換新手機：紀錄比較少的裝置也不可以削掉雲端】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'newphone-test';
+    // 雲端已經累積了 10 個錯字、3 筆成績
+    const w = []; for(let i=0;i<10;i++) w.push(['w'+i, i+1, 'e'+(i+1), 20000]);
+    await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ v:1, t:Date.now(), w, s:[[20000,'e',40,30],[20001,'p',20,15],[20002,'r',30,25]], d:[[20261001,2]] }) });
+    // 新手機上只做了一次測驗，只有 2 個錯字 —— 不是空的，所以舊的護欄擋不住
+    setRole('student');
+    store.profiles.student = blankProfile();
+    ['w0','newword'].forEach((en,i)=>{
+      store.profiles.student.words[en] = { en, zh:'x', cat:'adjectives3', count:i+9, types:{}, lastWrong:Date.now() };
+    });
+    store.profiles.student.sessions = [{ date: Date.now(), mode:'practice', total:10, correct:8 }];
+    syncHistoryView();
+    const push = await syncPush();
+    const after = await (await fetch(syncUrl(), { cache:'no-store' })).json();
+    const byEn = {}; (after.w||[]).forEach(row=>{ byEn[row[0]] = row[1]; });
+    return { pushOk: push.ok, merged: !!push.merged,
+             cloudWords: (after.w||[]).length, cloudSessions: (after.s||[]).length,
+             w0: byEn.w0, hasNew: 'newword' in byEn };
+  }, MOCK);
+  check(r.pushOk, '上傳成功');
+  check(r.merged, '上傳前先跟雲端合併過');
+  check(r.cloudWords === 11, `雲端從 10 個字變成 11 個，沒有被削成 2 個（實際 ${r.cloudWords}）`);
+  check(r.cloudSessions === 4, `成績也是累加（3 + 1 = ${r.cloudSessions}）`);
+  check(r.w0 === 9, `重疊的字取次數大的（雲端 1 / 本機 9 → ${r.w0}）`);
+  check(r.hasNew, '新手機上的新錯字也進得去');
+  await ctx.close();
+}
+
 await br.close();
 console.log(fails? `\n❌ ${fails} 項未通過` : '\n✅ 全部通過');
 process.exit(fails?1:0);

@@ -2175,8 +2175,8 @@ const CODE_MODE = { p:'practice', e:'exam', r:'review', t:'retry', a:'article', 
 
 // The compact record shared by both transfer routes: the pasted code and the
 // cloud sync below send exactly this.
-function buildPayload(){
-  const p = store.profiles.student;
+function buildPayload(profile){
+  const p = profile || store.profiles.student;
   return {
     v: 1,
     t: Date.now(),
@@ -2309,19 +2309,31 @@ function syncUrl(){
 // 時才帶 force，那是他本人的意思。
 async function syncPush(force){
   if(!syncReady() || role !== 'student') return { ok:false, skipped:true };
-  const payload = buildPayload();
-  if(!force && !payload.w.length && !payload.s.length){
+  let payload = buildPayload();
+  let merged = false;
+  // 上傳是整包覆蓋，所以上傳前先把雲端那份讀回來合併。這樣雲端只會長大，
+  // 不會因為「這台裝置的紀錄比較少」就被削掉 —— 換手機、重裝瀏覽器、
+  // 清過網站資料的裝置都屬於這一類，不是只有完全空白才危險。
+  if(!force){
     try{
       const res = await fetch(syncUrl(), { cache: 'no-store' });
       if(res.ok){
         const cloud = await res.json();
         const cloudHas = cloud && ((cloud.w && cloud.w.length) || (cloud.s && cloud.s.length));
         if(cloudHas){
-          return { ok:false, refused:true,
-            error:'這台裝置目前沒有任何紀錄，為了不蓋掉雲端既有的紀錄，這次不上傳。' };
+          if(!payload.w.length && !payload.s.length){
+            // 本機完全空白：連寫都不用寫，省一次覆蓋的機會
+            return { ok:false, refused:true,
+              error:'這台裝置目前沒有任何紀錄，為了不蓋掉雲端既有的紀錄，這次不上傳。' };
+          }
+          const both = mergeProfiles(store.profiles.student, payloadToProfile(cloud));
+          if(profileSize(both) > profileSize(store.profiles.student)){
+            payload = buildPayload(both);
+            merged = true;
+          }
         }
       }
-    }catch(e){ /* 讀不到雲端就照舊上傳，至少不會卡住學生 */ }
+    }catch(e){ /* 讀不到或格式不符就照舊上傳，至少不會卡住學生 */ }
   }
   try{
     const res = await fetch(syncUrl(), {
@@ -2331,7 +2343,7 @@ async function syncPush(force){
     });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     lastSyncAt = Date.now();
-    return { ok:true };
+    return { ok:true, merged };
   }catch(err){
     return { ok:false, error: String(err.message || err) };
   }
