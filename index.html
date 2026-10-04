@@ -1541,14 +1541,21 @@ document.getElementById('importToggleBtn').addEventListener('click', ()=>{
 
 document.getElementById('doImportBtn').addEventListener('click', ()=>{
   try{
-    const profile = parseTransferCode(document.getElementById('codeIn').value);
-    const words = Object.keys(profile.words).length;
-    store.profiles.student = profile;
+    const incoming = parseTransferCode(document.getElementById('codeIn').value);
+    const before = profileSize(store.profiles.student);
+    // 合併，不覆蓋：老師手上若已經有一份比較完整的紀錄，匯入一份比較舊的
+    // 回報碼不該把它洗掉。
+    const merged = mergeProfiles(store.profiles.student, incoming);
+    const added = Object.keys(merged.words).length - Object.keys(store.profiles.student.words).length;
+    store.profiles.student = merged;
+    const words = Object.keys(merged.words).length;
     if(role === 'student') syncHistoryView();
     saveHistory();
     renderReport();
     renderHistory();
-    importNote.textContent = `✅ 已匯入 ${words} 個錯字、${profile.sessions.length} 筆作答紀錄`;
+    importNote.textContent = before
+      ? `✅ 已合併：新增 ${added} 個錯字，目前共 ${words} 個錯字、${merged.sessions.length} 筆作答紀錄`
+      : `✅ 已匯入 ${words} 個錯字、${merged.sessions.length} 筆作答紀錄`;
     importNote.className = 'xfer-note ok';
     document.getElementById('codeIn').value = '';
   }catch(err){
@@ -1759,9 +1766,25 @@ function freeBankCache(){
   try{ window.localStorage.removeItem(BANK_CACHE_KEY); return true; }
   catch(e){ return false; }
 }
-function saveHistory(){
+function saveHistory(allowShrink){
   if(!store) return;
   store.role = role;
+  // 讀取失敗、或任何原因讓記憶體裡的紀錄變空時，不可以把硬碟上既有的紀錄
+  // 蓋掉。（這次事故就是「空的狀態」一路覆蓋到雲端去的。）
+  if(!allowShrink && profileSize(store.profiles.student) === 0){
+    try{
+      const raw = window.localStorage.getItem(STORE_KEY);
+      if(raw){
+        const old = JSON.parse(raw);
+        if(profileSize(normalizeProfile(old && old.profiles && old.profiles.student)) > 0){
+          // 身分這種小設定還是要存，但學生的紀錄原封不動留著
+          old.role = role;
+          try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(old)); }catch(e){}
+          return;
+        }
+      }
+    }catch(e){ /* 讀不出來就照常存 */ }
+  }
   const payload = JSON.stringify(store);
   try{
     window.localStorage.setItem(STORE_KEY, payload);
@@ -1812,11 +1835,65 @@ function recordSession(entry){
   if(p.sessions.length > 60) p.sessions = p.sessions.slice(-60);
 }
 
+// 把兩份紀錄合起來，而不是用一份蓋掉另一份。
+// 錯題紀錄本質上是累加的：同一個字在兩邊的次數取大的那個、作答紀錄取聯集、
+// 熱力圖每天取大的那個。這樣不管是雲端、回報碼還是本機哪一份出問題，
+// 都不會把另一份既有的資料洗掉。
+function mergeProfiles(base, incoming){
+  const out = blankProfile();
+  const srcs = [base || blankProfile(), incoming || blankProfile()];
+
+  srcs.forEach(p=>{
+    Object.values(p.words || {}).forEach(w=>{
+      const cur = out.words[w.en];
+      if(!cur){ out.words[w.en] = { ...w, types: { ...(w.types || {}) } }; return; }
+      // 次數取大的：兩邊都是「到目前為止錯了幾次」，不是增量，所以不能相加
+      cur.count = Math.max(Number(cur.count) || 0, Number(w.count) || 0);
+      cur.lastWrong = Math.max(Number(cur.lastWrong) || 0, Number(w.lastWrong) || 0) || null;
+      if(!cur.zh || cur.zh.includes('已不在目前題庫')) cur.zh = w.zh || cur.zh;
+      if(!cur.cat) cur.cat = w.cat || '';
+      Object.entries(w.types || {}).forEach(([t,n])=>{
+        cur.types[t] = Math.max(Number(cur.types[t]) || 0, Number(n) || 0);
+      });
+    });
+    Object.entries(p.days || {}).forEach(([k,n])=>{
+      out.days[k] = Math.max(Number(out.days[k]) || 0, Number(n) || 0);
+    });
+    Object.entries(p.gm || {}).forEach(([id,v])=>{
+      const cur = out.gm[id] || { n:0, best:0, total:0 };
+      out.gm[id] = { n: Math.max(cur.n, Number(v.n)||0),
+                     best: Math.max(cur.best, Number(v.best)||0),
+                     total: Math.max(cur.total, Number(v.total)||0) };
+    });
+  });
+
+  // 作答紀錄取聯集。回報碼只留到「天」，所以同一天同模式同題數同分數視為同一筆。
+  const seen = new Set();
+  srcs.forEach(p=>{
+    (p.sessions || []).forEach(x=>{
+      if(!x) return;
+      const key = [Math.round((x.date||0)/DAY), x.mode, x.total, x.correct].join('|');
+      if(seen.has(key)) return;
+      seen.add(key);
+      out.sessions.push(x);
+    });
+  });
+  out.sessions.sort((a,b)=> (a.date||0) - (b.date||0));
+  if(out.sessions.length > 60) out.sessions = out.sessions.slice(-60);
+  return out;
+}
+
+function profileSize(p){
+  if(!p) return 0;
+  return Object.keys(p.words || {}).length + (p.sessions || []).length
+       + Object.keys(p.days || {}).length;
+}
+
 function clearHistory(){
   const p = currentProfile();
   p.words = {};
   syncHistoryView();
-  saveHistory();
+  saveHistory(true);   // 本人按的，允許變空
   // Push the cleared state too, or the teacher's next pull would restore what
   // the student just deleted.
   if(role === 'student' && syncReady()) syncPush(true);
@@ -2250,12 +2327,18 @@ async function syncPull(){
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if(data === null) return { ok:true, empty:true };
-    const profile = payloadToProfile(data);
-    store.profiles.student = profile;
+    const pulled = payloadToProfile(data);
+    const before = profileSize(store.profiles.student);
+    // 合併而不是覆蓋：雲端那份若因為任何原因變少了，不可以把這台裝置上
+    // 既有的紀錄一起洗掉。
+    store.profiles.student = mergeProfiles(store.profiles.student, pulled);
     if(role === 'student') syncHistoryView();
     saveHistory();
+    const profile = store.profiles.student;
     return { ok:true, words: Object.keys(profile.words).length,
-             sessions: profile.sessions.length, at: data.t || null };
+             sessions: profile.sessions.length, at: data.t || null,
+             pulledWords: Object.keys(pulled.words).length,
+             kept: before > profileSize(pulled) };
   }catch(err){
     return { ok:false, error: String(err.message || err) };
   }
@@ -2314,7 +2397,7 @@ let lastSyncAt = null;
 function clearStudentRecord(){
   store.profiles.student = blankProfile();
   if(role === 'student') syncHistoryView();
-  saveHistory();
+  saveHistory(true);   // 老師按了兩次確認，允許變空
   renderReport();
   renderHistory();
 }

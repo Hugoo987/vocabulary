@@ -129,6 +129,94 @@ console.log('\n【3. 空的紀錄不可以蓋掉雲端的備份】');
   await ctx.close();
 }
 
+console.log('\n【4. 本機存檔：空的不准蓋掉既有的】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL); await p.evaluate(SEED);
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(()=>{
+    store.profiles.student = blankProfile();   // 模擬「載入失敗變成空的」
+    syncHistoryView();
+    saveHistory();                              // 這一寫不可以把硬碟上的洗掉
+    const disk = JSON.parse(localStorage.getItem('vocabQuiz:v2'));
+    const kept = Object.keys(disk.profiles.student.words).length;
+    // 但本人按「清除紀錄」要清得掉
+    saveHistory(true);
+    const after = JSON.parse(localStorage.getItem('vocabQuiz:v2'));
+    return { kept, cleared: Object.keys(after.profiles.student.words).length };
+  });
+  check(r.kept === 5, `記憶體變空時，硬碟上的 5 個錯字留著（實際 ${r.kept}）`);
+  check(r.cleared === 0, '本人明確清除時仍然清得掉');
+  await ctx.close();
+}
+
+console.log('\n【5. 合併而不是覆蓋】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(()=>{
+    const mk = (words, days, sess) => {
+      const prof = blankProfile();
+      Object.entries(words).forEach(([en,c])=>{
+        prof.words[en] = { en, zh:'x', cat:'adjectives3', count:c, types:{en2zh:c}, lastWrong:1 };
+      });
+      Object.assign(prof.days, days);
+      prof.sessions = sess;
+      return prof;
+    };
+    const mine = mk({absent:5, blank:2}, {20261001:3}, [{date:1e12, mode:'exam', total:40, correct:30}]);
+    const theirs = mk({absent:1, alive:7}, {20261001:1, 20261002:4}, [{date:2e12, mode:'practice', total:20, correct:18}]);
+    const m = mergeProfiles(mine, theirs);
+    return {
+      words: Object.keys(m.words).sort(),
+      absent: m.words.absent.count,
+      alive: m.words.alive.count,
+      day1: m.days[20261001], day2: m.days[20261002],
+      sessions: m.sessions.length
+    };
+  });
+  check(JSON.stringify(r.words) === JSON.stringify(['absent','alive','blank']),
+    `兩邊的字都留著（${r.words.join('、')}）`);
+  check(r.absent === 5, `同一個字的次數取大的，不是相加也不是覆蓋（absent 5 vs 1 → ${r.absent}）`);
+  check(r.alive === 7, '只有對方有的字也帶進來');
+  check(r.day1 === 3 && r.day2 === 4, `熱力圖每天取大的（${r.day1} / ${r.day2}）`);
+  check(r.sessions === 2, `作答紀錄取聯集（${r.sessions} 筆）`);
+  await ctx.close();
+}
+
+console.log('\n【6. 雲端變少時，老師端不會被洗掉】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'shrink-test';
+    // 雲端只剩兩個字（被空紀錄覆蓋過的樣子）
+    await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ v:1, t:Date.now(), w:[['absent',1,'e1',20000]], s:[], d:[] }) });
+    // 老師這台本來有完整的 5 個字
+    setRole('teacher');
+    store.profiles.student = blankProfile();
+    ['absent','blank','alive','usual','whole'].forEach((en,i)=>{
+      store.profiles.student.words[en] = { en, zh:'x', cat:'adjectives3', count:i+2, types:{}, lastWrong:1 };
+    });
+    const before = Object.keys(store.profiles.student.words).length;
+    const pull = await syncPull();
+    return { before, after: Object.keys(store.profiles.student.words).length,
+             pulledWords: pull.pulledWords, absent: store.profiles.student.words.absent.count };
+  }, MOCK);
+  check(r.before === 5, '老師端原本有 5 個錯字');
+  check(r.pulledWords === 1, '雲端只剩 1 個錯字');
+  check(r.after === 5, `拉取之後老師端還是 5 個，沒有被洗成 1 個（實際 ${r.after}）`);
+  check(r.absent === 2, `重疊的字取次數大的那個（實際 ${r.absent}）`);
+  await ctx.close();
+}
+
 await br.close();
 console.log(fails? `\n❌ ${fails} 項未通過` : '\n✅ 全部通過');
 process.exit(fails?1:0);
