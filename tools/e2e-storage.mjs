@@ -294,6 +294,38 @@ console.log('\n【8. 換新手機：紀錄比較少的裝置也不可以削掉�
   await ctx.close();
 }
 
+console.log('\n【9. 老師清除學生紀錄，要連雲端一起清（不然會合併回來）】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'clear-test';
+    await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ v:1, t:Date.now(),
+        w:[['junk1',3,'e3',20000],['junk2',2,'e2',20000]], s:[[20000,'e',40,30]], d:[[20261001,2]] }) });
+    setRole('teacher');
+    const pullBefore = await syncPull();
+    const afterPull = Object.keys(store.profiles.student.words).length;
+    clearStudentRecord();
+    await new Promise(r=>setTimeout(r,250));
+    const cloud = await (await fetch(syncUrl(), { cache:'no-store' })).json();
+    // 再拉一次，模擬老師下次打開報告
+    const pullAgain = await syncPull();
+    return { afterPull, pulled: pullBefore.pulledWords,
+             cloudWords: ((cloud||{}).w||[]).length,
+             afterSecondPull: Object.keys(store.profiles.student.words).length,
+             note: document.getElementById('syncStatus').textContent };
+  }, MOCK);
+  check(r.afterPull === 2, `老師先拉到雲端那 2 個字（實際 ${r.afterPull}）`);
+  check(r.cloudWords === 0, `按下清除後，雲端也空了（實際 ${r.cloudWords}）`);
+  check(r.afterSecondPull === 0,
+    `再打開一次報告也不會合併回來（實際 ${r.afterSecondPull}）`);
+  check(r.note.includes('雲端'), `畫面有說明雲端的狀況（${r.note.slice(0,20)}…）`);
+  await ctx.close();
+}
+
 await br.close();
 console.log(fails? `\n❌ ${fails} 項未通過` : '\n✅ 全部通過');
 process.exit(fails?1:0);

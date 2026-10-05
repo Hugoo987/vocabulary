@@ -2350,6 +2350,24 @@ async function syncPush(force){
 }
 
 // Cloud -> teacher.
+// 老師按兩次確認的「清除學生紀錄」要連雲端一起清，否則下一次打開報告
+// 又會把雲端那份合併回來，等於永遠清不掉。
+// 這是唯一允許老師寫入雲端的地方，而且只寫一份空的。
+async function syncClear(){
+  if(!syncReady()) return { ok:false, skipped:true };
+  try{
+    const res = await fetch(syncUrl(), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ v:1, t:Date.now(), w:[], s:[], d:[] })
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return { ok:true };
+  }catch(err){
+    return { ok:false, error: String(err.message || err) };
+  }
+}
+
 async function syncPull(){
   if(!syncReady()) return { ok:false, skipped:true };
   try{
@@ -2430,6 +2448,18 @@ function clearStudentRecord(){
   saveHistory(true);   // 老師按了兩次確認，允許變空
   renderReport();
   renderHistory();
+  // 本機清掉還不夠：雲端那份不清，下次打開報告就會合併回來。
+  if(syncReady()){
+    const el = document.getElementById('syncStatus');
+    syncClear().then(r=>{
+      if(!el) return;
+      el.textContent = r.ok
+        ? '☁️ 雲端的紀錄也清掉了。學生下次做完測驗，會從他的手機重新上傳。'
+        : `☁️ 本機已清除，但雲端沒清掉（${r.error || '連不上'}）。下次打開報告可能又會出現。`;
+      el.className = 'sync-status ' + (r.ok ? 'ok' : 'pending');
+      el.classList.remove('hidden');
+    });
+  }
 }
 
 // 存不進去有兩種完全不同的原因，給的建議也不一樣：
