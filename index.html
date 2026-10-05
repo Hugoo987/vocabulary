@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v22 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v24 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -606,10 +606,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v22 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 60 字</div>
+  <div class="top-banner">✅ 這是最新版 v24 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v22</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v24</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -696,8 +696,8 @@
       <div class="mode-card police" id="modePolice">
         <div class="icon">🚔</div>
         <h3>警專單字</h3>
-        <p>考警專範圍的單字，和課本的進度分開算：<b><span id="policeWordCount">0</span></b> 個字，分
-          <span id="policeUnitCount">0</span> 個主題。可自選主題、題型與題數。</p>
+        <p>警專英文單字與片語（Quizlet 清單），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
+          <span id="policeUnitCount">0</span> 組。可自選組別、題型與題數。</p>
       </div>
     </div>
 
@@ -996,7 +996,13 @@
   <!-- POLICE ZONE SETUP (its own bank, so its own scope/type/count state) -->
   <div class="card hidden" id="policeSetupScreen">
     <div class="back-link" id="backHint4">← 返回選擇模式</div>
-    <div class="row-label" style="margin-top:0;">選擇要考的主題（可複選）</div>
+    <div class="row-label" style="margin-top:0; display:flex; align-items:center; justify-content:space-between;">
+      <span>選擇要考的組別（可複選）</span>
+      <span style="display:flex; gap:6px;">
+        <button class="mini-btn" id="policeAllBtn" type="button">全選</button>
+        <button class="mini-btn" id="policeNoneBtn" type="button">全部取消</button>
+      </span>
+    </div>
     <div class="cat-grid" id="policeCatGrid"></div>
 
     <div class="row-label">題型（可複選，全部都是選擇題）</div>
@@ -1015,7 +1021,7 @@
     </div>
 
     <div class="row-label">題目範圍</div>
-    <div class="notice-box police">🚔 只從警專的單字出題，不會混到課本的單元。答錯的字一樣會進「我的錯題紀錄」。</div>
+    <div class="notice-box police">🚔 只從警專的單字與片語出題，不會混到課本的單元。答錯的一樣會進「我的錯題紀錄」。</div>
 
     <button class="big-btn" id="policeStartBtn">開始</button>
     <div class="hint" id="policePoolHint"></div>
@@ -1349,7 +1355,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.3b1bc75b1d.json';
+const BANK_FILE = 'bank/bank.a423f739bc.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -3578,12 +3584,23 @@ function updatePolicePoolHint(){
   const btn = document.getElementById('policeStartBtn');
   if(!hint || !btn) return;
   if(n === 0 || selectedPoliceTypes.size === 0){
-    hint.textContent = '請至少選擇一個主題與一種題型';
+    hint.textContent = '請至少選擇一組與一種題型';
   } else {
-    hint.textContent = `目前主題共有 ${n} 個單字，將出 ${willAsk} 題`;
+    hint.textContent = `選了 ${selectedPoliceCats.size} 組、共 ${n} 個字，將出 ${willAsk} 題`;
   }
   btn.disabled = (n === 0 || selectedPoliceTypes.size === 0);
 }
+
+function setAllPoliceUnits(on){
+  selectedPoliceCats.clear();
+  document.querySelectorAll('#policeCatGrid .cat-tab').forEach(el=>{
+    if(on) selectedPoliceCats.add(el.dataset.cat);
+    el.classList.toggle('off', !on);
+  });
+  updatePolicePoolHint();
+}
+document.getElementById('policeAllBtn').addEventListener('click', ()=> setAllPoliceUnits(true));
+document.getElementById('policeNoneBtn').addEventListener('click', ()=> setAllPoliceUnits(false));
 
 document.querySelectorAll('#policeTypeRow .pill').forEach(p=>{
   p.addEventListener('click', ()=>{
@@ -3718,12 +3735,19 @@ function policePool(ids){
   let pool = [];
   POLICE_UNITS.forEach(u=>{
     if(ids && !ids.has(u.id)) return;
-    pool = pool.concat(u.words.map(w=>({ en:w[0], zh:w[1], sentence:w[2], cat:u.id })));
+    pool = pool.concat(u.words.map(w=>({ en:w[0], zh:w[1], sentence:w[2], cat:u.id,
+      pos: w[3] || (String(w[0]).includes(' ') ? 'ph' : '') })));
   });
   return pool;
 }
+// 723 個字，每出一題都重建一次太浪費；題庫載入後就不會變，快取起來
+let policeAllCache = null, policeAllCacheSrc = null;
 function policeAllPool(){
-  return policePool(null);
+  if(policeAllCacheSrc !== POLICE_UNITS){
+    policeAllCache = policePool(null);
+    policeAllCacheSrc = POLICE_UNITS;
+  }
+  return policeAllCache;
 }
 
 // Every word the student could possibly have met — the current exam scope plus
@@ -3822,7 +3846,22 @@ const SYNONYM_GROUPS = [
   ['信', '信任', '相信'],
   ['從', '服從', '遵從'],
   ['住', '困住'],
-  ['像', '想像', '幻想']
+  ['像', '想像', '幻想'],
+  // ↓ 警專單字（Quizlet 788 字）匯入時補的。這些在克漏字裡會「兩個都填得進去」
+  ['（想法）浮現在…腦海', '閃過腦海'],
+  ['對…有影響', '對…有益', '對…有害'],
+  ['逐漸消失', '憑空消失'],
+  ['尤其', '尤其不'],
+  ['會議', '視訊會議', '電話會議'],
+  ['違法行為', '犯罪行為'],
+  ['激烈', '強烈', '劇烈'],
+  ['嚴酷', '殘酷'],
+  ['廢除', '禁止'],
+  ['逮捕', '捕捉', '捕獲'],
+  ['控告', '宣判有罪'],
+  ['勸阻', '阻止'],
+  ['撤退', '撤回'],
+  ['維持', '維護']
 ];
 function synonymKey(sense){
   for(let i = 0; i < SYNONYM_GROUPS.length; i++){
@@ -3880,11 +3919,29 @@ function attachQuestions(list, types, distractorPool){
 
 // One four-choice question for a given word and question type. Split out of
 // attachQuestions so the teacher's paper can rotate types deliberately.
+// 警專的題目：干擾選項只從同詞性裡挑。片語題配單字選項、形容詞題配名詞
+// 選項，學生看長度或看中文有沒有「的」就猜得到，根本不用懂意思。
+// 同詞性的字太少時，退回「同樣是片語／同樣是單字」，再不夠才用全部。
+function samePosPool(w, pool, min){
+  if(!w.pos) return pool;
+  const same = pool.filter(p => p.pos === w.pos);
+  if(same.length >= min) return same;
+  const isPh = w.pos === 'ph';
+  const kind = pool.filter(p => (p.pos === 'ph') === isPh);
+  return kind.length >= min ? kind : pool;
+}
+
 function makeQuestion(w, type, distractorPool){
   // 克漏字的干擾選項刻意取自「其他單元」，這樣只有一個選項句意通。
   // 警專是獨立題庫，所以那個「其他單元」要在警專裡面找，不然警專的題目
   // 會冒出課本的字。
-  const globalPool = policeUnit(w.cat) ? policeAllPool() : fullPool();
+  const isPolice = !!policeUnit(w.cat);
+  const globalPool = isPolice ? samePosPool(w, policeAllPool(), 12) : fullPool();
+  if(isPolice){
+    // 選的組別裡同詞性的字不夠時，向其他組借同詞性的字，而不是退回不同詞性
+    const same = distractorPool.filter(p => p.pos === w.pos);
+    distractorPool = same.length >= 4 ? same : samePosPool(w, policeAllPool(), 4);
+  }
   {
     let q = { ...w, type };
     if(type==='en2zh'){

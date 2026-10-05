@@ -77,6 +77,25 @@ const worst = await page.evaluate(()=>{
 });
 check(worst.last <= worst.vh, `題庫最長的克漏字（${longest} 字元）也放得下（底 ${worst.last} / ${worst.vh}）`);
 
+// 警專題庫的最壞情況：最長的例句，配上最長的四個片語選項（長片語會讓按鈕折成兩行）
+const polWorst = await page.evaluate(()=>{
+  const all = policeAllPool();
+  if(!all.length) return null;
+  let best = all[0];
+  all.forEach(w=>{ if(w.sentence.length > best.sentence.length) best = w; });
+  const longPh = all.filter(w=>w.pos==='ph').sort((a,b)=> b.en.length - a.en.length).slice(0,4).map(w=>w.en);
+  const q=quiz[qIndex]; q.type='cloze'; q.sentence=best.sentence; q.cat=best.cat;
+  q.options = longPh; q.correctText = longPh[0];
+  renderQuestion();
+  const o=[...document.querySelectorAll('#mcBox .opt')];
+  return { len: best.sentence.length, opts: longPh.join(' / '),
+           last: Math.round(o[o.length-1].getBoundingClientRect().bottom), vh: window.innerHeight };
+});
+if(polWorst){
+  check(polWorst.last <= polWorst.vh,
+    `警專最長的例句（${polWorst.len} 字元）配最長的四個片語也放得下（底 ${polWorst.last} / ${polWorst.vh}）`);
+}
+
 await page.evaluate(()=>{ document.querySelector('#mcBox .opt').click(); });
 await page.waitForTimeout(250);
 const next = await page.evaluate(()=>{

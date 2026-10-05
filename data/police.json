@@ -1,93 +1,4448 @@
 {
-  "note": "警專單字專區。獨立題庫，不混進課本的「本次範圍」與「總複習」。單元 id 一律以 pol- 開頭。每個例句都要有一個 ___ 空格，且句子裡不能出現答案本身。",
-  "units": [
-    {
-      "id": "pol-crime",
-      "label": "犯罪・治安",
-      "color": "#C0504D",
-      "words": [
-        ["crime", "犯罪行為", "Stealing a car is a serious ___ in every country."],
-        ["criminal", "罪犯", "The ___ was sent away for ten years after the trial."],
-        ["suspect", "嫌疑犯", "The police questioned the ___ for three hours last night."],
-        ["victim", "受害者", "The ___ of the robbery was too scared to say anything."],
-        ["witness", "目擊證人", "A ___ told the police exactly what he saw that night."],
-        ["thief", "小偷", "A ___ broke into the shop and took all the money."],
-        ["steal", "偷走", "He tried to ___ a watch from the store yesterday."],
-        ["rob", "搶劫", "Two men with masks tried to ___ the bank this morning."],
-        ["violence", "暴力", "There is too much ___ in this movie for young children."],
-        ["dangerous", "危險的", "Walking alone on that street at night is very ___ ."],
-        ["protect", "保護", "The police work hard every day to ___ people in the city."],
-        ["prison", "監獄", "He spent five years in ___ before he came home."],
-        ["weapon", "武器", "The man was carrying a ___ when the officers found him."],
-        ["gang", "幫派", "The young man left the ___ and went back to school."],
-        ["drug", "毒品", "Selling this kind of ___ can send you to jail for years."]
-      ]
-    },
-    {
-      "id": "pol-law",
-      "label": "執法・法律",
-      "color": "#4C6EA8",
-      "words": [
-        ["police", "警察", "The ___ came very quickly after we called 110."],
-        ["officer", "警官", "A young ___ helped the old man cross the busy street."],
-        ["arrest", "逮捕", "The judge said they could ___ him if he broke the rules again."],
-        ["law", "法律", "Everyone must follow the ___ , even people with money."],
-        ["illegal", "非法的", "Parking your car in front of this gate is ___ ."],
-        ["court", "法院", "The judge asked the man to come to ___ next Monday."],
-        ["judge", "法官", "The ___ listened to both sides before making a decision."],
-        ["guilty", "有罪的", "The man was found ___ and had to pay a lot of money."],
-        ["punish", "處罰", "The school will ___ any student who cheats on a test."],
-        ["rule", "規則", "There is one ___ here: nobody may smoke inside the building."],
-        ["obey", "遵守", "Drivers must ___ the speed limit on this mountain road."],
-        ["prove", "證明", "He could not ___ that he was at home that night."],
-        ["evidence", "證據", "The officers found enough ___ to take the man away."],
-        ["investigate", "調查", "The police began to ___ the case early last week."],
-        ["fine", "罰款", "She had to pay a ___ of two thousand dollars for speeding."]
-      ]
-    },
-    {
-      "id": "pol-traffic",
-      "label": "交通・事故",
-      "color": "#9A6923",
-      "words": [
-        ["accident", "意外事故", "The ___ happened because the driver was looking at his phone."],
-        ["traffic", "交通", "The ___ on this road is always heavy at eight in the morning."],
-        ["driver", "駕駛人", "The ___ of the blue car did not stop at the red light."],
-        ["license", "駕照", "The officer asked the man to show his ___ and his ID card."],
-        ["speed", "速度", "He was driving at a very high ___ when he hit the wall."],
-        ["crash", "撞上", "The two cars ___ into each other at the corner."],
-        ["injured", "受傷的", "Two people were ___ in the accident and sent away by ambulance."],
-        ["ambulance", "救護車", "The ___ arrived in five minutes and took the hurt man to the hospital."],
-        ["helmet", "安全帽", "You must wear a ___ when you ride a motorcycle in Taiwan."],
-        ["careful", "小心的", "Please be ___ when you walk on this busy street."],
-        ["cross", "穿越", "Look both ways before you ___ the road."],
-        ["sidewalk", "人行道", "People should walk on the ___ instead of on the road."],
-        ["signal", "號誌", "The traffic ___ turned red, so all the cars stopped."],
-        ["motorcycle", "機車", "He rides his ___ to school every morning, rain or shine."],
-        ["drunk", "喝醉的", "The man was ___ , so the officer would not let him drive."]
-      ]
-    },
-    {
-      "id": "pol-verb",
-      "label": "高頻動詞・形容詞",
-      "color": "#537F52",
-      "words": [
-        ["happen", "發生", "Can anyone tell me what will ___ to him next?"],
-        ["discover", "發現", "The police hope to ___ the truth about the fire soon."],
-        ["escape", "逃走", "The thief tried to ___ through the back door of the shop."],
-        ["warn", "警告", "The officer will ___ you first before he gives you a ticket."],
-        ["refuse", "拒絕", "He will ___ to answer any more questions without a lawyer."],
-        ["admit", "承認", "In the end, the boy had to ___ that he took the money."],
-        ["explain", "解釋", "Please ___ to me why you were standing there so late."],
-        ["solve", "解決", "It took the team two months to ___ this difficult case."],
-        ["notice", "注意到", "Did you ___ anything strange around the building last night?"],
-        ["follow", "跟隨", "The little dog likes to ___ me everywhere I go."],
-        ["search", "搜查", "The officers began to ___ the whole building room by room."],
-        ["serious", "嚴重的", "The doctor said that her injury was not ___ at all."],
-        ["honest", "誠實的", "Please be ___ and tell me what really happened here."],
-        ["brave", "勇敢的", "The ___ girl ran into the fire to save her little cat."],
-        ["polite", "有禮貌的", "The young officer was very ___ when he spoke to us."]
-      ]
-    }
-  ]
+ "note": "警專單字專區。來源：Quizlet「警專英文單字」788 張卡（https://quizlet.com/tw/872787194/），依原有順序分組。整理紀錄見 data/police-source-notes.md。每筆是 [英文, 中文, 克漏字例句, 詞性]，詞性 n/v/adj/adv/ph（片語）。例句的 ___ 要剛好能填進英文那一欄的字。",
+ "units": [
+  {
+   "id": "pol-w01",
+   "label": "單字 1",
+   "color": "#B24334",
+   "words": [
+    [
+     "accommodate",
+     "容納；提供住宿",
+     "This hotel can ___ more than three hundred guests at a time.",
+     "v"
+    ],
+    [
+     "deficit",
+     "赤字；不足",
+     "The city has a budget ___ of two billion dollars this year.",
+     "n"
+    ],
+    [
+     "master",
+     "碩士（學位）",
+     "She has a ___'s degree in criminal law from a famous university.",
+     "n"
+    ],
+    [
+     "album",
+     "專輯",
+     "The singer's new ___ sold a million copies in one week.",
+     "n"
+    ],
+    [
+     "comprehension",
+     "理解力",
+     "The reading ___ section is the hardest part of the English test.",
+     "n"
+    ],
+    [
+     "appliance",
+     "家用電器",
+     "A washing machine is the most useful ___ in our home.",
+     "n"
+    ],
+    [
+     "equip",
+     "裝備；配備",
+     "The city plans to ___ every patrol car with a camera.",
+     "v"
+    ],
+    [
+     "warrant",
+     "令狀；許可證；授權",
+     "The police cannot search the house without a ___ from the court.",
+     "n"
+    ],
+    [
+     "judge",
+     "法官",
+     "The ___ sentenced the thief to two years in prison.",
+     "n"
+    ],
+    [
+     "distinction",
+     "區別；差別",
+     "Can you explain the ___ between a crime and an honest mistake?",
+     "n"
+    ],
+    [
+     "con-call",
+     "視訊會議；電話會議",
+     "Managers in three countries joined a ___ at nine this morning.",
+     "n"
+    ],
+    [
+     "suspicion",
+     "懷疑；嫌疑",
+     "The man was arrested on ___ of stealing a car.",
+     "n"
+    ],
+    [
+     "sheriff",
+     "警長",
+     "The ___ and his officers searched the whole town for the escaped prisoner.",
+     "n"
+    ],
+    [
+     "arrest",
+     "逮捕",
+     "The police hope to ___ the thief before he leaves the city.",
+     "v"
+    ],
+    [
+     "admission",
+     "入場；入場費；承認",
+     "___ to the museum is free for students on Sundays.",
+     "n"
+    ],
+    [
+     "verdict",
+     "判決；裁決",
+     "The jury will announce its ___ tomorrow morning.",
+     "n"
+    ],
+    [
+     "jury",
+     "陪審團",
+     "The twelve members of the ___ listened carefully to every witness.",
+     "n"
+    ],
+    [
+     "guilty",
+     "有罪的；內疚的",
+     "The court found the driver ___ of drunk driving.",
+     "adj"
+    ],
+    [
+     "invasion",
+     "入侵；侵略",
+     "The army prepared for an ___ from the north.",
+     "n"
+    ],
+    [
+     "ambush",
+     "埋伏",
+     "The soldiers were caught in an ___ near the river.",
+     "n"
+    ],
+    [
+     "supper",
+     "晚餐",
+     "We usually have ___ at seven after my parents come home.",
+     "n"
+    ],
+    [
+     "fame",
+     "名聲；名氣",
+     "The young actor found ___ after only one movie.",
+     "n"
+    ],
+    [
+     "reputation",
+     "名譽；名聲",
+     "The restaurant has a good ___ for fresh seafood.",
+     "n"
+    ],
+    [
+     "rug",
+     "地毯",
+     "The cat likes to sleep on the soft ___ in front of the fireplace.",
+     "n"
+    ],
+    [
+     "esteem",
+     "尊敬；尊重",
+     "Doctors are held in high ___ in most countries.",
+     "n"
+    ],
+    [
+     "disguise",
+     "假扮；偽裝",
+     "The thief tried to ___ himself as a delivery man.",
+     "v"
+    ],
+    [
+     "wig",
+     "假髮",
+     "The suspect wore a blond ___ to hide his real hair.",
+     "n"
+    ],
+    [
+     "mustache",
+     "鬍子；八字鬍",
+     "My grandfather has a thick white ___ above his lip.",
+     "n"
+    ],
+    [
+     "controversy",
+     "爭議；爭論",
+     "The new law caused a lot of ___ among parents and teachers.",
+     "n"
+    ],
+    [
+     "enforce",
+     "執行；實施",
+     "It is the job of the police to ___ the law fairly.",
+     "v"
+    ],
+    [
+     "arouse",
+     "喚起；引起",
+     "His nervous behavior seemed to ___ the officer's suspicion.",
+     "v"
+    ],
+    [
+     "fierce",
+     "激烈的；猛烈的",
+     "There was ___ competition for the last ten places in the program.",
+     "adj"
+    ],
+    [
+     "parliament",
+     "議會；國會",
+     "The new tax law was passed by ___ last week.",
+     "n"
+    ],
+    [
+     "competence",
+     "能力；勝任",
+     "The manager doubted her ___ in handling angry customers.",
+     "n"
+    ],
+    [
+     "wholesaler",
+     "批發商",
+     "The shop buys its fruit from a ___ at a low price.",
+     "n"
+    ],
+    [
+     "preserve",
+     "保存；維護",
+     "The town is working hard to ___ its old buildings.",
+     "v"
+    ],
+    [
+     "era",
+     "時代；紀元",
+     "The smartphone began a new ___ of communication.",
+     "n"
+    ],
+    [
+     "civic",
+     "公民的；市民的",
+     "Voting in elections is an important ___ duty.",
+     "adj"
+    ],
+    [
+     "acquaintance",
+     "熟人；認識",
+     "He is not a close friend, just an ___ from work.",
+     "n"
+    ],
+    [
+     "accommodation",
+     "住宿",
+     "The school provides free ___ for students who live far away.",
+     "n"
+    ],
+    [
+     "incinerator",
+     "焚化爐",
+     "The city burns most of its garbage in a large ___ near the river.",
+     "n"
+    ],
+    [
+     "phenomenon",
+     "現象",
+     "Snow in this tropical city is a very rare ___.",
+     "n"
+    ],
+    [
+     "revenue",
+     "收入；收益",
+     "Tourism brings in most of the island's ___.",
+     "n"
+    ],
+    [
+     "executive",
+     "高階主管",
+     "The company's top ___ flew to Tokyo for the meeting.",
+     "n"
+    ],
+    [
+     "execute",
+     "執行；實行；處決",
+     "The soldiers were ordered to ___ the plan at dawn.",
+     "v"
+    ],
+    [
+     "composition",
+     "組成；成分",
+     "Scientists studied the chemical ___ of the river water.",
+     "n"
+    ],
+    [
+     "finding",
+     "調查結果；發現",
+     "The main ___ of the study surprised everyone.",
+     "n"
+    ],
+    [
+     "questionnaire",
+     "問卷",
+     "Please answer this short ___ about our service.",
+     "n"
+    ],
+    [
+     "investigation",
+     "調查",
+     "The police have started an ___ into the cause of the fire.",
+     "n"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w02",
+   "label": "單字 2",
+   "color": "#9E682E",
+   "words": [
+    [
+     "globe",
+     "地球；全球",
+     "Tourists from all over the ___ visit this old temple.",
+     "n"
+    ],
+    [
+     "awareness",
+     "意識；察覺",
+     "The campaign aims to raise public ___ of the dangers of drunk driving.",
+     "n"
+    ],
+    [
+     "ministry",
+     "（政府的）部",
+     "The ___ of Education announced new rules for high schools.",
+     "n"
+    ],
+    [
+     "pandemic",
+     "（疾病的）全球大流行",
+     "During the ___, many schools moved their classes online.",
+     "n"
+    ],
+    [
+     "mention",
+     "提及；提到",
+     "Please don't ___ the surprise party to Mom.",
+     "v"
+    ],
+    [
+     "jeopardy",
+     "危險；危難",
+     "The storm put the whole rescue mission in ___.",
+     "n"
+    ],
+    [
+     "vaccine",
+     "疫苗",
+     "Scientists worked day and night to develop a new ___ against the virus.",
+     "n"
+    ],
+    [
+     "commodity",
+     "商品；日用品",
+     "Rice is the most important ___ sold in this market.",
+     "n"
+    ],
+    [
+     "ornament",
+     "裝飾品",
+     "She hung a small glass ___ on the Christmas tree.",
+     "n"
+    ],
+    [
+     "icon",
+     "圖示；標誌；偶像",
+     "Click the small ___ at the top of the screen to save your work.",
+     "n"
+    ],
+    [
+     "proportion",
+     "比例；部分",
+     "A large ___ of the students walk to school every day.",
+     "n"
+    ],
+    [
+     "monopoly",
+     "壟斷；獨占",
+     "One company has a ___ on electricity in this small country.",
+     "n"
+    ],
+    [
+     "ban",
+     "禁止；禁令",
+     "The city decided to ___ smoking in all public parks.",
+     "v"
+    ],
+    [
+     "novel",
+     "小說；新穎的",
+     "She spent the whole weekend reading a mystery ___.",
+     "n"
+    ],
+    [
+     "retreat",
+     "撤退",
+     "The enemy was forced to ___ after a long battle.",
+     "v"
+    ],
+    [
+     "terror",
+     "恐怖；驚駭",
+     "People ran out of the burning building in ___.",
+     "n"
+    ],
+    [
+     "riot",
+     "暴動",
+     "Police were called in to stop a ___ after the football match.",
+     "n"
+    ],
+    [
+     "authority",
+     "權威；權力；當局",
+     "Only the principal has the ___ to cancel classes.",
+     "n"
+    ],
+    [
+     "revise",
+     "修改；修正",
+     "The government will ___ the traffic rules next year.",
+     "v"
+    ],
+    [
+     "regulation",
+     "規定；法規",
+     "There is a strict ___ against smoking inside the factory.",
+     "n"
+    ],
+    [
+     "fortune",
+     "財富；運氣",
+     "He made a ___ by buying and selling old cars.",
+     "n"
+    ],
+    [
+     "chess",
+     "西洋棋",
+     "My brother and I play ___ every Sunday afternoon.",
+     "n"
+    ],
+    [
+     "individual",
+     "個人的；個別的",
+     "The teacher gives ___ help to each student after class.",
+     "adj"
+    ],
+    [
+     "fulfill",
+     "實現；履行",
+     "She worked hard to ___ her dream of becoming a doctor.",
+     "v"
+    ],
+    [
+     "occupation",
+     "職業；工作",
+     "Please write your name, age and ___ on this form.",
+     "n"
+    ],
+    [
+     "perseverance",
+     "毅力；堅持不懈",
+     "With hard work and ___, he finally passed the exam on his fourth try.",
+     "n"
+    ],
+    [
+     "overlook",
+     "忽略；俯瞰",
+     "Busy parents sometimes ___ small changes in their children's mood.",
+     "v"
+    ],
+    [
+     "conclude",
+     "結束；推斷；下結論",
+     "From the burn marks, the police ___ that the fire was an accident.",
+     "v"
+    ],
+    [
+     "hurricane",
+     "颶風",
+     "The ___ formed over the ocean and battered the coast for two whole days.",
+     "n"
+    ],
+    [
+     "maintenance",
+     "維修；保養",
+     "The elevator is closed today for regular ___.",
+     "n"
+    ],
+    [
+     "sneeze",
+     "打噴嚏",
+     "Please cover your mouth and nose when you ___.",
+     "v"
+    ],
+    [
+     "symptom",
+     "症狀",
+     "A high fever is a common ___ of the flu.",
+     "n"
+    ],
+    [
+     "discard",
+     "丟棄",
+     "Please ___ old batteries in the special box near the door.",
+     "v"
+    ],
+    [
+     "literary",
+     "文學的",
+     "The city holds a ___ prize for young writers every year.",
+     "adj"
+    ],
+    [
+     "examine",
+     "檢查",
+     "The doctor will ___ your eyes before you get new glasses.",
+     "v"
+    ],
+    [
+     "scroll",
+     "捲動（畫面）",
+     "You have to ___ down to see the rest of the page.",
+     "v"
+    ],
+    [
+     "convict",
+     "宣判有罪；囚犯",
+     "The jury needs strong evidence to ___ someone of murder.",
+     "v"
+    ],
+    [
+     "appeal",
+     "呼籲；懇求；上訴",
+     "The police ___ to anyone who saw the accident to call them.",
+     "v"
+    ],
+    [
+     "tornado",
+     "龍捲風",
+     "A ___ is a narrow spinning column of wind that lasts only minutes.",
+     "n"
+    ],
+    [
+     "snoop",
+     "窺探",
+     "Please don't ___ around in other people's rooms.",
+     "v"
+    ],
+    [
+     "closet",
+     "衣櫥",
+     "Hang your coat in the ___ by the front door.",
+     "n"
+    ],
+    [
+     "uphold",
+     "維護；支持",
+     "Judges must ___ the law even when it is unpopular.",
+     "v"
+    ],
+    [
+     "overwhelming",
+     "壓倒性的；勢不可擋的",
+     "The plan won ___ support from the voters.",
+     "adj"
+    ],
+    [
+     "invade",
+     "入侵；侵略（動詞）",
+     "The enemy planned to ___ the island by sea.",
+     "v"
+    ],
+    [
+     "troop",
+     "軍隊；部隊",
+     "A ___ of soldiers marched into the village at noon.",
+     "n"
+    ],
+    [
+     "dusk",
+     "黃昏",
+     "The streetlights come on at ___ every evening.",
+     "n"
+    ],
+    [
+     "reassure",
+     "使安心",
+     "The doctor tried to ___ the worried mother that her son would be fine.",
+     "v"
+    ],
+    [
+     "prescribe",
+     "開（處方）",
+     "The doctor will ___ some medicine for your cough.",
+     "v"
+    ],
+    [
+     "sustain",
+     "維持；支撐",
+     "Food and clean water are needed to ___ life.",
+     "v"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w03",
+   "label": "單字 3",
+   "color": "#7E7725",
+   "words": [
+    [
+     "profit",
+     "利潤",
+     "The small shop made a ___ of ten thousand dollars last month.",
+     "n"
+    ],
+    [
+     "interact",
+     "互動；交流",
+     "Children need to ___ with others to learn social skills.",
+     "v"
+    ],
+    [
+     "boast",
+     "自誇；吹噓",
+     "He likes to ___ about how rich his family is.",
+     "v"
+    ],
+    [
+     "station",
+     "駐紮；部署",
+     "The army will ___ two hundred soldiers on the island.",
+     "v"
+    ],
+    [
+     "guard",
+     "警衛",
+     "A security ___ stood at the gate all night.",
+     "n"
+    ],
+    [
+     "conceal",
+     "隱藏；隱匿",
+     "The suspect tried to ___ the knife under his coat.",
+     "v"
+    ],
+    [
+     "irritate",
+     "使惱怒；刺激",
+     "Loud music late at night will ___ the neighbors.",
+     "v"
+    ],
+    [
+     "abolish",
+     "廢除",
+     "Many countries have voted to ___ the death penalty.",
+     "v"
+    ],
+    [
+     "distribute",
+     "分發；分配",
+     "Volunteers will ___ food to families after the flood.",
+     "v"
+    ],
+    [
+     "command",
+     "命令；指揮",
+     "The general gave the ___ to attack at dawn.",
+     "n"
+    ],
+    [
+     "forbid",
+     "禁止；不准",
+     "My parents ___ me to play video games on school nights.",
+     "v"
+    ],
+    [
+     "rival",
+     "競爭對手；對手",
+     "Our team finally beat its biggest ___ in the final.",
+     "n"
+    ],
+    [
+     "presentation",
+     "報告；簡報",
+     "Each group will give a ten-minute ___ in class tomorrow.",
+     "n"
+    ],
+    [
+     "contaminate",
+     "污染；弄髒",
+     "Chemicals from the factory may ___ the drinking water.",
+     "v"
+    ],
+    [
+     "toxic",
+     "有毒的",
+     "Some cleaning products give off ___ gases.",
+     "adj"
+    ],
+    [
+     "conserve",
+     "節約；保護",
+     "Turn off the lights when you leave to ___ energy.",
+     "v"
+    ],
+    [
+     "observe",
+     "觀察；注意到",
+     "Scientists ___ the birds from a distance for months before writing their report.",
+     "v"
+    ],
+    [
+     "biology",
+     "生物學",
+     "In ___ class we learned how plants make their own food.",
+     "n"
+    ],
+    [
+     "capture",
+     "捕捉；捕獲",
+     "The police managed to ___ the escaped prisoner near the border.",
+     "v"
+    ],
+    [
+     "sympathize",
+     "同情",
+     "I ___ with you; losing a pet is very sad.",
+     "v"
+    ],
+    [
+     "discourage",
+     "使沮喪；勸阻",
+     "Bad weather did not ___ the fans from coming to the game.",
+     "v"
+    ],
+    [
+     "slump",
+     "暴跌；下跌",
+     "House prices may ___ if interest rates rise again.",
+     "v"
+    ],
+    [
+     "underscore",
+     "強調；在…下畫線",
+     "These numbers ___ how serious the problem has become.",
+     "v"
+    ],
+    [
+     "forecast",
+     "預報；預測",
+     "The weather ___ says it will rain all weekend.",
+     "n"
+    ],
+    [
+     "hostage",
+     "人質",
+     "The robbers held three bank workers ___ for six hours.",
+     "n"
+    ],
+    [
+     "restrict",
+     "限制；約束",
+     "The new rule will ___ the number of visitors to fifty a day.",
+     "v"
+    ],
+    [
+     "censor",
+     "審查（刪改）",
+     "Some governments ___ news stories they do not like.",
+     "v"
+    ],
+    [
+     "censorship",
+     "審查制度",
+     "Many writers fought against the ___ of books and films.",
+     "n"
+    ],
+    [
+     "suspend",
+     "暫停；使停學（停職）",
+     "The school decided to ___ the boy for three days for fighting.",
+     "v"
+    ],
+    [
+     "suspension",
+     "中止；暫停（處分）",
+     "The player received a two-game ___ for hitting a referee.",
+     "n"
+    ],
+    [
+     "block",
+     "阻擋；封鎖",
+     "Fallen trees can ___ the road after a storm.",
+     "v"
+    ],
+    [
+     "obstruct",
+     "阻擋；妨礙；阻礙",
+     "Witnesses who lie to the police ___ justice.",
+     "v"
+    ],
+    [
+     "interfere",
+     "干涉；妨礙",
+     "Parents should not ___ in every small argument between their children.",
+     "v"
+    ],
+    [
+     "expand",
+     "擴張；展開",
+     "The company plans to ___ into Japan next year.",
+     "v"
+    ],
+    [
+     "expansion",
+     "擴大；拓展",
+     "The rapid ___ of the city has caused terrible traffic jams.",
+     "n"
+    ],
+    [
+     "endorse",
+     "支持；贊同；背書",
+     "Several famous athletes ___ this brand of running shoes.",
+     "v"
+    ],
+    [
+     "committee",
+     "委員會",
+     "The ___ will meet on Friday to discuss the new plan.",
+     "n"
+    ],
+    [
+     "chairperson",
+     "主席",
+     "The ___ opened the meeting by welcoming everyone.",
+     "n"
+    ],
+    [
+     "endorsement",
+     "贊同；背書（名詞）",
+     "The plan finally got the official ___ of the mayor.",
+     "n"
+    ],
+    [
+     "modest",
+     "謙虛的",
+     "Although she won the top prize, she remained ___ about her success.",
+     "adj"
+    ],
+    [
+     "spectacular",
+     "壯觀的",
+     "We watched a ___ sunset from the top of the mountain.",
+     "adj"
+    ],
+    [
+     "spectacularly",
+     "壯觀地；引人注目地",
+     "The rocket exploded ___ just seconds after takeoff.",
+     "adv"
+    ],
+    [
+     "prompt",
+     "迅速的；立即的",
+     "Thank you for your ___ reply to my email.",
+     "adj"
+    ],
+    [
+     "cognitive",
+     "認知的",
+     "Reading stories helps young children develop their ___ skills.",
+     "adj"
+    ],
+    [
+     "abstract",
+     "抽象的；深奧的",
+     "Love and freedom are ___ ideas that are hard to define.",
+     "adj"
+    ],
+    [
+     "thesis",
+     "論文；論題",
+     "She is writing her ___ on the history of the police in Taiwan.",
+     "n"
+    ],
+    [
+     "concrete",
+     "具體的",
+     "Can you give me a ___ example instead of a general idea?",
+     "adj"
+    ],
+    [
+     "precious",
+     "珍貴的；貴重的",
+     "Time with family is the most ___ thing in life.",
+     "adj"
+    ],
+    [
+     "furious",
+     "憤怒的",
+     "My father was ___ when he saw the broken window.",
+     "adj"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w04",
+   "label": "單字 4",
+   "color": "#627E25",
+   "words": [
+    [
+     "handicapped",
+     "有身心障礙的",
+     "There is a parking space for ___ drivers near the door.",
+     "adj"
+    ],
+    [
+     "handicap",
+     "障礙；不利條件",
+     "Poor eyesight can be a serious ___ for a pilot.",
+     "n"
+    ],
+    [
+     "decisive",
+     "決定性的；果斷的",
+     "The last goal was the ___ moment of the game.",
+     "adj"
+    ],
+    [
+     "considerable",
+     "相當大的；可觀的",
+     "Building the bridge took a ___ amount of time and money.",
+     "adj"
+    ],
+    [
+     "considerably",
+     "相當地；頗",
+     "Prices have risen ___ since last year.",
+     "adv"
+    ],
+    [
+     "outfit",
+     "全套服裝",
+     "She bought a new ___ for her sister's wedding.",
+     "n"
+    ],
+    [
+     "inferior",
+     "較差的；下級的",
+     "Cheap fake bags are usually ___ in quality to the real ones.",
+     "adj"
+    ],
+    [
+     "superior",
+     "較好的；上等的",
+     "The new phone is faster and lighter, so it is ___ to the old model in every way.",
+     "adj"
+    ],
+    [
+     "fatal",
+     "致命的",
+     "The driver made a ___ mistake when he ran the red light.",
+     "adj"
+    ],
+    [
+     "promising",
+     "有前途的；有希望的",
+     "She is one of the most ___ young players on the team.",
+     "adj"
+    ],
+    [
+     "profitable",
+     "有利可圖的",
+     "Selling coffee near the station has become a very ___ business.",
+     "adj"
+    ],
+    [
+     "reluctant",
+     "不情願的",
+     "The boy was ___ to tell the police what he had seen.",
+     "adj"
+    ],
+    [
+     "prosperous",
+     "繁榮的",
+     "The small fishing village has grown into a ___ city.",
+     "adj"
+    ],
+    [
+     "prosper",
+     "繁榮；興旺",
+     "Small businesses ___ when people have money to spend.",
+     "v"
+    ],
+    [
+     "representative",
+     "代表性的；典型的",
+     "This painting is ___ of the artist's early work.",
+     "adj"
+    ],
+    [
+     "desperate",
+     "極度渴望的；絕望的",
+     "After three days in the desert, they were ___ for water.",
+     "adj"
+    ],
+    [
+     "critical",
+     "關鍵的；批判的",
+     "The next twenty-four hours will be ___ for the patient.",
+     "adj"
+    ],
+    [
+     "contagious",
+     "傳染性的",
+     "Stay home if you have a ___ disease like the flu.",
+     "adj"
+    ],
+    [
+     "diligent",
+     "勤奮的",
+     "She is a ___ student who never misses a class.",
+     "adj"
+    ],
+    [
+     "nearly",
+     "將近；幾乎",
+     "The trip took ___ three hours because of the traffic.",
+     "adv"
+    ],
+    [
+     "thorough",
+     "徹底的；完全的",
+     "The police made a ___ search of the house.",
+     "adj"
+    ],
+    [
+     "sensitive",
+     "敏感的",
+     "My skin is very ___ to the sun.",
+     "adj"
+    ],
+    [
+     "handy",
+     "方便的；便利的",
+     "A small flashlight is very ___ during a power cut.",
+     "adj"
+    ],
+    [
+     "decorative",
+     "裝飾的；裝飾用的",
+     "The old fireplace is only ___; it no longer works.",
+     "adj"
+    ],
+    [
+     "ornamental",
+     "裝飾用的；觀賞用的",
+     "The garden is full of ___ plants that look nice but give no fruit.",
+     "adj"
+    ],
+    [
+     "overall",
+     "全面的；總的",
+     "The ___ cost of the trip was lower than we expected.",
+     "adj"
+    ],
+    [
+     "definitely",
+     "絕對地；明確地",
+     "I will ___ come to your party this Saturday.",
+     "adv"
+    ],
+    [
+     "conscious",
+     "有意識的；察覺到的",
+     "The injured driver was still ___ when the ambulance arrived.",
+     "adj"
+    ],
+    [
+     "routinely",
+     "例行地；照例地",
+     "Police officers ___ check drivers for alcohol late at night.",
+     "adv"
+    ],
+    [
+     "routine",
+     "例行公事",
+     "Checking the doors before bed is part of my daily ___.",
+     "n"
+    ],
+    [
+     "neutral",
+     "中立的",
+     "Switzerland stayed ___ during both world wars.",
+     "adj"
+    ],
+    [
+     "dominant",
+     "支配的；佔優勢的",
+     "Lions are the ___ animals in this part of Africa.",
+     "adj"
+    ],
+    [
+     "self-esteem",
+     "自尊",
+     "Praise from teachers can raise a child's ___.",
+     "n"
+    ],
+    [
+     "addict",
+     "使成癮；使沉溺",
+     "Some phone games are designed to ___ young users.",
+     "v"
+    ],
+    [
+     "resident",
+     "居民",
+     "Every ___ of the building must attend the fire safety meeting.",
+     "n"
+    ],
+    [
+     "proposal",
+     "提案；建議書",
+     "The city council rejected the ___ to build a new shopping mall.",
+     "n"
+    ],
+    [
+     "substance",
+     "物質",
+     "The police found a white ___ hidden in the suspect's bag.",
+     "n"
+    ],
+    [
+     "rummage",
+     "翻找；仔細搜查",
+     "She had to ___ through her bag to find her keys.",
+     "v"
+    ],
+    [
+     "heels",
+     "高跟鞋",
+     "She took off her ___ because her feet hurt after the party.",
+     "n"
+    ],
+    [
+     "orphanage",
+     "孤兒院",
+     "The children in the ___ received gifts from the police on Christmas.",
+     "n"
+    ],
+    [
+     "differentiate",
+     "區分",
+     "Young children cannot always ___ between dreams and reality.",
+     "v"
+    ],
+    [
+     "assert",
+     "聲稱；斷言",
+     "The suspect continued to ___ that he was innocent.",
+     "v"
+    ],
+    [
+     "obscure",
+     "遮掩；使變暗",
+     "Thick clouds ___ the moon tonight.",
+     "v"
+    ],
+    [
+     "negotiate",
+     "談判；協商",
+     "The two sides agreed to ___ a peace deal.",
+     "v"
+    ],
+    [
+     "function",
+     "功能；運作",
+     "The main ___ of the heart is to pump blood around the body.",
+     "n"
+    ],
+    [
+     "evacuate",
+     "撤離；疏散",
+     "Officers had to ___ the building after a bomb threat.",
+     "v"
+    ],
+    [
+     "substitute",
+     "代替；替代",
+     "You can ___ honey for sugar in this recipe.",
+     "v"
+    ],
+    [
+     "admit",
+     "承認",
+     "In the end, the boy had to ___ that he broke the window.",
+     "v"
+    ],
+    [
+     "mutual",
+     "共同的；相互的",
+     "They became friends through a ___ friend at school.",
+     "adj"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w05",
+   "label": "單字 5",
+   "color": "#408226",
+   "words": [
+    [
+     "moderate",
+     "適度的；溫和的",
+     "Doctors recommend ___ exercise for older people.",
+     "adj"
+    ],
+    [
+     "profound",
+     "深遠的；深奧的",
+     "The war had a ___ effect on the whole country.",
+     "adj"
+    ],
+    [
+     "flavor",
+     "口味；味道",
+     "Which ___ of ice cream do you like best?",
+     "n"
+    ],
+    [
+     "coloring",
+     "色素",
+     "This candy contains a lot of artificial ___.",
+     "n"
+    ],
+    [
+     "resist",
+     "抗拒；抵抗",
+     "It is hard to ___ the smell of fresh bread.",
+     "v"
+    ],
+    [
+     "nutrient",
+     "養分；營養素",
+     "Iron is an important ___ for healthy blood.",
+     "n"
+    ],
+    [
+     "privilege",
+     "特權",
+     "Free parking is a ___ given only to the teachers.",
+     "n"
+    ],
+    [
+     "drastic",
+     "激烈的；劇烈的",
+     "The government took ___ action to stop the spread of the virus.",
+     "adj"
+    ],
+    [
+     "portable",
+     "輕便的；可攜帶的",
+     "This ___ speaker is small enough to fit in your pocket.",
+     "adj"
+    ],
+    [
+     "accuse",
+     "指責；控告",
+     "You cannot ___ someone of stealing without proof.",
+     "v"
+    ],
+    [
+     "deprive",
+     "剝奪",
+     "Too much homework can ___ students of sleep.",
+     "v"
+    ],
+    [
+     "delicacy",
+     "美味佳餚；精緻；微妙",
+     "Stinky tofu is a famous Taiwanese ___.",
+     "n"
+    ],
+    [
+     "psychology",
+     "心理學",
+     "She studied ___ to understand why some people break the law.",
+     "n"
+    ],
+    [
+     "inevitably",
+     "必然地；不可避免地",
+     "Prices ___ go up when supplies are short.",
+     "adv"
+    ],
+    [
+     "physically",
+     "身體上；物理上",
+     "The job of a police officer is ___ demanding.",
+     "adv"
+    ],
+    [
+     "violence",
+     "暴力；暴行",
+     "The movie contains too much ___ for young children.",
+     "n"
+    ],
+    [
+     "conflict",
+     "衝突",
+     "The ___ between the two countries lasted ten years.",
+     "n"
+    ],
+    [
+     "circumstance",
+     "情況；處境",
+     "In this ___, the best thing to do is call the police.",
+     "n"
+    ],
+    [
+     "accomplish",
+     "完成；達成",
+     "You can ___ a lot if you plan your time well.",
+     "v"
+    ],
+    [
+     "intense",
+     "強烈的；劇烈的",
+     "The ___ heat made it hard to work outside at noon.",
+     "adj"
+    ],
+    [
+     "temptation",
+     "誘惑",
+     "It was hard to say no to the ___ of another piece of cake.",
+     "n"
+    ],
+    [
+     "persuade",
+     "說服；勸說",
+     "I tried to ___ my father to stop smoking.",
+     "v"
+    ],
+    [
+     "humid",
+     "潮濕的",
+     "Taiwan is hot and ___ in the summer.",
+     "adj"
+    ],
+    [
+     "obligation",
+     "義務；責任",
+     "Parents have an ___ to send their children to school.",
+     "n"
+    ],
+    [
+     "aging",
+     "老化",
+     "Wrinkles are a natural sign of ___.",
+     "n"
+    ],
+    [
+     "comprehensive",
+     "全面的；廣泛的",
+     "The report gives a ___ review of the city's traffic problems.",
+     "adj"
+    ],
+    [
+     "shelve",
+     "擱置；放上架",
+     "The council decided to ___ the plan until next year.",
+     "v"
+    ],
+    [
+     "verbal",
+     "口頭的",
+     "The officer gave the driver a ___ warning instead of a ticket.",
+     "adj"
+    ],
+    [
+     "instead",
+     "代替；反而",
+     "We didn't go to the beach; we stayed home ___.",
+     "adv"
+    ],
+    [
+     "intensively",
+     "密集地",
+     "She studied ___ for two weeks before the exam.",
+     "adv"
+    ],
+    [
+     "immense",
+     "極大的；巨大的",
+     "The new airport was an ___ project that cost billions.",
+     "adj"
+    ],
+    [
+     "vulnerable",
+     "脆弱的；易受傷害的",
+     "Old people living alone are ___ to phone scams.",
+     "adj"
+    ],
+    [
+     "pursue",
+     "追求",
+     "After college, she decided to ___ a career in law.",
+     "v"
+    ],
+    [
+     "horizon",
+     "地平線",
+     "The sun slowly disappeared below the ___.",
+     "n"
+    ],
+    [
+     "competent",
+     "能幹的；勝任的",
+     "We need a ___ manager who can solve problems quickly.",
+     "adj"
+    ],
+    [
+     "sacrifice",
+     "犧牲",
+     "Many parents ___ their own comfort for their children.",
+     "v"
+    ],
+    [
+     "vendor",
+     "小販",
+     "The street ___ sells hot sweet potatoes in winter.",
+     "n"
+    ],
+    [
+     "primary",
+     "首要的；主要的",
+     "Safety is our ___ concern on this trip.",
+     "adj"
+    ],
+    [
+     "adequate",
+     "足夠的；適當的",
+     "Make sure you get ___ sleep before the exam.",
+     "adj"
+    ],
+    [
+     "thorny",
+     "棘手的",
+     "Air pollution is a ___ problem for the government.",
+     "adj"
+    ],
+    [
+     "offensive",
+     "冒犯的；無禮的",
+     "His joke was ___ to many people in the room.",
+     "adj"
+    ],
+    [
+     "criticism",
+     "批評",
+     "The new law received a lot of ___ from teachers.",
+     "n"
+    ],
+    [
+     "faithful",
+     "忠實的；忠誠的",
+     "The old dog remained ___ to its owner until the end.",
+     "adj"
+    ],
+    [
+     "breathtaking",
+     "驚人的；令人屏息的",
+     "The view from the top of Taipei 101 is ___.",
+     "adj"
+    ],
+    [
+     "content",
+     "滿足的",
+     "He is ___ with a simple life in the countryside.",
+     "adj"
+    ],
+    [
+     "devote",
+     "奉獻；致力於",
+     "She plans to ___ her life to helping poor children.",
+     "v"
+    ],
+    [
+     "needy",
+     "貧窮的；貧困的",
+     "The money will be given to ___ families in the area.",
+     "adj"
+    ],
+    [
+     "tense",
+     "緊張的；緊繃的",
+     "Everyone in the courtroom felt ___ as they waited for the decision.",
+     "adj"
+    ],
+    [
+     "paralyze",
+     "使癱瘓；使麻痺",
+     "A heavy snowstorm can ___ the whole city for days.",
+     "v"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w06",
+   "label": "單字 6",
+   "color": "#278632",
+   "words": [
+    [
+     "bruised",
+     "瘀青的；受挫的",
+     "His arm was badly ___ after he fell off his bike.",
+     "adj"
+    ],
+    [
+     "rather",
+     "相當；寧可",
+     "The test was ___ difficult, but most students passed.",
+     "adv"
+    ],
+    [
+     "extinction",
+     "滅絕",
+     "Many animals are in danger of ___ because of hunting.",
+     "n"
+    ],
+    [
+     "ecstatic",
+     "狂喜的；欣喜若狂的",
+     "The fans were ___ when their team won the championship.",
+     "adj"
+    ],
+    [
+     "tranquil",
+     "平靜的；寧靜的",
+     "The lake was ___ in the early morning before the tourists arrived.",
+     "adj"
+    ],
+    [
+     "repress",
+     "壓抑；克制",
+     "Try not to ___ your feelings; talk to someone you trust.",
+     "v"
+    ],
+    [
+     "arrogant",
+     "傲慢的；自大的",
+     "The ___ driver refused to listen to the officer.",
+     "adj"
+    ],
+    [
+     "slightly",
+     "稍微地；輕微地",
+     "The price is ___ higher than it was last year.",
+     "adv"
+    ],
+    [
+     "protest",
+     "抗議",
+     "Thousands of people gathered to ___ against the new tax.",
+     "v"
+    ],
+    [
+     "adversity",
+     "逆境；不幸",
+     "She stayed positive even in the face of ___.",
+     "n"
+    ],
+    [
+     "timely",
+     "及時的",
+     "Thanks to the ___ help of a stranger, the old man survived.",
+     "adj"
+    ],
+    [
+     "contemplate",
+     "沉思；凝視",
+     "He sat quietly by the window to ___ his future.",
+     "v"
+    ],
+    [
+     "ponder",
+     "沉思；細想",
+     "Take a moment to ___ the question before you answer.",
+     "v"
+    ],
+    [
+     "tattered",
+     "破爛的",
+     "The homeless man wore a ___ old coat.",
+     "adj"
+    ],
+    [
+     "substantial",
+     "大量的；重大的；實質的",
+     "The storm caused ___ damage to the farm.",
+     "adj"
+    ],
+    [
+     "indispensable",
+     "不可或缺的",
+     "A good dictionary is ___ for learning a language.",
+     "adj"
+    ],
+    [
+     "engagement",
+     "訂婚；約定",
+     "They announced their ___ at the family dinner.",
+     "n"
+    ],
+    [
+     "roam",
+     "漫遊；閒逛",
+     "Wild deer ___ freely in the national park.",
+     "v"
+    ],
+    [
+     "presidential",
+     "總統的",
+     "The ___ election is held every four years.",
+     "adj"
+    ],
+    [
+     "demonstration",
+     "示範；示威",
+     "The firefighter gave a ___ of how to use the fire extinguisher.",
+     "n"
+    ],
+    [
+     "conference",
+     "會議",
+     "Doctors from twenty countries attended the ___ in Taipei.",
+     "n"
+    ],
+    [
+     "wander",
+     "遊蕩；閒逛",
+     "Don't let the children ___ off alone in the crowded market.",
+     "v"
+    ],
+    [
+     "compromise",
+     "妥協",
+     "After hours of talks, both sides finally reached a ___.",
+     "n"
+    ],
+    [
+     "as",
+     "如同；作為",
+     "She works ___ a volunteer at the hospital on weekends.",
+     "adv"
+    ],
+    [
+     "arithmetic",
+     "算術",
+     "Children learn basic ___ like adding and subtracting.",
+     "n"
+    ],
+    [
+     "tilt",
+     "傾斜",
+     "Please don't ___ your chair back; you might fall.",
+     "v"
+    ],
+    [
+     "loiter",
+     "逗留；閒逛",
+     "Teenagers are not allowed to ___ outside the shop after midnight.",
+     "v"
+    ],
+    [
+     "obsessed",
+     "著迷的",
+     "My brother is ___ with old cars.",
+     "adj"
+    ],
+    [
+     "extend",
+     "延長；延伸",
+     "The library will ___ its opening hours until midnight during exam week.",
+     "v"
+    ],
+    [
+     "earnestly",
+     "認真地；誠懇地",
+     "The boy ___ promised never to lie again.",
+     "adv"
+    ],
+    [
+     "clueless",
+     "毫無頭緒的；無知的",
+     "I was completely ___ about how to fix the computer.",
+     "adj"
+    ],
+    [
+     "logical",
+     "合乎邏輯的；合理的",
+     "There must be a ___ explanation for the strange noise.",
+     "adj"
+    ],
+    [
+     "ruling",
+     "裁決；判決",
+     "The court's ___ surprised many people.",
+     "n"
+    ],
+    [
+     "amendment",
+     "修正案；修正",
+     "Lawmakers passed an ___ to the traffic law last year.",
+     "n"
+    ],
+    [
+     "seizure",
+     "沒收；扣押",
+     "The police made a large ___ of illegal drugs at the port.",
+     "n"
+    ],
+    [
+     "furthermore",
+     "此外；而且",
+     "The plan is too expensive; ___, it will take ten years.",
+     "adv"
+    ],
+    [
+     "patrol",
+     "巡邏",
+     "Two officers ___ this street every night.",
+     "v"
+    ],
+    [
+     "possession",
+     "持有；財產",
+     "He was arrested for ___ of a gun without a license.",
+     "n"
+    ],
+    [
+     "detention",
+     "拘留；留校察看處分",
+     "The suspect was held in ___ for two days.",
+     "n"
+    ],
+    [
+     "gang",
+     "幫派",
+     "The young man left the ___ and went back to school.",
+     "n"
+    ],
+    [
+     "misapply",
+     "誤用；濫用",
+     "Some officials ___ public money for their own trips.",
+     "v"
+    ],
+    [
+     "cultivate",
+     "培養；耕作",
+     "Reading every day helps children ___ good habits.",
+     "v"
+    ],
+    [
+     "skeptical",
+     "懷疑的",
+     "Many scientists remain ___ about the new treatment.",
+     "adj"
+    ],
+    [
+     "harsh",
+     "嚴厲的；嚴酷的",
+     "The judge gave the drunk driver a ___ punishment.",
+     "adj"
+    ],
+    [
+     "intimate",
+     "親密的；密切的",
+     "Only a few ___ friends were invited to the wedding.",
+     "adj"
+    ],
+    [
+     "tournament",
+     "錦標賽",
+     "Our school won the national basketball ___.",
+     "n"
+    ],
+    [
+     "distract",
+     "使分心",
+     "Don't let your phone ___ you while you are driving.",
+     "v"
+    ],
+    [
+     "withdraw",
+     "提款；撤回；退出",
+     "I need to ___ some money from the bank.",
+     "v"
+    ],
+    [
+     "convince",
+     "說服；使相信",
+     "The lawyer tried to ___ the jury that his client was innocent.",
+     "v"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w07",
+   "label": "單字 7",
+   "color": "#268256",
+   "words": [
+    [
+     "remind",
+     "提醒；使想起",
+     "Please ___ me to buy milk on the way home.",
+     "v"
+    ],
+    [
+     "firework",
+     "煙火",
+     "We watched the New Year ___ display from the rooftop.",
+     "n"
+    ],
+    [
+     "stingy",
+     "吝嗇的",
+     "He is too ___ to buy his friends a cup of coffee.",
+     "adj"
+    ],
+    [
+     "obedience",
+     "服從",
+     "Soldiers are trained in strict ___ to orders.",
+     "n"
+    ],
+    [
+     "fragrance",
+     "香味；香水",
+     "The ___ of roses filled the whole garden.",
+     "n"
+    ],
+    [
+     "prevent",
+     "預防；防止；阻止",
+     "Washing your hands can ___ the spread of disease.",
+     "v"
+    ],
+    [
+     "progress",
+     "進步",
+     "The student has made great ___ in English this year.",
+     "n"
+    ],
+    [
+     "careless",
+     "粗心的；草率的",
+     "A ___ driver caused the accident on the highway.",
+     "adj"
+    ],
+    [
+     "universally",
+     "普遍地",
+     "Smiling is ___ understood as a sign of friendship.",
+     "adv"
+    ],
+    [
+     "royal",
+     "皇家的",
+     "The ___ family lives in a huge palace.",
+     "adj"
+    ],
+    [
+     "distant",
+     "遙遠的",
+     "She dreams of traveling to ___ countries one day.",
+     "adj"
+    ],
+    [
+     "infect",
+     "感染",
+     "The virus can ___ people through the air.",
+     "v"
+    ],
+    [
+     "devise",
+     "設計；想出",
+     "We need to ___ a plan to catch the thief.",
+     "v"
+    ],
+    [
+     "relative",
+     "親戚",
+     "A distant ___ of mine lives in Canada.",
+     "n"
+    ],
+    [
+     "divorce",
+     "離婚",
+     "Her parents got a ___ when she was ten.",
+     "n"
+    ],
+    [
+     "surrender",
+     "投降；自首",
+     "The robber finally decided to ___ to the police.",
+     "v"
+    ],
+    [
+     "renowned",
+     "有名的；著名的",
+     "The hotel is ___ for its excellent food.",
+     "adj"
+    ],
+    [
+     "avoid",
+     "避免",
+     "Try to ___ driving during rush hour.",
+     "v"
+    ],
+    [
+     "deter",
+     "阻止；嚇阻",
+     "High fines are meant to ___ people from speeding.",
+     "v"
+    ],
+    [
+     "lest",
+     "以免；唯恐…",
+     "Walk carefully on the ice ___ you fall.",
+     "adv"
+    ],
+    [
+     "exhausting",
+     "使人精疲力竭的",
+     "Working twelve hours a day is ___.",
+     "adj"
+    ],
+    [
+     "demolish",
+     "拆除；拆毀",
+     "Workers will ___ the old bridge next month.",
+     "v"
+    ],
+    [
+     "overdo",
+     "做得過火",
+     "Exercise is good for you, but don't ___ it.",
+     "v"
+    ],
+    [
+     "occasionally",
+     "偶爾",
+     "I ___ eat fast food, but not very often.",
+     "adv"
+    ],
+    [
+     "parade",
+     "遊行",
+     "Thousands of people watched the National Day ___.",
+     "n"
+    ],
+    [
+     "statue",
+     "雕像",
+     "There is a bronze ___ of a famous general in the park.",
+     "n"
+    ],
+    [
+     "compensate",
+     "補償；賠償",
+     "The company will ___ the workers for their lost wages.",
+     "v"
+    ],
+    [
+     "reimburse",
+     "償還；補償",
+     "The school will ___ you for your taxi fare.",
+     "v"
+    ],
+    [
+     "implement",
+     "實施；執行",
+     "The school will ___ the new rules next semester.",
+     "v"
+    ],
+    [
+     "mansion",
+     "豪宅",
+     "The movie star lives in a huge ___ on the hill.",
+     "n"
+    ],
+    [
+     "obstruction",
+     "阻礙；障礙物",
+     "Please remove any ___ from the emergency exit.",
+     "n"
+    ],
+    [
+     "compile",
+     "編纂；彙整",
+     "The police will ___ a list of everyone who was at the party.",
+     "v"
+    ],
+    [
+     "presumption",
+     "推定；假設",
+     "In court, there is a ___ of innocence until guilt is proven.",
+     "n"
+    ],
+    [
+     "consumption",
+     "消耗；消耗量",
+     "Our electricity ___ always rises in the summer.",
+     "n"
+    ],
+    [
+     "assumption",
+     "假定；假設；認為",
+     "Don't make the ___ that everyone agrees with you.",
+     "n"
+    ],
+    [
+     "resumption",
+     "重新開始；恢復（名詞）",
+     "The ___ of train service is expected tomorrow morning.",
+     "n"
+    ],
+    [
+     "artifact",
+     "人工製品；文物",
+     "This clay pot is an ___ from three thousand years ago.",
+     "n"
+    ],
+    [
+     "civilization",
+     "文明",
+     "The Nile River helped ancient Egyptian ___ to grow.",
+     "n"
+    ],
+    [
+     "depression",
+     "沮喪；憂鬱；蕭條",
+     "Many people suffered from ___ during the long lockdown.",
+     "n"
+    ],
+    [
+     "confrontation",
+     "對抗；衝突",
+     "The police tried to avoid a ___ with the angry crowd.",
+     "n"
+    ],
+    [
+     "namely",
+     "即；也就是",
+     "Two students were absent, ___ Tom and Amy.",
+     "adv"
+    ],
+    [
+     "superficial",
+     "膚淺的；表面的",
+     "The injury was only ___; he did not need stitches.",
+     "adj"
+    ],
+    [
+     "magnitude",
+     "規模；震級",
+     "The earthquake had a ___ of 7.2.",
+     "n"
+    ],
+    [
+     "rotate",
+     "旋轉；輪流",
+     "The Earth takes twenty-four hours to ___ once.",
+     "v"
+    ],
+    [
+     "deserted",
+     "荒廢的；無人的",
+     "At midnight the streets were completely ___.",
+     "adj"
+    ],
+    [
+     "collapse",
+     "倒塌；崩潰",
+     "The old bridge may ___ if the heavy truck crosses it.",
+     "v"
+    ],
+    [
+     "splash",
+     "濺起；潑",
+     "Passing cars ___ water on people walking by after it rains.",
+     "v"
+    ],
+    [
+     "passively",
+     "被動地",
+     "Instead of sitting ___ in class, ask questions.",
+     "adv"
+    ],
+    [
+     "principal",
+     "主要的；首長；校長",
+     "The ___ reason for the accident was speeding.",
+     "adj"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w08",
+   "label": "單字 8",
+   "color": "#26827B",
+   "words": [
+    [
+     "recreation",
+     "娛樂；消遣",
+     "The park is a popular place for ___ on weekends.",
+     "n"
+    ],
+    [
+     "initiative",
+     "主動精神；倡議",
+     "She showed great ___ by organizing the beach clean-up herself.",
+     "n"
+    ],
+    [
+     "prohibit",
+     "禁止；明令不准",
+     "The new rules ___ smoking in all restaurants.",
+     "v"
+    ],
+    [
+     "shallow",
+     "淺的；膚淺的",
+     "Young children may only swim in the ___ end of the pool.",
+     "adj"
+    ],
+    [
+     "inevitable",
+     "不可避免的",
+     "With so many cars on the road, traffic jams are ___.",
+     "adj"
+    ],
+    [
+     "obtrusive",
+     "突出的；惹人注目的；冒失的",
+     "The new security cameras are small and not ___.",
+     "adj"
+    ],
+    [
+     "regretful",
+     "後悔的；遺憾的",
+     "He felt ___ about the angry words he had said.",
+     "adj"
+    ],
+    [
+     "integrity",
+     "正直；誠實",
+     "A police officer must be a person of great ___.",
+     "n"
+    ],
+    [
+     "serenity",
+     "寧靜；沉著",
+     "The ___ of the temple garden helped her relax.",
+     "n"
+    ],
+    [
+     "prosperity",
+     "繁榮；興旺（名詞）",
+     "The new railway brought ___ to the small town.",
+     "n"
+    ],
+    [
+     "deficiency",
+     "缺乏；不足",
+     "A ___ of vitamin D can make your bones weak.",
+     "n"
+    ],
+    [
+     "variation",
+     "變化；變異",
+     "There is a lot of ___ in temperature between day and night in the desert.",
+     "n"
+    ],
+    [
+     "fertility",
+     "肥沃；生育力",
+     "The ___ of the soil makes this area perfect for farming.",
+     "n"
+    ],
+    [
+     "versatile",
+     "多才多藝的；用途廣的",
+     "He is a ___ actor who can play almost any role.",
+     "adj"
+    ],
+    [
+     "faith",
+     "信任；信仰",
+     "She has complete ___ in her doctor.",
+     "n"
+    ],
+    [
+     "apparently",
+     "顯然地；似乎",
+     "___, the old bookstore has closed for good.",
+     "adv"
+    ],
+    [
+     "former",
+     "從前的；前任的",
+     "The ___ mayor now teaches at a university.",
+     "adj"
+    ],
+    [
+     "latter",
+     "後者的；後面的",
+     "I like tea and coffee, but I drink only the ___ in the morning because it wakes me up.",
+     "adj"
+    ],
+    [
+     "mediate",
+     "調解；居間調停",
+     "A lawyer was asked to ___ between the two families.",
+     "v"
+    ],
+    [
+     "reunion",
+     "團聚；重聚",
+     "We hold a big family ___ every Chinese New Year.",
+     "n"
+    ],
+    [
+     "residence",
+     "住所；住宅",
+     "The president's official ___ is guarded day and night.",
+     "n"
+    ],
+    [
+     "affectionately",
+     "親切地；摯愛地",
+     "The old man ___ called his granddaughter 'my little star'.",
+     "adv"
+    ],
+    [
+     "civilized",
+     "文明的；有教養的",
+     "In a ___ society, people settle arguments with words, not fists.",
+     "adj"
+    ],
+    [
+     "lessen",
+     "減少；減輕",
+     "Planting more trees can ___ the effects of air pollution.",
+     "v"
+    ],
+    [
+     "defeat",
+     "擊敗；戰勝",
+     "Our team hopes to ___ last year's champions.",
+     "v"
+    ],
+    [
+     "daunt",
+     "使氣餒；使沮喪",
+     "Don't let one bad score ___ you.",
+     "v"
+    ],
+    [
+     "cruel",
+     "殘忍的；殘酷的",
+     "It is ___ to leave a dog alone in a hot car.",
+     "adj"
+    ],
+    [
+     "catastrophic",
+     "災難性的；毀滅性的",
+     "The flood had ___ effects on the farms.",
+     "adj"
+    ],
+    [
+     "offense",
+     "違法行為；冒犯；進攻",
+     "Drunk driving is a serious ___ in Taiwan.",
+     "n"
+    ],
+    [
+     "hollow",
+     "中空的；空心的",
+     "The squirrel hid its nuts in a ___ tree.",
+     "adj"
+    ],
+    [
+     "opponent",
+     "對手；反對者",
+     "She shook hands with her ___ before the match.",
+     "n"
+    ],
+    [
+     "contrast",
+     "對比",
+     "There is a sharp ___ between the rich and poor parts of the city.",
+     "n"
+    ],
+    [
+     "evaluate",
+     "評估；評價",
+     "Teachers will ___ each student's project next week.",
+     "v"
+    ],
+    [
+     "texture",
+     "質地；口感",
+     "This bread has a soft, light ___.",
+     "n"
+    ],
+    [
+     "component",
+     "零件；成分",
+     "The engine is the most important ___ of a car.",
+     "n"
+    ],
+    [
+     "attain",
+     "達到；達成",
+     "Few people ___ such a high level of skill.",
+     "v"
+    ],
+    [
+     "suitable",
+     "合適的；適當的",
+     "This movie is not ___ for young children.",
+     "adj"
+    ],
+    [
+     "defend",
+     "保衛；防禦；保護",
+     "Soldiers are always ready to ___ the country.",
+     "v"
+    ],
+    [
+     "reserve",
+     "預訂；保留",
+     "Please call the restaurant to ___ a table for six.",
+     "v"
+    ],
+    [
+     "abduct",
+     "綁架；誘拐",
+     "The gang planned to ___ the rich man's son.",
+     "v"
+    ],
+    [
+     "lively",
+     "活潑的；熱鬧的",
+     "The night market is always ___ on weekends.",
+     "adj"
+    ],
+    [
+     "readily",
+     "欣然地；輕易地",
+     "The witness ___ agreed to help the police.",
+     "adv"
+    ],
+    [
+     "ritual",
+     "儀式；典禮",
+     "Burning paper money is part of a traditional ___.",
+     "n"
+    ],
+    [
+     "revolving",
+     "旋轉的",
+     "The hotel has a ___ door at the main entrance.",
+     "adj"
+    ],
+    [
+     "transcend",
+     "超越；勝過",
+     "Great music can ___ language and culture.",
+     "v"
+    ],
+    [
+     "improper",
+     "不合適的；不正當的",
+     "It is ___ to answer your phone during a job interview.",
+     "adj"
+    ],
+    [
+     "superstition",
+     "迷信",
+     "There is an old ___ that breaking a mirror brings bad luck.",
+     "n"
+    ],
+    [
+     "aggressive",
+     "具攻擊性的；積極進取的",
+     "The dog became ___ when strangers came near.",
+     "adj"
+    ],
+    [
+     "sarcastic",
+     "諷刺的；挖苦的",
+     "'Great job,' she said in a ___ voice after I broke the cup.",
+     "adj"
+    ]
+   ]
+  },
+  {
+   "id": "pol-w09",
+   "label": "單字 9",
+   "color": "#2E7A9E",
+   "words": [
+    [
+     "destructive",
+     "毀滅性的；破壞的",
+     "Termites can be very ___ to wooden houses.",
+     "adj"
+    ],
+    [
+     "simplistic",
+     "過分簡單化的",
+     "His solution is too ___ for such a complex problem.",
+     "adj"
+    ],
+    [
+     "formally",
+     "正式地",
+     "The new bridge will be ___ opened next Monday.",
+     "adv"
+    ],
+    [
+     "narrowly",
+     "勉強地；險些",
+     "The driver ___ escaped death when his car hit the wall.",
+     "adv"
+    ],
+    [
+     "postpone",
+     "延期；延後",
+     "The school had to ___ the sports day because of the typhoon.",
+     "v"
+    ],
+    [
+     "suppress",
+     "壓制；鎮壓；壓抑",
+     "The government sent soldiers to ___ the riot.",
+     "v"
+    ],
+    [
+     "resume",
+     "重新開始；恢復",
+     "Classes will ___ after the typhoon passes.",
+     "v"
+    ],
+    [
+     "desirable",
+     "理想的；值得擁有的",
+     "A quiet neighborhood is very ___ for families with children.",
+     "adj"
+    ],
+    [
+     "shadow",
+     "影子；陰影",
+     "The tall building casts a long ___ over the park in the afternoon.",
+     "n"
+    ],
+    [
+     "innovate",
+     "創新；改革",
+     "Companies that do not ___ will fall behind.",
+     "v"
+    ],
+    [
+     "deteriorate",
+     "惡化；退化",
+     "His health began to ___ after he stopped exercising.",
+     "v"
+    ],
+    [
+     "fortify",
+     "加強；強化",
+     "The army worked to ___ the city walls before the attack.",
+     "v"
+    ],
+    [
+     "anthem",
+     "國歌；頌歌；校歌",
+     "Everyone stood up when the national ___ was played.",
+     "n"
+    ],
+    [
+     "resort",
+     "度假勝地",
+     "We spent a week at a beach ___ in Kenting.",
+     "n"
+    ],
+    [
+     "tariff",
+     "關稅",
+     "The government raised the ___ on imported cars.",
+     "n"
+    ],
+    [
+     "wreath",
+     "花圈",
+     "The mayor placed a ___ of flowers at the monument.",
+     "n"
+    ],
+    [
+     "curtain",
+     "窗簾",
+     "Please close the ___ so the sun doesn't come in.",
+     "n"
+    ],
+    [
+     "grumble",
+     "抱怨；發牢騷",
+     "My grandfather likes to ___ about the noise from the street.",
+     "v"
+    ],
+    [
+     "descend",
+     "下降；走下",
+     "The plane began to ___ toward the airport.",
+     "v"
+    ],
+    [
+     "humiliate",
+     "羞辱；使丟臉",
+     "A good teacher never tries to ___ students in front of the class.",
+     "v"
+    ],
+    [
+     "horrify",
+     "使恐懼；使驚駭",
+     "The violent images may ___ young viewers.",
+     "v"
+    ],
+    [
+     "wrinkle",
+     "皺紋；起皺",
+     "She found her first ___ on her fortieth birthday.",
+     "n"
+    ],
+    [
+     "trivial",
+     "瑣碎的；微不足道的",
+     "Don't argue with your brother about such ___ things.",
+     "adj"
+    ],
+    [
+     "pathetic",
+     "可悲的；可憐的",
+     "His excuse for being late again was ___.",
+     "adj"
+    ],
+    [
+     "cowardly",
+     "懦弱的；膽小的",
+     "It was ___ of him to run away and leave his friend.",
+     "adj"
+    ],
+    [
+     "slave",
+     "奴隸",
+     "He worked like a ___ to pay back his debts.",
+     "n"
+    ],
+    [
+     "evidence",
+     "證據",
+     "The police found new ___ that proved he was innocent.",
+     "n"
+    ],
+    [
+     "portion",
+     "部分；一份",
+     "A large ___ of my salary goes to rent.",
+     "n"
+    ],
+    [
+     "brutal",
+     "殘忍的；野蠻的",
+     "The ___ attack shocked the whole city.",
+     "adj"
+    ],
+    [
+     "naive",
+     "天真的",
+     "It is ___ to believe everything you read online.",
+     "adj"
+    ],
+    [
+     "sacred",
+     "神聖的",
+     "This mountain is ___ to the local people.",
+     "adj"
+    ],
+    [
+     "reside",
+     "居住",
+     "Foreign students who ___ in Taiwan must have a visa.",
+     "v"
+    ],
+    [
+     "marvel",
+     "驚嘆",
+     "Visitors ___ at the beauty of the old temple.",
+     "v"
+    ],
+    [
+     "plural",
+     "複數的",
+     "The ___ form of 'child' is 'children'.",
+     "adj"
+    ],
+    [
+     "exclude",
+     "排除",
+     "Please don't ___ anyone from the game.",
+     "v"
+    ],
+    [
+     "diction",
+     "措辭；用字",
+     "The speaker's clear ___ made his ideas easy to follow.",
+     "n"
+    ],
+    [
+     "disorder",
+     "失調；混亂",
+     "She has a sleep ___ and often wakes up at night.",
+     "n"
+    ],
+    [
+     "excuse",
+     "原諒",
+     "Please ___ me for being late.",
+     "v"
+    ],
+    [
+     "extract",
+     "提取；萃取；拔出",
+     "The dentist had to ___ two of my teeth.",
+     "v"
+    ],
+    [
+     "ailment",
+     "小病；疾病",
+     "Colds are the most common ___ in winter.",
+     "n"
+    ],
+    [
+     "surveillance",
+     "監視；監控",
+     "The police kept the suspect's house under ___.",
+     "n"
+    ],
+    [
+     "complexion",
+     "膚色；氣色",
+     "She has a pale ___ because she rarely goes outside.",
+     "n"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p01",
+   "label": "片語 1",
+   "color": "#3457B2",
+   "words": [
+    [
+     "come about",
+     "發生；產生",
+     "How did this serious problem ___ in the first place?",
+     "ph"
+    ],
+    [
+     "be exposed to",
+     "暴露於",
+     "Young children should never ___ cigarette smoke.",
+     "ph"
+    ],
+    [
+     "economic recession",
+     "經濟衰退",
+     "Many people lost their jobs during the long ___ ten years ago.",
+     "ph"
+    ],
+    [
+     "participate in",
+     "參加；參與",
+     "She was too shy to ___ class discussions.",
+     "ph"
+    ],
+    [
+     "call an election",
+     "舉行選舉",
+     "The prime minister decided to ___ early next spring.",
+     "ph"
+    ],
+    [
+     "commit a crime",
+     "犯下罪行",
+     "Poverty and hunger can push some young people to ___.",
+     "ph"
+    ],
+    [
+     "charge for",
+     "為…收費",
+     "Some parking lots ___ every hour you stay.",
+     "ph"
+    ],
+    [
+     "approve of",
+     "贊成；同意",
+     "My parents do not ___ my staying out late.",
+     "ph"
+    ],
+    [
+     "be addicted to",
+     "對…上癮；沉迷於",
+     "Young people can easily ___ online games.",
+     "ph"
+    ],
+    [
+     "intend to",
+     "打算；企圖",
+     "What do you ___ do after graduation?",
+     "ph"
+    ],
+    [
+     "show off",
+     "炫耀",
+     "He likes to ___ his new car to everyone in the neighborhood.",
+     "ph"
+    ],
+    [
+     "suffer from",
+     "受…之苦；罹患",
+     "Many older people ___ back pain in the winter.",
+     "ph"
+    ],
+    [
+     "impact on",
+     "對…的衝擊；影響",
+     "Social media has a huge ___ the way teenagers talk to each other.",
+     "ph"
+    ],
+    [
+     "benefit from",
+     "從…獲益",
+     "Almost everyone can ___ thirty minutes of exercise a day.",
+     "ph"
+    ],
+    [
+     "academic probation",
+     "留校察看",
+     "Students with very low grades may be put on ___ for one term.",
+     "ph"
+    ],
+    [
+     "make up",
+     "編造；組成",
+     "Don't ___ stories to get out of trouble.",
+     "ph"
+    ],
+    [
+     "run into",
+     "偶遇",
+     "I didn't expect to ___ my old teacher at the supermarket.",
+     "ph"
+    ],
+    [
+     "in operation",
+     "運作中",
+     "The new subway line will be ___ by next summer.",
+     "ph"
+    ],
+    [
+     "have an operation",
+     "動手術",
+     "My grandfather will ___ on his heart next week.",
+     "ph"
+    ],
+    [
+     "fill out",
+     "填寫",
+     "Please ___ this form and give it to the nurse.",
+     "ph"
+    ],
+    [
+     "be in full retreat",
+     "全面撤退",
+     "After the heavy losses, the enemy army seemed to ___.",
+     "ph"
+    ],
+    [
+     "make reference to",
+     "提及；談到",
+     "The speaker did not ___ the accident in his long speech.",
+     "ph"
+    ],
+    [
+     "hustle and bustle",
+     "喧囂；熙熙攘攘",
+     "She moved to the countryside to escape the ___ of the city.",
+     "ph"
+    ],
+    [
+     "have trouble",
+     "做…有困難",
+     "Many students ___ remembering long English words.",
+     "ph"
+    ],
+    [
+     "take measures",
+     "採取措施",
+     "The government must ___ to protect the forests.",
+     "ph"
+    ],
+    [
+     "on an impulse",
+     "一時衝動",
+     "She bought the expensive dress ___ and regretted it later.",
+     "ph"
+    ],
+    [
+     "dispose of",
+     "處理掉；丟棄",
+     "Please ___ old medicine safely instead of throwing it in the river.",
+     "ph"
+    ],
+    [
+     "in due time",
+     "到時候；遲早",
+     "Be patient; you will get your test results ___.",
+     "ph"
+    ],
+    [
+     "by all accounts",
+     "據大家說",
+     "___, the new mayor is honest and hard-working.",
+     "ph"
+    ],
+    [
+     "without a trace",
+     "無影無蹤；不留痕跡",
+     "The stolen painting disappeared from the museum ___.",
+     "ph"
+    ],
+    [
+     "be unable to stand",
+     "無法忍受",
+     "Light sleepers will ___ the noise from the night market.",
+     "ph"
+    ],
+    [
+     "fly into a rage",
+     "勃然大怒；暴怒",
+     "My boss will ___ if he sees this mistake.",
+     "ph"
+    ],
+    [
+     "resort to",
+     "訴諸；採取（手段）",
+     "The police did not want to ___ force.",
+     "ph"
+    ],
+    [
+     "under no circumstances",
+     "絕不；在任何情況下都不",
+     "___ should you open the door to strangers.",
+     "ph"
+    ],
+    [
+     "cater to",
+     "迎合；滿足",
+     "The restaurant tries to ___ the needs of young families.",
+     "ph"
+    ],
+    [
+     "abide by",
+     "遵守；遵從",
+     "All players must ___ the rules of the game.",
+     "ph"
+    ],
+    [
+     "face the music",
+     "面對現實；承擔後果",
+     "He broke the law, and now he has to ___.",
+     "ph"
+    ],
+    [
+     "hit the ceiling",
+     "大發雷霆；暴怒",
+     "Dad will ___ when he sees the phone bill.",
+     "ph"
+    ],
+    [
+     "ring a bell",
+     "聽起來耳熟",
+     "Does the name Wang Wei ___?",
+     "ph"
+    ],
+    [
+     "go to extremes",
+     "走極端",
+     "Some people ___ to lose weight, like eating nothing for days.",
+     "ph"
+    ],
+    [
+     "come in handy",
+     "派上用場",
+     "Keep this rope; it may ___ on the camping trip.",
+     "ph"
+    ],
+    [
+     "start from scratch",
+     "從頭開始",
+     "The file was deleted, so we had to ___.",
+     "ph"
+    ],
+    [
+     "tie the knot",
+     "結婚",
+     "After dating for five years, they finally decided to ___.",
+     "ph"
+    ],
+    [
+     "be dying for",
+     "渴望；極想要",
+     "After the long hike, everyone will ___ a cold drink.",
+     "ph"
+    ],
+    [
+     "in terms of",
+     "就…而言；在…方面",
+     "___ price, this car is the best choice.",
+     "ph"
+    ],
+    [
+     "with respect to",
+     "關於；就…而言",
+     "The police have no new information ___ the missing girl.",
+     "ph"
+    ],
+    [
+     "in proportion to",
+     "與…成比例",
+     "Your pay will increase ___ the number of hours you work.",
+     "ph"
+    ],
+    [
+     "on behalf of",
+     "代表",
+     "The principal accepted the award ___ the whole school.",
+     "ph"
+    ],
+    [
+     "give in to",
+     "屈服於",
+     "Don't ___ pressure from your friends to smoke.",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p02",
+   "label": "片語 2",
+   "color": "#4334B2",
+   "words": [
+    [
+     "keep track of",
+     "記錄；追蹤",
+     "This app helps you ___ how much money you spend.",
+     "ph"
+    ],
+    [
+     "stand up for",
+     "支持；捍衛",
+     "You should ___ your friends when others bully them.",
+     "ph"
+    ],
+    [
+     "for the purpose of",
+     "為了；為了…的目的",
+     "The camera was installed ___ catching speeding drivers.",
+     "ph"
+    ],
+    [
+     "chase after",
+     "追逐；追求",
+     "Young people often ___ money and fame.",
+     "ph"
+    ],
+    [
+     "come to realize",
+     "逐漸明白；終於了解",
+     "Over time, you will ___ how much your parents love you.",
+     "ph"
+    ],
+    [
+     "occur to",
+     "（想法）浮現在…腦海",
+     "Did it ever ___ you to call the police?",
+     "ph"
+    ],
+    [
+     "owing to",
+     "由於；因為",
+     "The game was cancelled ___ the heavy rain.",
+     "ph"
+    ],
+    [
+     "flash through one's mind",
+     "閃過腦海",
+     "Many old memories can ___ in a single second.",
+     "ph"
+    ],
+    [
+     "have no choice but to",
+     "別無選擇只能",
+     "Without a bus, we will ___ walk home.",
+     "ph"
+    ],
+    [
+     "follow suit",
+     "照著做；跟進",
+     "When one airline lowers its prices, the others usually ___.",
+     "ph"
+    ],
+    [
+     "pop into one's head",
+     "突然想到；靈光一現",
+     "Good ideas often ___ when one is taking a walk.",
+     "ph"
+    ],
+    [
+     "put emphasis on",
+     "強調；重視",
+     "Good teachers ___ understanding, not memorizing.",
+     "ph"
+    ],
+    [
+     "out of the question",
+     "不可能；不予考慮",
+     "Going to the party tonight is ___; you have an exam tomorrow.",
+     "ph"
+    ],
+    [
+     "have an effect on",
+     "對…有影響；影響",
+     "Lack of sleep can ___ your memory.",
+     "ph"
+    ],
+    [
+     "turn down",
+     "拒絕；調低",
+     "She had to ___ the job offer because it was too far away.",
+     "ph"
+    ],
+    [
+     "do harm to",
+     "傷害；對…有害",
+     "Smoking for many years can ___ your lungs.",
+     "ph"
+    ],
+    [
+     "be harmful to",
+     "有害於；對…有害",
+     "Too much sugar can ___ children's teeth.",
+     "ph"
+    ],
+    [
+     "lift up",
+     "舉起；鼓舞",
+     "Her kind words helped ___ my spirits after the loss.",
+     "ph"
+    ],
+    [
+     "look down on",
+     "輕視；看不起",
+     "Never ___ people who are poorer than you.",
+     "ph"
+    ],
+    [
+     "instead of",
+     "而不是；代替",
+     "Why don't you walk ___ taking the bus?",
+     "ph"
+    ],
+    [
+     "tear down",
+     "拆除；拆掉",
+     "The city plans to ___ the old market next year.",
+     "ph"
+    ],
+    [
+     "try one's utmost",
+     "盡全力；盡力",
+     "One should always ___ in an important exam.",
+     "ph"
+    ],
+    [
+     "clear up",
+     "澄清；清理",
+     "Let's ___ this misunderstanding before it gets worse.",
+     "ph"
+    ],
+    [
+     "more often than not",
+     "往往；通常",
+     "___, the cheapest choice is not the best one.",
+     "ph"
+    ],
+    [
+     "pass over",
+     "略過；忽略",
+     "The teacher decided to ___ the small mistake.",
+     "ph"
+    ],
+    [
+     "in turn",
+     "依次；輪流",
+     "Each student read the poem aloud ___.",
+     "ph"
+    ],
+    [
+     "look to",
+     "指望；依賴",
+     "Small children ___ their parents for help.",
+     "ph"
+    ],
+    [
+     "for good",
+     "永遠",
+     "He left his hometown ___ and never returned.",
+     "ph"
+    ],
+    [
+     "from time to time",
+     "偶爾；有時候",
+     "My uncle comes to visit us ___.",
+     "ph"
+    ],
+    [
+     "look forward to",
+     "期待",
+     "We all ___ the summer vacation.",
+     "ph"
+    ],
+    [
+     "hold down",
+     "保住（工作）；壓制",
+     "It is hard to ___ a job when you are always late.",
+     "ph"
+    ],
+    [
+     "turn a deaf ear to",
+     "充耳不聞",
+     "Teenagers often ___ their parents' advice.",
+     "ph"
+    ],
+    [
+     "be crammed with",
+     "擠滿；塞滿",
+     "On weekends the night market will ___ tourists.",
+     "ph"
+    ],
+    [
+     "to one's heart's content",
+     "盡情地；心滿意足地",
+     "On vacation, one can sleep ___.",
+     "ph"
+    ],
+    [
+     "talk someone into",
+     "說服某人做…",
+     "Salespeople often try to ___ buying things they don't need.",
+     "ph"
+    ],
+    [
+     "go off",
+     "爆炸；（警報）響起",
+     "The fire alarm will ___ if there is smoke in the kitchen.",
+     "ph"
+    ],
+    [
+     "put across",
+     "解釋清楚；表達",
+     "The teacher found a simple way to ___ the difficult idea.",
+     "ph"
+    ],
+    [
+     "other than",
+     "除了",
+     "There was nobody in the office ___ the security guard.",
+     "ph"
+    ],
+    [
+     "beat around the bush",
+     "拐彎抹角",
+     "Please don't ___; just tell me the truth.",
+     "ph"
+    ],
+    [
+     "in the meantime",
+     "同時；在此期間",
+     "Dinner will be ready in an hour; ___, let's play a game.",
+     "ph"
+    ],
+    [
+     "for a while",
+     "暫時；一會兒",
+     "Please wait here ___; the doctor will see you soon.",
+     "ph"
+    ],
+    [
+     "vanish into thin air",
+     "憑空消失；無影無蹤",
+     "The thief seemed to ___ after he ran into the crowd.",
+     "ph"
+    ],
+    [
+     "attend to",
+     "處理；照料",
+     "The nurse will ___ you in a moment.",
+     "ph"
+    ],
+    [
+     "once in a while",
+     "偶爾；間或",
+     "___, my father cooks dinner for the whole family.",
+     "ph"
+    ],
+    [
+     "regardless of",
+     "不管；無論",
+     "Everyone must follow the rules ___ age.",
+     "ph"
+    ],
+    [
+     "burst out",
+     "突然…起來",
+     "When he tells a joke, the whole class tends to ___ laughing.",
+     "ph"
+    ],
+    [
+     "due to",
+     "由於；因為…的緣故",
+     "The flight was delayed ___ bad weather.",
+     "ph"
+    ],
+    [
+     "idle around",
+     "遊手好閒；閒混",
+     "Don't ___ all summer; find a part-time job.",
+     "ph"
+    ],
+    [
+     "on condition that",
+     "條件是；只要",
+     "You can borrow my car ___ you return it by six.",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p03",
+   "label": "片語 3",
+   "color": "#7534B2",
+   "words": [
+    [
+     "pay off",
+     "得到回報；付清",
+     "All her hard work will ___ in the end.",
+     "ph"
+    ],
+    [
+     "for fear that",
+     "以免；唯恐",
+     "She whispered ___ she might wake the baby.",
+     "ph"
+    ],
+    [
+     "on occasion",
+     "偶爾；有時（較正式）",
+     "The president visits small village schools ___.",
+     "ph"
+    ],
+    [
+     "at times",
+     "有時；偶爾",
+     "The work is boring ___, but the pay is good.",
+     "ph"
+    ],
+    [
+     "on the off chance",
+     "碰運氣；抱著一線希望",
+     "I called the shop ___ that it was still open.",
+     "ph"
+    ],
+    [
+     "now and then",
+     "偶爾；不時",
+     "We still meet for coffee every ___.",
+     "ph"
+    ],
+    [
+     "in time",
+     "及時；遲早",
+     "We arrived just ___ to catch the last train.",
+     "ph"
+    ],
+    [
+     "by the time",
+     "到…的時候",
+     "___ the police arrived, the thief had already escaped.",
+     "ph"
+    ],
+    [
+     "around the clock",
+     "日以繼夜；全天候",
+     "Doctors worked ___ to save the injured passengers.",
+     "ph"
+    ],
+    [
+     "push too hard",
+     "逼得太緊",
+     "Parents who ___ may make their children give up.",
+     "ph"
+    ],
+    [
+     "consist of",
+     "組成；由…組成",
+     "The team will ___ five police officers and two doctors.",
+     "ph"
+    ],
+    [
+     "be composed of",
+     "由…構成；由…組成",
+     "The new committee will ___ seven members.",
+     "ph"
+    ],
+    [
+     "in response to",
+     "回應",
+     "The city lowered bus fares ___ complaints from students.",
+     "ph"
+    ],
+    [
+     "take after",
+     "長得像（長輩）；個性像",
+     "Many children ___ one of their parents.",
+     "ph"
+    ],
+    [
+     "for the sake of",
+     "為了…的緣故；為了",
+     "He quit smoking ___ his health.",
+     "ph"
+    ],
+    [
+     "look up to",
+     "尊敬；欽佩",
+     "Young players ___ the team captain.",
+     "ph"
+    ],
+    [
+     "on account of",
+     "由於；因為…之故",
+     "The mountain road was closed ___ the landslide.",
+     "ph"
+    ],
+    [
+     "look for",
+     "尋找",
+     "The police will ___ the missing boy all night.",
+     "ph"
+    ],
+    [
+     "in return for",
+     "作為…的回報",
+     "He helped me move house ___ a free dinner.",
+     "ph"
+    ],
+    [
+     "have a go at",
+     "嘗試",
+     "You should ___ surfing while you are in Hawaii.",
+     "ph"
+    ],
+    [
+     "call attention to",
+     "喚起注意；引起注意",
+     "The report will ___ the problem of air pollution.",
+     "ph"
+    ],
+    [
+     "sort out",
+     "解決；整理",
+     "Let me ___ this problem before the meeting.",
+     "ph"
+    ],
+    [
+     "find it difficult to",
+     "覺得很難…",
+     "Many people ___ say no to their friends.",
+     "ph"
+    ],
+    [
+     "be struck dumb",
+     "嚇得說不出話",
+     "Anyone would ___ by such terrible news.",
+     "ph"
+    ],
+    [
+     "sit up",
+     "熬夜；坐起來",
+     "Parents often ___ late waiting for their teenagers to come home.",
+     "ph"
+    ],
+    [
+     "day after day",
+     "日復一日",
+     "He did the same boring job ___ for thirty years.",
+     "ph"
+    ],
+    [
+     "with flying colors",
+     "出色地；成功地",
+     "She passed the police entrance exam ___.",
+     "ph"
+    ],
+    [
+     "so as to",
+     "為了；以便（接原形）",
+     "He left home early ___ catch the first train.",
+     "ph"
+    ],
+    [
+     "in order to",
+     "為了；為了要（接原形）",
+     "You must show your ID ___ enter the building.",
+     "ph"
+    ],
+    [
+     "with a view to",
+     "為了；著眼於（接 V-ing）",
+     "She is saving money ___ buying a house.",
+     "ph"
+    ],
+    [
+     "look into",
+     "調查；研究",
+     "The police promised to ___ the complaint.",
+     "ph"
+    ],
+    [
+     "look after",
+     "照顧；照料",
+     "Who will ___ your dog while you are away?",
+     "ph"
+    ],
+    [
+     "run against",
+     "與…競選；撞上",
+     "Three candidates will ___ the mayor in the election.",
+     "ph"
+    ],
+    [
+     "run up to",
+     "累積到；跑到",
+     "The repair bill could ___ ten thousand dollars.",
+     "ph"
+    ],
+    [
+     "run over",
+     "輾過；壓過",
+     "Be careful not to ___ the cat when you back out of the driveway.",
+     "ph"
+    ],
+    [
+     "make do with",
+     "將就；湊合",
+     "There is no milk, so we'll have to ___ water.",
+     "ph"
+    ],
+    [
+     "boil down to",
+     "歸結為",
+     "Most family arguments ___ money in the end.",
+     "ph"
+    ],
+    [
+     "bear in mind",
+     "牢記",
+     "Please ___ that the shop closes at nine.",
+     "ph"
+    ],
+    [
+     "strike a balance",
+     "取得平衡",
+     "It is important to ___ between work and rest.",
+     "ph"
+    ],
+    [
+     "slip away",
+     "溜走；（時間）流逝",
+     "The suspect tried to ___ through the back door.",
+     "ph"
+    ],
+    [
+     "dig in",
+     "開動（吃）；認真投入",
+     "Dinner is ready, so please ___ while it's hot!",
+     "ph"
+    ],
+    [
+     "tuck away",
+     "藏起來；存起來",
+     "She likes to ___ a little money for emergencies.",
+     "ph"
+    ],
+    [
+     "set aside",
+     "撥出；存起來；留作…之用",
+     "Try to ___ an hour every day for reading.",
+     "ph"
+    ],
+    [
+     "what if",
+     "要是…怎麼辦",
+     "___ the train is late and we miss the flight?",
+     "ph"
+    ],
+    [
+     "as if",
+     "好像；似乎",
+     "He talks ___ he knows everything about the case.",
+     "ph"
+    ],
+    [
+     "as though",
+     "彷彿；好像",
+     "She looked ___ she had just seen a ghost.",
+     "ph"
+    ],
+    [
+     "so that",
+     "以便；為了",
+     "Please speak clearly ___ everyone can hear you.",
+     "ph"
+    ],
+    [
+     "when it comes to",
+     "談到…；說到…",
+     "___ cooking, my father is the expert in our family.",
+     "ph"
+    ],
+    [
+     "train of thought",
+     "思路",
+     "The phone call broke my ___ in the middle of the essay.",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p04",
+   "label": "片語 4",
+   "color": "#A834B2",
+   "words": [
+    [
+     "go away",
+     "走開；離開；出門",
+     "Please ___; I need to finish my homework.",
+     "ph"
+    ],
+    [
+     "what's more",
+     "此外；而且（口語）",
+     "The hotel is cheap; ___, it's close to the beach.",
+     "ph"
+    ],
+    [
+     "with regard to",
+     "有關；就…而言；關於",
+     "I am writing ___ your application for the job.",
+     "ph"
+    ],
+    [
+     "wear out",
+     "磨損；耗盡",
+     "Cheap shoes usually ___ after a few months.",
+     "ph"
+    ],
+    [
+     "make believe",
+     "假裝",
+     "Children love to ___ that they are superheroes.",
+     "ph"
+    ],
+    [
+     "out of the blue",
+     "突然地；出乎意料地",
+     "My old friend called me ___ after ten years.",
+     "ph"
+    ],
+    [
+     "pie in the sky",
+     "不切實際的事",
+     "His plan to become rich in one year is just ___.",
+     "ph"
+    ],
+    [
+     "under the weather",
+     "身體不舒服",
+     "I feel a bit ___ today, so I'll stay home.",
+     "ph"
+    ],
+    [
+     "few and far between",
+     "稀少的",
+     "Gas stations are ___ on this mountain road.",
+     "ph"
+    ],
+    [
+     "put off",
+     "延期；拖延",
+     "Don't ___ your homework until the last minute.",
+     "ph"
+    ],
+    [
+     "put out",
+     "撲滅；熄滅",
+     "Firefighters worked all night to ___ the fire.",
+     "ph"
+    ],
+    [
+     "pass down",
+     "傳承；傳遞",
+     "Grandmother will ___ her recipes to her daughters.",
+     "ph"
+    ],
+    [
+     "break in",
+     "闖入；插嘴打斷",
+     "Thieves tried to ___ through the kitchen window.",
+     "ph"
+    ],
+    [
+     "lay down",
+     "放下；使躺下",
+     "Please ___ your weapon and put your hands up!",
+     "ph"
+    ],
+    [
+     "cross out",
+     "刪除；畫掉",
+     "Please ___ any wrong answers with a single line.",
+     "ph"
+    ],
+    [
+     "come around",
+     "甦醒；來訪；改變看法",
+     "The patient began to ___ an hour after the surgery.",
+     "ph"
+    ],
+    [
+     "make ends meet",
+     "勉強維持生計；收支平衡",
+     "Many families work two jobs just to ___.",
+     "ph"
+    ],
+    [
+     "give it your best shot",
+     "盡力而為；盡力",
+     "Don't worry about winning; just ___.",
+     "ph"
+    ],
+    [
+     "get it over with",
+     "趕快做完（討厭的事）",
+     "Let's ___ and clean the bathroom now.",
+     "ph"
+    ],
+    [
+     "find fault with",
+     "挑剔；找碴",
+     "My boss always tries to ___ my work.",
+     "ph"
+    ],
+    [
+     "lose track of",
+     "忘了；失去…的線索",
+     "It is easy to ___ time when you are playing on your phone.",
+     "ph"
+    ],
+    [
+     "come up with",
+     "想出；提出",
+     "The scientist tried for years to ___ a cure for the disease.",
+     "ph"
+    ],
+    [
+     "brush up on",
+     "複習；溫習",
+     "I need to ___ my English before the trip.",
+     "ph"
+    ],
+    [
+     "wind up",
+     "落得…下場；（最後）結束",
+     "If you keep driving so fast, you will ___ in hospital.",
+     "ph"
+    ],
+    [
+     "end up",
+     "最後落得；落得…下場",
+     "People who never save money often ___ poor.",
+     "ph"
+    ],
+    [
+     "at a glance",
+     "一眼就；立刻",
+     "The officer could tell ___ that the driver was drunk.",
+     "ph"
+    ],
+    [
+     "be equipped with",
+     "配備有…",
+     "Every police car must ___ a first-aid kit.",
+     "ph"
+    ],
+    [
+     "serve as",
+     "充當；作為",
+     "The old school will ___ a shelter during the typhoon.",
+     "ph"
+    ],
+    [
+     "stem from",
+     "起源於；源自",
+     "Many health problems ___ a poor diet.",
+     "ph"
+    ],
+    [
+     "have a crush on",
+     "迷戀某人",
+     "My little sister seems to ___ her English teacher.",
+     "ph"
+    ],
+    [
+     "around the corner",
+     "即將來臨；在附近",
+     "Exams are over and summer vacation is just ___.",
+     "ph"
+    ],
+    [
+     "make it up to",
+     "補償（某人）；報答",
+     "I'm sorry I missed your birthday; let me ___ you.",
+     "ph"
+    ],
+    [
+     "set off",
+     "出發；引發",
+     "We will ___ for the mountains at six in the morning.",
+     "ph"
+    ],
+    [
+     "engage in",
+     "從事；參與",
+     "Students should not ___ dangerous activities near the river.",
+     "ph"
+    ],
+    [
+     "after all",
+     "畢竟；終究",
+     "Don't be too hard on him; he is only a child ___.",
+     "ph"
+    ],
+    [
+     "above all",
+     "最重要的是；首先",
+     "Be polite, be honest, and ___, be on time.",
+     "ph"
+    ],
+    [
+     "take place",
+     "發生；舉行",
+     "The wedding will ___ in a small church by the sea.",
+     "ph"
+    ],
+    [
+     "cheat on",
+     "對…不忠；欺騙",
+     "He promised never to ___ his wife.",
+     "ph"
+    ],
+    [
+     "take for granted",
+     "視為理所當然",
+     "Many things we ___ today were luxuries fifty years ago.",
+     "ph"
+    ],
+    [
+     "carry out",
+     "執行；完成（計畫）",
+     "The police will ___ the plan tonight.",
+     "ph"
+    ],
+    [
+     "as a matter of fact",
+     "事實上",
+     "___, I have never been to Japan.",
+     "ph"
+    ],
+    [
+     "account for",
+     "說明；占（比例）",
+     "Young drivers ___ almost a third of all accidents.",
+     "ph"
+    ],
+    [
+     "for instance",
+     "舉例來說",
+     "Some fruits, ___ oranges, are rich in vitamin C.",
+     "ph"
+    ],
+    [
+     "be attributed to",
+     "歸因於；歸咎於",
+     "The accident can ___ the driver's carelessness.",
+     "ph"
+    ],
+    [
+     "knock down",
+     "撞倒；拆除",
+     "A drunk driver could ___ someone crossing the road.",
+     "ph"
+    ],
+    [
+     "get along",
+     "相處融洽",
+     "My two brothers don't ___ very well.",
+     "ph"
+    ],
+    [
+     "stick to",
+     "堅持；遵守",
+     "Once you make a study plan, try to ___ it.",
+     "ph"
+    ],
+    [
+     "adhere to",
+     "遵守；堅持",
+     "All drivers must ___ the speed limit.",
+     "ph"
+    ],
+    [
+     "persist in",
+     "堅持；執意",
+     "If you ___ breaking the rules, you will be punished.",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p05",
+   "label": "片語 5",
+   "color": "#B23489",
+   "words": [
+    [
+     "happen to",
+     "碰巧",
+     "Do you ___ know where the police station is?",
+     "ph"
+    ],
+    [
+     "in demand",
+     "需求量大的；受歡迎的",
+     "Nurses are always ___ in big hospitals.",
+     "ph"
+    ],
+    [
+     "drive someone crazy",
+     "把某人逼瘋",
+     "That noisy car alarm will ___ before morning.",
+     "ph"
+    ],
+    [
+     "get rid of",
+     "擺脫；丟棄",
+     "It took me two weeks to ___ my cold.",
+     "ph"
+    ],
+    [
+     "in vain",
+     "徒勞無功",
+     "The firefighters tried ___ to save the old house.",
+     "ph"
+    ],
+    [
+     "most of all",
+     "最重要的是；尤其",
+     "I love all sports, but ___ I love basketball.",
+     "ph"
+    ],
+    [
+     "take advantage of",
+     "利用；佔便宜",
+     "Scammers ___ old people who live alone.",
+     "ph"
+    ],
+    [
+     "on purpose",
+     "故意地",
+     "I'm sure he broke the window ___.",
+     "ph"
+    ],
+    [
+     "to date",
+     "到目前為止",
+     "___, no one has been arrested for the robbery.",
+     "ph"
+    ],
+    [
+     "live up to",
+     "不辜負；達到（期望）",
+     "She worked hard to ___ her parents' expectations.",
+     "ph"
+    ],
+    [
+     "single out",
+     "挑出；選出",
+     "The teacher did not want to ___ any one student for blame.",
+     "ph"
+    ],
+    [
+     "let alone",
+     "更不用說",
+     "He can't even boil an egg, ___ cook a whole dinner.",
+     "ph"
+    ],
+    [
+     "let loose",
+     "放開；釋放",
+     "Don't ___ the dog in the park without a leash.",
+     "ph"
+    ],
+    [
+     "soak up",
+     "吸收；攝取",
+     "Plants ___ water through their roots.",
+     "ph"
+    ],
+    [
+     "be accustomed to",
+     "習慣於",
+     "It takes time to ___ a new school.",
+     "ph"
+    ],
+    [
+     "once and for all",
+     "一勞永逸地；徹底地",
+     "Let's solve this noise problem ___.",
+     "ph"
+    ],
+    [
+     "be worth",
+     "值得",
+     "This old museum will ___ visiting if you like history.",
+     "ph"
+    ],
+    [
+     "be devoted to",
+     "致力於；專心於",
+     "She will ___ helping homeless people for the rest of her life.",
+     "ph"
+    ],
+    [
+     "run down",
+     "耗盡；用完",
+     "My phone battery will ___ soon.",
+     "ph"
+    ],
+    [
+     "hang up",
+     "掛斷（電話）",
+     "Please don't ___ the phone before I finish.",
+     "ph"
+    ],
+    [
+     "chip off",
+     "剝落；削去",
+     "The old paint has started to ___ the walls.",
+     "ph"
+    ],
+    [
+     "odds and ends",
+     "零星雜物",
+     "The drawer is full of ___ like keys and old batteries.",
+     "ph"
+    ],
+    [
+     "pros and cons",
+     "優缺點",
+     "Let's discuss the ___ of living in a big city.",
+     "ph"
+    ],
+    [
+     "ins and outs",
+     "詳細情形；來龍去脈",
+     "The new manager is still learning the ___ of the job.",
+     "ph"
+    ],
+    [
+     "pins and needles",
+     "手腳發麻",
+     "After sitting on the floor for an hour, I had ___ in my legs.",
+     "ph"
+    ],
+    [
+     "lay off",
+     "解僱",
+     "The factory will ___ two hundred workers next month.",
+     "ph"
+    ],
+    [
+     "through thick and thin",
+     "患難與共；不論順境逆境",
+     "True friends will stand by each other ___.",
+     "ph"
+    ],
+    [
+     "have a loose tongue",
+     "說話隨便；口無遮攔",
+     "Don't tell him your secret; he tends to ___.",
+     "ph"
+    ],
+    [
+     "beyond question",
+     "毫無疑問",
+     "Her honesty is ___; everyone trusts her.",
+     "ph"
+    ],
+    [
+     "bring up",
+     "養育；提出（話題）",
+     "It is not easy to ___ three children alone.",
+     "ph"
+    ],
+    [
+     "break into",
+     "闖入；強行進入（某處）",
+     "Someone tried to ___ my car last night.",
+     "ph"
+    ],
+    [
+     "answer the call of nature",
+     "上廁所（委婉說法）",
+     "The driver stopped at the gas station to ___.",
+     "ph"
+    ],
+    [
+     "fade away",
+     "逐漸消失；衰退",
+     "The music began to ___ as the band walked down the street.",
+     "ph"
+    ],
+    [
+     "go steady",
+     "穩定交往",
+     "They started to ___ in their last year of high school.",
+     "ph"
+    ],
+    [
+     "get cold feet",
+     "臨陣退縮",
+     "Many people ___ just before their wedding.",
+     "ph"
+    ],
+    [
+     "take to one's bed",
+     "臥病在床",
+     "With such a high fever, one may need to ___ for days.",
+     "ph"
+    ],
+    [
+     "do good to",
+     "對…有益",
+     "A short walk after dinner will ___ your health.",
+     "ph"
+    ],
+    [
+     "come down with",
+     "染上（疾病）",
+     "Many students ___ the flu every winter.",
+     "ph"
+    ],
+    [
+     "get along with",
+     "與…和睦相處；相處融洽",
+     "It is important to ___ your classmates.",
+     "ph"
+    ],
+    [
+     "chase down",
+     "追捕；追逐",
+     "The officers will ___ the suspect before he reaches the border.",
+     "ph"
+    ],
+    [
+     "play up",
+     "大肆渲染；強調",
+     "The media love to ___ stories about crime.",
+     "ph"
+    ],
+    [
+     "by heart",
+     "熟記；背下來",
+     "Students must learn the poem ___ for tomorrow.",
+     "ph"
+    ],
+    [
+     "get over",
+     "克服；從…恢復",
+     "It took her months to ___ the death of her dog.",
+     "ph"
+    ],
+    [
+     "take over",
+     "接管；接手",
+     "His son will ___ the family business next year.",
+     "ph"
+    ],
+    [
+     "sign up for",
+     "報名參加",
+     "Did you ___ the summer camp yet?",
+     "ph"
+    ],
+    [
+     "speak out against",
+     "公開反對",
+     "More and more people ___ violence at home.",
+     "ph"
+    ],
+    [
+     "out of place",
+     "不合適；格格不入",
+     "I felt ___ in my jeans at the formal dinner.",
+     "ph"
+    ],
+    [
+     "to the fullest",
+     "充分地；徹底地",
+     "Enjoy every day of your time in college ___.",
+     "ph"
+    ],
+    [
+     "now that",
+     "既然；由於",
+     "___ you are eighteen, you can learn to drive.",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "id": "pol-p06",
+   "label": "片語 6",
+   "color": "#B23457",
+   "words": [
+    [
+     "only if",
+     "只有當…才；條件是",
+     "You may leave early ___ you finish all your work.",
+     "ph"
+    ],
+    [
+     "show up",
+     "出現；露面",
+     "Will your friends ___ at the party tonight?",
+     "ph"
+    ],
+    [
+     "take credit for",
+     "把功勞歸於自己",
+     "It is unfair to ___ work that others did.",
+     "ph"
+    ],
+    [
+     "give rise to",
+     "引起；導致",
+     "Heavy rain can ___ landslides in the mountains.",
+     "ph"
+    ],
+    [
+     "draw attention to",
+     "引起關注；引起注意",
+     "The bright posters will ___ the danger of drunk driving.",
+     "ph"
+    ],
+    [
+     "be aware of",
+     "意識到；知道",
+     "Drivers must ___ children playing near the road.",
+     "ph"
+    ],
+    [
+     "be prone to",
+     "傾向於；容易…",
+     "Old wooden buildings may ___ fire during the dry season.",
+     "ph"
+    ],
+    [
+     "be satisfied with",
+     "對…感到滿意",
+     "Most customers will ___ the new service.",
+     "ph"
+    ],
+    [
+     "be blamed on",
+     "歸咎於；怪罪於",
+     "The accident cannot ___ the weather alone.",
+     "ph"
+    ],
+    [
+     "as a result",
+     "結果；因此",
+     "He didn't study; ___, he failed the test.",
+     "ph"
+    ],
+    [
+     "pass on",
+     "傳遞；轉達",
+     "Please ___ this message to the other students.",
+     "ph"
+    ],
+    [
+     "blow up",
+     "炸毀；爆炸",
+     "The soldiers had to ___ the bridge to stop the enemy.",
+     "ph"
+    ],
+    [
+     "have something up one's sleeve",
+     "留有一手；暗藏妙計",
+     "A good coach always seems to ___.",
+     "ph"
+    ],
+    [
+     "do the trick",
+     "奏效；達到目的",
+     "If your headache doesn't go away, this medicine should ___.",
+     "ph"
+    ],
+    [
+     "send one's regards to",
+     "代…問好",
+     "When one visits a sick friend, it is polite to ___ the family.",
+     "ph"
+    ],
+    [
+     "come off",
+     "脫落；成功；舉行",
+     "The button on my coat is about to ___.",
+     "ph"
+    ],
+    [
+     "get off",
+     "下車",
+     "Please ___ the bus at the next stop.",
+     "ph"
+    ],
+    [
+     "call off",
+     "取消",
+     "They had to ___ the concert because of the storm.",
+     "ph"
+    ],
+    [
+     "take off",
+     "脫掉；起飛",
+     "Please ___ your shoes before entering the temple.",
+     "ph"
+    ],
+    [
+     "nip it in the bud",
+     "防患未然；及早制止",
+     "If a small problem appears, it's wise to ___ before it grows.",
+     "ph"
+    ],
+    [
+     "rack one's brains",
+     "絞盡腦汁",
+     "Sometimes one has to ___ to find the answer.",
+     "ph"
+    ],
+    [
+     "on cloud nine",
+     "歡天喜地；欣喜若狂",
+     "She was ___ after passing the police entrance exam.",
+     "ph"
+    ],
+    [
+     "down in the dumps",
+     "情緒低落；悶悶不樂",
+     "He has been ___ since his team lost the final.",
+     "ph"
+    ],
+    [
+     "in a blue funk",
+     "憂心忡忡；驚恐萬分",
+     "The students were ___ the night before the final exam.",
+     "ph"
+    ],
+    [
+     "hot under the collar",
+     "暴怒的；氣呼呼的",
+     "He got ___ when someone took his parking space.",
+     "ph"
+    ],
+    [
+     "hope against hope",
+     "抱著一線希望；仍存希望",
+     "The families continue to ___ that the missing boat will be found.",
+     "ph"
+    ],
+    [
+     "get on one's nerves",
+     "惹毛某人；使心煩",
+     "That loud music is starting to ___.",
+     "ph"
+    ],
+    [
+     "keep one's chin up",
+     "不氣餒；保持樂觀",
+     "Even after failing, one should try to ___.",
+     "ph"
+    ],
+    [
+     "read between the lines",
+     "體會言外之意",
+     "You have to ___ to understand what she really means.",
+     "ph"
+    ],
+    [
+     "get in shape",
+     "健身；使身材變好",
+     "I go jogging every morning to ___.",
+     "ph"
+    ],
+    [
+     "cry for the moon",
+     "想要得不到的東西",
+     "Hoping to win the lottery every week is like trying to ___.",
+     "ph"
+    ],
+    [
+     "take a rain check",
+     "改天再約",
+     "I'm too tired tonight; can I ___ on dinner?",
+     "ph"
+    ],
+    [
+     "bring down",
+     "推翻；擊敗；擊落",
+     "Rising food prices could ___ the government.",
+     "ph"
+    ],
+    [
+     "step down",
+     "辭職；下台",
+     "The mayor decided to ___ after the scandal.",
+     "ph"
+    ],
+    [
+     "senior to",
+     "比…年長；比…資深",
+     "Because she joined the company ten years earlier, she is ___ me.",
+     "ph"
+    ],
+    [
+     "junior to",
+     "比…年輕；比…資淺",
+     "He joined the police force last year, so he is ___ all the other officers.",
+     "ph"
+    ],
+    [
+     "bridge the gap",
+     "縮小差距；增加共識",
+     "The program aims to ___ between rich and poor students.",
+     "ph"
+    ],
+    [
+     "come to power",
+     "上台；掌權",
+     "The new party will ___ after the election.",
+     "ph"
+    ],
+    [
+     "get in the way",
+     "妨礙；礙事",
+     "Don't let your phone ___ of your studies.",
+     "ph"
+    ],
+    [
+     "point out",
+     "指出",
+     "The teacher will ___ the mistakes in your essay.",
+     "ph"
+    ],
+    [
+     "wear down",
+     "磨損；使筋疲力盡",
+     "Long hours of work can ___ even the strongest people.",
+     "ph"
+    ],
+    [
+     "crack up",
+     "崩潰；捧腹大笑",
+     "If you work too hard without rest, you may ___.",
+     "ph"
+    ],
+    [
+     "come down",
+     "下降；下跌",
+     "Prices usually ___ after the holiday season.",
+     "ph"
+    ],
+    [
+     "least of all",
+     "尤其不；最不",
+     "Nobody wanted to clean the bathroom, ___ my brother.",
+     "ph"
+    ]
+   ]
+  }
+ ]
 }

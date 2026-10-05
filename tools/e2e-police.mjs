@@ -84,6 +84,13 @@ for(const u of bank.units) await page.click(`#policeCatGrid .cat-tab[data-cat="$
 await page.waitForTimeout(150);
 check(!(await page.locator('#policeStartBtn').isDisabled()), '勾回來就能開始');
 
+// 組別一多，要能一鍵全選／全部取消
+await page.click('#policeNoneBtn'); await page.waitForTimeout(120);
+check(await page.locator('#policeStartBtn').isDisabled(), '按「全部取消」後不能開始');
+check(await page.locator('#policeCatGrid .cat-tab.off').count() === bank.units.length, '每一組都變成未選');
+await page.click('#policeAllBtn'); await page.waitForTimeout(120);
+check((await page.textContent('#policePoolHint')).includes(String(bank.total)), '按「全選」後又是全部的字');
+
 console.log('\n【出題：不會混到課本的字】');
 const mix = await page.evaluate(()=>{
   const polEn = new Set(policeAllPool().map(w=>w.en));
@@ -156,6 +163,29 @@ const opts = await page.evaluate(()=>{
 });
 check(opts.notFour === 0, `只勾單一主題也都是四個相異選項（${opts.n} 題中不足四個：${opts.notFour}）`);
 check(opts.noCorrect === 0, '每題都含正解');
+
+console.log('\n【選項不可以靠詞性或近義詞出問題】');
+// 形容詞題配名詞選項、片語題配單字選項，看「的」字或長度就猜得到；
+// 近義詞同時出現則會變成兩個都對。這兩種都要是 0。
+const qual = await page.evaluate(()=>{
+  const all = policeAllPool();
+  const byEn = new Map(all.map(w=>[w.en,w])), byZh = new Map(all.map(w=>[w.zh,w]));
+  let n=0, mixed=0, clash=0;
+  for(let r=0;r<6;r++){
+    POLICE_UNITS.forEach(u=>{
+      const pool = policePool(new Set([u.id]));
+      attachQuestions(pool, new Set(ALL_TYPES), pool).forEach(q=>{
+        n++;
+        const ws = q.options.map(o=> q.type==='en2zh' ? byZh.get(o) : byEn.get(o)).filter(Boolean);
+        if(new Set(ws.map(w=>w.pos)).size > 1) mixed++;
+        for(let i=0;i<ws.length;i++) for(let j=i+1;j<ws.length;j++) if(meaningClash(ws[i],ws[j])) clash++;
+      });
+    });
+  }
+  return { n, mixed, clash };
+});
+check(qual.mixed === 0, `${qual.n} 題的四個選項都是同一種詞性（不一致：${qual.mixed}）`);
+check(qual.clash === 0, `沒有任何一題同時出現兩個近義詞（出現：${qual.clash}）`);
 
 console.log('\n【作答與紀錄】');
 await page.click('#policeCountRow .pill[data-count="10"]'); await page.waitForTimeout(120);

@@ -133,7 +133,22 @@ const SYNONYM_GROUPS = [
   ['信', '信任', '相信'],
   ['從', '服從', '遵從'],
   ['住', '困住'],
-  ['像', '想像', '幻想']
+  ['像', '想像', '幻想'],
+  // ↓ 警專單字（Quizlet 788 字）匯入時補的。這些在克漏字裡會「兩個都填得進去」
+  ['（想法）浮現在…腦海', '閃過腦海'],
+  ['對…有影響', '對…有益', '對…有害'],
+  ['逐漸消失', '憑空消失'],
+  ['尤其', '尤其不'],
+  ['會議', '視訊會議', '電話會議'],
+  ['違法行為', '犯罪行為'],
+  ['激烈', '強烈', '劇烈'],
+  ['嚴酷', '殘酷'],
+  ['廢除', '禁止'],
+  ['逮捕', '捕捉', '捕獲'],
+  ['控告', '宣判有罪'],
+  ['勸阻', '阻止'],
+  ['撤退', '撤回'],
+  ['維持', '維護']
 ];
 function synonymKey(sense) {
   for (let i = 0; i < SYNONYM_GROUPS.length; i++) {
@@ -314,8 +329,10 @@ function checkPolice() {
     ids.add(u.id);
     if (!u.label) fail(`單元 ${u.id} 沒有名稱`);
     (u.words || []).forEach(w => {
-      if (!Array.isArray(w) || w.length !== 3) { fail(`${u.id} 有一筆格式不對：${JSON.stringify(w)}`); return; }
-      flat.push({ en: w[0], zh: w[1], sentence: w[2], cat: u.id });
+      if (!Array.isArray(w) || w.length < 3 || w.length > 4) { fail(`${u.id} 有一筆格式不對：${JSON.stringify(w)}`); return; }
+      if (w.length === 4 && !['n','v','adj','adv','ph'].includes(w[3])) fail(`${u.id} ${w[0]} 的詞性不認得：${w[3]}`);
+      if (w.length === 4 && (w[3] === 'ph') !== String(w[0]).includes(' ')) fail(`${u.id} ${w[0]}：片語／單字跟詞性對不上`);
+      flat.push({ en: w[0], zh: w[1], sentence: w[2], cat: u.id, pos: w[3] });
     });
   });
   console.log(`  ${units.length} 個主題、共 ${flat.length} 個字`
@@ -339,6 +356,14 @@ function checkPolice() {
     .map(w => `${w.en}(${String(w.sentence).split(/\s+/).length} 字)`);
   tooShort.length ? fail('例句過短（線索不足）：' + tooShort.join('、'))
                   : ok('每個例句都夠長（至少 6 個字）');
+
+  const multi = flat.filter(w => (String(w.sentence).match(/_{3}/g) || []).length !== 1).map(w => w.en);
+  multi.length ? fail('例句的空格不是剛好一個：' + multi.join('、')) : ok('每個例句剛好一個空格');
+
+  // 中文用逗號隔開的話，出題程式會把整串當成一個意思，近義詞就分不開
+  const comma = flat.filter(w => /[,，]/.test(w.zh)).map(w => `${w.en}「${w.zh}」`);
+  comma.length ? fail('中文要用「；」分隔不同意思，不要用逗號：' + comma.join('、'))
+               : ok('中文的不同意思都用「；」分隔');
 
   // 英文／中文不重複 ＋ 語意重疊檢查（checkSet 會一併跑 checkOverlap）
   checkSet('  └ 警專題庫整體', flat);
