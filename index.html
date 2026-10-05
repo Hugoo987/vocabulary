@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v26 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v27 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -298,6 +298,48 @@
   .cat-group-head:first-child{ margin-top: 0; }
   .cat-group-head .grp-meta{ color: var(--ink-soft); font-weight: 400; }
   .cat-group-head .grp-btns{ margin-left:auto; display:flex; gap:6px; }
+
+  /* ---- 警專單字卡（翻牌學習） ---- */
+  .mode-card.police-study{ background: #E6F0EC; }
+  .flash-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+  .flash-progress{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px; }
+  .flash-bar{ height:6px; background:#E8E1D0; border-radius:6px; overflow:hidden; margin-bottom:14px; }
+  .flash-bar > div{ height:100%; background:#2E6B4F; width:0; transition: width .25s; }
+  .flash-unit{ display:inline-block; color:#fff; font-size:12px; font-weight:700; padding:2px 10px; border-radius:20px; }
+  .flash-card{ perspective: 1200px; cursor:pointer; outline:none; -webkit-tap-highlight-color: transparent; }
+  .flash-inner{ position:relative; min-height: 270px; transition: transform .45s; transform-style: preserve-3d; }
+  .flash-card.flipped .flash-inner{ transform: rotateY(180deg); }
+  .flash-face{
+    position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    border:2px solid var(--ink); border-radius:16px; background:#fff; box-shadow: 4px 4px 0 var(--ink);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding: 18px 16px; gap:10px; overflow:auto;
+  }
+  .flash-back{ transform: rotateY(180deg); background:#FFFDF6; }
+  .flash-card:focus-visible .flash-face{ outline: 3px solid #2E6B4F; outline-offset: 3px; }
+  .flash-word{ font-family:'Baloo 2',sans-serif; font-size: 34px; font-weight:800; line-height:1.15; word-break: break-word; }
+  .flash-zh{ font-size: 26px; font-weight:800; line-height:1.35; }
+  .flash-sub{ font-size: 16px; color: var(--ink-soft); font-weight:700; }
+  .flash-pos{ font-size:12px; font-weight:700; color: var(--ink-soft); border:1.5px solid var(--ink-soft); border-radius:20px; padding:1px 10px; }
+  .flash-ex{ font-size: 15px; line-height:1.6; color: var(--ink); max-width: 34em; }
+  .flash-ex mark{ background:#FFE79A; padding:0 3px; border-radius:4px; font-weight:700; }
+  .flash-say{ border:2px solid var(--ink); background: var(--paper); border-radius:20px; padding:4px 12px; font-size:13px; font-weight:700; cursor:pointer; }
+  .flash-tip{ text-align:center; font-size:12px; color: var(--ink-soft); margin:10px 0 12px; }
+  .flash-nav{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+  .flash-rate{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; }
+  .flash-btn{
+    border:2px solid var(--ink); border-radius:12px; padding: 12px 8px; font-weight:800; font-size:15px;
+    background: var(--paper); cursor:pointer; color: var(--ink);
+  }
+  .flash-btn:disabled{ opacity:.4; cursor:default; }
+  .flash-btn.no{ background:#F9DADA; }
+  .flash-btn.yes{ background:#D7EFDF; }
+  .flash-done{ text-align:center; }
+  .flash-done .big{ font-family:'Baloo 2',sans-serif; font-size: 28px; font-weight:800; margin: 6px 0 4px; }
+  .flash-done .big-btn{ margin-top:10px; }
+  .study-known{ font-size:12px; color: var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  @media (prefers-reduced-motion: reduce){ .flash-inner{ transition:none; } }
+  @media (hover: none){ .flash-tip .kbd-tip{ display:none; } }
   .cat-tab[data-cat="adjectives3"]{ background: var(--numbers); }
   .cat-tab[data-cat="people"]{ background: var(--address); }
   .cat-tab[data-cat="adverbs3"]{ background: var(--time); }
@@ -615,10 +657,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v26 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
+  <div class="top-banner">✅ 這是最新版 v27 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v26</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v27</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -702,11 +744,16 @@
 
     <div class="row-label">警專專區</div>
     <div class="mode-grid">
+      <div class="mode-card police-study" id="modePoliceStudy">
+        <div class="icon">🃏</div>
+        <h3>警專單字卡</h3>
+        <p>學習用：翻牌看中文、例句、聽發音。不計分，也不會進錯題紀錄。</p>
+      </div>
       <div class="mode-card police" id="modePolice">
         <div class="icon">🚔</div>
-        <h3>警專單字</h3>
-        <p>警專英文單字與片語（依主題分類），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
-          <span id="policeUnitCount">0</span> 組。可自選組別、題型與題數。</p>
+        <h3>警專測驗</h3>
+        <p>選擇題測驗，答錯的會進錯題紀錄。共 <b><span id="policeWordCount">0</span></b> 個，分
+          <span id="policeUnitCount">0</span> 組。</p>
       </div>
     </div>
 
@@ -1034,6 +1081,69 @@
 
     <button class="big-btn" id="policeStartBtn">開始</button>
     <div class="hint" id="policePoolHint"></div>
+  </div>
+
+  <!-- POLICE STUDY SETUP（警專單字卡：學習用，跟測驗分開） -->
+  <div class="card hidden" id="policeStudySetupScreen">
+    <div class="back-link" id="backHintStudy">← 返回選擇模式</div>
+    <div class="row-label" style="margin-top:0; display:flex; align-items:center; justify-content:space-between;">
+      <span>🃏 選擇要背的組別（可複選）</span>
+      <span style="display:flex; gap:6px;">
+        <button class="mini-btn" id="studyAllBtn" type="button">全選</button>
+        <button class="mini-btn" id="studyNoneBtn" type="button">全部取消</button>
+      </span>
+    </div>
+    <div class="cat-grid" id="studyCatGrid"></div>
+
+    <div class="row-label">卡片正面</div>
+    <div class="pill-row" id="studyFrontRow">
+      <div class="pill active" data-front="en">英文（想中文）</div>
+      <div class="pill" data-front="zh">中文（想英文）</div>
+    </div>
+
+    <div class="row-label">順序</div>
+    <div class="pill-row" id="studyOrderRow">
+      <div class="pill active" data-order="shuffle">隨機</div>
+      <div class="pill" data-order="list">照單字表順序</div>
+    </div>
+
+    <div class="row-label">已經會的字</div>
+    <div class="study-known">
+      <label><input type="checkbox" id="studySkipKnown" checked> 跳過標成「我會了」的字</label>
+      <span id="studyKnownCount"></span>
+      <button class="mini-btn" id="studyResetKnown" type="button">清除標記</button>
+    </div>
+
+    <button class="big-btn" id="studyStartBtn">開始翻牌</button>
+    <div class="hint" id="studyPoolHint"></div>
+  </div>
+
+  <!-- FLASHCARD SCREEN -->
+  <div class="card hidden" id="flashScreen">
+    <div class="flash-top">
+      <div class="back-link" id="flashExit" style="margin:0">← 結束</div>
+      <span class="flash-unit" id="flashUnit"></span>
+      <span class="flash-progress" id="flashProgress"></span>
+    </div>
+    <div class="flash-bar"><div id="flashBar"></div></div>
+    <div id="flashPlay">
+      <div class="flash-card" id="flashCard" tabindex="0" role="button" aria-label="點一下翻面">
+        <div class="flash-inner">
+          <div class="flash-face flash-front" id="flashFront"></div>
+          <div class="flash-face flash-back" id="flashBack"></div>
+        </div>
+      </div>
+      <div class="flash-tip">點卡片翻面・左右滑動換卡<span class="kbd-tip">（鍵盤：空白鍵翻面、← → 換卡）</span></div>
+      <div class="flash-nav">
+        <button class="flash-btn" id="flashPrev" type="button">← 上一張</button>
+        <button class="flash-btn" id="flashNext" type="button">下一張 →</button>
+      </div>
+      <div class="flash-rate">
+        <button class="flash-btn no" id="flashNo" type="button">😵 還不熟</button>
+        <button class="flash-btn yes" id="flashYes" type="button">✅ 我會了</button>
+      </div>
+    </div>
+    <div class="flash-done hidden" id="flashDone"></div>
   </div>
 
   <!-- QUIZ SCREEN -->
@@ -1483,6 +1593,8 @@ const articleListScreen = document.getElementById('articleListScreen');
 const articleScreen = document.getElementById('articleScreen');
 const setupScreen = document.getElementById('setupScreen');
 const policeSetupScreen = document.getElementById('policeSetupScreen');
+const policeStudySetupScreen = document.getElementById('policeStudySetupScreen');
+const flashScreen = document.getElementById('flashScreen');
 const examConfirmScreen = document.getElementById('examConfirmScreen');
 const reviewSetupScreen = document.getElementById('reviewSetupScreen');
 const quizScreen = document.getElementById('quizScreen');
@@ -1494,10 +1606,11 @@ function showScreen(el){
   binder.classList.toggle('wide', el === articleScreen);
   // Answering, reading and the score sheet get the compact header.
   binder.classList.toggle('focus',
-    el === quizScreen || el === articleScreen || el === resultScreen || el === grammarQuizScreen);
+    el === quizScreen || el === articleScreen || el === resultScreen || el === grammarQuizScreen || el === flashScreen);
   [bootScreen, roleScreen, modeScreen, reportScreen, wordListScreen, articleListScreen, articleScreen,
    grammarListScreen, grammarCardScreen, grammarQuizScreen,
-   setupScreen, examConfirmScreen, reviewSetupScreen, policeSetupScreen, quizScreen, resultScreen]
+   setupScreen, examConfirmScreen, reviewSetupScreen, policeSetupScreen, policeStudySetupScreen, flashScreen,
+   quizScreen, resultScreen]
     .forEach(s=>s.classList.add('hidden'));
   el.classList.remove('hidden');
   // Switching screens keeps the old scroll position otherwise: tap 錯題重練 at
@@ -3554,15 +3667,14 @@ const selectedPoliceCats = new Set();
 const selectedPoliceTypes = new Set(ALL_TYPES);
 let policeCount = 20;
 
-// 單元來自題庫，而題庫是載入後才有的，所以格子要等 loadBank() 之後才畫。
-function renderPoliceUnits(){
-  const grid = document.getElementById('policeCatGrid');
+// 警專的組別格子：測驗設定頁跟單字卡設定頁各有一份，各自記自己勾了哪些。
+// 分成「單字（依主題）」「片語（依類型）」兩區，每區可以整區勾選或取消。
+function buildPoliceGrid(grid, selected, defaultOn, onChange){
   if(!grid) return;
   grid.innerHTML = '';
-  selectedPoliceCats.clear();
+  selected.clear();
   let lastGroup = null;
   POLICE_UNITS.forEach(u=>{
-    // 分成「單字（依主題）」「片語（依類型）」兩區，每區可以整區勾選或取消
     const group = u.group || '';
     if(group && group !== lastGroup){
       lastGroup = group;
@@ -3573,37 +3685,61 @@ function renderPoliceUnits(){
       head.dataset.group = group;
       head.innerHTML = `<span>${esc(group)}</span><span class="grp-meta">${inGroup.length} 組・${words} 個</span>`
         + `<span class="grp-btns"><button class="mini-btn" type="button" data-on="1">這區全選</button>`
-        + `<button class="mini-btn" type="button" data-on="0">這區取消</button></span>`
-        ;
-      head.querySelectorAll('button').forEach(b => b.addEventListener('click', ()=> setPoliceGroup(group, b.dataset.on === '1')));
+        + `<button class="mini-btn" type="button" data-on="0">這區取消</button></span>`;
+      head.querySelectorAll('button').forEach(b => b.addEventListener('click', ()=>{
+        inGroup.forEach(x=>{
+          if(b.dataset.on === '1') selected.add(x.id); else selected.delete(x.id);
+          const el = grid.querySelector(`.cat-tab[data-cat="${x.id}"]`);
+          if(el) el.classList.toggle('off', b.dataset.on !== '1');
+        });
+        onChange();
+      }));
       grid.appendChild(head);
     }
-    selectedPoliceCats.add(u.id);
+    if(defaultOn) selected.add(u.id);
     const div = document.createElement('label');
-    div.className = 'cat-tab';
+    div.className = 'cat-tab' + (defaultOn ? '' : ' off');
     div.dataset.cat = u.id;
-    div.innerHTML = `<input type="checkbox" checked> ${esc(u.label)} <span class="count">${u.words.length}</span>`;
+    div.innerHTML = `<input type="checkbox"${defaultOn ? ' checked' : ''}> ${esc(u.label)} <span class="count">${u.words.length}</span>`;
     // .cat-tab 的字是白色，底色靠 CSS 裡寫死的 .cat-tab[data-cat="…"] 給。
     // 警專的主題對不到那幾條，底色會是透明的 —— 白字印在米色卡片上看不見。
     // 這裡直接把主題自己的顏色指定上去。
     div.style.background = u.color || catColor(u.id);
     div.addEventListener('click', (e)=>{
       e.preventDefault();
-      if(selectedPoliceCats.has(u.id)){ selectedPoliceCats.delete(u.id); div.classList.add('off'); }
-      else{ selectedPoliceCats.add(u.id); div.classList.remove('off'); }
-      updatePolicePoolHint();
+      if(selected.has(u.id)){ selected.delete(u.id); div.classList.add('off'); }
+      else{ selected.add(u.id); div.classList.remove('off'); }
+      onChange();
     });
     grid.appendChild(div);
   });
+}
+function setAllInGrid(grid, selected, on, onChange){
+  selected.clear();
+  grid.querySelectorAll('.cat-tab').forEach(el=>{
+    if(on) selected.add(el.dataset.cat);
+    el.classList.toggle('off', !on);
+  });
+  onChange();
+}
+
+// 單元來自題庫，而題庫是載入後才有的，所以格子要等 loadBank() 之後才畫。
+function renderPoliceUnits(){
+  // 測驗：預設全選；單字卡：預設都不勾，讓學生挑一組來背，不要一次翻兩千多張
+  buildPoliceGrid(document.getElementById('policeCatGrid'), selectedPoliceCats, true, updatePolicePoolHint);
+  buildPoliceGrid(document.getElementById('studyCatGrid'), selectedStudyCats, false, updateStudyPoolHint);
   const total = policeAllPool().length;
   const wc = document.getElementById('policeWordCount');
   const uc = document.getElementById('policeUnitCount');
   if(wc) wc.textContent = total;
   if(uc) uc.textContent = POLICE_UNITS.length;
   // 題庫還沒有警專資料時不要讓入口看起來可以按
-  const card = document.getElementById('modePolice');
-  if(card) card.classList.toggle('hidden', total === 0);
+  ['modePolice', 'modePoliceStudy'].forEach(id=>{
+    const card = document.getElementById(id);
+    if(card) card.classList.toggle('hidden', total === 0);
+  });
   updatePolicePoolHint();
+  updateStudyPoolHint();
 }
 
 function updatePolicePoolHint(){
@@ -3621,23 +3757,188 @@ function updatePolicePoolHint(){
 }
 
 function setAllPoliceUnits(on){
-  selectedPoliceCats.clear();
-  document.querySelectorAll('#policeCatGrid .cat-tab').forEach(el=>{
-    if(on) selectedPoliceCats.add(el.dataset.cat);
-    el.classList.toggle('off', !on);
-  });
-  updatePolicePoolHint();
-}
-function setPoliceGroup(group, on){
-  POLICE_UNITS.filter(u => (u.group || '') === group).forEach(u=>{
-    if(on) selectedPoliceCats.add(u.id); else selectedPoliceCats.delete(u.id);
-    const el = document.querySelector(`#policeCatGrid .cat-tab[data-cat="${u.id}"]`);
-    if(el) el.classList.toggle('off', !on);
-  });
-  updatePolicePoolHint();
+  setAllInGrid(document.getElementById('policeCatGrid'), selectedPoliceCats, on, updatePolicePoolHint);
 }
 document.getElementById('policeAllBtn').addEventListener('click', ()=> setAllPoliceUnits(true));
 document.getElementById('policeNoneBtn').addEventListener('click', ()=> setAllPoliceUnits(false));
+
+// ---------------- 警專單字卡（翻牌學習，跟測驗分開） ----------------
+// 只是用來背的：不計分、不寫進錯題紀錄、不上傳。「我會了」的標記只存在這台裝置，
+// 用來在下一輪跳過已經會的字；清掉或換裝置也不影響任何成績。
+const selectedStudyCats = new Set();
+let studyFront = 'en', studyOrder = 'shuffle';
+const STUDY_KEY = 'vocabQuiz:policeCards';
+const POS_LABEL = { n:'名詞', v:'動詞', adj:'形容詞', adv:'副詞', prep:'介系詞', conj:'連接詞', ph:'片語' };
+
+function loadKnownCards(){
+  try{
+    const raw = localStorage.getItem(STUDY_KEY);
+    const d = raw ? JSON.parse(raw) : null;
+    return new Set(d && Array.isArray(d.known) ? d.known : []);
+  }catch(e){ return new Set(); }
+}
+let knownCards = loadKnownCards();
+function saveKnownCards(){
+  try{ localStorage.setItem(STUDY_KEY, JSON.stringify({ known: [...knownCards] })); }catch(e){ /* 存不了也照樣能翻牌 */ }
+}
+
+function studyDeckFromSetup(){
+  let deck = policePool(selectedStudyCats);
+  if(document.getElementById('studySkipKnown').checked) deck = deck.filter(w => !knownCards.has(w.en));
+  return studyOrder === 'shuffle' ? shuffle(deck) : deck;
+}
+function updateStudyPoolHint(){
+  const hint = document.getElementById('studyPoolHint');
+  const btn = document.getElementById('studyStartBtn');
+  const kc = document.getElementById('studyKnownCount');
+  if(!hint || !btn) return;
+  const all = policePool(selectedStudyCats);
+  const known = all.filter(w => knownCards.has(w.en)).length;
+  const n = studyDeckFromSetup().length;
+  if(kc) kc.textContent = `（全部已標記 ${knownCards.size} 個）`;
+  if(selectedStudyCats.size === 0) hint.textContent = '請先選一組來背';
+  else if(n === 0) hint.textContent = `這 ${all.length} 個字都標成「我會了」；取消「跳過」或清除標記就能再翻一次`;
+  else hint.textContent = `選了 ${selectedStudyCats.size} 組、共 ${all.length} 個字`
+    + (known && document.getElementById('studySkipKnown').checked ? `（跳過已經會的 ${known} 個）` : '')
+    + `，這一輪翻 ${n} 張`;
+  btn.disabled = n === 0;
+}
+document.getElementById('studyAllBtn').addEventListener('click', ()=>
+  setAllInGrid(document.getElementById('studyCatGrid'), selectedStudyCats, true, updateStudyPoolHint));
+document.getElementById('studyNoneBtn').addEventListener('click', ()=>
+  setAllInGrid(document.getElementById('studyCatGrid'), selectedStudyCats, false, updateStudyPoolHint));
+document.getElementById('studySkipKnown').addEventListener('change', updateStudyPoolHint);
+document.getElementById('studyResetKnown').addEventListener('click', ()=>{
+  if(!knownCards.size) return;
+  if(!confirm(`要清除全部 ${knownCards.size} 個「我會了」的標記嗎？`)) return;
+  knownCards.clear(); saveKnownCards(); updateStudyPoolHint();
+});
+document.querySelectorAll('#studyFrontRow .pill').forEach(p=> p.addEventListener('click', ()=>{
+  document.querySelectorAll('#studyFrontRow .pill').forEach(x=>x.classList.remove('active'));
+  p.classList.add('active'); studyFront = p.dataset.front;
+}));
+document.querySelectorAll('#studyOrderRow .pill').forEach(p=> p.addEventListener('click', ()=>{
+  document.querySelectorAll('#studyOrderRow .pill').forEach(x=>x.classList.remove('active'));
+  p.classList.add('active'); studyOrder = p.dataset.order;
+}));
+document.getElementById('modePoliceStudy').addEventListener('click', ()=>{
+  updateStudyPoolHint();
+  showScreen(policeStudySetupScreen);
+});
+document.getElementById('backHintStudy').addEventListener('click', ()=> showScreen(modeScreen));
+
+const flash = { deck: [], i: 0, rated: new Map() };   // rated: en → 'yes' | 'no'
+function startFlash(deck){
+  flash.deck = deck; flash.i = 0; flash.rated = new Map();
+  document.getElementById('flashPlay').classList.remove('hidden');
+  document.getElementById('flashDone').classList.add('hidden');
+  showScreen(flashScreen);
+  renderFlash();
+  try{ document.getElementById('flashCard').focus({ preventScroll: true }); }catch(e){}
+}
+document.getElementById('studyStartBtn').addEventListener('click', ()=>{
+  const deck = studyDeckFromSetup();
+  if(deck.length) startFlash(deck);
+});
+
+function exampleHTML(w){
+  const s = String(w.sentence || '');
+  if(!s.includes('___')) return esc(s);
+  const [a, b] = s.split('___');
+  return esc(a) + '<mark>' + esc(w.en) + '</mark>' + esc(b);
+}
+function renderFlash(){
+  const w = flash.deck[flash.i];
+  const card = document.getElementById('flashCard');
+  card.classList.remove('flipped');
+  const u = policeUnit(w.cat);
+  const unit = document.getElementById('flashUnit');
+  unit.textContent = u ? u.label : '';
+  unit.style.background = u ? (u.color || catColor(u.id)) : 'transparent';
+  document.getElementById('flashProgress').textContent = `${flash.i + 1} / ${flash.deck.length}`;
+  document.getElementById('flashBar').style.width = (100 * (flash.i + 1) / flash.deck.length) + '%';
+  const pos = POS_LABEL[w.pos] ? `<span class="flash-pos">${POS_LABEL[w.pos]}</span>` : '';
+  const say = ttsOK() ? `<button class="flash-say" type="button" data-say="${esc(w.en)}">🔊 發音</button>` : '';
+  const sayEx = ttsOK() ? `<button class="flash-say" type="button" data-say="${esc(String(w.sentence || '').replace('___', w.en))}">🔊 念例句</button>` : '';
+  const enBlock = `<div class="flash-word">${esc(w.en)}</div>${pos}`;
+  const known = knownCards.has(w.en) ? '<span class="flash-pos">✅ 已標記會了</span>' : '';
+  document.getElementById('flashFront').innerHTML = studyFront === 'en'
+    ? `${enBlock}${say}${known}`
+    : `<div class="flash-zh">${esc(w.zh)}</div>${pos}${known}`;
+  document.getElementById('flashBack').innerHTML = studyFront === 'en'
+    ? `<div class="flash-zh">${esc(w.zh)}</div><div class="flash-sub">${esc(w.en)}</div>`
+      + `<div class="flash-ex">${exampleHTML(w)}</div>${sayEx}`
+    : `${enBlock}<div class="flash-sub">${esc(w.zh)}</div>`
+      + `<div class="flash-ex">${exampleHTML(w)}</div><div style="display:flex;gap:8px">${say}${sayEx}</div>`;
+  document.getElementById('flashPrev').disabled = flash.i === 0;
+  document.getElementById('flashNext').textContent = flash.i === flash.deck.length - 1 ? '看結果 →' : '下一張 →';
+}
+function flipFlash(){ document.getElementById('flashCard').classList.toggle('flipped'); }
+function moveFlash(d){
+  const j = flash.i + d;
+  if(j < 0) return;
+  if(j >= flash.deck.length){ finishFlash(); return; }
+  flash.i = j; renderFlash();
+}
+function rateFlash(ok){
+  const w = flash.deck[flash.i];
+  flash.rated.set(w.en, ok ? 'yes' : 'no');
+  if(ok) knownCards.add(w.en); else knownCards.delete(w.en);
+  saveKnownCards();
+  moveFlash(1);
+}
+function finishFlash(){
+  const yes = flash.deck.filter(w => flash.rated.get(w.en) === 'yes');
+  const no = flash.deck.filter(w => flash.rated.get(w.en) === 'no');
+  const skipped = flash.deck.length - yes.length - no.length;
+  const box = document.getElementById('flashDone');
+  box.innerHTML = `<div style="font-size:40px">🎉</div><div class="big">翻完 ${flash.deck.length} 張</div>`
+    + `<p>✅ 我會了 <b>${yes.length}</b>　😵 還不熟 <b>${no.length}</b>`
+    + (skipped ? `　（沒有標記 ${skipped}）` : '') + '</p>'
+    + (no.length ? `<button class="big-btn" id="flashAgainNo" type="button">再翻一次還不熟的 ${no.length} 張</button>` : '')
+    + `<button class="big-btn" id="flashAgainAll" type="button" style="background:var(--paper);color:var(--ink)">整副重新翻</button>`
+    + `<button class="big-btn" id="flashBackSetup" type="button" style="background:var(--paper);color:var(--ink)">回單字卡選組別</button>`;
+  document.getElementById('flashPlay').classList.add('hidden');
+  box.classList.remove('hidden');
+  document.getElementById('flashProgress').textContent = '完成';
+  document.getElementById('flashBar').style.width = '100%';
+  const again = document.getElementById('flashAgainNo');
+  if(again) again.addEventListener('click', ()=> startFlash(studyOrder === 'shuffle' ? shuffle(no) : no));
+  document.getElementById('flashAgainAll').addEventListener('click', ()=>
+    startFlash(studyOrder === 'shuffle' ? shuffle(flash.deck) : flash.deck.slice()));
+  document.getElementById('flashBackSetup').addEventListener('click', ()=>{ updateStudyPoolHint(); showScreen(policeStudySetupScreen); });
+}
+document.getElementById('flashCard').addEventListener('click', ev=>{
+  if(ev.target.closest('[data-say]')) return;   // 按發音不要順便翻面
+  flipFlash();
+});
+document.getElementById('flashPrev').addEventListener('click', ()=> moveFlash(-1));
+document.getElementById('flashNext').addEventListener('click', ()=> moveFlash(1));
+document.getElementById('flashYes').addEventListener('click', ()=> rateFlash(true));
+document.getElementById('flashNo').addEventListener('click', ()=> rateFlash(false));
+document.getElementById('flashExit').addEventListener('click', ()=>{ updateStudyPoolHint(); showScreen(policeStudySetupScreen); });
+document.addEventListener('keydown', ev=>{
+  if(flashScreen.classList.contains('hidden') || !document.getElementById('flashDone').classList.contains('hidden')) return;
+  if(ev.target.closest && ev.target.closest('input, textarea, select')) return;
+  if(ev.key === ' ' || ev.key === 'Enter'){ ev.preventDefault(); flipFlash(); }
+  else if(ev.key === 'ArrowRight'){ ev.preventDefault(); moveFlash(1); }
+  else if(ev.key === 'ArrowLeft'){ ev.preventDefault(); moveFlash(-1); }
+});
+// 手機：在卡片上左右滑動換卡
+(function(){
+  const card = document.getElementById('flashCard');
+  let x0 = null, y0 = null;
+  card.addEventListener('touchstart', e=>{ const t = e.changedTouches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive: true });
+  card.addEventListener('touchend', e=>{
+    if(x0 === null) return;
+    const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    x0 = null;
+    if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5){
+      e.preventDefault();   // 滑動不要被當成點一下而翻面
+      moveFlash(dx < 0 ? 1 : -1);
+    }
+  });
+})();
 
 document.querySelectorAll('#policeTypeRow .pill').forEach(p=>{
   p.addEventListener('click', ()=>{
