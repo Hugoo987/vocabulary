@@ -112,20 +112,26 @@ console.log('\n【3. 空的紀錄不可以蓋掉雲端的備份】');
     syncHistoryView();
     const push = await syncPush();             // 做完測驗時會走到這裡
     const after = await (await fetch(syncUrl(), { cache:'no-store' })).json();
-    return { refused: !!push.refused, ok: push.ok,
-             cloudW: (after.w||[]).length, cloudS: (after.s||[]).length };
+    return { restored: !!push.restored,
+             cloudW: (after.w||[]).length, cloudS: (after.s||[]).length,
+             localW: Object.keys(store.profiles.student.words).length };
   });
-  check(r.refused && !r.ok, '空紀錄的上傳被擋下來');
+  check(r.restored, '空的那台沒有上傳，而是從雲端救回');
   check(r.cloudW === 2 && r.cloudS === 1,
     `雲端的紀錄原封不動（錯字 ${r.cloudW}、成績 ${r.cloudS}）`);
+  check(r.localW === 2, `這台手機拿回了雲端的 2 個錯字（實際 ${r.localW}）`);
 
   // 學生自己按「清除紀錄」是明確的意思，要清得掉
+  // 走真正的按鈕路徑 clearHistory()，不是直接呼叫 syncPush(true)
   const forced = await p.evaluate(async ()=>{
-    const push = await syncPush(true);
+    clearHistory();
+    await new Promise(r=>setTimeout(r,300));
     const after = await (await fetch(syncUrl(), { cache:'no-store' })).json();
-    return { ok: push.ok, cloudW: ((after||{}).w||[]).length };
+    return { localW: Object.keys(store.profiles.student.words).length,
+             cloudW: ((after||{}).w||[]).length };
   });
-  check(forced.ok && forced.cloudW === 0, '學生自己按「清除紀錄」時仍然清得掉雲端');
+  check(forced.localW === 0 && forced.cloudW === 0,
+    `學生自己按「清除紀錄」時，手機和雲端的錯題都清得掉（手機 ${forced.localW}、雲端 ${forced.cloudW}）`);
   await ctx.close();
 }
 
@@ -188,32 +194,70 @@ console.log('\n【5. 合併而不是覆蓋】');
   await ctx.close();
 }
 
-console.log('\n【6. 雲端變少時，老師端不會被洗掉】');
+console.log('\n【6. 錯題重練練掉的字，老師那邊也要跟著消失】');
+// 這一項專門盯「取大的」合併留下的 bug：學生練掉了，老師那邊永遠還在。
+{
+  const ctx = await br.newContext();
+  const stu = await ctx.newPage();
+  await stu.goto(URL);
+  await stu.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await stu.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'decr-test';
+    setRole('student');
+    store.profiles.student = blankProfile();
+    store.profiles.student.words = {
+      absent:{en:'absent',zh:'缺席的',cat:'adjectives3',count:3,types:{},lastWrong:Date.now()},
+      blank: {en:'blank', zh:'空白的',cat:'adjectives3',count:1,types:{},lastWrong:Date.now()} };
+    store.profiles.student.days = { [dayNum(new Date())]: 1 };
+    syncHistoryView();
+    await syncPush();
+    // 錯題重練答對：absent 3→2，blank 1→0（移出錯題本）
+    historyData.absent.count -= 1;
+    delete historyData.blank;
+    store.profiles.student.days[dayNum(new Date())] += 1;
+    await syncPush();
+    const cloud = await (await fetch(syncUrl(),{cache:'no-store'})).json();
+    const c = {}; (cloud.w||[]).forEach(row=>c[row[0]]=row[1]);
+    // 老師那邊拉一次
+    setRole('teacher');
+    await syncPull();
+    const t = store.profiles.student.words;
+    return { cloudAbsent: c.absent, cloudBlank: c.blank,
+             teacherAbsent: t.absent && t.absent.count, teacherBlank: !!t.blank };
+  }, MOCK);
+  check(r.cloudAbsent === 2, `雲端的 absent 跟著減成 2（實際 ${r.cloudAbsent}）`);
+  check(r.cloudBlank === undefined, '練掉的 blank 從雲端消失');
+  check(r.teacherAbsent === 2 && !r.teacherBlank, '老師看到的跟學生一模一樣');
+  await ctx.close();
+}
+
+console.log('\n【6b. 三方一致：學生 = 雲端 = 老師】');
 {
   const ctx = await br.newContext();
   const p = await ctx.newPage();
   await p.goto(URL);
   await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
   const r = await p.evaluate(async (mock)=>{
-    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'shrink-test';
-    // 雲端只剩兩個字（被空紀錄覆蓋過的樣子）
-    await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ v:1, t:Date.now(), w:[['absent',1,'e1',20000]], s:[], d:[] }) });
-    // 老師這台本來有完整的 5 個字
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'same-test';
+    setRole('student');
+    store.profiles.student = blankProfile();
+    ['absent','blank','alive','usual'].forEach((en,i)=>{
+      store.profiles.student.words[en] = { en, zh:'x', cat:'adjectives3', count:i+1, types:{}, lastWrong:1 };
+    });
+    store.profiles.student.days = { [dayNum(new Date())]: 3 };
+    store.profiles.student.sessions = [{ date: Date.now(), mode:'exam', total:40, correct:33 }];
+    syncHistoryView();
+    await syncPush();
+    const sig = prof => JSON.stringify(Object.values(prof.words).map(w=>[w.en,w.count]).sort());
+    const studentSig = sig(store.profiles.student);
+    const cloudSig = sig(payloadToProfile(await (await fetch(syncUrl(),{cache:'no-store'})).json()));
     setRole('teacher');
     store.profiles.student = blankProfile();
-    ['absent','blank','alive','usual','whole'].forEach((en,i)=>{
-      store.profiles.student.words[en] = { en, zh:'x', cat:'adjectives3', count:i+2, types:{}, lastWrong:1 };
-    });
-    const before = Object.keys(store.profiles.student.words).length;
-    const pull = await syncPull();
-    return { before, after: Object.keys(store.profiles.student.words).length,
-             pulledWords: pull.pulledWords, absent: store.profiles.student.words.absent.count };
+    await syncPull();
+    return { studentSig, cloudSig, teacherSig: sig(store.profiles.student) };
   }, MOCK);
-  check(r.before === 5, '老師端原本有 5 個錯字');
-  check(r.pulledWords === 1, '雲端只剩 1 個錯字');
-  check(r.after === 5, `拉取之後老師端還是 5 個，沒有被洗成 1 個（實際 ${r.after}）`);
-  check(r.absent === 2, `重疊的字取次數大的那個（實際 ${r.absent}）`);
+  check(r.studentSig === r.cloudSig, '學生手機 = 雲端');
+  check(r.cloudSig === r.teacherSig, '雲端 = 老師');
   await ctx.close();
 }
 
@@ -269,7 +313,7 @@ console.log('\n【8. 換新手機：紀錄比較少的裝置也不可以削掉�
     // 雲端已經累積了 10 個錯字、3 筆成績
     const w = []; for(let i=0;i<10;i++) w.push(['w'+i, i+1, 'e'+(i+1), 20000]);
     await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ v:1, t:Date.now(), w, s:[[20000,'e',40,30],[20001,'p',20,15],[20002,'r',30,25]], d:[[20261001,2]] }) });
+      body: JSON.stringify({ v:2, t:Date.now(), w, s:[[20000,'e',40,30],[20001,'p',20,15],[20002,'r',30,25]], d:[[20261001,2]] }) });
     // 新手機上只做了一次測驗，只有 2 個錯字 —— 不是空的，所以舊的護欄擋不住
     setRole('student');
     store.profiles.student = blankProfile();
@@ -281,16 +325,44 @@ console.log('\n【8. 換新手機：紀錄比較少的裝置也不可以削掉�
     const push = await syncPush();
     const after = await (await fetch(syncUrl(), { cache:'no-store' })).json();
     const byEn = {}; (after.w||[]).forEach(row=>{ byEn[row[0]] = row[1]; });
-    return { pushOk: push.ok, merged: !!push.merged,
+    return { pushOk: push.ok, merged: !!push.recovered,
              cloudWords: (after.w||[]).length, cloudSessions: (after.s||[]).length,
              w0: byEn.w0, hasNew: 'newword' in byEn };
   }, MOCK);
   check(r.pushOk, '上傳成功');
-  check(r.merged, '上傳前先跟雲端合併過');
+  check(r.merged, '偵測到這台少了雲端的練習紀錄（掉過資料），合併救回');
   check(r.cloudWords === 11, `雲端從 10 個字變成 11 個，沒有被削成 2 個（實際 ${r.cloudWords}）`);
   check(r.cloudSessions === 4, `成績也是累加（3 + 1 = ${r.cloudSessions}）`);
   check(r.w0 === 9, `重疊的字取次數大的（雲端 1 / 本機 9 → ${r.w0}）`);
   check(r.hasNew, '新手機上的新錯字也進得去');
+  await ctx.close();
+}
+
+console.log('\n【8b. 舊版（可能被測試污染過）的雲端：以學生手機為準，不把髒資料吸進來】');
+{
+  const ctx = await br.newContext();
+  const p = await ctx.newPage();
+  await p.goto(URL);
+  await p.waitForFunction(()=>window.__bankReady===true,null,{timeout:20000}).catch(()=>{});
+  const r = await p.evaluate(async (mock)=>{
+    SYNC_CONFIG.dbUrl = mock; SYNC_CONFIG.classKey = 'legacy-test';
+    // v1 雲端裡有測試留下的字
+    await fetch(syncUrl(), { method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ v:1, t:Date.now(), w:[['crime',1,'e1',20000],['suspect',1,'e1',20000]],
+        s:[[20000,'j',10,0]], d:[[20261003,5]] }) });
+    setRole('student');
+    store.profiles.student = blankProfile();
+    store.profiles.student.words = { absent:{en:'absent',zh:'缺席的',cat:'adjectives3',count:4,types:{},lastWrong:1} };
+    store.profiles.student.days = { [dayNum(new Date())]: 1 };
+    syncHistoryView();
+    await syncPush();
+    const cloud = await (await fetch(syncUrl(),{cache:'no-store'})).json();
+    return { cloudWords: (cloud.w||[]).map(x=>x[0]).sort(), v: cloud.v,
+             localWords: Object.keys(store.profiles.student.words).sort() };
+  }, MOCK);
+  check(JSON.stringify(r.localWords) === '["absent"]', `學生手機沒有吸進測試的字（${r.localWords.join('、')}）`);
+  check(JSON.stringify(r.cloudWords) === '["absent"]', `雲端被學生手機的版本取代，髒資料清掉（${r.cloudWords.join('、')}）`);
+  check(r.v === 2, '雲端升級成 v2，之後的救回才會啟用');
   await ctx.close();
 }
 
