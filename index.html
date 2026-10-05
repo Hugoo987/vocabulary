@@ -440,6 +440,12 @@
      -word panel started 1,500px down the page. */
   @media (max-width: 520px){
     .mode-grid, .mode-grid-3{ grid-template-columns: 1fr; gap:10px; }
+    /* 警專的「單字卡／測驗」是同一區的兩個入口，手機上也並排，只佔一列 */
+    .mode-grid.pair{ grid-template-columns: 1fr 1fr; }
+    .mode-grid.pair .mode-card{ grid-template-columns: auto 1fr; column-gap:8px; padding:10px; }
+    .mode-grid.pair .mode-card .icon{ font-size:22px; grid-row:1; }
+    .mode-grid.pair .mode-card h3{ font-size:15px; align-self:center; }
+    .mode-grid.pair .mode-card p{ grid-column:1 / span 2; }
     /* icon in its own column so the title never gets squeezed into one
        character per line */
     .mode-card{
@@ -743,17 +749,16 @@
     </div>
 
     <div class="row-label">警專專區</div>
-    <div class="mode-grid">
+    <div class="mode-grid pair">
       <div class="mode-card police-study" id="modePoliceStudy">
         <div class="icon">🃏</div>
         <h3>警專單字卡</h3>
-        <p>學習用：翻牌看中文、例句、聽發音。不計分，也不會進錯題紀錄。</p>
+        <p>翻牌背單字・聽發音，不計分</p>
       </div>
       <div class="mode-card police" id="modePolice">
         <div class="icon">🚔</div>
         <h3>警專測驗</h3>
-        <p>選擇題測驗，答錯的會進錯題紀錄。共 <b><span id="policeWordCount">0</span></b> 個，分
-          <span id="policeUnitCount">0</span> 組。</p>
+        <p>選擇題・共 <b><span id="policeWordCount">0</span></b> 字／<span id="policeUnitCount">0</span> 組</p>
       </div>
     </div>
 
