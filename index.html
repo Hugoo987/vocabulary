@@ -1545,6 +1545,7 @@ document.getElementById('doImportBtn').addEventListener('click', ()=>{
     const profile = parseTransferCode(document.getElementById('codeIn').value);
     const words = Object.keys(profile.words).length;
     store.profiles.student = profile;
+    store.syncBase = cloneProfile(profile);
     if(role === 'student') syncHistoryView();
     saveHistory(true);
     renderReport();
@@ -1626,6 +1627,16 @@ function blankProfile(){ return { words: {}, sessions: [], days: {}, gm: {} }; }
 
 function blankStore(){
   return { version: 2, role: null, assignDone: null,
+           // 上次跟雲端對齊時，學生紀錄長什麼樣子。同步時拿「現在 − 這份」
+           // 算出這台裝置自己新增／減少了什麼，再把這個差值加到雲端上。
+           syncBase: null,
+           // 送出去、但還沒收到回應的那一次上傳。學生做完題目馬上關掉 App 時，
+           // 雲端可能已經收到了、這台卻不知道 —— 下次打開先問雲端收到沒，
+           // 收到了就不再加一次（否則會重複計算）。
+           pendingPush: null,
+           // 老師最後一次「清除學生紀錄」的時間。跟雲端的不一樣，就代表這台
+           // 錯過了一次清除，要跟著清掉。
+           syncEpoch: null,
            profiles: { student: blankProfile(), teacher: blankProfile() } };
 }
 
@@ -1710,6 +1721,10 @@ async function loadHistory(){
           store.profiles.student = normalizeProfile(parsed.profiles && parsed.profiles.student);
           store.profiles.teacher = normalizeProfile(parsed.profiles && parsed.profiles.teacher);
           store.assignDone = Number(parsed.assignDone) || null;
+          store.syncBase = parsed.syncBase ? normalizeProfile(parsed.syncBase) : null;
+          store.pendingPush = (parsed.pendingPush && parsed.pendingPush.id)
+            ? { id: String(parsed.pendingPush.id), next: normalizeProfile(parsed.pendingPush.next) } : null;
+          store.syncEpoch = parsed.syncEpoch || null;
         }
       } else {
         // First run on this build: carry over any old { en: {en,zh,count} } record.
@@ -1877,14 +1892,6 @@ function mergeProfiles(base, incoming){
   return out;
 }
 
-// 練習熱力圖（days）只會增加、不會減少 —— 錯題可以練掉，但「哪天做了幾次」
-// 不會倒退。所以只要這台裝置上某一天的次數比雲端少，就代表它掉過資料
-// （換手機、被瀏覽器清掉、空間滿讀不到），不是正常的延續。
-function coversHistory(local, cloud){
-  const L = (local && local.days) || {}, C = (cloud && cloud.days) || {};
-  return Object.entries(C).every(([k, n]) => (Number(L[k]) || 0) >= (Number(n) || 0));
-}
-
 function profileSize(p){
   if(!p) return 0;
   return Object.keys(p.words || {}).length + (p.sessions || []).length
@@ -1898,7 +1905,7 @@ function clearHistory(){
   saveHistory(true);   // 本人按的，允許變空
   // Push the cleared state too, or the teacher's next pull would restore what
   // the student just deleted.
-  if(role === 'student' && syncReady()) syncPush(true);
+  if(syncReady()) syncNow().then(()=> renderHistory());
   renderHistory();
 }
 
@@ -2203,7 +2210,9 @@ function buildPayload(profile){
 // Rebuild a profile from a payload. Chinese and unit are looked up from this
 // page's own word banks rather than carried in the payload, which keeps it small.
 function payloadToProfile(data){
-  if(!data || (data.v !== 1 && data.v !== 2) || !Array.isArray(data.w)) throw new Error('資料格式不符。');
+  if(!data || (data.v !== 1 && data.v !== 2)) throw new Error('資料格式不符。');
+  // Firebase 不存空陣列：錯題全部練掉時 w 會整個消失（或是我們寫的 0）
+  if(!Array.isArray(data.w)) data = { ...data, w: [] };
   const lookup = {};
   retrainPool().forEach(w => { lookup[w.en] = w; });
 
@@ -2311,53 +2320,182 @@ function syncUrl(){
 // 唯一的備份蓋掉，本來救得回來的資料就真的沒了。
 // 所以空的紀錄不准覆蓋雲端上有資料的紀錄；只有學生自己按「清除紀錄」
 // 時才帶 force，那是他本人的意思。
-async function syncPush(force){
-  if(!syncReady() || role !== 'student') return { ok:false, skipped:true };
-  // 學生手機是唯一的寫入者，雲端是它的鏡像。這樣錯題重練「練掉」的字、
-  // 減少的次數才傳得到老師那邊 —— 用「取大的」合併的話，減少永遠傳不過去。
-  let restored = false, recovered = false;
-  if(!force){
-    try{
-      const res = await fetch(syncUrl(), { cache: 'no-store' });
-      if(res.ok){
-        const data = await res.json();
-        const cloudHas = data && ((data.w && data.w.length) || (data.s && data.s.length));
-        if(cloudHas){
-          const cloud = payloadToProfile(data);
-          const local = store.profiles.student;
-          if(profileSize(local) === 0){
-            // 這台什麼都沒有（新手機、被清掉）：直接從雲端救回來，不上傳
-            store.profiles.student = cloud;
-            restored = true;
-          } else if(data.v === 2 && !coversHistory(local, cloud)){
-            // 這台有東西，但少了雲端記得的練習紀錄 → 掉過資料。合併救回。
-            // （v1 的雲端可能被測試污染過，不拿來合併，直接以這台為準。）
-            store.profiles.student = mergeProfiles(local, cloud);
-            recovered = true;
-          }
-          if(restored || recovered){
-            syncHistoryView();
-            saveHistory();
-            renderHistory();
-          }
-          if(restored) return { ok:true, restored:true };
-        }
-      }
-    }catch(e){ /* 讀不到雲端就照常上傳，至少不會卡住學生 */ }
-  }
-  try{
-    const res = await fetch(syncUrl(), {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildPayload())
+// ================= 同步（手機、iPad 都可以做題） =================
+//
+// 每台裝置都記得「上次跟雲端對齊時的樣子」（store.syncBase）。同步時：
+//
+//   這台的變化 = 現在的紀錄 − 上次對齊時的紀錄
+//   新的雲端   = 雲端目前的紀錄 ＋ 這台的變化
+//
+// 所以手機錯 3 次、iPad 錯 2 次，雲端就是 5 次；在 iPad 上把一個字練掉，
+// 手機那邊下次同步也會跟著消失。兩台怎麼輪流用都不會互相蓋掉。
+// 沒網路時照樣記在本機，連上之後把累積的變化一次補上去。
+
+function cloneProfile(p){
+  return normalizeProfile(JSON.parse(JSON.stringify(p || blankProfile())));
+}
+
+// 把「這台的變化」加到雲端那份上
+function applyDelta(cloud, base, local){
+  const out = cloneProfile(cloud);
+  base = base || blankProfile();
+
+  const ens = new Set([...Object.keys(base.words || {}), ...Object.keys(local.words || {})]);
+  ens.forEach(en=>{
+    const b = base.words[en], l = local.words[en];
+    const dc = (l ? Number(l.count) || 0 : 0) - (b ? Number(b.count) || 0 : 0);
+    const dt = {};
+    new Set([...Object.keys((b && b.types) || {}), ...Object.keys((l && l.types) || {})]).forEach(t=>{
+      const d = (l && l.types ? Number(l.types[t]) || 0 : 0) - (b && b.types ? Number(b.types[t]) || 0 : 0);
+      if(d) dt[t] = d;
     });
+    const lastChanged = l && b && Number(l.lastWrong) > Number(b.lastWrong);
+    if(!dc && !Object.keys(dt).length && !lastChanged) return;   // 這台沒動過這個字
+
+    const c = out.words[en];
+    const count = (c ? Number(c.count) || 0 : 0) + dc;
+    if(count <= 0){ delete out.words[en]; return; }               // 練掉了
+    const src = l || b;
+    const w = c || { en, zh: src.zh, cat: src.cat, count: 0, types: {}, lastWrong: null };
+    w.count = count;
+    Object.entries(dt).forEach(([t, d])=>{
+      const n = (Number(w.types[t]) || 0) + d;
+      if(n > 0) w.types[t] = n; else delete w.types[t];
+    });
+    if(l && l.lastWrong) w.lastWrong = Math.max(Number(w.lastWrong) || 0, Number(l.lastWrong) || 0);
+    if(src.zh && (!w.zh || w.zh.includes('已不在目前題庫'))) w.zh = src.zh;
+    if(src.cat && !w.cat) w.cat = src.cat;
+    out.words[en] = w;
+  });
+
+  // 熱力圖：這台每天多做了幾次，就加幾次
+  new Set([...Object.keys(base.days || {}), ...Object.keys(local.days || {})]).forEach(k=>{
+    const d = (Number((local.days || {})[k]) || 0) - (Number((base.days || {})[k]) || 0);
+    if(d > 0) out.days[k] = (Number(out.days[k]) || 0) + d;
+  });
+
+  // 作答紀錄：這台新增的那幾筆接上去（同一天同分數做兩次也要算兩筆）
+  const key = x => [Math.round((x.date || 0) / DAY), x.mode, x.total, x.correct].join('|');
+  const seen = {};
+  (base.sessions || []).forEach(x=>{ const k = key(x); seen[k] = (seen[k] || 0) + 1; });
+  const fresh = [];
+  (local.sessions || []).forEach(x=>{ const k = key(x); if(seen[k]) seen[k]--; else fresh.push(x); });
+  out.sessions = out.sessions.concat(fresh).sort((a, b)=> (a.date || 0) - (b.date || 0));
+  if(out.sessions.length > 60) out.sessions = out.sessions.slice(-60);
+  return out;
+}
+
+function payloadSig(p){
+  const x = buildPayload(p);
+  return JSON.stringify([x.w.slice().sort((a, b)=> a[0] < b[0] ? -1 : 1), x.s, x.d]);
+}
+
+function putPayload(profile, extra){
+  const body = Object.assign(buildPayload(profile), extra || {});
+  if(!body.w.length) body.w = 0;   // Firebase 不存空陣列，規則又要求要有 w
+  return fetch(syncUrl(), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+}
+
+let syncInFlight = null;
+function syncNow(){
+  // 同一時間只跑一次：連續觸發時共用同一個結果，不會疊加兩次差值
+  if(!syncInFlight) syncInFlight = doSync().finally(()=>{ syncInFlight = null; });
+  return syncInFlight;
+}
+
+async function doSync(){
+  if(!syncReady()) return { ok:false, skipped:true };
+  let data;
+  try{
+    const res = await fetch(syncUrl(), { cache: 'no-store' });
     if(!res.ok) throw new Error('HTTP ' + res.status);
-    lastSyncAt = Date.now();
-    return { ok:true, recovered };
+    data = await res.json();
   }catch(err){
     return { ok:false, error: String(err.message || err) };
   }
+  const cloudHas = !!data && (
+    (Array.isArray(data.w) && data.w.length) ||
+    (Array.isArray(data.s) && data.s.length) ||
+    (Array.isArray(data.d) && data.d.length));
+  let remote;
+  try{ remote = cloudHas ? payloadToProfile(data) : blankProfile(); }
+  catch(e){ return { ok:false, error: '雲端資料格式不符' }; }
+
+  // 從這裡到寫入本機都是同步執行的，中間不會插進新的作答
+
+  // 老師清除過、這台還沒跟上：這台的學生紀錄也清掉（文法紀錄保留）
+  if(data && data.c && data.c !== store.syncEpoch){
+    const gmKeep = store.profiles.student.gm || {};
+    store.profiles.student = blankProfile();
+    store.profiles.student.gm = gmKeep;
+    store.syncBase = blankProfile();
+    store.pendingPush = null;
+  }
+  store.syncEpoch = (data && data.c) || store.syncEpoch || null;
+
+  // 上次送出去但沒等到回應的那一筆：雲端收到了就把它當成已對齊
+  if(store.pendingPush){
+    const ops = (data && Array.isArray(data.o)) ? data.o : [];
+    if(ops.includes(store.pendingPush.id)) store.syncBase = store.pendingPush.next;
+    store.pendingPush = null;
+  }
+
+  const local = store.profiles.student;
+  let next;
+  if(store.syncBase){
+    next = applyDelta(remote, store.syncBase, local);
+  } else if(!cloudHas || profileSize(remote) === 0){
+    next = cloneProfile(local);                    // 雲端是空的：這台就是全部
+  } else if(profileSize(local) === 0){
+    next = remote;                                 // 這台是空的（新裝置／被清掉）：從雲端拿
+  } else if(data.v !== 2){
+    next = cloneProfile(local);                    // 舊版寫的雲端可能混過測試資料，以這台為準
+  } else {
+    // 第一次用這套規則、兩邊都有東西：取聯集。重疊的字取次數大的那個，
+    // 不相加 —— 兩邊很可能本來就是同一份紀錄的兩個副本，相加會重複計算。
+    next = mergeProfiles(local, remote);
+  }
+
+  const gm = local.gm || {};                       // 文法紀錄不上雲端，留在本機
+  const applied = cloneProfile(next); applied.gm = gm;
+  store.profiles.student = applied;
+  store.syncBase = cloneProfile(remote);           // 還沒寫成功前，對齊點仍是雲端原本的樣子
+  if(role === 'student') syncHistoryView();
+  saveHistory(true);
+
+  let pushed = false;
+  if(payloadSig(next) !== payloadSig(remote)){
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    const ops = ((data && Array.isArray(data.o)) ? data.o : []).slice(-29).concat(id);
+    // 送出前先記下來：萬一送出後 App 被關掉，下次打開還查得到
+    store.pendingPush = { id, next: cloneProfile(next) };
+    saveHistory(true);
+    try{
+      const res = await putPayload(next, { o: ops, c: store.syncEpoch || undefined });
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      pushed = true;
+    }catch(err){
+      // 寫不上去也沒關係：本機的變化還在，下次同步會再補
+      return { ok:false, error: String(err.message || err) };
+    }
+  }
+  store.pendingPush = null;
+  store.syncBase = cloneProfile(next);
+  saveHistory(true);
+  lastSyncAt = Date.now();
+  return { ok:true, pushed,
+           empty: profileSize(next) === 0,
+           words: Object.keys(next.words).length,
+           sessions: next.sessions.length,
+           at: (data && data.t) || null };
 }
+
+// 舊的呼叫點都改走 syncNow()
+function syncPush(){ return syncNow(); }
 
 // Cloud -> teacher.
 // 老師按兩次確認的「清除學生紀錄」要連雲端一起清，否則下一次打開報告
@@ -2365,40 +2503,25 @@ async function syncPush(force){
 // 這是唯一允許老師寫入雲端的地方，而且只寫一份空的。
 async function syncClear(){
   if(!syncReady()) return { ok:false, skipped:true };
+  const clearAt = Date.now();
   try{
     const res = await fetch(syncUrl(), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ v:2, t:Date.now(), w:[], s:[], d:[] })
+      body: JSON.stringify({ v:2, t:Date.now(), w:0, c: clearAt })
     });
     if(!res.ok) throw new Error('HTTP ' + res.status);
+    store.syncBase = blankProfile();
+    store.pendingPush = null;
+    store.syncEpoch = clearAt;
+    saveHistory(true);
     return { ok:true };
   }catch(err){
     return { ok:false, error: String(err.message || err) };
   }
 }
 
-async function syncPull(){
-  if(!syncReady()) return { ok:false, skipped:true };
-  try{
-    const res = await fetch(syncUrl(), { cache: 'no-store' });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if(data === null) return { ok:true, empty:true };
-    const pulled = payloadToProfile(data);
-    // 雲端是學生手機的鏡像，老師照它顯示，兩邊才會一模一樣。
-    // （不怕雲端「意外變少」：上傳那一端已經擋掉掉過資料的裝置。
-    //   雲端會變少只有兩種正當原因：錯題練掉了、或有人按了清除。）
-    store.profiles.student = pulled;
-    if(role === 'student') syncHistoryView();
-    saveHistory(true);
-    return { ok:true, words: Object.keys(pulled.words).length,
-             sessions: pulled.sessions.length, at: data.t || null,
-             pulledWords: Object.keys(pulled.words).length };
-  }catch(err){
-    return { ok:false, error: String(err.message || err) };
-  }
-}
+async function syncPull(){ return syncNow(); }
 
 // The assigned paper lives at its own key so a student's record upload (a whole
 // -object PUT) can never overwrite it. The shape keeps the v/w children the
@@ -4219,12 +4342,11 @@ function showResult(){
   saveHistory();
   // Upload in the background so the teacher sees this round without the student
   // doing anything. Never awaited: the result screen must not wait on network.
-  if(role === 'student' && syncReady()){
-    syncPush().then(r => {
+  if(syncReady()){
+    syncNow().then(r => {
       const el = document.getElementById('reportStatus');
       if(!el) return;
-      el.textContent = r.ok && r.recovered ? '☁️ 這台手機掉過資料，已從雲端補回來並同步給老師'
-        : r.ok ? '☁️ 已同步給老師'
+      el.textContent = r.ok ? '☁️ 已同步（手機、iPad、老師報告都會看到這次的紀錄）'
         : '☁️ 尚未同步（等下次連上網路會再試）';
       el.className = 'report-status ' + (r.ok ? 'ok' : 'pending');
     });
@@ -4403,16 +4525,31 @@ function paintReviewCount(){
   renderHistory();
   paintExamCount();
   checkAssignment();
-  // 新手機、或被瀏覽器清掉的手機：一打開就從雲端救回，不用等做完一次測驗
-  if(role === 'student' && syncReady() && profileSize(store.profiles.student) === 0){
-    syncPush().then(r=>{ if(r && r.restored) renderHistory(); });
-  }
+  // 一打開就跟雲端對齊：另一台裝置做的錯題會出現，這台離線時做的會補上去
+  if(syncReady()) syncNow().then(afterBackgroundSync);
   window.__bankReady = true;       // 給端對端測試等待用
   // A remembered role skips straight to the modes; otherwise ask first.
   showScreen(role ? modeScreen : roleScreen);
 })();
 
 document.getElementById('bootRetry').addEventListener('click', ()=> location.reload());
+
+// 背景同步完要把畫面更新：錯題面板、老師報告
+function afterBackgroundSync(r){
+  if(!r || !r.ok) return;
+  renderHistory();
+  if(!document.getElementById('reportScreen').classList.contains('hidden')) renderReport();
+}
+// 從別的 App 切回來、或重新連上網路時再對齊一次（兩台輪流用時很重要）
+let lastAutoSync = 0;
+function autoSync(){
+  if(!syncReady() || !window.__bankReady) return;
+  if(Date.now() - lastAutoSync < 20000) return;
+  lastAutoSync = Date.now();
+  syncNow().then(afterBackgroundSync);
+}
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) autoSync(); });
+window.addEventListener('online', autoSync);
 </script>
 </body>
 </html>
