@@ -177,7 +177,7 @@ const qual = await page.evaluate(()=>{
       attachQuestions(pool, new Set(ALL_TYPES), pool).forEach(q=>{
         n++;
         const ws = q.options.map(o=> q.type==='en2zh' ? byZh.get(o) : byEn.get(o)).filter(Boolean);
-        if(new Set(ws.map(w=>w.pos)).size > 1) mixed++;
+        if(new Set(ws.map(w=>posClass(w.pos))).size > 1) mixed++;   // 介系詞與連接詞算同一類（虛詞）
         for(let i=0;i<ws.length;i++) for(let j=i+1;j<ws.length;j++) if(meaningClash(ws[i],ws[j])) clash++;
       });
     });

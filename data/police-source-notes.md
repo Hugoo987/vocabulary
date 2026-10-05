@@ -229,3 +229,27 @@ Quizlet 上的中文有些是錯的或只給了少見的意思。以下是改動
 檢查方式：每組各出 30 輪，共約 2 萬題，選項不足四個、沒有正解、兩個近義詞同時出現、詞性不一致，都是 0。
 
 如果哪個字的中文或例句你覺得要改，直接告訴我原始編號就可以。
+
+---
+
+# 考古題補強（1800 單字＋200 片語，v25）
+
+## 為什麼要補
+
+對照 106–115 學年度（缺 112）警專英文考古題的「字彙」「成語」兩大題（共 138 題）：
+
+- 原本的範圍（課本 1252 字＋Quizlet 723 字）只涵蓋字彙題正解的 34%、成語題正解的 66%。
+- 113–115 年的字彙題正解幾乎都不在 Quizlet 清單裡（0/9、1/9、1/10），而且多半是 aspect、status、financial、relief 這類高中常見字。
+- 用英文詞頻排序估算：認得前 7000 個常用字，才涵蓋約 8 成的字彙題正解與 95% 的考卷文字。
+
+## 怎麼挑的（越前面越優先）
+
+1. 補強 1–4：考古題字彙題出現過、但範圍裡沒有的正解與選項（181 字），例如 artificial、feasible、efficiency、candidate、aspect、status。
+2. 補強 4–36：其餘依英文常用程度排序，跳過國中基礎字（如 dog、happy）、人名地名、網路用語，以及課本或 Quizlet 已經有的字。
+3. 補強片語 1–4：考古題成語題漏掉的片語（figure out、in spite of、break the ice、pull over…），加上高中常考片語與警察相關片語（under arrest、on duty、on the spot、under control）。
+
+## 出題規則
+
+- 每個字一句克漏字例句，空格填的是原形（不需要加 -s、-ed）。
+- 詞性：n、v、adj、adv、prep（介系詞）、conj（連接詞）、ph（片語）。介系詞與連接詞字數少，出題時算同一類互當選項。
+- 意思相近、會造成兩個選項都對的字，已加進 index.html 與 tools/validate.js 的 SYNONYM_GROUPS（例如 staff／personnel、apart from／except for、take part in／participate in），出題時不會同時出現。

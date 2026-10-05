@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v24 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v25 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -289,6 +289,16 @@
     padding: 1px 8px; border-radius: 20px; font-size: 11px;
   }
   .cat-tab.off{ filter: grayscale(0.75) brightness(0.85) saturate(0.4); opacity: 0.5; }
+  /* 警專有 55 組：寬螢幕多排幾欄，並依來源分區 */
+  #policeCatGrid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .cat-group-head{
+    grid-column: 1 / -1; display:flex; align-items:center; flex-wrap:wrap; gap:6px 8px;
+    margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .cat-group-head:first-child{ margin-top: 0; }
+  .cat-group-head .grp-meta{ color: var(--ink-soft); font-weight: 400; }
+  .cat-group-head .grp-btns{ margin-left:auto; display:flex; gap:6px; }
+  .cat-group-head .grp-note{ flex-basis:100%; color: var(--ink-soft); font-weight: 400; font-size: 12px; }
   .cat-tab[data-cat="adjectives3"]{ background: var(--numbers); }
   .cat-tab[data-cat="people"]{ background: var(--address); }
   .cat-tab[data-cat="adverbs3"]{ background: var(--time); }
@@ -606,10 +616,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v24 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 723 字</div>
+  <div class="top-banner">✅ 這是最新版 v25 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v24</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v25</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -696,7 +706,7 @@
       <div class="mode-card police" id="modePolice">
         <div class="icon">🚔</div>
         <h3>警專單字</h3>
-        <p>警專英文單字與片語（Quizlet 清單），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
+        <p>警專英文單字與片語（Quizlet 清單＋考古題補強），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
           <span id="policeUnitCount">0</span> 組。可自選組別、題型與題數。</p>
       </div>
     </div>
@@ -1355,7 +1365,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.a423f739bc.json';
+const BANK_FILE = 'bank/bank.5474937a22.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -3548,7 +3558,24 @@ function renderPoliceUnits(){
   if(!grid) return;
   grid.innerHTML = '';
   selectedPoliceCats.clear();
+  let lastGroup = null;
   POLICE_UNITS.forEach(u=>{
+    // 依來源分區（Quizlet 清單／考古題補強），每區可以整區勾選或取消
+    const group = u.group || '';
+    if(group && group !== lastGroup){
+      lastGroup = group;
+      const inGroup = POLICE_UNITS.filter(x => (x.group || '') === group);
+      const words = inGroup.reduce((n, x) => n + x.words.length, 0);
+      const head = document.createElement('div');
+      head.className = 'cat-group-head';
+      head.dataset.group = group;
+      head.innerHTML = `<span>${esc(group)}</span><span class="grp-meta">${inGroup.length} 組・${words} 個</span>`
+        + `<span class="grp-btns"><button class="mini-btn" type="button" data-on="1">這區全選</button>`
+        + `<button class="mini-btn" type="button" data-on="0">這區取消</button></span>`
+        + (group === '考古題補強' ? '<span class="grp-note">依重要性排序：補強 1–4 是考古題考過的字，越前面的組越常見、越該先學。</span>' : '');
+      head.querySelectorAll('button').forEach(b => b.addEventListener('click', ()=> setPoliceGroup(group, b.dataset.on === '1')));
+      grid.appendChild(head);
+    }
     selectedPoliceCats.add(u.id);
     const div = document.createElement('label');
     div.className = 'cat-tab';
@@ -3596,6 +3623,14 @@ function setAllPoliceUnits(on){
   document.querySelectorAll('#policeCatGrid .cat-tab').forEach(el=>{
     if(on) selectedPoliceCats.add(el.dataset.cat);
     el.classList.toggle('off', !on);
+  });
+  updatePolicePoolHint();
+}
+function setPoliceGroup(group, on){
+  POLICE_UNITS.filter(u => (u.group || '') === group).forEach(u=>{
+    if(on) selectedPoliceCats.add(u.id); else selectedPoliceCats.delete(u.id);
+    const el = document.querySelector(`#policeCatGrid .cat-tab[data-cat="${u.id}"]`);
+    if(el) el.classList.toggle('off', !on);
   });
   updatePolicePoolHint();
 }
@@ -3740,7 +3775,7 @@ function policePool(ids){
   });
   return pool;
 }
-// 723 個字，每出一題都重建一次太浪費；題庫載入後就不會變，快取起來
+// 兩千多個字，每出一題都重建一次太浪費；題庫載入後就不會變，快取起來
 let policeAllCache = null, policeAllCacheSrc = null;
 function policeAllPool(){
   if(policeAllCacheSrc !== POLICE_UNITS){
@@ -3828,7 +3863,7 @@ const SYNONYM_GROUPS = [
   ['使擔心', '掛念', '擔憂'],
   ['發現', '發掘'],
   ['拒絕', '駁回', '否決'],
-  ['建議', '勸告', '忠告'],
+  ['建議', '勸告', '忠告', '提供建議'],
   ['增加', '添加', '增添'],
   ['供應', '提供', '給予'],
   ['辯論', '爭論', '討論'],
@@ -3849,11 +3884,11 @@ const SYNONYM_GROUPS = [
   ['像', '想像', '幻想'],
   // ↓ 警專單字（Quizlet 788 字）匯入時補的。這些在克漏字裡會「兩個都填得進去」
   ['（想法）浮現在…腦海', '閃過腦海'],
-  ['對…有影響', '對…有益', '對…有害'],
+  ['對…有影響', '對…有益', '對…有害', '有影響'],
   ['逐漸消失', '憑空消失'],
   ['尤其', '尤其不'],
   ['會議', '視訊會議', '電話會議'],
-  ['違法行為', '犯罪行為'],
+  ['違法行為', '犯罪行為', '違規'],
   ['激烈', '強烈', '劇烈'],
   ['嚴酷', '殘酷'],
   ['廢除', '禁止'],
@@ -3861,7 +3896,49 @@ const SYNONYM_GROUPS = [
   ['控告', '宣判有罪'],
   ['勸阻', '阻止'],
   ['撤退', '撤回'],
-  ['維持', '維護']
+  ['維持', '維護'],
+  // ↓ 警專「考古題補強」2000 字匯入時補的：字面不同、但出成選項會兩個都對
+  ['主管', '高階主管'],
+  ['規定', '限制規定', '限制'],
+  ['全套服裝', '服裝'],
+  ['代表性', '具代表性', '有代表性', '典型'],
+  ['察覺到', '意識到'],
+  ['提案', '提議', '建議書'],
+  ['物質', '化學物質'],
+  ['障礙物', '障礙'],
+  ['恢復（名詞）', '恢復'],
+  ['低聲抱怨', '抱怨'],
+  ['參加', '參加（活動或比賽）', '參加（活動）'],
+  ['組成', '由…組成', '由…構成'],
+  ['丟棄', '丟掉', '扔掉'],
+  ['處理掉', '處理'],
+  ['除了', '除了…之外', '除了（…以外都）', '除…之外（還有）', '除此之外'],
+  ['收起來', '藏起來'],
+  ['即將來臨', '即將到來'],
+  ['利用', '充分利用'],
+  ['突然出現', '出現'],
+  ['保持身材', '使身材變好', '健身', '運動健身'],
+  ['有效率', '有效'],
+  ['精神', '精神上'],
+  ['療法', '治療法'],
+  ['全體職員', '全體人員'],
+  ['百分之…', '百分比'],
+  ['極其重要', '極重要', '重要', '關鍵'],
+  ['存貨', '庫存', '存貨清單'],
+  ['手術', '外科手術'],
+  ['公司', '大公司'],
+  ['歷史上', '歷史悠久'],
+  ['民調', '民意調查'],
+  ['貸款', '房屋貸款'],
+  ['都市', '大都市'],
+  ['評估', '評估結果', '評定'],
+  ['變成', '逐漸變成'],
+  ['連同', '以及'],
+  ['與…有關聯', '與…有關'],
+  ['平靜下來', '冷靜下來'],
+  ['洩漏', '洩漏秘密'],
+  ['負責', '對…負責'],
+  ['檢查', '仔細檢查']
 ];
 function synonymKey(sense){
   for(let i = 0; i < SYNONYM_GROUPS.length; i++){
@@ -3922,10 +3999,17 @@ function attachQuestions(list, types, distractorPool){
 // 警專的題目：干擾選項只從同詞性裡挑。片語題配單字選項、形容詞題配名詞
 // 選項，學生看長度或看中文有沒有「的」就猜得到，根本不用懂意思。
 // 同詞性的字太少時，退回「同樣是片語／同樣是單字」，再不夠才用全部。
+// 介系詞（despite、beyond…）和連接詞（unless、whereas…）各只有幾個字，
+// 分開算湊不出選項，就當成同一類「虛詞」互當干擾選項——考卷本來就常把
+// despite／although／because of 放在同一題。
+function posClass(pos){ return (pos === 'prep' || pos === 'conj') ? 'fn' : pos; }
 function samePosPool(w, pool, min){
   if(!w.pos) return pool;
-  const same = pool.filter(p => p.pos === w.pos);
+  const cls = posClass(w.pos);
+  const same = pool.filter(p => posClass(p.pos) === cls);
   if(same.length >= min) return same;
+  // 虛詞總數本來就少，有四個就夠出一題，不要退回去混名詞、動詞
+  if(cls === 'fn' && same.length >= 4) return same;
   const isPh = w.pos === 'ph';
   const kind = pool.filter(p => (p.pos === 'ph') === isPh);
   return kind.length >= min ? kind : pool;
@@ -3939,7 +4023,7 @@ function makeQuestion(w, type, distractorPool){
   const globalPool = isPolice ? samePosPool(w, policeAllPool(), 12) : fullPool();
   if(isPolice){
     // 選的組別裡同詞性的字不夠時，向其他組借同詞性的字，而不是退回不同詞性
-    const same = distractorPool.filter(p => p.pos === w.pos);
+    const same = distractorPool.filter(p => posClass(p.pos) === posClass(w.pos));
     distractorPool = same.length >= 4 ? same : samePosPool(w, policeAllPool(), 4);
   }
   {
