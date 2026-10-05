@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v25 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v26 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -298,7 +298,6 @@
   .cat-group-head:first-child{ margin-top: 0; }
   .cat-group-head .grp-meta{ color: var(--ink-soft); font-weight: 400; }
   .cat-group-head .grp-btns{ margin-left:auto; display:flex; gap:6px; }
-  .cat-group-head .grp-note{ flex-basis:100%; color: var(--ink-soft); font-weight: 400; font-size: 12px; }
   .cat-tab[data-cat="adjectives3"]{ background: var(--numbers); }
   .cat-tab[data-cat="people"]{ background: var(--address); }
   .cat-tab[data-cat="adverbs3"]{ background: var(--time); }
@@ -616,10 +615,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v25 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
+  <div class="top-banner">✅ 這是最新版 v26 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v25</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v26</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -706,7 +705,7 @@
       <div class="mode-card police" id="modePolice">
         <div class="icon">🚔</div>
         <h3>警專單字</h3>
-        <p>警專英文單字與片語（Quizlet 清單＋考古題補強），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
+        <p>警專英文單字與片語（依主題分類），和課本的進度分開算：共 <b><span id="policeWordCount">0</span></b> 個，分
           <span id="policeUnitCount">0</span> 組。可自選組別、題型與題數。</p>
       </div>
     </div>
@@ -1365,7 +1364,7 @@ const ALL_TYPES = ['en2zh','zh2en','cloze'];
 // 載入 bank/bank.<內容雜湊>.json。檔名帶雜湊 → 內容沒變就吃快取；
 // 改程式碼時學生只需要重新下載很小的 index.html。
 // 來源檔在 data/，改完跑 `npm run build`。
-const BANK_FILE = 'bank/bank.5474937a22.json';
+const BANK_FILE = 'bank/bank.16fcd54b71.json';
 const BANK_CACHE_KEY = 'vocabQuiz:bank';
 let REVIEW_WORDS = [];          // 總複習題庫（教過的全部）
 let ALT_SENTENCES = {};         // 每個字的第二、三句例句
@@ -2742,12 +2741,15 @@ const FALLBACK_COLORS = ['var(--health)','var(--address)','var(--family)','var(-
 function catLabel(cat){
   const pu = policeUnit(cat);
   if(pu) return '警專 ' + pu.label;
+  // 警專改過分組（v26 改成依主題），舊紀錄裡的 pol-w03、pol-c12 已經不存在
+  if(/^pol-/.test(String(cat))) return '警專單字';
   return REVIEW_CAT_LABEL[cat] || CAT_LABEL[cat] || cat || '其他';
 }
 
 function catColor(cat){
   const pu = policeUnit(cat);
   if(pu && pu.color) return pu.color;
+  if(/^pol-/.test(String(cat))) return '#5B4B9B';
   if(CAT_COLOR[cat]) return CAT_COLOR[cat];
   if(!cat) return 'var(--ink-soft)';
   let h = 0;
@@ -3560,7 +3562,7 @@ function renderPoliceUnits(){
   selectedPoliceCats.clear();
   let lastGroup = null;
   POLICE_UNITS.forEach(u=>{
-    // 依來源分區（Quizlet 清單／考古題補強），每區可以整區勾選或取消
+    // 分成「單字（依主題）」「片語（依類型）」兩區，每區可以整區勾選或取消
     const group = u.group || '';
     if(group && group !== lastGroup){
       lastGroup = group;
@@ -3572,7 +3574,7 @@ function renderPoliceUnits(){
       head.innerHTML = `<span>${esc(group)}</span><span class="grp-meta">${inGroup.length} 組・${words} 個</span>`
         + `<span class="grp-btns"><button class="mini-btn" type="button" data-on="1">這區全選</button>`
         + `<button class="mini-btn" type="button" data-on="0">這區取消</button></span>`
-        + (group === '考古題補強' ? '<span class="grp-note">依重要性排序：補強 1–4 是考古題考過的字，越前面的組越常見、越該先學。</span>' : '');
+        ;
       head.querySelectorAll('button').forEach(b => b.addEventListener('click', ()=> setPoliceGroup(group, b.dataset.on === '1')));
       grid.appendChild(head);
     }
