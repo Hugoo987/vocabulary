@@ -163,6 +163,9 @@ const backs = await page.evaluate(()=>{
     ['作答中', 'quizScreen', 'quitHint'],
     ['成績單', 'resultScreen', 'resultBackLink'],
     ['老師報告', 'reportScreen', 'reportBackBtn'],
+    ['警專測驗設定', 'policeSetupScreen', 'backHint4'],
+    ['警專單字卡設定', 'policeStudySetupScreen', 'backHintStudy'],
+    ['警專單字卡翻牌', 'flashScreen', 'flashExit'],
   ];
   const out = [];
   map.forEach(([name, screenId, linkId])=>{

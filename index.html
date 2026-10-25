@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v28 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v29 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -663,10 +663,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v28 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
+  <div class="top-banner">✅ 這是最新版 v29 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v28</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v29</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -1125,8 +1125,8 @@
 
   <!-- FLASHCARD SCREEN -->
   <div class="card hidden" id="flashScreen">
+    <div class="back-link" id="flashExit">← 返回選組別</div>
     <div class="flash-top">
-      <div class="back-link" id="flashExit" style="margin:0">← 結束</div>
       <span class="flash-unit" id="flashUnit"></span>
       <span class="flash-progress" id="flashProgress"></span>
     </div>
@@ -1605,6 +1605,37 @@ const reviewSetupScreen = document.getElementById('reviewSetupScreen');
 const quizScreen = document.getElementById('quizScreen');
 const resultScreen = document.getElementById('resultScreen');
 
+// ---------------- 手機返回手勢／瀏覽器「上一頁」 ----------------
+// 整個網站是同一頁，原本按手機的返回（iPhone 從左邊滑、Android 返回鍵）會直接
+// 離開網站。進入子畫面時先放一筆歷史紀錄，按返回時就改成按這個畫面左上角的
+// 「← 返回」—— 作答中那種要按兩次才結束的，一樣要按兩次，不會一滑就丟掉進度。
+const BACK_LINK_OF = {
+  setupScreen:'backHint', examConfirmScreen:'backHint2', reviewSetupScreen:'backHint3',
+  policeSetupScreen:'backHint4', policeStudySetupScreen:'backHintStudy', flashScreen:'flashExit',
+  wordListScreen:'wlBackHint', articleListScreen:'artBackHint', articleScreen:'artQuitHint',
+  grammarListScreen:'gmBackHint', grammarCardScreen:'gmCardBack', grammarQuizScreen:'gmQuitHint',
+  quizScreen:'quitHint', resultScreen:'resultBackLink', reportScreen:'reportBackBtn'
+};
+let navTrap = false;   // 已經放了一筆「返回時留在網站裡」的歷史紀錄
+function currentSubScreen(){
+  return Object.keys(BACK_LINK_OF).find(id=>{
+    const el = document.getElementById(id);
+    return el && !el.classList.contains('hidden');
+  }) || null;
+}
+function armBackTrap(){
+  if(navTrap || !currentSubScreen()) return;
+  try{ history.pushState({ vocabQuiz: 1 }, ''); navTrap = true; }catch(e){ /* 不支援就照舊 */ }
+}
+window.addEventListener('popstate', ()=>{
+  navTrap = false;
+  const id = currentSubScreen();
+  if(!id) return;                       // 在主頁：讓下一次返回照常離開網站
+  const link = document.getElementById(BACK_LINK_OF[id]);
+  if(link) link.click();
+  armBackTrap();                        // 還在子畫面（例如作答中只按了一次）就再放一筆
+});
+
 function showScreen(el){
   const binder = document.querySelector('.binder');
   // The reading screen is the only one wide enough to need two columns.
@@ -1621,6 +1652,7 @@ function showScreen(el){
   // Switching screens keeps the old scroll position otherwise: tap 錯題重練 at
   // the bottom of a long list and the quiz opens already scrolled down.
   try{ window.scrollTo(0, 0); }catch(e){ /* older browsers */ }
+  armBackTrap();
 }
 
 // ---------------- Role selection ----------------

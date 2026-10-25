@@ -117,6 +117,28 @@ check(after === before, '錯題紀錄與測驗紀錄完全沒變');
 const sw = await page.evaluate(()=>document.documentElement.scrollWidth);
 check(sw <= 375, `手機沒有橫向捲動（${sw}px）`);
 
+console.log('\n【返回：畫面上的返回鍵跟手機返回手勢】');
+check((await page.textContent('#flashExit')).includes('返回'), '翻牌畫面左上角有「← 返回」，跟其他畫面一樣');
+const exitBox = await page.locator('#flashExit').boundingBox();
+const cardTop = await page.evaluate(()=>document.getElementById('flashScreen').getBoundingClientRect().top);
+check(exitBox && exitBox.y - cardTop < 70 && exitBox.height >= 24, '返回鍵在卡片最上方、夠大好按');
+await page.goBack(); await page.waitForTimeout(250);
+check(await page.isVisible('#policeStudySetupScreen'), '翻牌時按手機返回 → 回到單字卡選組別（不會離開網站）');
+check(page.url().startsWith(URL.split('#')[0].split('?')[0]), '還在同一個網站');
+await page.goBack(); await page.waitForTimeout(250);
+check(await page.isVisible('#modeScreen'), '再按一次返回 → 回到主頁');
+// 作答中：要按兩次才結束，跟畫面上的返回鍵一樣，不會一滑就丟掉進度
+await page.click('#modePolice'); await page.waitForTimeout(150);
+await page.click('#policeStartBtn'); await page.waitForTimeout(250);
+check(await page.isVisible('#quizScreen'), '開始一輪警專測驗');
+await page.goBack(); await page.waitForTimeout(250);
+check(await page.isVisible('#quizScreen'), '作答中按一次返回不會直接結束');
+await page.goBack(); await page.waitForTimeout(250);
+check(!(await page.isVisible('#quizScreen')), '再按一次返回才結束作答');
+await page.evaluate(()=>showScreen(modeScreen)); await page.waitForTimeout(100);
+await page.click('#modePoliceStudy'); await page.waitForTimeout(100);
+await page.click('#studyStartBtn'); await page.waitForTimeout(150);
+
 console.log('\n【測驗那邊不受影響】');
 await page.click('#flashExit'); await page.click('#backHintStudy'); await page.waitForTimeout(150);
 await page.click('#modePolice'); await page.waitForTimeout(200);
