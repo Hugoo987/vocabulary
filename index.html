@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字大挑戰 v29 · 形容詞・人物・副詞・動詞・警專</title>
+<title>單字大挑戰 v30 · 形容詞・人物・副詞・動詞・警專</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -337,6 +337,47 @@
   .flash-done{ text-align:center; }
   .flash-done .big{ font-family:'Baloo 2',sans-serif; font-size: 28px; font-weight:800; margin: 6px 0 4px; }
   .flash-done .big-btn{ margin-top:10px; }
+  .flash-top-right{ display:flex; align-items:center; gap:8px; }
+  .flash-toc{
+    position:fixed; inset:0; z-index:60; background: rgba(30,25,20,.45);
+    display:flex; align-items:flex-end; justify-content:center;
+  }
+  .toc-sheet{
+    background: var(--paper); width: min(560px, 100%); height: 82vh; max-height: 82vh;
+    border:2px solid var(--ink); border-bottom:none; border-radius:18px 18px 0 0;
+    display:flex; flex-direction:column; gap:8px; padding: 12px 14px 0;
+  }
+  @media (min-width: 700px){
+    .flash-toc{ align-items:center; }
+    .toc-sheet{ border-bottom:2px solid var(--ink); border-radius:18px; height: 78vh; padding-bottom: 12px; }
+  }
+  .toc-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:15px; }
+  .toc-search{
+    width:100%; box-sizing:border-box; border:2px solid var(--ink); border-radius:10px;
+    padding: 9px 12px; font-size:16px; background:#fff;
+  }
+  .toc-units{ display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; flex-shrink:0; }
+  .toc-chip{
+    flex-shrink:0; border:2px solid var(--ink); border-radius:20px; padding: 4px 10px;
+    font-size:12px; font-weight:700; background:#fff; color: var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .toc-chip.on{ color:#fff; }
+  .toc-list{ overflow-y:auto; flex:1; min-height:0; -webkit-overflow-scrolling: touch; padding-bottom: 12px; }
+  .toc-sec{
+    position: sticky; top:0; z-index:1; background: var(--paper);
+    font-size:12px; font-weight:800; padding: 8px 2px 4px; display:flex; align-items:center; gap:6px;
+  }
+  .toc-sec .dot, .toc-item .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; display:inline-block; }
+  .toc-item{
+    width:100%; display:flex; align-items:center; gap:10px; text-align:left;
+    border:none; border-bottom:1px solid #E8E1D0; background:transparent; padding: 10px 4px;
+    font-size:15px; color: var(--ink); cursor:pointer;
+  }
+  .toc-item .n{ font-family:'Baloo 2',sans-serif; color: var(--ink-soft); font-size:12px; min-width: 2.8em; }
+  .toc-item .w{ flex:1; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .toc-item .s{ font-size:13px; }
+  .toc-item.cur{ background:#FFF1BF; border-radius:8px; }
+  .toc-empty{ text-align:center; color: var(--ink-soft); padding: 24px 0; font-size:14px; }
   .study-known{ font-size:12px; color: var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   @media (prefers-reduced-motion: reduce){ .flash-inner{ transition:none; } }
   @media (hover: none){ .flash-tip .kbd-tip{ display:none; } }
@@ -663,10 +704,10 @@
 </head>
 <body>
 <div class="binder">
-  <div class="top-banner">✅ 這是最新版 v29 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
+  <div class="top-banner">✅ 這是最新版 v30 ｜ 其他形容詞・人物・其他副詞・其他動詞 ｜ 236 字 ＋ 警專 2723 字</div>
   <div class="masthead">
     <h1>單字大挑戰</h1>
-    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v29</span></div>
+    <div class="sub">進階 800 單字 · 形容詞・人物・副詞・動詞 <span class="ver-badge">v30</span></div>
   </div>
 
   <!-- BOOT：題庫是分開的檔案，載入完成前先顯示這張 -->
@@ -1128,7 +1169,10 @@
     <div class="back-link" id="flashExit">← 返回選組別</div>
     <div class="flash-top">
       <span class="flash-unit" id="flashUnit"></span>
-      <span class="flash-progress" id="flashProgress"></span>
+      <span class="flash-top-right">
+        <span class="flash-progress" id="flashProgress"></span>
+        <button class="mini-btn" id="flashTocBtn" type="button">📑 目錄</button>
+      </span>
     </div>
     <div class="flash-bar"><div id="flashBar"></div></div>
     <div id="flashPlay">
@@ -1149,6 +1193,19 @@
       </div>
     </div>
     <div class="flash-done hidden" id="flashDone"></div>
+
+    <!-- 快速目錄：整副牌的清單，點一下直接跳到那張 -->
+    <div class="flash-toc hidden" id="flashToc" role="dialog" aria-modal="true" aria-labelledby="tocTitle">
+      <div class="toc-sheet">
+        <div class="toc-head">
+          <b id="tocTitle">目錄</b>
+          <button class="mini-btn" id="tocClose" type="button" aria-label="關閉目錄">✕ 關閉</button>
+        </div>
+        <input class="toc-search" id="tocSearch" type="search" placeholder="搜尋英文或中文" autocomplete="off">
+        <div class="toc-units" id="tocUnits"></div>
+        <div class="toc-list" id="tocList"></div>
+      </div>
+    </div>
   </div>
 
   <!-- QUIZ SCREEN -->
@@ -1629,6 +1686,9 @@ function armBackTrap(){
 }
 window.addEventListener('popstate', ()=>{
   navTrap = false;
+  // 目錄開著時，返回只關掉目錄
+  const toc = document.getElementById('flashToc');
+  if(toc && !toc.classList.contains('hidden')){ closeToc(); armBackTrap(); return; }
   const id = currentSubScreen();
   if(!id) return;                       // 在主頁：讓下一次返回照常離開網站
   const link = document.getElementById(BACK_LINK_OF[id]);
@@ -3867,6 +3927,7 @@ document.getElementById('backHintStudy').addEventListener('click', ()=> showScre
 const flash = { deck: [], i: 0, rated: new Map() };   // rated: en → 'yes' | 'no'
 function startFlash(deck){
   flash.deck = deck; flash.i = 0; flash.rated = new Map();
+  document.getElementById('flashToc').classList.add('hidden');
   document.getElementById('flashPlay').classList.remove('hidden');
   document.getElementById('flashDone').classList.add('hidden');
   showScreen(flashScreen);
@@ -3945,6 +4006,95 @@ function finishFlash(){
     startFlash(studyOrder === 'shuffle' ? shuffle(flash.deck) : flash.deck.slice()));
   document.getElementById('flashBackSetup').addEventListener('click', ()=>{ updateStudyPoolHint(); showScreen(policeStudySetupScreen); });
 }
+// ---- 快速目錄 ----
+// 整副牌列成清單，點一下直接跳到那張。照順序翻、又選了好幾組時，清單依組別
+// 分段；隨機順序就照翻牌的順序列。清單只顯示卡片正面那一面，不會先洩漏答案。
+let tocUnit = '';   // 目錄篩選的組別（'' = 全部）
+function tocOpen(){ return !document.getElementById('flashToc').classList.contains('hidden'); }
+function openToc(){
+  tocUnit = '';
+  document.getElementById('tocSearch').value = '';
+  document.getElementById('flashToc').classList.remove('hidden');
+  renderTocUnits();
+  renderTocList(true);
+}
+function closeToc(){
+  document.getElementById('flashToc').classList.add('hidden');
+  try{ document.getElementById('flashCard').focus({ preventScroll: true }); }catch(e){}
+}
+function tocUnitsInDeck(){
+  const seen = new Map();
+  flash.deck.forEach(w=>{ seen.set(w.cat, (seen.get(w.cat) || 0) + 1); });
+  return [...seen].map(([id, n]) => ({ u: policeUnit(id), id, n }));
+}
+function renderTocUnits(){
+  const box = document.getElementById('tocUnits');
+  const units = tocUnitsInDeck();
+  // 只有一組就不用篩選按鈕
+  box.classList.toggle('hidden', units.length < 2);
+  if(units.length < 2){ box.innerHTML = ''; return; }
+  box.innerHTML = `<button class="toc-chip${tocUnit ? '' : ' on'}" type="button" data-unit=""`
+    + `${tocUnit ? '' : ' style="background:var(--ink)"'}>全部 ${flash.deck.length}</button>`
+    + units.map(({ u, id, n })=>{
+        const color = u ? (u.color || catColor(id)) : 'var(--ink)';
+        const on = tocUnit === id;
+        return `<button class="toc-chip${on ? ' on' : ''}" type="button" data-unit="${esc(id)}"`
+          + `${on ? ` style="background:${color};border-color:${color}"` : ''}>${esc(u ? u.label : id)} ${n}</button>`;
+      }).join('');
+  box.querySelectorAll('.toc-chip').forEach(b => b.addEventListener('click', ()=>{
+    tocUnit = b.dataset.unit;
+    renderTocUnits();
+    renderTocList(false);
+    document.getElementById('tocList').scrollTop = 0;
+  }));
+}
+function renderTocList(scrollToCurrent){
+  const list = document.getElementById('tocList');
+  const q = document.getElementById('tocSearch').value.trim().toLowerCase();
+  const grouped = studyOrder === 'list' && tocUnitsInDeck().length > 1;
+  let html = '', lastCat = null, shown = 0;
+  flash.deck.forEach((w, i)=>{
+    if(tocUnit && w.cat !== tocUnit) return;
+    if(q && !w.en.toLowerCase().includes(q) && !String(w.zh).includes(q)) return;
+    const u = policeUnit(w.cat);
+    const color = u ? (u.color || catColor(w.cat)) : 'var(--ink-soft)';
+    if(grouped && w.cat !== lastCat){
+      lastCat = w.cat;
+      html += `<div class="toc-sec"><span class="dot" style="background:${color}"></span>${esc(u ? u.label : w.cat)}</div>`;
+    }
+    const r = flash.rated.get(w.en);
+    const mark = r === 'yes' ? '✅' : r === 'no' ? '😵' : (knownCards.has(w.en) ? '✅' : '');
+    html += `<button class="toc-item${i === flash.i ? ' cur' : ''}" type="button" data-i="${i}">`
+      + `<span class="n">${i + 1}</span>`
+      + (grouped ? '' : `<span class="dot" style="background:${color}"></span>`)
+      + `<span class="w">${esc(studyFront === 'en' ? w.en : w.zh)}</span><span class="s">${mark}</span></button>`;
+    shown++;
+  });
+  list.innerHTML = html || '<div class="toc-empty">找不到符合的字</div>';
+  document.getElementById('tocTitle').textContent =
+    `目錄・第 ${flash.i + 1} / ${flash.deck.length} 張` + (shown !== flash.deck.length ? `（列出 ${shown} 張）` : '');
+  if(scrollToCurrent){
+    const cur = list.querySelector('.toc-item.cur');
+    if(cur) cur.scrollIntoView({ block: 'center' });
+  }
+}
+function jumpFlash(i){
+  flash.i = i;
+  // 從結果畫面也能跳回去繼續翻
+  document.getElementById('flashPlay').classList.remove('hidden');
+  document.getElementById('flashDone').classList.add('hidden');
+  renderFlash();
+  closeToc();
+}
+document.getElementById('flashTocBtn').addEventListener('click', openToc);
+document.getElementById('tocClose').addEventListener('click', closeToc);
+document.getElementById('flashToc').addEventListener('click', ev=>{
+  if(ev.target.id === 'flashToc') closeToc();          // 點灰色背景關閉
+  const item = ev.target.closest('.toc-item');
+  if(item) jumpFlash(Number(item.dataset.i));
+});
+document.getElementById('tocSearch').addEventListener('input', ()=> renderTocList(false));
+
 document.getElementById('flashCard').addEventListener('click', ev=>{
   if(ev.target.closest('[data-say]')) return;   // 按發音不要順便翻面
   flipFlash();
@@ -3955,7 +4105,9 @@ document.getElementById('flashYes').addEventListener('click', ()=> rateFlash(tru
 document.getElementById('flashNo').addEventListener('click', ()=> rateFlash(false));
 document.getElementById('flashExit').addEventListener('click', ()=>{ updateStudyPoolHint(); showScreen(policeStudySetupScreen); });
 document.addEventListener('keydown', ev=>{
-  if(flashScreen.classList.contains('hidden') || !document.getElementById('flashDone').classList.contains('hidden')) return;
+  if(flashScreen.classList.contains('hidden')) return;
+  if(tocOpen()){ if(ev.key === 'Escape'){ ev.preventDefault(); closeToc(); } return; }
+  if(!document.getElementById('flashDone').classList.contains('hidden')) return;
   if(ev.target.closest && ev.target.closest('input, textarea, select')) return;
   if(ev.key === ' ' || ev.key === 'Enter'){ ev.preventDefault(); flipFlash(); }
   else if(ev.key === 'ArrowRight'){ ev.preventDefault(); moveFlash(1); }
